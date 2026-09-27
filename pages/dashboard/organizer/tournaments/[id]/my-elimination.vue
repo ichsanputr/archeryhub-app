@@ -3,9 +3,12 @@
         <!-- Breadcrumbs & Header Actions -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-2">
-                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}`" class="hover:text-primary transition-colors">Tournament
-                    </NuxtLink>
+                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-1.5 flex-wrap">
+                    <NuxtLink to="/dashboard/organizer" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-primary transition-colors">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-primary transition-colors">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <span class="text-slate-600 dark:text-slate-300">{{ t('elimination.my_bracket') }}</span>
                 </nav>
@@ -42,11 +45,7 @@
                             userProfile?.full_name || 'Archer' }}</h3>
                         <div
                             class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-slate-500 dark:text-slate-400 font-medium text-xs mb-4">
-                            <span
-                                class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-[10px] font-black capitalize tracking-widest text-slate-500">BIB
-                                #{{ userProfile?.bib_number || '-' }}</span>
-                            <span class="w-1 h-1 rounded-full bg-slate-300" />
-                            <span>{{ categoryName || '-' }}</span>
+                            <span class="font-bold text-navy dark:text-white">{{ categoryName || '-' }}</span>
                         </div>
                     </div>
 
@@ -140,6 +139,7 @@ const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 const { get } = useApi()
+const { tournamentTitle } = useTournamentContext()
 const route = useRoute()
 const router = useRouter()
 const eventId = route.params.id

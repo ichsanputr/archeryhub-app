@@ -88,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -96,13 +96,14 @@ import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   show: { type: Boolean, default: false },
-  eventId: { type: String, required: true }
+  eventId: { type: String, required: true },
+  customFields: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['update:show', 'imported', 'parsed'])
 
 const { t } = useI18n()
-const { post } = useApi()
+const { get, post } = useApi()
 const toast = useToast()
 
 const fileInput = ref(null)
@@ -110,6 +111,35 @@ const selectedFile = ref(null)
 const isDragging = ref(false)
 const isUploading = ref(false)
 const importResult = ref(null)
+const localCustomFields = ref([])
+
+const loadCustomFields = async () => {
+  if (Array.isArray(props.customFields) && props.customFields.length > 0) {
+    localCustomFields.value = props.customFields
+    return
+  }
+  if (!props.eventId) return
+  try {
+    const res = await get(`/tournaments/${props.eventId}/custom-fields`)
+    localCustomFields.value = res?.fields || []
+  } catch (e) {
+    localCustomFields.value = []
+  }
+}
+
+watch(() => props.show, (val) => {
+  if (val) loadCustomFields()
+})
+
+watch(() => props.customFields, (val) => {
+  if (Array.isArray(val) && val.length > 0) {
+    localCustomFields.value = val
+  }
+}, { immediate: true })
+
+onMounted(() => {
+  loadCustomFields()
+})
 
 const closeModal = () => {
   selectedFile.value = null
@@ -149,10 +179,42 @@ const formatFileSize = (bytes) => {
 }
 
 const downloadTemplate = () => {
-  const csvContent = 'full_name,email,phone,password,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
-    'Budi Santoso,budi@example.com,081234567890,Archeris123!,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
-    'Siti Aminah,siti@example.com,081298765432,Archeris123!,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
+  const coreHeaders = ['full_name', 'email', 'phone', 'password', 'gender', 'club_name']
   
+  const validCustomFields = (localCustomFields.value || []).filter(f => 
+    f.is_active && !['heading', 'divider', 'notice'].includes(f.element_type)
+  )
+  
+  const customHeaderKeys = validCustomFields.map(f => f.field_key || f.uuid)
+  const allHeaders = [...coreHeaders, ...customHeaderKeys]
+
+  const getSampleCustomVal = (field, idx) => {
+    if (field.field_type === 'number') return idx === 0 ? '123' : '456'
+    if (field.field_type === 'select' || field.field_type === 'radio') {
+      if (Array.isArray(field.options) && field.options.length > 0) return field.options[idx % field.options.length]
+      return 'Pilihan 1'
+    }
+    if (field.field_type === 'checkbox') {
+      if (Array.isArray(field.options) && field.options.length > 0) return field.options[0]
+      return 'Ya'
+    }
+    if (field.field_type === 'date') return idx === 0 ? '2000-01-15' : '1998-07-22'
+    return idx === 0 ? 'Contoh 1' : 'Contoh 2'
+  }
+
+  const row1Custom = validCustomFields.map(f => getSampleCustomVal(f, 0))
+  const row2Custom = validCustomFields.map(f => getSampleCustomVal(f, 1))
+
+  const row1 = ['Budi Santoso', 'budi@example.com', '081234567890', 'Archeris123!', 'M', 'Klub Panahan Sleman', ...row1Custom]
+  const row2 = ['Siti Aminah', 'siti@example.com', '081298765432', 'Archeris123!', 'F', 'Archery Club Jogja', ...row2Custom]
+
+  const csvLines = [
+    allHeaders.join(','),
+    row1.map(val => `"${String(val).replace(/"/g, '""')}"`).join(','),
+    row2.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',')
+  ]
+
+  const csvContent = '\uFEFF' + csvLines.join('\r\n')
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -179,14 +241,43 @@ const uploadCSV = async () => {
       return
     }
 
-    const header = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/^["']|["']$/g, ''))
+    const rawHeaders = lines[0].split(',').map(h => h.trim().replace(/^["']|["']$/g, ''))
+    const normalizedHeaders = rawHeaders.map(h => h.toLowerCase())
     const colIdx = {}
-    header.forEach((h, idx) => { colIdx[h] = idx })
+    normalizedHeaders.forEach((h, idx) => { colIdx[h] = idx })
 
-    if (!('full_name' in colIdx)) {
+    // Find full_name column
+    const fullNameIdx = normalizedHeaders.findIndex(h => h === 'full_name' || h.includes('nama') || h.includes('name'))
+    if (fullNameIdx === -1) {
       toast.error(t('csv_import.missing_fullname'))
       isUploading.value = false
       return
+    }
+
+    const emailIdx = normalizedHeaders.findIndex(h => h === 'email' || h.includes('mail') || h.includes('surel'))
+    const phoneIdx = normalizedHeaders.findIndex(h => h === 'phone' || h.includes('hp') || h.includes('telp') || h.includes('wa'))
+    const clubIdx = normalizedHeaders.findIndex(h => h === 'club_name' || h.includes('club') || h.includes('klub') || h.includes('kontingen'))
+    const passIdx = normalizedHeaders.findIndex(h => h === 'password' || h.includes('pass') || h.includes('sandi'))
+    const genderIdx = normalizedHeaders.findIndex(h => h === 'gender' || h.includes('kelamin') || h.includes('jk') || h.includes('sex'))
+
+    // Map custom field columns
+    const validCustomFields = (localCustomFields.value || []).filter(f => 
+      f.is_active && !['heading', 'divider', 'notice'].includes(f.element_type)
+    )
+    const customFieldColMap = []
+    for (const field of validCustomFields) {
+      const fieldKeyNorm = (field.field_key || '').toLowerCase().trim()
+      const labelIdNorm = (field.label_id || '').toLowerCase().trim()
+      const labelEnNorm = (field.label_en || '').toLowerCase().trim()
+      
+      const foundIdx = normalizedHeaders.findIndex(h => 
+        (fieldKeyNorm && h === fieldKeyNorm) ||
+        (labelIdNorm && (h === labelIdNorm || h.includes(labelIdNorm))) ||
+        (labelEnNorm && (h === labelEnNorm || h.includes(labelEnNorm)))
+      )
+      if (foundIdx !== -1) {
+        customFieldColMap.push({ field_key: field.field_key, col_idx: foundIdx, field_type: field.field_type })
+      }
     }
 
     const parsedArchers = []
@@ -197,24 +288,42 @@ const uploadCSV = async () => {
       if (!line) continue
       
       // Simple CSV parser handling quotes
-      const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',')
-      const cleanVals = values.map(v => v.trim().replace(/^["']|["']$/g, ''))
-
-      const getVal = (col) => {
-        const idx = colIdx[col]
-        return idx !== undefined && idx < cleanVals.length ? cleanVals[idx] : ''
+      const pattern = /(?:,|^)(?:"([^"]*)"|([^",]*))/g
+      const cleanVals = []
+      let match
+      while ((match = pattern.exec(line)) !== null) {
+        cleanVals.push((match[1] !== undefined ? match[1] : match[2] || '').trim())
       }
 
-      const fullName = getVal('full_name')
+      const getVal = (idx) => {
+        return idx >= 0 && idx < cleanVals.length ? cleanVals[idx].trim() : ''
+      }
+
+      const fullName = getVal(fullNameIdx)
       if (!fullName) {
         errors.push(t('csv_import.empty_fullname_row', { row: i + 1 }))
         continue
       }
 
-      const email = getVal('email')
-      const phone = getVal('phone')
-      const clubName = getVal('club_name')
-      const pass = getVal('password') || 'Archeris123!'
+      const email = getVal(emailIdx)
+      const phone = getVal(phoneIdx)
+      const clubName = getVal(clubIdx)
+      const pass = getVal(passIdx) || 'Archeris123!'
+      const gender = getVal(genderIdx) || 'M'
+
+      // Extract custom fields
+      const customFieldValues = {}
+      for (const cf of customFieldColMap) {
+        const rawVal = getVal(cf.col_idx)
+        if (rawVal !== '') {
+          if (cf.field_type === 'number') {
+            const num = Number(rawVal)
+            customFieldValues[cf.field_key] = isNaN(num) ? rawVal : num
+          } else {
+            customFieldValues[cf.field_key] = rawVal
+          }
+        }
+      }
 
       const tempId = `csv-${Date.now()}-${i}`
       parsedArchers.push({
@@ -225,7 +334,9 @@ const uploadCSV = async () => {
         email: email || `${tempId}@example.com`,
         phone: phone || '',
         password: pass,
+        gender: gender,
         club_name: clubName || 'Club',
+        custom_fields: customFieldValues,
         is_new_profile: true
       })
     }

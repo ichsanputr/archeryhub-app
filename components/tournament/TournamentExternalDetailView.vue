@@ -457,12 +457,6 @@
                             <Icon :icon="getSortIcon('target', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
                           </div>
                         </th>
-                        <th @click="handleSortEntries('bib')" class="py-3 px-3 cursor-pointer hover:text-navy select-none w-24 min-w-[80px] text-center whitespace-nowrap">
-                          <div class="flex items-center justify-center gap-1">
-                            <span>{{ t('col_bib') }}</span>
-                            <Icon :icon="getSortIcon('bib', entriesSortKey, entriesSortAsc)" class="text-xs shrink-0" />
-                          </div>
-                        </th>
                         <th @click="handleSortEntries('name')" class="py-3 px-4 cursor-pointer hover:text-navy select-none min-w-[200px] whitespace-nowrap">
                           <div class="flex items-center gap-1.5 whitespace-nowrap">
                             <span>{{ t('col_name') }}</span>
@@ -497,13 +491,6 @@
                         <td class="py-3 px-3 text-center whitespace-nowrap">
                           <span v-if="athlete.target" class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-amber-50 text-amber-800 border border-amber-200 shadow-2xs">
                             {{ athlete.target }}
-                          </span>
-                          <span v-else class="text-slate-300 font-mono text-xs">-</span>
-                        </td>
-                        <!-- BIB / ID -->
-                        <td class="py-3 px-3 text-center whitespace-nowrap">
-                          <span v-if="athlete.bib" class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                            {{ athlete.bib }}
                           </span>
                           <span v-else class="text-slate-300 font-mono text-xs">-</span>
                         </td>
@@ -1435,7 +1422,6 @@ const translations = {
     showing_x_of_y_entries: 'Menampilkan {current} dari {total} atlet terdaftar',
     col_rank: 'Pos.',
     col_target: 'Bantalan',
-    col_bib: 'No. Dada',
     col_name: 'Nama Atlet',
     col_club: 'Klub / Kontingen',
     col_category: 'Divisi',
@@ -1521,11 +1507,10 @@ const translations = {
     athletes_title: 'Athletes & Entries',
     athletes_desc: 'Complete roster of registered archers and delegations.',
     filter_club_all: 'All Clubs / Delegations',
-    search_athlete_placeholder: 'Search athlete by name, bib, target, club, or division...',
+    search_athlete_placeholder: 'Search athlete by name, target, club, or division...',
     showing_x_of_y_entries: 'Showing {current} of {total} registered athletes',
     col_rank: 'Rank',
     col_target: 'Target',
-    col_bib: 'BIB',
     col_name: 'Athlete Name',
     col_club: 'Club / Team',
     col_category: 'Division',
@@ -1611,11 +1596,10 @@ const translations = {
     athletes_title: 'Arcieri e Iscrizioni',
     athletes_desc: 'Elenco ufficiale degli atleti e contingenti registrati.',
     filter_club_all: 'Tutti i Club / Delegazioni',
-    search_athlete_placeholder: 'Cerca per nome, pettorale, paglione o divisione...',
+    search_athlete_placeholder: 'Cerca per nome, paglione o divisione...',
     showing_x_of_y_entries: 'Mostrati {current} di {total} arcieri iscritti',
     col_rank: 'Pos.',
     col_target: 'Paglione',
-    col_bib: 'Pettorale',
     col_name: 'Nome Arciere',
     col_club: 'Club / Squadra',
     col_category: 'Divisione',
@@ -1851,7 +1835,6 @@ const normalizedEntriesList = computed(() => {
     return {
       ...item,
       target: item.target || item.target_lane || item.lane || '',
-      bib: item.bib || item.bib_no || item.id || '',
       code: item.code || item.club_code || '',
       club: item.club || item.club_name || item.country || '',
       category: fullCat,
@@ -2404,7 +2387,6 @@ const filteredEntries = computed(() => {
     list = list.filter(e => (
       (e.name || e.athlete_name || '').toLowerCase().includes(q) ||
       (e.target || '').toLowerCase().includes(q) ||
-      (e.bib || '').toLowerCase().includes(q) ||
       (e.code || e.club_code || '').toLowerCase().includes(q) ||
       (e.club || e.country || '').toLowerCase().includes(q) ||
       (e.category || '').toLowerCase().includes(q)

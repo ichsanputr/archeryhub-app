@@ -7,7 +7,8 @@
       icon="ph:calendar-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentInfo?.name || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_schedule.title') }
       ]"
     >
@@ -529,6 +530,7 @@ import BaseSelect from '~/components/common/BaseSelect.vue'
 
 const { t, locale } = useDashboardI18n()
 const { isSubscriptionActive } = useSubscription()
+const { tournamentTitle } = useTournamentContext()
 const showPremiumModal = ref(false)
 
 const route = useRoute()

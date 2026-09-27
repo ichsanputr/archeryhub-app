@@ -108,7 +108,7 @@ const filteredPayments = computed(() => {
     } else if (statusFilter.value === 'awaiting_verification') {
       list = list.filter(p => p.status === 'awaiting_verification' || (p.payment_method === 'manual' && !!p.proof_url && !isPaid(p.status)))
     } else if (statusFilter.value === 'pending') {
-      list = list.filter(p => ['pending', 'unpaid'].includes((p.status || '').toLowerCase()) && !p.proof_url)
+      list = list.filter(p => (p.status || '').toLowerCase() === 'pending' && !p.proof_url)
     } else if (statusFilter.value === 'failed') {
       list = list.filter(p => ['failed', 'expired', 'cancelled'].includes((p.status || '').toLowerCase()))
     }
@@ -144,7 +144,7 @@ const activeFilterChips = computed(() => {
 
   if (methodFilter.value !== 'all') {
     let label = ''
-    if (methodFilter.value === 'free') label = `${t('common.method')}: Gratis`
+    if (methodFilter.value === 'free') label = `${t('common.method')}: ${t('archer_payments_list.method_free')}`
     else if (methodFilter.value === 'manual') label = `${t('common.method')}: ${t('archer_payments_list.method_manual')}`
     else if (methodFilter.value === 'mayar') label = `${t('common.method')}: ${t('archer_payments_list.method_online')}`
     else if (methodFilter.value === 'paypal') label = `${t('common.method')}: PayPal`
@@ -182,7 +182,7 @@ const isActionRequired = (item) => {
   const s = (item.status || '').toLowerCase()
   if (s === 'awaiting_verification') return false
   if (item.payment_method === 'manual' && item.proof_url) return false
-  return ['pending', 'unpaid'].includes(s)
+  return s === 'pending'
 }
 
 const getStatusBadgeClass = (status, item) => {
@@ -191,7 +191,7 @@ const getStatusBadgeClass = (status, item) => {
   if (s === 'awaiting_verification' || (item?.payment_method === 'manual' && !!item?.proof_url)) {
     return 'bg-amber-50 text-amber-700 border-amber-200'
   }
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-50 text-blue-700 border-blue-200'
+  if (s === 'pending') return 'bg-blue-50 text-blue-700 border-blue-200'
   return 'bg-rose-50 text-rose-700 border-rose-200'
 }
 
@@ -201,7 +201,7 @@ const getStatusDotClass = (status, item) => {
   if (s === 'awaiting_verification' || (item?.payment_method === 'manual' && !!item?.proof_url)) {
     return 'bg-amber-500 animate-pulse'
   }
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-500'
+  if (s === 'pending') return 'bg-blue-500'
   return 'bg-rose-500'
 }
 
@@ -211,7 +211,7 @@ const getStatusLabel = (status, item) => {
   if (s === 'awaiting_verification' || (item?.payment_method === 'manual' && !!item?.proof_url)) {
     return t('payment_status.badge_awaiting_verification')
   }
-  if (['pending', 'unpaid'].includes(s)) {
+  if (s === 'pending') {
     return t('payment_status.badge_pending')
   }
   if (s === 'refunded') return t('payment_status.badge_refunded')
@@ -221,7 +221,7 @@ const getStatusLabel = (status, item) => {
 const formatPaymentMethodName = (method, channel) => {
   if (!method) return '-'
   const m = String(method).toLowerCase()
-  if (m === 'free' || m === 'free_registration') return 'Pendaftaran Gratis'
+  if (m === 'free' || m === 'free_registration') return t('archer_payments_list.method_free')
   if (m === 'manual') return t('archer_payments_list.method_manual')
   if (m === 'mayar' || m === 'qris') {
     if (channel) {

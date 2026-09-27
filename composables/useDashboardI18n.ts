@@ -168,6 +168,7 @@ export function useDashboardI18n(defaultLocale = 'en') {
 
   return {
     locale: computed(() => globalLocale.value),
+    isEn: computed(() => globalLocale.value === 'en'),
     setLocale,
     t,
     loadMessages: async () => {},

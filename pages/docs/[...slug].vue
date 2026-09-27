@@ -168,13 +168,13 @@
 
                     <!-- Navigation buttons -->
                     <div
-                        class="px-6 md:px-10 py-6 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        class="px-6 md:px-10 pt-6 pb-8 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <NuxtLink v-if="prevDoc" :to="docPath(prevDoc.slug)"
-                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-start">
+                            class="flex items-center gap-3.5 group p-4 sm:px-5 sm:py-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 hover:border-primary/40 transition-all w-full sm:max-w-sm justify-start shadow-2xs">
                             <Icon icon="ph:arrow-left-bold"
-                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0" />
+                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0 text-base" />
                             <div class="text-left min-w-0">
-                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ isIdRoute ? 'Sebelumnya' : $t('docs.previous') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 font-medium mb-0.5">{{ isIdRoute ? 'Sebelumnya' : $t('docs.previous') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ prevDoc.title }}</div>
@@ -182,15 +182,15 @@
                         </NuxtLink>
                         <div v-else class="hidden sm:block"></div>
                         <NuxtLink v-if="nextDoc" :to="docPath(nextDoc.slug)"
-                            class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-100 dark:border-slate-800 transition-all w-full sm:max-w-xs justify-end text-right sm:ml-auto">
+                            class="flex items-center gap-3.5 group p-4 sm:px-5 sm:py-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 hover:border-primary/40 transition-all w-full sm:max-w-sm justify-end text-right sm:ml-auto shadow-2xs">
                             <div class="min-w-0">
-                                <div class="text-xs text-gray-400 dark:text-slate-500 mb-0.5">{{ isIdRoute ? 'Selanjutnya' : $t('docs.next') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-slate-500 font-medium mb-0.5">{{ isIdRoute ? 'Selanjutnya' : $t('docs.next') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy dark:text-slate-200 truncate group-hover:text-primary transition-colors">
                                     {{ nextDoc.title }}</div>
                             </div>
                             <Icon icon="ph:arrow-right-bold"
-                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0" />
+                                class="text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors shrink-0 text-base" />
                         </NuxtLink>
                     </div>
                 </div>
@@ -306,6 +306,7 @@ watch(rawSlug, () => {
 })
 
 const categories = computed(() => [
+    { id: 'about', label: isIdRoute.value ? 'Tentang Archeris' : 'About Archeris', icon: 'ph:info-bold' },
     { id: 'accounts', label: isIdRoute.value ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold' },
     { id: 'tournaments', label: isIdRoute.value ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold' },
     { id: 'scorekeeper', label: isIdRoute.value ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold' },

@@ -1,7 +1,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useRoute } from '#app'
 import { useApi } from '~/composables/useApi'
 import { useApiBaseUrl } from '~/composables/useApiBaseUrl'
@@ -12,7 +12,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-const { t } = useI18n()
+const { t, isEn, locale } = useDashboardI18n()
 const route = useRoute()
 const { get, post, upload } = useApi()
 const toast = useToast()
@@ -167,19 +167,19 @@ const isRejected = computed(() => {
 
 const isManualMethod = computed(() => {
   const m = (payment.value?.payment_method || '').toLowerCase()
-  return m === 'manual' || String(reference || '').toUpperCase().startsWith('PAY-MANUAL-')
+  return m === 'manual' || m === 'manual_transfer' || m === 'bank_transfer' || String(reference || '').toUpperCase().startsWith('PAY-MANUAL-')
 })
 
 const isAwaitingVerif = computed(() => {
   const s = (payment.value?.status || '').toLowerCase()
-  return s === 'awaiting_verification' || (isManualMethod.value && !!payment.value?.proof_url && !isPaid(s) && !isRejected.value && !isCancelled.value)
+  return isManualMethod.value && (s === 'awaiting_verification' || (!!payment.value?.proof_url && !isPaid(s) && !isRejected.value && !isCancelled.value))
 })
 
 const getStatusBadgeClass = (status) => {
   if (isPaid(status)) return 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800'
   if (isAwaitingVerif.value) return 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800'
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800'
+  if (['pending'].includes(s)) return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800'
   return 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-800'
 }
 
@@ -187,7 +187,7 @@ const getStatusDotClass = (status) => {
   if (isPaid(status)) return 'bg-emerald-500'
   if (isAwaitingVerif.value) return 'bg-amber-500 animate-pulse'
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-500'
+  if (['pending'].includes(s)) return 'bg-blue-500'
   return 'bg-rose-500'
 }
 
@@ -195,7 +195,7 @@ const getStatusLabel = (status) => {
   if (isPaid(status)) return t('payment_status.badge_paid')
   if (isAwaitingVerif.value) return t('payment_status.badge_awaiting_verification')
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return t('payment_status.badge_pending')
+  if (['pending'].includes(s)) return t('payment_status.badge_pending')
   if (s === 'rejected') return t('payment_status.badge_rejected', 'Ditolak')
   if (['cancelled', 'canceled', 'expired', 'failed'].includes(s)) return t('payment_status.badge_cancelled', 'Dibatalkan')
   return status || t('payment_status.badge_pending')
@@ -552,15 +552,8 @@ onMounted(() => {
             </span>
           </div>
 
-          <div v-if="payment.paid_at">
-            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('archer_payment_detail.paid_at') }}</span>
-            <span class="text-sm sm:text-base text-emerald-700 dark:text-emerald-400 font-bold block">
-              {{ formatDateTime(payment.paid_at) }}
-            </span>
-          </div>
-
-          <div v-else-if="payment.expired_at">
-            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('payment_status.pay_before') }}</span>
+          <div v-if="!isPaid(payment.status) && payment.expired_at && !isManualMethod">
+            <span class="text-xs text-slate-500 dark:text-slate-400 font-medium block mb-1">{{ t('payment_status.pay_before', 'Batas Pembayaran') }}</span>
             <span class="text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium block">
               {{ formatDateTime(payment.expired_at) }}
             </span>
@@ -626,6 +619,12 @@ onMounted(() => {
                 </th>
                 <th
                   scope="col"
+                  class="py-3.5 px-4 select-none font-bold"
+                >
+                  <span>{{ isEn ? 'Email' : 'Email' }}</span>
+                </th>
+                <th
+                  scope="col"
                   @click="handleParticipantSort('category_name')"
                   class="py-3.5 px-4 cursor-pointer hover:text-navy dark:hover:text-white transition-colors select-none"
                 >
@@ -673,6 +672,9 @@ onMounted(() => {
                   <span class="font-semibold text-slate-600 dark:text-slate-300">{{ p.club_name || '-' }}</span>
                 </td>
                 <td class="py-3.5 px-4">
+                  <span class="text-slate-600 dark:text-slate-300 font-medium text-xs">{{ p.email || '-' }}</span>
+                </td>
+                <td class="py-3.5 px-4">
                   <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs">
                     <Icon icon="ph:crosshair-bold" class="text-xs text-slate-500" />
                     <span>{{ p.category_name || '-' }}</span>
@@ -692,7 +694,7 @@ onMounted(() => {
                 </td>
               </tr>
               <tr v-if="paginatedParticipants.length === 0">
-                <td colspan="6" class="py-8 text-center text-slate-400 italic">
+                <td colspan="7" class="py-8 text-center text-slate-400 italic">
                   {{ t('org_event_payments.no_athletes', 'Tidak ada peserta yang cocok.') }}
                 </td>
               </tr>

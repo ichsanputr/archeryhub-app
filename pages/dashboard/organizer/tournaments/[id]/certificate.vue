@@ -7,7 +7,8 @@
       icon="ph:certificate-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('org_certificate.header_title') }
       ]"
     >
@@ -653,6 +654,7 @@ definePageMeta({
 const { t } = useI18n()
 const route = useRoute()
 const eventId = route.params.id
+const { tournamentTitle } = useTournamentContext()
 const { get, post, del } = useApi()
 const toast = useToast()
 

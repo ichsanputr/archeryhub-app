@@ -19,13 +19,17 @@
                             <Icon v-else icon="ph:users" class="text-white text-2xl" />
                         </div>
                         <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
-                                        class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
-                                        <Icon icon="ph:arrow-left-bold" />
-                                        {{ t('event_categories.back_to_categories') }}
-                                    </NuxtLink>
-                            </div>
+                            <nav class="flex text-xs font-bold text-white/50 tracking-wider items-center gap-1.5 flex-wrap mb-2">
+                                <NuxtLink to="/dashboard/organizer" class="hover:text-white transition-colors text-white/60">Dashboard</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors text-white/60">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`" class="hover:text-white transition-colors text-white/60">{{ t('event_categories.title') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <span class="text-white font-bold truncate max-w-[200px] sm:max-w-xs">{{ categoryName || t('event_categories.detail_title') }}</span>
+                            </nav>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 {{ categoryName || t('event_categories.detail_title') }}
                             </h1>
@@ -108,6 +112,7 @@ const route = useRoute()
 const eventId = route.params.id
 const categoryId = route.params.categoryId
 const { get } = useApi()
+const { tournamentTitle } = useTournamentContext()
 
 definePageMeta({
     layout: 'dashboard'

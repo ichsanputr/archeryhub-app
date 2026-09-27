@@ -1,0 +1,1735 @@
+<template>
+    <div class="flex flex-col gap-8">
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
+        
+        <!-- Header -->
+        <DashboardHeader
+            :title="form?.name ? `${form.name} - ${t('dashboard_events_page.title', 'Pengaturan Turnamen')}` : t('dashboard_events_page.title', 'Pengaturan Turnamen')"
+            :subtitle="t('dashboard_events_page.subtitle', 'Atur konten, jadwal, lokasi, galeri, dan tampilan publik halaman turnamen Anda.')"
+            icon="ph:gear-six-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+                { label: eventData?.name || form?.name || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
+                { label: t('dashboard_events_page.title', 'Pengaturan Turnamen') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                    <BaseButton variant="white" icon="ph:eye-bold" :to="`/tournaments/${eventData.slug}`" target="_blank"
+                        class="h-10 sm:h-11 px-5 border-white/20 text-sm font-bold">
+                        {{ t('dashboard_events_page.view_button', 'Pratinjau Halaman') }}
+                    </BaseButton>
+                    <BaseButton variant="primary" icon="ph:floppy-disk-bold"
+                        @click="isSubscriptionActive ? saveEventPage() : (showPremiumModal = true)"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                        :loading="saving"
+                        class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all text-sm font-black tracking-wider">
+                        {{ t('dashboard_events_page.save_button', 'Simpan Perubahan') }}
+                    </BaseButton>
+                </div>
+            </template>
+        </DashboardHeader>
+
+        <!-- Tabs Navigation -->
+        <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm mt-2">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+                :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
+                <Icon :icon="tab.icon" class="text-lg sm:text-xl shrink-0" />
+                <span>{{ t(`dashboard_events_page.tabs.${tab.id}`, tab.name) }}</span>
+            </button>
+        </div>
+
+        <!-- Tab: FAQ -->
+        <div v-if="activeTab === 'faq'" class="space-y-6">
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:question-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.faq.title', 'Pertanyaan Sering Diajukan (FAQ)') }}
+                            </h2>
+                        </div>
+                    </div>
+                    <BaseButton variant="outline" size="sm" class="text-sm font-bold" @click="addFAQField">
+                        <Icon icon="ph:plus-bold" class="mr-1.5" /> {{ t('dashboard_events_page.faq.add', 'Tambah') }}
+                    </BaseButton>
+                </div>
+                <div class="p-4 sm:p-6 space-y-4">
+                    <div v-if="form.faq?.length === 0"
+                        class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                        <div class="size-12 rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center mx-auto mb-3">
+                            <Icon icon="ph:question" class="text-2xl" />
+                        </div>
+                        <div class="text-sm font-semibold text-gray-500">{{ t('dashboard_events_page.faq.no_items', 'Belum ada FAQ yang ditambahkan.') }}</div>
+                    </div>
+                    <div v-else class="space-y-4">
+                        <div v-for="(item, index) in form.faq" :key="index"
+                            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative group">
+                            <button @click="removeFAQField(index)"
+                                class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-red-50">
+                                <Icon icon="ph:trash-bold" class="text-base" />
+                            </button>
+                            <div class="space-y-4 pr-8">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700 tracking-wide">{{ t('dashboard_events_page.faq.question_label', 'Pertanyaan') }}</label>
+                                    <input v-model="item.question" type="text"
+                                        :placeholder="t('dashboard_events_page.faq.question_placeholder', 'Contoh: Berapa biaya pendaftaran?')"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-all bg-white" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700 tracking-wide">{{ t('dashboard_events_page.faq.answer_label', 'Jawaban') }}</label>
+                                    <textarea v-model="item.answer" rows="3"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none text-sm transition-all bg-white"
+                                        :placeholder="t('dashboard_events_page.faq.answer_placeholder', 'Tuliskan jawaban yang detail...')"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Main Content (Tabs) -->
+        <div class="space-y-6">
+            <!-- Tab: Informasi -->
+            <div v-if="activeTab === 'informasi'" class="space-y-6">
+                <section class="relative z-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
+                    <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 rounded-t-2xl flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="ph:info-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.information.basic_title', 'Informasi Dasar') }}
+                            </h2>
+                            <div class="text-xs sm:text-sm text-gray-500">
+                                {{ t('dashboard_events_page.subtitle', 'Atur informasi utama turnamen seperti nama, deskripsi, dan jadwal.') }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.name_label', 'Nama Turnamen') }}</label>
+                            <input v-model="form.name" type="text"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm transition-all"
+                                :placeholder="t('dashboard_events_page.information.name_placeholder', 'Nama turnamen Anda')" />
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.description_label', 'Deskripsi (Tentang Turnamen)') }}</label>
+                            <TiptapEditor v-model="form.description" class="min-h-[300px]" />
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.start_date_label', 'Tanggal Mulai') }}</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.end_date_label', 'Tanggal Selesai') }}</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <BaseSelect v-model="form.status" :items="statusOptions" :label="t('dashboard_events_page.information.status_label', 'Status Turnamen')" />
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Tab: Pendaftaran (Unified Master Card) -->
+            <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible divide-y divide-gray-100">
+                    
+                    <!-- Section 1: Waktu Pendaftaran -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:calendar-check-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                     {{ t('dashboard_events_page.registration.timeline_title', 'Waktu Pendaftaran') }}
+                                 </h2>
+                                 <div class="text-xs sm:text-sm text-gray-500">
+                                     {{ t('dashboard_events_page.registration.timeline_subtitle', 'Tentukan periode pembukaan dan penutupan pendaftaran peserta.') }}
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full pt-2">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-blank-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.registration.start_label', 'Tanggal & Waktu Mulai Pendaftaran') }}
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:calendar-check-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.registration.end_label', 'Tanggal & Waktu Batas Pendaftaran') }}
+                                </label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Country & Currency Configuration -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:globe-hemisphere-west-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.currency_config.title', 'Negara & Mata Uang Turnamen') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.currency_config.subtitle', 'Tentukan negara penyelenggaraan dan mata uang untuk seluruh biaya pendaftaran & hadiah turnamen ini.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <!-- Country Selection -->
+                            <div>
+                                <BaseSelect
+                                    v-model="form.country_code"
+                                    :items="countryOptions"
+                                    :label="t('dashboard_events_page.currency_config.country_label', 'Negara Lokasi Turnamen')"
+                                    @update:model-value="onCountryChange"
+                                />
+                            </div>
+                            <!-- Currency Selection -->
+                            <div>
+                                <BaseSelect
+                                    v-model="form.currency"
+                                    :items="currencyOptions"
+                                    :label="t('dashboard_events_page.currency_config.currency_label', 'Mata Uang Biaya (Currency)')"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Payment Gateway Routing Informational Badge -->
+                        <div class="p-4 rounded-2xl border flex items-start gap-3.5 transition-all"
+                            :class="form.currency === 'IDR'
+                                ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
+                                : 'bg-blue-50/70 border-blue-200 text-blue-900'">
+                            <div class="size-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                                :class="form.currency === 'IDR' ? 'bg-emerald-500 text-white shadow-xs' : 'bg-blue-500 text-white shadow-xs'">
+                                <Icon :icon="form.currency === 'IDR' ? 'ph:qr-code-bold' : 'ph:paypal-logo-bold'" class="text-lg" />
+                            </div>
+                            <div class="text-sm leading-relaxed">
+                                <div class="font-black flex items-center gap-1.5 text-navy">
+                                    <span>{{ form.currency === 'IDR' ? 'Metode Pembayaran: Mayar (Otomatis IDR)' : 'Payment Gateway: PayPal (International / Cards)' }}</span>
+                                </div>
+                                <div class="text-gray-600 mt-1">
+                                    {{ form.currency === 'IDR'
+                                        ? 'Peserta membayar menggunakan QRIS, Virtual Account Bank (BCA, Mandiri, BRI, BNI), dan E-Wallet.'
+                                        : 'Peserta internasional membayar langsung menggunakan PayPal, Kartu Kredit/Debit (Visa, Mastercard), Apple Pay, atau Google Pay tanpa repot konversi kurs.' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Fee Mode Selector + Config -->
+                    <div class="p-4 sm:p-6 space-y-6">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:ticket-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.registration.fee_title', 'Biaya Pendaftaran') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.registration.fee_subtitle', 'Pilih skema biaya pendaftaran turnamen.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mode Selector -->
+                        <div class="space-y-3">
+                            <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.registration.fee_mode_label', 'Mode Biaya Pendaftaran') }}</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <!-- Mode: Per Participant Type -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_type'"
+                                    :class="form.fee_mode === 'per_type'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_type' ? 'bg-primary text-btn-text shadow-2xs font-bold' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:users-three-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mode_per_type_title', 'Per Tipe Peserta') }}</div>
+                                        <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.registration.mode_per_type_desc', 'Biaya berbeda untuk Individu, Tim, dan Tim Campuran') }}</div>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_type'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
+
+                                <!-- Mode: Per Category -->
+                                <button type="button"
+                                    @click="form.fee_mode = 'per_category'"
+                                    :class="form.fee_mode === 'per_category'
+                                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20'
+                                        : 'border-gray-200 hover:border-gray-300 bg-white'"
+                                    class="flex items-start gap-4 p-4 rounded-2xl border-2 text-left transition-all">
+                                    <div :class="form.fee_mode === 'per_category' ? 'bg-primary text-btn-text shadow-2xs font-bold' : 'bg-gray-100 text-gray-500'"
+                                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-colors">
+                                        <Icon icon="ph:stack-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mode_per_cat_title', 'Per Kategori') }}</div>
+                                        <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.registration.mode_per_cat_desc', 'Setiap kategori lomba memiliki biaya sendiri') }}</div>
+                                    </div>
+                                    <div v-if="form.fee_mode === 'per_category'" class="ml-auto shrink-0">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ── MODE: Per Participant Type ── -->
+                        <div v-if="form.fee_mode === 'per_type'" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- Individual -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-single-recurve.svg" alt="Individual" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.individual', 'Individu') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.individual"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.individual_desc', 'Biaya per kategori untuk peserta individu') }}</div>
+                                </div>
+                                <!-- Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/men-team.svg" alt="Team" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.team', 'Tim') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.team"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.team_desc', 'Biaya per kategori untuk tim (3 pemanah)') }}</div>
+                                </div>
+                                <!-- Mixed Team -->
+                                <div class="space-y-2 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                    <div class="flex items-center gap-2.5 mb-3">
+                                        <div class="size-9 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center p-1.5 shrink-0">
+                                            <img src="/category-icon/mix-team.svg" alt="Mixed Team" class="w-full h-full object-contain" />
+                                        </div>
+                                        <label class="text-sm font-black text-navy">{{ t('dashboard_events_page.registration.mixed_team', 'Tim Campuran') }}</label>
+                                    </div>
+                                    <BaseCurrencyInput
+                                        v-model="form.fee_per_type.mixed_team"
+                                        :currency="form.currency || 'IDR'"
+                                        placeholder="0"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.mixed_team_desc', 'Biaya per kategori untuk tim campuran (2 pemanah)') }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ── MODE: Per Category ── -->
+                        <div v-if="form.fee_mode === 'per_category'" class="space-y-4">
+                            <div v-if="eventCategories.length === 0"
+                                class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                <Icon icon="ph:stack" class="text-3xl text-gray-300 mx-auto mb-2" />
+                                <div class="text-sm font-bold text-gray-500">{{ t('dashboard_events_page.registration.no_categories', 'Belum ada kategori lomba.') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-400 mt-1">{{ t('dashboard_events_page.registration.no_categories_desc', 'Tambahkan kategori terlebih dahulu di menu Kategori.') }}</div>
+                                <BaseButton variant="outline" size="sm" class="mt-3 text-sm font-bold" :to="`/dashboard/organizer/tournaments/${eventId}/categories`">
+                                    <Icon icon="ph:plus-bold" class="mr-1.5" /> {{ t('dashboard_events_page.registration.add_category', 'Tambah Kategori') }}
+                                </BaseButton>
+                            </div>
+
+                            <div v-else class="space-y-3">
+                                <div class="flex items-center justify-between pb-1">
+                                    <div class="text-sm font-bold text-gray-600 flex items-center gap-1.5">
+                                        <Icon icon="ph:stack-bold" class="text-navy text-base" />
+                                        <span>{{ eventCategories.length }} {{ t('events.categories.configured', 'Kategori Dikonfigurasi') }}</span>
+                                    </div>
+                                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-navy text-white text-sm font-bold hover:bg-navy/90 hover:shadow-xs transition-all">
+                                        <Icon icon="ph:plus-bold" class="text-primary text-sm" />
+                                        <span>{{ t('dashboard_events_page.registration.add_category', 'Tambah Kategori') }}</span>
+                                    </NuxtLink>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <div v-for="cat in eventCategories" :key="cat.id"
+                                        class="flex items-center gap-3.5 p-3.5 bg-gray-50/80 rounded-2xl border border-gray-100 hover:border-primary/30 hover:bg-white transition-all">
+                                        <!-- Category Icon -->
+                                        <div class="size-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden p-2">
+                                            <img :src="'/' + getCategoryIcon(`${cat.division_name || ''} ${cat.category_name || ''} ${cat.event_type_name || ''} ${cat.gender_division_name || ''}`)"
+                                                :alt="cat.division_name || cat.category_name"
+                                                class="w-full h-full object-contain" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-sm font-bold text-navy truncate">
+                                                {{ [cat.category_name, cat.event_type_name, cat.gender_division_name].filter(s => s && s.trim() && s !== '-').join(' – ') }}
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-gray-500 font-medium">{{ cat.division_name }}</div>
+                                        </div>
+                                        <BaseCurrencyInput
+                                            v-model="form.fee_per_category[cat.id]"
+                                            :currency="form.currency || 'IDR'"
+                                            placeholder="0"
+                                            wrapper-class="w-36 sm:w-44 shrink-0"
+                                            input-class="pr-3 py-2 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Quick Add Category Button Footer -->
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/categories`"
+                                    class="flex items-center justify-center gap-2 p-3 rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-navy text-sm font-bold transition-all group">
+                                    <div class="size-6 rounded-lg bg-gray-100 group-hover:bg-primary flex items-center justify-center transition-colors">
+                                        <Icon icon="ph:plus-bold" class="text-navy text-sm" />
+                                    </div>
+                                    <span>{{ t('dashboard_events_page.registration.add_category', 'Tambah Kategori Baru') }}</span>
+                                </NuxtLink>
+                            </div>
+
+                            <!-- Default fallback fee -->
+                            <div class="pt-4 border-t border-gray-100 space-y-2">
+                                <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.registration.default_fee_label', 'Biaya Default (untuk kategori tanpa harga khusus)') }}</label>
+                                <BaseCurrencyInput
+                                    v-model="form.entry_fee"
+                                    :currency="form.currency || 'IDR'"
+                                    placeholder="0"
+                                    wrapper-class="max-w-xs"
+                                    input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
+                                <div class="text-xs sm:text-sm text-gray-500">{{ t('dashboard_events_page.registration.default_fee_desc', 'Digunakan jika kategori tidak memiliki biaya khusus.') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Manual Payment Method Section -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:credit-card-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.manual_payment.title', 'Metode Pembayaran Manual') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.manual_payment.description', 'Aktifkan rekening bank atau e-wallet penyelenggara Anda yang dapat digunakan peserta untuk transfer manual.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Configured Bank Accounts List -->
+                        <div v-if="orgBankAccounts.length > 0" class="pt-2">
+                            <h4 class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider mb-3 text-left uppercase">{{ t('dashboard_events_page.manual_payment.list_title', 'Daftar Rekening Pembayaran Penyelenggara') }}</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
+                                    @click="togglePaymentMethod(bank.uuid || bank.id)"
+                                    :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'border-primary/40 bg-primary/5 ring-1 ring-primary/20' : 'border-gray-100 bg-gray-50/50 opacity-60'"
+                                    class="flex items-center justify-between p-4 rounded-2xl border cursor-pointer hover:border-primary/30 transition-all shadow-sm">
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <div class="size-11 bg-white rounded-xl flex items-center justify-center border border-gray-100 shrink-0 p-1.5 shadow-sm">
+                                            <img v-if="getPaymentMethodImage(bank.bank_name)" :src="getPaymentMethodImage(bank.bank_name)" class="w-full h-full object-contain" :alt="bank.bank_name" />
+                                            <Icon v-else icon="ph:credit-card" class="text-xl text-navy" />
+                                        </div>
+                                        <div class="text-left min-w-0">
+                                            <div class="text-sm font-black text-navy truncate">{{ bank.bank_name }} - {{ bank.account_number }}</div>
+                                            <div class="text-xs sm:text-sm text-gray-500 font-medium mt-0.5 truncate">a.n. {{ bank.account_name }}</div>
+                                        </div>
+                                    </div>
+                                    <button type="button"
+                                        :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'bg-primary' : 'bg-gray-200'"
+                                        class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none">
+                                        <span :class="isPaymentMethodEnabled(bank.uuid || bank.id) ? 'translate-x-5 bg-navy' : 'translate-x-0 bg-white'"
+                                            class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow ring-0 transition duration-200 ease-in-out">
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State Design for Manual Payment -->
+                        <div v-else class="p-6 sm:p-8 rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50/50 text-center flex flex-col items-center justify-center gap-3">
+                            <div class="size-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shadow-xs">
+                                <Icon icon="ph:bank-bold" class="text-2xl text-navy" />
+                            </div>
+                            <div class="max-w-md">
+                                <div class="text-base font-bold text-navy">{{ t('dashboard_events_page.manual_payment.empty_title', 'Belum Ada Rekening Pembayaran') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-1">
+                                    {{ t('dashboard_events_page.manual_payment.empty_desc', 'Tambahkan nomor rekening atau akun bank organisasi Anda di pengaturan akun untuk menerima pembayaran transfer manual dari peserta.') }}
+                                </div>
+                            </div>
+                            <NuxtLink to="/dashboard/organizer/bank-accounts"
+                                class="mt-2 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy text-white text-sm font-bold hover:bg-navy/90 hover:shadow-sm transition-all">
+                                <Icon icon="ph:plus-bold" class="text-primary text-base" />
+                                <span>{{ t('dashboard_events_page.manual_payment.add_bank_btn', 'Kelola Rekening Bank') }}</span>
+                            </NuxtLink>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Hadiah & Guidebook -->
+                    <div class="p-4 sm:p-6 space-y-5">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:trophy-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.prizes.title', 'Hadiah & Guidebook') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.prizes.subtitle', 'Atur total hadiah turnamen dan lampiran buku petunjuk teknis.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.prizes.total_prize_label', 'Total Hadiah Turnamen') }}
+                                </label>
+                                <BaseCurrencyInput
+                                    v-model="form.total_prize"
+                                    :currency="form.currency || 'IDR'"
+                                    placeholder="0"
+                                    prefix-class="text-sm font-bold"
+                                    prefix-padding-class="pl-10"
+                                    input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                    <Icon icon="ph:book-bookmark-bold" class="text-navy text-base" />
+                                    {{ t('dashboard_events_page.prizes.guidebook_label', 'Buku Panduan Teknis (PDF)') }}
+                                </label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
+                                        readonly
+                                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
+                                        :placeholder="t('dashboard_events_page.prizes.no_file', 'Belum ada file')" />
+                                    <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
+                                        @change="handleGuidebookUpload" />
+                                    <BaseButton variant="outline" size="sm" icon="ph:upload-simple-bold" @click="$refs.guidebookInput.click()"
+                                        :loading="uploadingGuidebook" class="text-sm font-bold">{{ t('dashboard_events_page.prizes.upload', 'Upload') }}</BaseButton>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-100">
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">{{ t('dashboard_events_page.prizes.detail_title', 'Detail Hadiah (Ditampilkan di halaman publik)') }}</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.first_place', 'Juara 1') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.first"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '15000000')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.first_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali emas dan sertifikat')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.second_place', 'Juara 2') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.second"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '10000000')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.second_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali perak dan sertifikat')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.prizes.third_place', 'Juara 3') }}</label>
+                                    <BaseCurrencyInput
+                                        v-model="form.prizes.third"
+                                        :currency="form.currency || 'IDR'"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '7500000')"
+                                        prefix-class="text-sm font-bold"
+                                        prefix-padding-class="pl-9"
+                                        input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                                    />
+                                    <textarea v-model="form.prizes.third_caption" rows="2"
+                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali perunggu dan sertifikat')"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Lokasi -->
+            <section v-if="activeTab === 'lokasi'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex items-center gap-3">
+                    <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                        <Icon icon="ph:map-pin-bold" class="text-xl" />
+                    </div>
+                    <div>
+                        <h2 class="text-base sm:text-lg font-bold text-navy">
+                            {{ t('dashboard_events_page.location.title', 'Lokasi & Peta') }}
+                        </h2>
+                        <div class="text-xs sm:text-sm text-gray-500">
+                            {{ t('dashboard_events_page.location.subtitle', 'Atur alamat venue dan peta navigasi untuk memudahkan peserta.') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 sm:p-6 space-y-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            {{ t('dashboard_events_page.location.venue_label', 'Nama Venue') }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input v-model="form.venue" type="text" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm font-medium"
+                            :placeholder="t('dashboard_events_page.location.venue_placeholder', 'Contoh: Lapangan Panahan GBK')" />
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            {{ t('dashboard_events_page.location.address_label', 'Alamat Lengkap') }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea v-model="form.address" rows="2" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all text-sm font-medium"
+                            :placeholder="t('dashboard_events_page.location.address_placeholder', 'Tuliskan alamat lengkap lokasi event...')"></textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                <Icon icon="ph:map-pin" class="text-navy text-base" />
+                                {{ t('dashboard_events_page.location.gmaps_label', 'Link Google Maps') }}
+                            </label>
+                            <span class="text-xs sm:text-sm text-gray-500 font-medium hidden sm:inline">
+                                {{ t('dashboard_events_page.location.gmaps_hint', 'Paste link Google Maps atau kode embed') }}
+                            </span>
+                        </div>
+                        <textarea v-model="form.gmaps_link" rows="3"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-mono text-sm text-gray-700 bg-white"
+                            :placeholder="t('dashboard_events_page.location.gmaps_placeholder', 'https://maps.app.goo.gl/... atau <iframe src=...>')"></textarea>
+                        <div class="text-xs sm:text-sm text-gray-500 font-medium flex items-center gap-1.5 pl-1">
+                            <Icon icon="ph:info-bold" class="text-blue-500 text-sm shrink-0" />
+                            <span>{{ t('dashboard_events_page.location.gmaps_hint', 'Paste link Google Maps atau kode embed') }}</span>
+                        </div>
+
+                        <!-- Gmaps Preview -->
+                        <div v-if="gmapsEmbedUrl" class="mt-3 space-y-2">
+                            <div class="flex items-center gap-1.5 text-sm font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3.5 py-1.5 rounded-xl w-fit">
+                                <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-base" />
+                                <span>{{ t('dashboard_events_page.location.gmaps_detected', 'Lokasi Maps Terdeteksi') }}</span>
+                            </div>
+                            <div class="rounded-2xl overflow-hidden border border-gray-200 aspect-video shadow-inner">
+                                <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                                    allowfullscreen referrerpolicy="no-referrer-when-downgrade"
+                                    :src="gmapsEmbedUrl"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.location.accessibility_title', 'Aksesibilitas Lokasi') }}</label>
+                        <div class="text-xs sm:text-sm text-gray-500 mb-3">{{ t('dashboard_events_page.location.accessibility_desc', 'Pilih opsi yang tersedia untuk lokasi ini') }}</div>
+                        <div class="flex flex-wrap gap-2.5">
+                            <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
+                                @click="toggleLocationAccessibility(option)"
+                                class="px-4 py-2.5 rounded-xl text-sm font-bold transition-all border-2" :class="form.location_accessibility?.includes(option)
+                                    ? 'bg-primary text-navy border-primary shadow-sm'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
+                                <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5 text-base" />
+                                {{ t('dashboard_events_page.location.options.' + locationAccessibilityOptionKeys[option]) }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab: Media (Unified Master Card) -->
+            <div v-if="activeTab === 'media'" class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">
+                    
+                    <!-- Section 1: Banner & Poster -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:image-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.media.title', 'Banner & Logo') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.media.subtitle', 'Unggah banner utama dan poster resmi event Anda.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            <div class="space-y-3">
+                                <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                    <span>{{ t('dashboard_events_page.media.banner_label', 'Banner (Header)') }}</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-gray-400 font-body">{{ t('dashboard_events_page.media.banner_ratio', '(Rasio 16:9 / 1200x675 px)') }}</span>
+                                </label>
+                                <div v-if="form.banner_url" class="relative rounded-2xl overflow-hidden aspect-video group shadow-sm border border-gray-100">
+                                    <img :src="form.banner_url" class="w-full h-full object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                        <button @click="openMediaLibrary('banner')"
+                                            class="px-4 py-2 bg-white rounded-xl text-navy font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.change', 'Ganti') }}</button>
+                                        <button @click="form.banner_url = ''"
+                                            class="px-4 py-2 bg-red-500 rounded-xl text-white font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.delete', 'Hapus') }}</button>
+                                    </div>
+                                </div>
+                                <button v-else @click="openMediaLibrary('banner')"
+                                    class="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                    <Icon icon="ph:image-bold" class="text-3xl mb-2" />
+                                    <span class="text-sm font-bold">{{ t('dashboard_events_page.media.select_banner', 'Pilih Banner') }}</span>
+                                </button>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-sm font-bold text-gray-700 flex items-center justify-between">
+                                    <span>{{ t('dashboard_events_page.media.poster_label', 'Poster Turnamen') }}</span>
+                                    <span class="text-xs sm:text-sm font-semibold text-gray-400 font-body">{{ t('dashboard_events_page.media.poster_ratio', '(Rasio 1:1 / 1000x1000 px)') }}</span>
+                                </label>
+                                <div v-if="form.logo_url" class="relative rounded-2xl overflow-hidden aspect-square max-w-xs group shadow-sm border border-gray-100">
+                                    <img :src="form.logo_url" class="w-full h-full object-cover" />
+                                    <div
+                                        class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                        <button @click="openMediaLibrary('logo')"
+                                            class="px-4 py-2 bg-white rounded-xl text-navy font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.change', 'Ganti') }}</button>
+                                        <button @click="form.logo_url = ''"
+                                            class="px-4 py-2 bg-red-500 rounded-xl text-white font-bold text-sm shadow-sm">{{ t('dashboard_events_page.media.delete', 'Hapus') }}</button>
+                                    </div>
+                                </div>
+                                <button v-else @click="openMediaLibrary('logo')"
+                                    class="w-full aspect-square max-w-xs rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                    <Icon icon="ph:image-square-bold" class="text-3xl mb-2" />
+                                    <span class="text-sm font-bold">{{ t('dashboard_events_page.media.select_poster', 'Pilih Poster') }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Galeri Turnamen -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:images-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.media.gallery_title', 'Galeri Turnamen') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('dashboard_events_page.media.gallery_subtitle', 'Foto dokumentasi atau fasilitas venue turnamen.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 pt-2">
+                            <div v-for="(image, index) in form.event_images" :key="index"
+                                class="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 group shadow-sm">
+                                <img :src="image.url" class="w-full h-full object-cover" />
+                                <button @click="removeImage(index)"
+                                    class="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-sm">
+                                    <Icon icon="ph:trash-bold" class="text-sm" />
+                                </button>
+                            </div>
+                            <button @click="openMediaLibrary('gallery')"
+                                class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400 hover:text-navy hover:bg-primary/5 transition-all">
+                                <Icon icon="ph:plus-bold" class="text-xl mb-1" />
+                                <span class="text-xs sm:text-sm font-bold">{{ t('common.add', 'Tambah') }}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Hasil (Unified Master Card) -->
+        <div v-if="activeTab === 'hasil'" class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden divide-y divide-gray-100">
+                
+                <!-- Section 1: Results Source Selector -->
+                <div class="p-4 sm:p-6 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                            <Icon icon="iconoir:leaderboard" class="text-xl" />
+                        </div>
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                                {{ t('dashboard_events_page.results.source_title', 'Sumber Hasil Lomba') }}
+                            </h2>
+                            <div class="text-xs sm:text-sm text-gray-500">
+                                {{ t('dashboard_events_page.results.source_desc', 'Pilih bagaimana hasil lomba ditampilkan di halaman publik turnamen.') }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        <button @click="form.page_settings.results_type = 'system'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'system' ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'system' ? 'bg-primary text-btn-text shadow-2xs' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:chart-bar-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'system' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'system'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.from_system', 'Dari Sistem') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.from_system_desc', 'Hasil kualifikasi & eliminasi dari scoring system.') }}</div>
+                        </button>
+                        <button @click="form.page_settings.results_type = 'manual'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'manual' ? 'border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'manual' ? 'bg-primary text-btn-text shadow-2xs' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors font-bold"
+                                    :class="form.page_settings.results_type === 'manual' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'manual'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.manual_upload', 'Upload Manual') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.manual_upload_desc', 'Upload file PDF/gambar hasil lomba secara manual.') }}</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Manual Upload Section (Only when manual) -->
+                <div v-if="form.page_settings.results_type === 'manual'" class="p-4 sm:p-6 space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('dashboard_events_page.results.upload_doc_title', 'Upload Dokumen Hasil') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">{{ t('dashboard_events_page.results.upload_doc_desc', 'Upload file PDF, gambar, atau dokumen hasil lomba.') }}</div>
+                            </div>
+                        </div>
+                        <BaseButton variant="primary" size="sm" icon="ph:plus-bold" class="text-sm font-bold shrink-0"
+                            @click="$refs.resultsFileInput?.click()">
+                            {{ t('dashboard_events_page.results.add_file', 'Tambah File') }}
+                        </BaseButton>
+                    </div>
+
+                    <!-- Upload Area (Compact when files exist) -->
+                    <div v-if="!form.results || form.results.length === 0"
+                        class="border-2 border-dashed border-gray-200 rounded-3xl p-10 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
+                        @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
+                        @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
+                        :class="isDragging ? 'border-primary bg-primary/5' : ''">
+                        <div class="flex flex-col items-center gap-4">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
+                                <Icon icon="ph:cloud-arrow-up"
+                                    class="text-3xl text-gray-400 group-hover:text-primary" />
+                            </div>
+                            <div class="max-w-xs mx-auto">
+                                <div class="text-sm font-bold text-navy group-hover:text-primary transition-colors">
+                                    {{ t('dashboard_events_page.results.upload_result_label', 'Upload Hasil Lomba') }}</div>
+                                <div class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">{{ t('dashboard_events_page.results.drag_drop_hint', 'Drag & drop beberapa file di sini. Mendukung PDF, JPG, & PNG.') }}</div>
+                            </div>
+                            <div class="flex gap-2">
+                                <span
+                                    class="px-3 py-1 bg-gray-100 rounded-full text-xs sm:text-sm font-bold text-gray-500">{{ t('dashboard_events_page.results.max_size_hint', 'Max 10MB/file') }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Uploaded Files List -->
+                    <div v-if="form.results && form.results.length > 0" class="space-y-4">
+                        <div class="grid grid-cols-1 gap-4">
+                            <div v-for="(file, index) in form.results" :key="index"
+                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-sm transition-all p-4 sm:p-5">
+
+                                <div class="flex gap-3 sm:gap-5">
+                                    <!-- File Icon / Preview -->
+                                    <div
+                                        class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl text-navy" />
+                                        <span class="text-xs font-bold text-gray-500 mt-1">{{
+                                            getFileExt(file.url) }}</span>
+                                    </div>
+
+                                    <!-- File Metadata & Actions -->
+                                    <div class="flex-1 min-w-0 flex flex-col justify-between py-1">
+                                        <div class="space-y-3">
+                                            <!-- Title Input -->
+                                            <div class="space-y-1">
+                                                <label
+                                                    class="text-xs sm:text-sm font-bold text-gray-600 pl-1">{{ t('dashboard_events_page.results.display_title', 'Judul Tampilan') }}</label>
+                                                <input v-model="file.title" type="text"
+                                                    placeholder="Contoh: Hasil Kualifikasi Recurve"
+                                                    class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-xl outline-none transition-all" />
+                                            </div>
+
+                                            <!-- Filename Input -->
+                                            <div class="space-y-1">
+                                                <label
+                                                    class="text-xs sm:text-sm font-bold text-gray-600 pl-1">{{ t('dashboard_events_page.results.download_name', 'Nama File Download') }}</label>
+                                                <div class="flex items-center gap-2">
+                                                    <input v-model="file.name" type="text" placeholder="nama-file"
+                                                        class="flex-1 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-xl outline-none transition-all" />
+                                                    <span class="text-xs sm:text-sm font-bold text-gray-500">.{{
+                                                        getFileExt(file.url) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer Actions -->
+                                        <div class="flex items-center justify-between mt-4">
+                                            <div
+                                                class="text-xs sm:text-sm font-bold text-gray-500 bg-gray-100 px-2.5 py-1 rounded-lg">
+                                                {{ formatFileSize(file.size) }}
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <a :href="file.url" target="_blank"
+                                                    class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all"
+                                                    title="Pratinjau">
+                                                    <Icon icon="ph:eye-bold" class="text-lg" />
+                                                </a>
+                                                <button @click="removeResultFile(index)"
+                                                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
+                                                    title="Hapus">
+                                                    <Icon icon="ph:trash-bold" class="text-lg" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add More Area -->
+                            <div @click="$refs.resultsFileInput?.click()"
+                                class="border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center p-6 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer">
+                                <div
+                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
+                                    <Icon icon="ph:plus-bold" class="text-xl" />
+                                </div>
+                                <div
+                                    class="text-sm font-bold text-gray-500 mt-2 tracking-wide group-hover:text-navy">
+                                    {{ t('dashboard_events_page.results.add_more', 'Tambah File Lagi') }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
+                        @change="handleResultsUpload" />
+                </div>
+
+                <!-- Section 3: System Results Info (Only when system) -->
+                <div v-if="form.page_settings.results_type === 'system'" class="p-4 sm:p-6">
+                    <div class="flex items-start gap-4 p-4 rounded-2xl bg-blue-50/70 border border-blue-200">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                            <Icon icon="ph:info-bold" class="text-xl" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-navy text-sm">{{ t('dashboard_events_page.results.system_scoring_title', 'Hasil Dari Sistem Scoring') }}</h4>
+                            <div class="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
+                                {{ t('dashboard_events_page.results.system_scoring_desc', 'Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring yang telah diinput melalui menu Scoring. Pastikan skor sudah diinput dengan benar.') }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Media Library Modal -->
+        <MediaLibrary
+            :show="showMediaLibrary"
+            :filter-type="mediaTarget === 'guidebook' ? 'pdf' : (['banner', 'logo', 'gallery'].includes(mediaTarget) ? 'image' : 'all')"
+            @close="showMediaLibrary = false"
+            @select="handleMediaSelect"
+        />
+    </div>
+</template>
+
+<script setup>
+import { Icon } from '@iconify/vue'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
+import BaseCurrencyInput from '~/components/common/BaseCurrencyInput.vue'
+import { useApi } from '~/composables/useApi'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import useDashboardI18n from '~/composables/useDashboardI18n'
+import { extractGmapsEmbedUrl } from '~/utils/maps'
+import useCurrency from '~/composables/useCurrency'
+
+const { isSubscriptionActive } = useSubscription()
+const showPremiumModal = ref(false)
+const { t } = useDashboardI18n()
+const { countries, currencies } = useCurrency()
+const { tournamentTitle } = useTournamentContext()
+
+const form = ref({
+    name: '',
+    description: '',
+    country_code: 'ID',
+    currency: 'IDR',
+    start_date: '',
+    end_date: '',
+    venue: '',
+    address: '',
+    gmaps_link: '',
+    banner_url: '',
+    logo_url: '',
+    event_images: [],
+    fees: [],
+    payment_methods: [],
+    schedules: [],
+    registration_deadline: '',
+    entry_fee: 0,
+    fee_mode: 'per_type',
+    fee_per_type: {
+        individual: 0,
+        team: 0,
+        mixed_team: 0
+    },
+    fee_per_category: {},
+    status: 'draft',
+    total_prize: 0,
+    technical_guidebook_url: '',
+    location_accessibility: [],
+    prizes: {
+        first: '',
+        second: '',
+        third: '',
+        first_caption: '',
+        second_caption: '',
+        third_caption: ''
+    },
+    page_settings: {
+        enable_manual_payment: true,
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            payment_methods: true,
+            prizes: true,
+            schedule: true,
+            location: true,
+            faq: true
+        },
+        results_type: 'system'
+    },
+    faq: [],
+    results: []
+})
+
+const countryOptions = computed(() => countries.map(c => ({
+    value: c.code,
+    title: c.name,
+    icon: c.icon
+})))
+
+const currencyOptions = computed(() => currencies.map(c => ({
+    value: c.code,
+    title: `${c.code} (${c.symbol}) – ${c.name}`,
+    icon: c.icon
+})))
+
+const onCountryChange = (countryCode) => {
+    const found = countries.find(c => c.code === countryCode)
+    if (found && found.defaultCurrency) {
+        form.value.currency = found.defaultCurrency
+    }
+}
+
+const statusOptions = computed(() => [
+    { value: 'draft', title: computed(() => t('dashboard_events_page.status_options.draft', 'Draft (Belum dipublikasi)')) },
+    { value: 'active', title: computed(() => t('dashboard_events_page.status_options.active', 'Aktif (Dipublikasikan)')) }
+])
+
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: computed(() => `${form.value?.name ? form.value.name + ' - ' : ''}${t('dashboard_events_page.title', 'Pengaturan Turnamen')} - Archeris Dashboard`)
+})
+
+const route = useRoute()
+const router = useRouter()
+const eventId = route.params.id
+
+const { get, put, post } = useApi()
+const saving = ref(false)
+const eventCategories = ref([])
+const orgBankAccounts = ref([])
+
+// Tab state
+const tabs = [
+    { id: 'informasi', name: 'Informasi', icon: 'ph:info' },
+    { id: 'pendaftaran', name: 'Pendaftaran', icon: 'ph:ticket' },
+    { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
+    { id: 'media', name: 'Media', icon: 'ph:image' },
+    { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' },
+    { id: 'faq', name: 'FAQ', icon: 'ph:question' }
+]
+
+const activeTab = ref('informasi')
+
+// Media Library State
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('') // 'banner', 'logo', or 'gallery'
+
+const openMediaLibrary = (target) => {
+    mediaTarget.value = target
+    showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+    if (mediaTarget.value === 'banner') {
+        form.value.banner_url = media.url
+    } else if (mediaTarget.value === 'logo') {
+        form.value.logo_url = media.url
+    } else if (mediaTarget.value === 'gallery') {
+        form.value.event_images.push({
+            url: media.url,
+            caption: media.caption || '',
+            alt_text: media.caption || '',
+            display_order: form.value.event_images.length,
+            is_primary: false
+        })
+    }
+    showMediaLibrary.value = false
+}
+
+const eventData = ref({
+    slug: eventId,
+    status: 'draft'
+})
+
+const locationAccessibilityOptions = [
+    'Terjangkau Mobil/Motor',
+    'Akses Transportasi Umum',
+    'Parkir Luas',
+    'Fasilitas Toilet',
+    'Area Makan',
+    'Tempat Duduk',
+    'Akses Disabilitas',
+    'Area Parkir Motor',
+    'Area Parkir Mobil'
+]
+
+const locationAccessibilityOptionKeys = {
+    'Terjangkau Mobil/Motor': 'car_motorcycle',
+    'Akses Transportasi Umum': 'public_transport',
+    'Parkir Luas': 'spacious_parking',
+    'Fasilitas Toilet': 'toilet',
+    'Area Makan': 'food_area',
+    'Tempat Duduk': 'seating',
+    'Akses Disabilitas': 'disability_access',
+    'Area Parkir Motor': 'motorcycle_parking',
+    'Area Parkir Mobil': 'car_parking'
+}
+
+const getLocationAccessibilityIcon = (option) => {
+    const icons = {
+        'Terjangkau Mobil/Motor': 'ph:car',
+        'Akses Transportasi Umum': 'ph:bus',
+        'Parkir Luas': 'ph:parking',
+        'Fasilitas Toilet': 'ph:toilet',
+        'Area Makan': 'ph:fork-knife',
+        'Tempat Duduk': 'ph:chair',
+        'Akses Disabilitas': 'ph:wheelchair',
+        'Area Parkir Motor': 'ph:motorcycle',
+        'Area Parkir Mobil': 'ph:car-simple'
+    }
+    return icons[option] || 'ph:check-circle'
+}
+
+const toggleLocationAccessibility = (option) => {
+    if (!form.value.location_accessibility) {
+        form.value.location_accessibility = []
+    }
+    const index = form.value.location_accessibility.indexOf(option)
+    if (index > -1) {
+        form.value.location_accessibility.splice(index, 1)
+    } else {
+        form.value.location_accessibility.push(option)
+    }
+}
+
+const disciplines = ref([])
+
+const addFAQField = () => {
+    if (!form.value.faq) form.value.faq = []
+    form.value.faq.push({
+        question: '',
+        answer: ''
+    })
+}
+
+const removeFAQField = (index) => {
+    form.value.faq.splice(index, 1)
+}
+
+const uploadingGuidebook = ref(false)
+const guidebookInput = ref(null)
+
+const handleGuidebookUpload = async (event) => {
+    const file = event.target.files[0]
+    if (!file) return
+
+    if (file.type !== 'application/pdf') {
+        const toast = useToast()
+        toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
+        return
+    }
+
+    uploadingGuidebook.value = true
+    try {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('caption', `Guidebook ${form.value.name}`)
+        formData.append('tournament_id', route.params.id || form.value.uuid || '')
+
+        const response = await post('/media/upload', formData)
+
+        form.value.technical_guidebook_url = response.url
+        const toast = useToast()
+        toast.success(t('dashboard_events_page.toasts.guidebook_success', 'Buku panduan berhasil diupload'))
+    } catch (err) {
+        console.error('Upload failed:', err)
+        const toast = useToast()
+        toast.error(t('dashboard_events_page.toasts.guidebook_failed', 'Gagal mengupload buku panduan'))
+    } finally {
+        uploadingGuidebook.value = false
+    }
+}
+
+// Results upload handling
+const isDragging = ref(false)
+const resultsFileInput = ref(null)
+
+const handleResultsUpload = async (event) => {
+    const files = Array.from(event.target.files || [])
+    await uploadResultFiles(files)
+}
+
+const handleResultsDrop = async (event) => {
+    isDragging.value = false
+    const files = Array.from(event.dataTransfer.files || [])
+    await uploadResultFiles(files)
+}
+
+const uploadResultFiles = async (files) => {
+    const toast = useToast()
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
+    const maxSize = 10 * 1024 * 1024 // 10MB
+
+    for (const file of files) {
+        if (!allowedTypes.includes(file.type)) {
+            toast.error(t('dashboard_events_page.toasts.invalid_format', { name: file.name }).replace('{name}', file.name))
+            continue
+        }
+
+        if (file.size > maxSize) {
+            toast.error(t('dashboard_events_page.toasts.file_too_large', { name: file.name }).replace('{name}', file.name))
+            continue
+        }
+
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('caption', `Result - ${form.value.name}`)
+            formData.append('tournament_id', route.params.id || form.value.uuid || '')
+
+            const response = await post('/media/upload', formData)
+
+            if (!form.value.results) {
+                form.value.results = []
+            }
+
+            form.value.results.push({
+                url: response.url,
+                title: file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' '),
+                name: file.name.replace(/\.[^/.]+$/, ""),
+                size: file.size,
+                type: file.type
+            })
+
+            toast.success(t('dashboard_events_page.toasts.file_success', { name: file.name }).replace('{name}', file.name))
+        } catch (err) {
+            console.error('Upload failed:', err)
+            toast.error(t('dashboard_events_page.toasts.file_failed', { name: file.name }).replace('{name}', file.name))
+        }
+    }
+
+    if (resultsFileInput.value) {
+        resultsFileInput.value.value = ''
+    }
+}
+
+const removeResultFile = (index) => {
+    form.value.results.splice(index, 1)
+}
+
+const getFileExt = (url) => {
+    if (!url) return ''
+    return url.split('.').pop()?.toLowerCase() || ''
+}
+
+const getFileIcon = (url) => {
+    const ext = getFileExt(url)
+    if (ext === 'pdf') return 'ph:file-pdf-duotone'
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'ph:file-image-duotone'
+    return 'ph:file-duotone'
+}
+
+const formatFileSize = (bytes) => {
+    if (!bytes) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+// Convert datetime string to datetime-local format
+const formatToDatetimeLocal = (dateStr) => {
+    if (!dateStr) return ''
+    try {
+        const date = new Date(dateStr)
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        return `${year}-${month}-${day}T${hours}:${minutes}`
+    } catch {
+        return ''
+    }
+}
+
+// Convert datetime-local format to ISO string for API
+const formatFromDatetimeLocal = (datetimeLocal) => {
+    if (!datetimeLocal) return null
+    try {
+        return new Date(datetimeLocal).toISOString()
+    } catch {
+        return null
+    }
+}
+
+// Google Maps embed URL
+const gmapsEmbedUrl = computed(() => {
+    return extractGmapsEmbedUrl(form.value.gmaps_link, form.value.venue || form.value.address)
+})
+
+const removeImage = (index) => {
+    form.value.event_images.splice(index, 1)
+}
+
+const fetchEventData = async () => {
+    try {
+        const response = await get(`/tournaments/${eventId}`)
+        const data = response?.data || response
+
+        if (data) {
+            eventData.value = data
+
+            let eventImages = []
+            try {
+                const imagesRes = await get(`/tournaments/${eventId}/images`)
+                eventImages = imagesRes?.images || imagesRes?.data?.images || []
+            } catch (err) {
+                console.error('Failed to fetch event images:', err)
+            }
+
+            try {
+                const categoriesRes = await get(`/tournaments/${eventId}/categories`)
+                eventCategories.value = categoriesRes?.events || categoriesRes?.data?.events || []
+            } catch (err) {
+                console.error('Failed to fetch event categories:', err)
+                eventCategories.value = []
+            }
+
+            let parsedPageSettings = {}
+            try {
+                if (typeof data.page_settings === 'string') {
+                    parsedPageSettings = data.page_settings ? JSON.parse(data.page_settings) : {}
+                } else if (data.page_settings && typeof data.page_settings === 'object') {
+                    parsedPageSettings = data.page_settings
+                }
+            } catch (error) {
+                console.error('Failed to parse page_settings:', error)
+                parsedPageSettings = {}
+            }
+
+            const sectionDefaults = {
+                about: true,
+                divisions: true,
+                fees: true,
+                payment_methods: true,
+                prizes: true,
+                schedule: true,
+                location: true,
+                faq: true
+            }
+
+            const regStartRaw = parsedPageSettings.registration_start || data.registration_start || data.created_at || ''
+            const pageSettings = {
+                enable_manual_payment: parsedPageSettings.enable_manual_payment !== false,
+                ...parsedPageSettings,
+                registration_start: regStartRaw ? formatToDatetimeLocal(regStartRaw) : '',
+                sections: {
+                    ...sectionDefaults,
+                    ...(parsedPageSettings.sections || {})
+                },
+                results_type: parsedPageSettings.results_type || 'system'
+            }
+
+            let faq = []
+            if (data.faq) {
+                try {
+                    faq = typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq
+                } catch (e) {
+                    console.error('Failed to parse FAQ:', e)
+                }
+            }
+
+            const normalizedFees = Array.isArray(pageSettings.fees)
+                ? pageSettings.fees
+                : (Array.isArray(data.fees) ? data.fees : [])
+
+            const normalizedPaymentMethods = Array.isArray(pageSettings.payment_methods)
+                ? pageSettings.payment_methods
+                : (orgBankAccounts.value.length > 0 ? orgBankAccounts.value.map(b => b.uuid || b.id) : [])
+
+            const normalizedPrizes = (pageSettings.prizes && typeof pageSettings.prizes === 'object')
+                ? pageSettings.prizes
+                : (data.prizes && typeof data.prizes === 'object' ? data.prizes : {
+                    first: '',
+                    second: '',
+                    third: '',
+                    first_caption: '',
+                    second_caption: '',
+                    third_caption: ''
+                })
+
+            const normalizedResults = Array.isArray(pageSettings.results)
+                ? pageSettings.results
+                : (Array.isArray(data.results) ? data.results : [])
+
+            let schedules = []
+            try {
+                const scheduleRes = await get(`/tournaments/${eventId}/schedule`)
+                schedules = scheduleRes?.schedules || scheduleRes?.data?.schedules || []
+            } catch (err) {
+                console.error('Failed to fetch schedules:', err)
+            }
+
+            form.value = {
+                name: data.name || data.title || '',
+                description: data.description || '',
+                start_date: formatToDatetimeLocal(data.start_date),
+                end_date: formatToDatetimeLocal(data.end_date),
+                venue: data.venue || data.location || '',
+                address: data.address || '',
+                gmaps_link: data.gmaps_link || data.gmap_link || '',
+                banner_url: data.banner_url || data.image || '',
+                logo_url: data.logo_url || '',
+                event_images: eventImages.length > 0 ? eventImages.map(img => ({
+                    url: img.url || '',
+                    caption: img.caption || '',
+                    alt_text: img.alt_text || '',
+                    display_order: img.display_order || 0,
+                    is_primary: img.is_primary || false
+                })) : [],
+                fees: normalizedFees,
+                payment_methods: normalizedPaymentMethods,
+                schedules: schedules.map(s => ({
+                    id: s.id || s.uuid,
+                    title: s.title || '',
+                    description: s.description || '',
+                    day_order: s.day_order || 1,
+                    sort_order: s.sort_order || 1,
+                    location: s.location || '',
+                    start_time: formatToDatetimeLocal(s.start_time),
+                    end_time: formatToDatetimeLocal(s.end_time)
+                })),
+                registration_deadline: formatToDatetimeLocal(data.registration_deadline),
+                country_code: pageSettings.country_code || data.country_code || 'ID',
+                currency: pageSettings.currency || data.currency || 'IDR',
+                entry_fee: data.entry_fee || 0,
+                fee_mode: pageSettings.fee_mode || 'per_type',
+                fee_per_type: {
+                    individual: pageSettings.fee_per_type?.individual ?? data.entry_fee ?? 0,
+                    team: pageSettings.fee_per_type?.team ?? 0,
+                    mixed_team: pageSettings.fee_per_type?.mixed_team ?? 0
+                },
+                fee_per_category: pageSettings.fee_per_category || {},
+                status: data.status || 'draft',
+                total_prize: data.total_prize || 0,
+                technical_guidebook_url: data.technical_guidebook_url || '',
+                location_accessibility: pageSettings.location_accessibility || [],
+                prizes: normalizedPrizes,
+                page_settings: pageSettings,
+                faq: faq,
+                results: normalizedResults
+            }
+        }
+    } catch (error) {
+        console.error('Failed to fetch event:', error)
+    }
+}
+
+const saveEventPage = async () => {
+    const toast = useToast()
+    if (activeTab.value === 'informasi') {
+        if (!form.value.name || !form.value.name.trim()) {
+            toast.error(t('dashboard_events_page.toasts.fill_event_name', 'Mohon lengkapi Nama Event'))
+            return
+        }
+    } else if (activeTab.value === 'lokasi') {
+        if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
+            toast.error(t('dashboard_events_page.toasts.fill_required', 'Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps'))
+            return
+        }
+    }
+
+    saving.value = true
+    try {
+        const effectiveEntryFee = form.value.fee_mode === 'per_type'
+            ? (form.value.fee_per_type.individual || 0)
+            : (form.value.entry_fee || 0)
+
+        const payload = {
+            name: form.value.name,
+            description: form.value.description,
+            start_date: formatFromDatetimeLocal(form.value.start_date),
+            end_date: formatFromDatetimeLocal(form.value.end_date),
+            venue: form.value.venue,
+            address: form.value.address,
+            gmaps_link: form.value.gmaps_link,
+            banner_url: form.value.banner_url,
+            logo_url: form.value.logo_url,
+            registration_deadline: formatFromDatetimeLocal(form.value.registration_deadline),
+            country_code: form.value.country_code || 'ID',
+            currency: form.value.currency || 'IDR',
+            entry_fee: effectiveEntryFee,
+            status: form.value.status,
+            total_prize: form.value.total_prize,
+            technical_guidebook_url: form.value.technical_guidebook_url,
+            faq: form.value.faq,
+            fees: form.value.fees,
+            schedules: form.value.schedules.map(s => ({
+                ...s,
+                start_time: formatFromDatetimeLocal(s.start_time),
+                end_time: formatFromDatetimeLocal(s.end_time)
+            })),
+            page_settings: JSON.stringify({
+                ...form.value.page_settings,
+                country_code: form.value.country_code || 'ID',
+                currency: form.value.currency || 'IDR',
+                registration_start: form.value.page_settings.registration_start ? formatFromDatetimeLocal(form.value.page_settings.registration_start) : null,
+                location_accessibility: form.value.location_accessibility || [],
+                fees: form.value.fees || [],
+                payment_methods: form.value.payment_methods || [],
+                prizes: form.value.prizes || {},
+                results: form.value.results || [],
+                fee_mode: form.value.fee_mode || 'per_type',
+                fee_per_type: form.value.fee_per_type || { individual: 0, team: 0, mixed_team: 0 },
+                fee_per_category: form.value.fee_per_category || {}
+            })
+        }
+
+        await put(`/tournaments/${eventId}`, payload)
+
+        if (form.value.schedules.length > 0) {
+            try {
+                await put(`/tournaments/${eventId}/schedule`, {
+                    schedules: form.value.schedules.map(s => ({
+                        id: s.id,
+                        title: s.title,
+                        description: s.description || null,
+                        start_time: formatFromDatetimeLocal(s.start_time),
+                        end_time: s.end_time ? formatFromDatetimeLocal(s.end_time) : null,
+                        day_order: s.day_order || 1,
+                        sort_order: s.sort_order || 1,
+                        location: s.location || null
+                    }))
+                })
+            } catch (err) {
+                console.error('Failed to save schedules:', err)
+            }
+        }
+
+        try {
+            await put(`/tournaments/${eventId}/images`, {
+                images: (form.value.event_images || []).filter(img => img.url)
+            })
+        } catch (err) {
+            console.error('Failed to save event images:', err)
+        }
+
+        const toast = useToast()
+        toast.success(t('dashboard_events_page.toasts.save_success', 'Halaman turnamen berhasil diperbarui'))
+
+        await fetchEventData()
+    } catch (error) {
+        console.error('Failed to save:', error)
+        const toast = useToast()
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || t('dashboard_events_page.toasts.save_failed', 'Gagal menyimpan turnamen')
+        toast.error(errorMessage)
+    } finally {
+        saving.value = false
+    }
+}
+
+// Helper functions for payment methods
+const paymentMethodOptions = [
+    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
+    { title: 'PayPal', value: 'PayPal', icon: 'ph:paypal-logo-bold', type: 'international' },
+    { title: 'Wise', value: 'Wise', icon: 'ph:globe-bold', type: 'international' },
+    { title: 'Revolut', value: 'Revolut', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Payoneer', value: 'Payoneer', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Bank Transfer (International / SWIFT)', value: 'International Transfer', icon: 'ph:bank-bold', type: 'bank' },
+    { title: 'Credit / Debit Card', value: 'Credit Card', icon: 'ph:credit-card-bold', type: 'international' },
+    { title: 'Lainnya / Custom', value: 'Custom', icon: 'ph:dots-three-circle-bold', type: 'custom' }
+]
+
+const getPaymentMethodImage = (bankName) => {
+    const method = paymentMethodOptions.find(m => m.value === bankName)
+    return method ? method.image : null
+}
+
+const fetchOrgBankAccounts = async () => {
+    try {
+        const bankRes = await get('/organizers/bank-accounts')
+        orgBankAccounts.value = bankRes?.data || bankRes || []
+    } catch (err) {
+        console.error('Failed to fetch organizer bank accounts:', err)
+        orgBankAccounts.value = []
+    }
+}
+
+const isPaymentMethodEnabled = (bankUuid) => {
+    if (!form.value.payment_methods) return false
+    return form.value.payment_methods.includes(bankUuid)
+}
+
+const togglePaymentMethod = (bankUuid) => {
+    if (!form.value.payment_methods) {
+        form.value.payment_methods = []
+    }
+    const index = form.value.payment_methods.indexOf(bankUuid)
+    if (index > -1) {
+        form.value.payment_methods.splice(index, 1)
+    } else {
+        form.value.payment_methods.push(bankUuid)
+    }
+}
+
+onMounted(async () => {
+    try {
+        const discRes = await get('/disciplines')
+        if (discRes?.disciplines) {
+            disciplines.value = discRes.disciplines
+        }
+    } catch (err) {
+        console.error('Failed to fetch disciplines:', err)
+    }
+    await fetchOrgBankAccounts()
+    await fetchEventData()
+})
+
+useSeoMeta({
+    title: () => `${t('dashboard_events_page.seo_title', 'Pengaturan Halaman Turnamen')} - Dashboard`
+})
+
+const getSchedDate = (session, field) => {
+    const val = session ? session[field] : ''
+    if (!val) return ''
+    return val.split('T')[0]
+}
+
+const setSchedDate = (session, field, dateVal) => {
+    if (!session) return
+    const currentVal = session[field] || ''
+    const currentTime = currentVal.includes('T') ? currentVal.split('T')[1] : '00:00'
+    session[field] = dateVal ? `${dateVal}T${currentTime}` : ''
+}
+
+const getSchedTime = (session, field) => {
+    const val = session ? session[field] : ''
+    if (!val) return '00:00'
+    return val.includes('T') ? val.split('T')[1] : val
+}
+
+const setSchedTime = (session, field, timeVal) => {
+    if (!session) return
+    const currentVal = session[field] || ''
+    const currentDate = currentVal.includes('T') ? currentVal.split('T')[0] : ''
+    if (currentDate) {
+        session[field] = `${currentDate}T${timeVal || '00:00'}`
+    } else {
+        session[field] = ''
+    }
+}
+</script>

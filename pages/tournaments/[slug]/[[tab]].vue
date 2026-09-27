@@ -240,8 +240,13 @@
                                             </div>
                                         </div>
                                         <div class="text-2xl sm:text-3xl font-black text-navy mb-2 tracking-tight">
-                                            {{ formatMoney(fee.amount, tournament.currency) }}
-                                            <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_category') }}</span>
+                                            <span v-if="!fee.amount || Number(fee.amount) === 0" class="text-emerald-600 font-black">
+                                                {{ t('common.free', 'Gratis') }}
+                                            </span>
+                                            <template v-else>
+                                                {{ formatMoney(fee.amount, tournament.currency) }}
+                                            </template>
+                                            <span class="text-sm text-gray-400 font-semibold ml-1">{{ t('event_detail.per_category') }}</span>
                                         </div>
                                         <div class="text-xs sm:text-sm text-gray-500">{{ fee.description }}</div>
                                     </div>
@@ -262,7 +267,14 @@
                                             <div class="text-[10px] text-gray-400">{{ fee.typeLabel }}</div>
                                         </div>
                                         <div class="text-right shrink-0">
-                                            <div class="text-base font-black text-navy tabular-nums">{{ formatMoney(fee.amount, tournament.currency) }}</div>
+                                            <div class="text-base font-black text-navy tabular-nums">
+                                                <span v-if="!fee.amount || Number(fee.amount) === 0" class="text-emerald-600 font-black">
+                                                    {{ t('common.free', 'Gratis') }}
+                                                </span>
+                                                <template v-else>
+                                                    {{ formatMoney(fee.amount, tournament.currency) }}
+                                                </template>
+                                            </div>
                                             <div class="text-[10px] text-gray-400">{{ t('event_detail.per_participant') }}</div>
                                         </div>
                                     </div>
@@ -276,8 +288,13 @@
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ fee.typeLabel }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ fee.name }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
-                                                {{ formatMoney(fee.amount, tournament.currency) }}
-                                                <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
+                                                <span v-if="!fee.amount || Number(fee.amount) === 0" class="text-emerald-600 font-black">
+                                                    {{ t('common.free', 'Gratis') }}
+                                                </span>
+                                                <template v-else>
+                                                    {{ formatMoney(fee.amount, tournament.currency) }}
+                                                </template>
+                                                <span class="text-sm text-gray-400 font-semibold ml-1">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <div v-if="fee.description" class="text-sm text-gray-500">{{ fee.description }}</div>
                                         </div>
@@ -287,8 +304,13 @@
                                             <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2">{{ t('event_detail.flat_fee') }}</div>
                                             <h3 class="text-lg font-black text-navy mb-4">{{ t('event_detail.all_categories') }}</h3>
                                             <div class="text-2xl sm:text-3xl font-black text-navy mb-4 tracking-tight">
-                                                {{ formatMoney(tournament.entry_fee, tournament.currency) }}
-                                                <span class="text-sm text-gray-400 font-semibold">{{ t('event_detail.per_participant') }}</span>
+                                                <span v-if="!tournament.entry_fee || Number(tournament.entry_fee) === 0" class="text-emerald-600 font-black">
+                                                    {{ t('common.free', 'Gratis') }}
+                                                </span>
+                                                <template v-else>
+                                                    {{ formatMoney(tournament.entry_fee, tournament.currency) }}
+                                                </template>
+                                                <span class="text-sm text-gray-400 font-semibold ml-1">{{ t('event_detail.per_participant') }}</span>
                                             </div>
                                             <ul class="space-y-2 text-sm text-gray-600">
                                                 <li class="flex items-start gap-2">
@@ -673,21 +695,15 @@
                         <!-- Organizer Card -->
                         <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-lg font-bold text-navy mb-0">{{ t('event_detail.organizer') }}</h3>
-                                <button v-if="isOrganizerSubscribed || tournament.is_organizer_subscribed" 
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 border border-primary/30 rounded-xl text-xs font-bold text-navy cursor-default">
-                                    <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
-                                    <span>{{ t('event_detail.following', 'Mengikuti') }}</span>
-                                </button>
-                                <button v-else @click="openSubscribeModal"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-navy/5 hover:bg-primary/20 border border-navy/10 hover:border-primary/40 rounded-xl text-xs font-bold text-navy transition-all active:scale-95 shadow-2xs cursor-pointer">
-                                    <Icon icon="ph:bell-ringing-bold" class="text-navy text-sm" />
-                                    <span>{{ t('event_detail.subscribe', 'Langganan') }}</span>
-                                </button>
+                                <h3 class="text-lg font-bold text-navy mb-0">{{ t('event_detail.organizer', 'Organizer') }}</h3>
+                                <div class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold border border-blue-200/60">
+                                    <Icon icon="ph:seal-check-fill" class="text-blue-600 text-sm" />
+                                    <span>{{ t('event_detail.verified_organizer', 'Verified') }}</span>
+                                </div>
                             </div>
                             <div class="flex items-center gap-4 mb-4">
                                 <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden shrink-0 border border-gray-100">
-                                    <img alt="Logo Penyelenggara" class="w-full h-full object-cover"
+                                    <img alt="Organizer Logo" class="w-full h-full object-cover"
                                         :src="tournament.organizer_logo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLm2bt_rocjJTBJyLy5egiG9qWTRu9j6JZGiQJiPm8b1G-HSoEuiHPFCrCPBc7qb81krUTSO68P9GueohN-_0IAPQUYSb-Jmd32xXgCNveXoWn0ACR6lV3AFfehy0pYgrdNBVXEyn4uZBaLcOM53xvrj6Nj8lqZdHdDm_sqOirc-36E7u9Qk0pblOTfHJH69INJpXI6D78iO58yfy0HygaJfL6aQRUXwsA6QzEsyDTsfEt6-q4b8f5rl3D59A-pT-X4fXlv7Fm3ng'" />
                                 </div>
                                 <div class="min-w-0 flex-1">
@@ -697,28 +713,33 @@
                                         {{ tournament.organizer }}
                                     </NuxtLink>
                                     <h4 v-else class="font-bold text-navy text-sm truncate">{{ tournament.organizer }}</h4>
-                                    <div class="text-xs sm:text-sm text-gray-500">{{ t('event_detail.verified_organizer') }} <Icon
-                                            icon="ph:seal-check-fill" class="text-[14px] inline align-middle text-blue-500" />
-                                    </div>
+                                    <div class="text-xs sm:text-sm text-gray-500">{{ tournament.organizer_slug ? `@${tournament.organizer_slug}` : 'Official Host' }}</div>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <a v-if="tournament.whatsapp_number"
-                                    :href="`https://wa.me/${tournament.whatsapp_number}`" target="_blank"
-                                    class="flex-1 py-2.5 bg-green-500 hover:bg-green-600 border border-green-500 rounded-xl text-xs sm:text-sm font-bold text-white transition-all flex items-center justify-center gap-2 shadow-sm shadow-green-200">
-                                    <Icon icon="ph:whatsapp-logo-bold" class="text-lg" />
-                                    WhatsApp
-                                </a>
-                                <button v-else
-                                    class="flex-1 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-400 cursor-not-allowed flex items-center justify-center gap-2">
-                                    <Icon icon="ph:whatsapp-logo" class="text-lg" />
-                                    WhatsApp
+                                <button
+                                    v-if="isOrganizerSubscribed || tournament.is_organizer_subscribed"
+                                    type="button"
+                                    class="flex-1 py-2.5 bg-primary/10 border border-primary/30 rounded-xl text-xs sm:text-sm font-bold text-navy transition-all flex items-center justify-center gap-2 cursor-default"
+                                >
+                                    <Icon icon="ph:check-circle-fill" class="text-primary text-base" />
+                                    <span>{{ t('event_detail.subscribed', 'Subscribed') }}</span>
+                                </button>
+                                <button
+                                    v-else
+                                    type="button"
+                                    @click="openSubscribeModal"
+                                    class="flex-1 py-2.5 bg-primary hover:bg-primary-hover text-navy border border-primary rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-xs shadow-primary/20 active:scale-95 cursor-pointer"
+                                >
+                                    <Icon icon="ph:bell-simple-ringing-bold" class="text-base text-navy" />
+                                    <span>{{ t('event_detail.subscribe', 'Subscribe') }}</span>
                                 </button>
 
                                 <NuxtLink v-if="tournament.organizer_slug"
                                     :to="`/organizer/${tournament.organizer_slug}`"
-                                    class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs sm:text-sm font-bold text-white transition-all text-center flex items-center justify-center">
-                                    {{ t('event_detail.view_profile') }}
+                                    class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs sm:text-sm font-bold text-white transition-all text-center flex items-center justify-center gap-1.5">
+                                    <span>{{ t('event_detail.view_profile', 'View Profile') }}</span>
+                                    <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
                                 </NuxtLink>
                             </div>
                         </div>
@@ -741,34 +762,72 @@
                             </div>
                         </div>
 
-                        <!-- Share Section -->
-                        <div
-                            class="flex flex-col items-center gap-3 justify-center bg-white p-5 rounded-2xl border border-gray-100 shadow-sm">
-                            <span class="text-xs sm:text-sm font-bold text-gray-400">{{ t('event_detail.share_event') }}</span>
-                            <div class="grid grid-cols-4 gap-2 w-full">
-                                <button @click="shareTo('whatsapp')"
-                                    class="w-full h-10 rounded-xl bg-green-50/50 border border-green-100/50 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all duration-300 shadow-2xs active:scale-95"
-                                    title="WhatsApp">
-                                    <Icon icon="ph:whatsapp-logo-fill" class="text-lg" />
-                                </button>
-                                <button @click="shareTo('facebook')"
-                                    class="w-full h-10 rounded-xl bg-blue-50/50 border border-blue-100/50 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all duration-300 shadow-2xs active:scale-95"
-                                    title="Facebook">
-                                    <Icon icon="ph:facebook-logo-fill" class="text-lg" />
-                                </button>
-                                <button @click="shareTo('twitter')"
-                                    class="w-full h-10 rounded-xl bg-gray-50/50 border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all duration-300 shadow-2xs active:scale-95"
-                                    title="X / Twitter">
-                                    <Icon icon="ph:twitter-logo-fill" class="text-lg" />
-                                </button>
-                                <button @click="copyPublicUrl"
-                                    class="w-full h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-navy hover:bg-primary transition-all duration-300 shadow-2xs active:scale-95"
-                                    title="Salin Link">
-                                    <Icon icon="ph:link-bold" class="text-lg" />
-                                </button>
-                            </div>
-                            <div v-if="copySuccess" class="text-[10px] font-bold text-green-600 transition-all animate-fade-in">
-                                {{ t('event_detail.link_copied') }}
+                        <!-- Redesigned Share Tournament Card -->
+                        <div class="bg-navy rounded-3xl p-5 sm:p-6 shadow-md border border-slate-800 text-white relative overflow-hidden">
+                            <div class="absolute -right-6 -top-6 size-24 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
+
+                            <div class="relative z-10 space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="size-10 rounded-2xl bg-primary/15 border border-primary/30 text-primary flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:share-network-bold" class="text-xl" />
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm sm:text-base font-black text-white leading-tight">
+                                            {{ t('event_detail.share_event', 'Share This Tournament') }}
+                                        </h3>
+                                        <p class="text-xs text-slate-300 font-medium mt-0.5">
+                                            {{ t('event_detail.share_desc', 'Invite archers and clubs to join the competition') }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Copy Link Bar -->
+                                <div class="flex items-center gap-1.5 p-1.5 rounded-xl bg-white/10 border border-white/15 backdrop-blur-xs">
+                                    <div class="flex-1 px-2.5 text-xs text-slate-300 font-mono truncate">
+                                        {{ publicEventUrl }}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        @click="copyPublicUrl"
+                                        class="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary/90 text-navy text-xs font-black transition-all flex items-center gap-1.5 shrink-0 shadow-sm active:scale-95 cursor-pointer"
+                                    >
+                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm" />
+                                        <span>{{ copySuccess ? t('event_detail.copied', 'Copied!') : t('event_detail.copy_link', 'Copy Link') }}</span>
+                                    </button>
+                                </div>
+
+                                <!-- Social Quick Share Grid -->
+                                <div class="grid grid-cols-3 gap-2 pt-1">
+                                    <button
+                                        type="button"
+                                        @click="shareTo('whatsapp')"
+                                        class="h-10 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#25D366]/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        title="WhatsApp"
+                                    >
+                                        <Icon icon="ph:whatsapp-logo-fill" class="text-base" />
+                                        <span class="hidden sm:inline">WhatsApp</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        @click="shareTo('facebook')"
+                                        class="h-10 rounded-xl bg-[#1877F2]/20 hover:bg-[#1877F2] text-[#1877F2] hover:text-white border border-[#1877F2]/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        title="Facebook"
+                                    >
+                                        <Icon icon="ph:facebook-logo-fill" class="text-base" />
+                                        <span class="hidden sm:inline">Facebook</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        @click="shareTo('twitter')"
+                                        class="h-10 rounded-xl bg-white/10 hover:bg-white text-white hover:text-navy border border-white/20 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        title="X / Twitter"
+                                    >
+                                        <Icon icon="ph:twitter-logo-fill" class="text-base" />
+                                        <span class="hidden sm:inline">X / Post</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </aside>
@@ -1248,7 +1307,6 @@ const { data: eventData, error: eventError, pending: isPageLoading } = await use
                     const entries = Array.isArray(raw.entries) ? raw.entries.map(e => ({
                         name: e.name || e.athlete_name,
                         target: e.target || e.target_no,
-                        bib: e.bib,
                         club: e.club || e.club_name || e.code,
                         code: e.code || e.club_code,
                         category: e.category || e.division,
@@ -1264,7 +1322,6 @@ const { data: eventData, error: eventError, pending: isPageLoading } = await use
                                 qualifications[cat] = list.map(q => ({
                                     rank: q.rank,
                                     target: q.target || q.target_no,
-                                    bib: q.bib,
                                     name: q.name || q.athlete_name,
                                     club: q.club || q.club_name || q.code,
                                     d1: q.d1 ?? q.distance_1 ?? 0,
@@ -1454,8 +1511,9 @@ const formattedFees = computed(() => {
             { key: 'team', label: 'Team (3 archers)', icon: 'ph:users-bold', desc: 'Per category per team' },
             { key: 'mixed_team', label: 'Mixed Team (2 archers)', icon: 'ph:users-three-bold', desc: 'Per category per team' }
         ]
+        const hasAnyPositiveFee = types.some(tp => (t.fee_per_type?.[tp.key] || 0) > 0)
         return types
-            .filter(tp => (t.fee_per_type?.[tp.key] || 0) > 0)
+            .filter(tp => hasAnyPositiveFee ? (t.fee_per_type?.[tp.key] || 0) > 0 : tp.key === 'individual')
             .map(tp => ({
                 name: tp.label,
                 amount: t.fee_per_type?.[tp.key] || 0,
@@ -1586,14 +1644,24 @@ const isAlreadyRegistered = computed(() => {
 
     // Support multiple check strategies: archer_id, user_id, or email
     const userId = user.value.id
-    const userEmail = user.value.email
+    const userEmail = (user.value.email || '').toLowerCase()
+    const invalidStatuses = ['cancelled', 'canceled', 'expired', 'failed', 'rejected', 'deleted']
 
-    return participantsData.value.some(p =>
-        (p.archer_id && String(p.archer_id) === String(userId)) ||
-        (p.user_id && String(p.user_id) === String(userId)) ||
-        (p.email && p.email === userEmail) ||
-        (p.athlete_code && p.athlete_code === user.value.athlete_code)
-    )
+    return participantsData.value.some(p => {
+        const isUserMatch = (p.archer_id && String(p.archer_id) === String(userId)) ||
+            (p.user_id && String(p.user_id) === String(userId)) ||
+            (p.email && userEmail && p.email.toLowerCase() === userEmail) ||
+            (p.athlete_code && user.value.athlete_code && p.athlete_code === user.value.athlete_code)
+
+        if (!isUserMatch) return false
+
+        const pStatus = (p.status || '').toLowerCase()
+        const payStatus = (p.payment_status || '').toLowerCase()
+        if (invalidStatuses.includes(pStatus) || invalidStatuses.includes(payStatus)) {
+            return false
+        }
+        return true
+    })
 })
 
 // Active Tournament Metadata (unified for internal & external tournaments)

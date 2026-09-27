@@ -1,61 +1,36 @@
 <template>
-  <div class="flex flex-col gap-6 pb-16">
-    <!-- Header Banner (Standard Dashboard Style) -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <!-- Decorative Background Elements -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-6 sm:p-8">
-        <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-          <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">{{ t('elimination.nav_event') }}</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-base" />
-          <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors">{{ eventName || 'Event' }}</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-base" />
-          <span class="text-amber-300 font-medium">{{ t('elimination.nav_title') }}</span>
-        </div>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-start gap-4">
-            <!-- Icon Badge -->
-            <div
-              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:tree-structure-bold" class="text-white text-2xl" />
-            </div>
-            <div class="flex-grow">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">{{ t('elimination.title') }}</h1>
-              <div class="text-slate-300 text-sm mt-1">{{ t('elimination.subtitle') }}</div>
-            </div>
+  <div class="flex flex-col gap-6 pb-12">
+    <!-- Header Banner (Standard DashboardHeader) -->
+    <DashboardHeader
+      :title="t('elimination.title')"
+      :subtitle="t('elimination.subtitle')"
+      icon="ph:git-merge-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/archer' },
+        { label: t('sidebar.my_events', 'Turnamen Saya'), to: '/dashboard/archer/tournaments' },
+        { label: t('elimination.title') }
+      ]"
+    >
+      <template #actions>
+        <div v-if="!isLoading" class="flex-shrink-0 flex items-center gap-3">
+          <div v-if="myCategories.length > 1" class="relative">
+            <select
+              v-model="categoryId"
+              @change="updateResultsData"
+              class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-white/50 cursor-pointer transition-colors appearance-none shadow-xs">
+              <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
+                {{ c.title }}
+              </option>
+            </select>
+            <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none text-xs" />
           </div>
-
-          <!-- Category Selector -->
-          <div v-if="!isLoading" class="flex-shrink-0 flex items-center gap-3">
-            <div v-if="myCategories.length > 1" class="relative">
-              <select
-                v-model="categoryId"
-                @change="updateResultsData"
-                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-white/50 cursor-pointer transition-colors appearance-none">
-                <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
-                  {{ c.title }}
-                </option>
-              </select>
-              <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/60 pointer-events-none text-xs" />
-            </div>
-            <div v-else-if="categoryName || (categoryOptions.length === 1)"
-              class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs font-bold text-white tracking-wide">
-              {{ categoryName || categoryOptions[0]?.title }}
-            </div>
+          <div v-else-if="categoryName || (categoryOptions.length === 1)"
+            class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs sm:text-sm font-bold text-white tracking-wide shadow-xs">
+            {{ categoryName || categoryOptions[0]?.title }}
           </div>
         </div>
-      </div>
-    </div>
+      </template>
+    </DashboardHeader>
 
     <!-- Loading State -->
     <div v-if="isLoading" class="space-y-4">
@@ -79,12 +54,7 @@
             </h2>
             <div
               class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
-              <span
-                class="px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-[10px] font-black capitalize tracking-widest text-slate-600 dark:text-slate-300">
-                BIB #{{ userProfile?.bib_number || userProfile?.id || '-' }}
-              </span>
-              <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
-              <span>{{ currentCategoryName || categoryName || '-' }}</span>
+              <span class="font-bold text-navy dark:text-white">{{ currentCategoryName || categoryName || '-' }}</span>
               <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
               <span>{{ userProfile?.club_name || t('elimination.independent') }}</span>
             </div>
@@ -107,7 +77,7 @@
         <div
           class="px-6 sm:px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-navy text-white flex items-center justify-center">
+            <div class="size-9 rounded-xl bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shrink-0">
               <Icon icon="ph:git-merge-bold" class="text-lg" />
             </div>
             <h4 class="font-black text-lg text-navy dark:text-white">{{ t('elimination.path_title') }}</h4>
@@ -119,7 +89,7 @@
 
         <!-- No matches -->
         <div v-if="elimMatches.length === 0"
-          class="py-16 text-center border-2 border-dashed border-slate-200 dark:border-slate-700 m-6 rounded-3xl">
+          class="py-16 text-center border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 m-6 rounded-3xl">
           <div class="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto mb-3 text-slate-400">
             <Icon icon="ph:git-merge" class="text-3xl" />
           </div>
@@ -265,13 +235,12 @@
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue'
-import { useImageOrDefault } from '~/composables/useImageHelper'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useEventContext } from '~/composables/useTournamentContext'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 const { get } = useApi()
 const route = useRoute()
 const { setEvent } = useEventContext()

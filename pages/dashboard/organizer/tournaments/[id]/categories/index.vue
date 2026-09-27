@@ -7,7 +7,8 @@
             icon="ph:tag"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+                { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
                 { label: t('event_categories.title') }
             ]"
         >
@@ -310,6 +311,7 @@ const tableColumns = computed(() => [
 
 const route = useRoute()
 const eventId = route.params.id
+const { tournamentTitle } = useTournamentContext()
 const { get, post, put, delete: delApi } = useApi()
 const toast = useToast()
 const { isSubscriptionActive } = useSubscription()
@@ -338,14 +340,14 @@ const selectedTeamType = ref('all')
 
 const bowFilterOptions = computed(() => {
     return [
-        { value: 'all', title: computed(() => t('event_categories.all_bows')) },
+        { value: 'all', title: t('event_categories.all_bows') },
         ...bowTypes.value.map(bow => ({ value: bow.code, title: bow.name }))
     ]
 })
 
 const teamTypeFilterOptions = computed(() => {
     return [
-        { value: 'all', title: computed(() => t('event_categories.all_team_types')) },
+        { value: 'all', title: t('event_categories.all_team_types') },
         ...eventTypes.value.map(type => ({ value: type.id, title: type.name }))
     ]
 })

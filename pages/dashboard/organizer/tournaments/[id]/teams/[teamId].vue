@@ -5,10 +5,16 @@
       <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.2;"></div>
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
       <div class="relative p-6 sm:p-8">
-        <nav class="flex text-[10px] font-bold text-white/40 tracking-widest mb-2 items-center gap-1.5">
-          <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/teams`" class="hover:text-white transition-colors">{{ t('event_teams.title') }}</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-[9px]" />
-          <span class="text-white/70">{{ t('org_team_detail.team_detail') }}</span>
+        <nav class="flex text-xs font-bold text-white/50 tracking-wider mb-2 items-center gap-1.5 flex-wrap">
+          <NuxtLink to="/dashboard/organizer" class="hover:text-white transition-colors text-white/60">Dashboard</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+          <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+          <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors text-white/60">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+          <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/teams`" class="hover:text-white transition-colors text-white/60">{{ t('event_teams.title') }}</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+          <span class="text-white font-bold truncate max-w-[200px] sm:max-w-xs">{{ team?.name || t('org_team_detail.team_detail') }}</span>
         </nav>
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div class="flex items-center gap-4">
@@ -97,6 +103,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const route = useRoute()
 const { get } = useApi()
+const { tournamentTitle } = useTournamentContext()
 
 const eventId = computed(() => route.params.id as string)
 const teamId = computed(() => route.params.teamId as string)

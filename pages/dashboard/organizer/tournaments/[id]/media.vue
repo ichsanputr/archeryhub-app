@@ -7,7 +7,8 @@
             icon="ph:hard-drive-bold"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+                { label: tournament?.name || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
                 { label: t('tournament_media.title') }
             ]"
         >
@@ -291,6 +292,7 @@ definePageMeta({ layout: 'dashboard' })
 const route = useRoute()
 const { get, post, del } = useApi()
 const { t, locale } = useDashboardI18n()
+const { tournamentTitle } = useTournamentContext()
 const toast = useToast()
 
 useHead({

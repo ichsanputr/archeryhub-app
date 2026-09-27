@@ -7,7 +7,8 @@
       icon="mdi:bracket"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: eventName || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_elimination.title') }
       ]"
     >
@@ -290,21 +291,12 @@
                     required :disabled="isEditing" teleport />
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.bracket_type') }} <span class="text-red-500">*</span>
-                    </label>
-                    <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes"
-                      :placeholder="t('event_elimination.select_bracket_type')" required teleport />
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1.5">
-                      {{ t('event_elimination.score_format') }} <span class="text-red-500">*</span>
-                    </label>
-                    <BaseSelect v-model="newBracket.format" :items="formatOptions" :placeholder="t('event_elimination.select_format')" required
-                      teleport />
-                  </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                    {{ t('event_elimination.score_format') }} <span class="text-red-500">*</span>
+                  </label>
+                  <BaseSelect v-model="newBracket.format" :items="formatOptions" :placeholder="t('event_elimination.select_format')" required
+                    teleport />
                 </div>
               </div>
             </div>
@@ -379,6 +371,20 @@
               </div>
             </div>
 
+            <!-- Warning: Qualification Sessions Not Locked -->
+            <div v-if="!isEditing && newBracket.categoryId && bracketSizeInfo.total_qual_sessions > 0 && bracketSizeInfo.unlocked_qual_sessions > 0"
+              class="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
+              <div class="size-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                <Icon icon="ph:lock-open-bold" class="text-base" />
+              </div>
+              <div class="text-xs">
+                <div class="font-bold text-amber-900">{{ t('event_elimination.qual_not_locked_title') }}</div>
+                <div class="text-amber-700 mt-0.5 leading-relaxed">
+                  {{ t('event_elimination.qual_not_locked_desc') }}
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <!-- Modal Footer (Matching Create Session footer) -->
@@ -388,7 +394,7 @@
               {{ t('event_elimination.cancel') }}
             </BaseButton>
             <BaseButton
-              :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket"
+              :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket || (!isEditing && bracketSizeInfo.total_qual_sessions > 0 && bracketSizeInfo.unlocked_qual_sessions > 0)"
               :loading="creatingBracket" variant="primary"
               class="h-10 px-6 text-xs font-bold shadow-md shadow-primary/20"
               @click="handleCreateOrUpdate">
@@ -426,6 +432,7 @@ useHead({
 
 const route = useRoute()
 const eventId = computed(() => route.params.id)
+const { tournamentTitle } = useTournamentContext()
 const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 
@@ -435,7 +442,7 @@ const categories = ref([])
 const loadingBrackets = ref(false)
 const loadingCategories = ref(false)
 const loadingBracketSize = ref(false)
-const bracketSizeInfo = ref({ participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 })
+const bracketSizeInfo = ref({ participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1, total_qual_sessions: 0, unlocked_qual_sessions: 0, is_qual_locked: true })
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
 
@@ -466,7 +473,7 @@ const newBracket = ref({
   bracketType: 'individual',
   format: 'recurve_set',
   bracketSize: 0, // display-only when editing; auto-calculated from API when creating
-  endsPerMatch: 5,
+  endsPerMatch: 6,
   arrowsPerEnd: 3,
   startDate: defaultStartDate(),
   startTime: defaultStartTime,
@@ -480,7 +487,7 @@ const fetchBracketSizeInfo = async () => {
   if (!catId || !eventId.value || isEditing.value) return
 
   loadingBracketSize.value = true
-  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
+  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1, total_qual_sessions: 0, unlocked_qual_sessions: 0, is_qual_locked: true }
   try {
     const response = await get(`/tournaments/${eventId.value}/elimination/bracket-size`, {
       params: { category_id: catId, bracket_type: type }
@@ -491,37 +498,57 @@ const fetchBracketSizeInfo = async () => {
       byes: response?.byes || 0,
       synced_teams: response?.synced_teams ?? 0,
       possible_teams: response?.possible_teams ?? 0,
-      team_size: response?.team_size ?? 1
+      team_size: response?.team_size ?? 1,
+      total_qual_sessions: response?.total_qual_sessions ?? 0,
+      unlocked_qual_sessions: response?.unlocked_qual_sessions ?? 0,
+      is_qual_locked: response?.is_qual_locked ?? true
     }
     // Auto-select max bracket size as default
     if (bracketSizeInfo.value.max_bracket_size > 0) {
       newBracket.value.bracketSize = bracketSizeInfo.value.max_bracket_size
     }
   } catch (e) {
-    bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
+    bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1, total_qual_sessions: 0, unlocked_qual_sessions: 0, is_qual_locked: true }
   } finally {
     loadingBracketSize.value = false
   }
 }
 
 watch(
-  [() => newBracket.value.categoryId, () => newBracket.value.bracketType],
-  () => { fetchBracketSizeInfo() }
+  () => newBracket.value.categoryId,
+  (catId) => {
+    if (!catId) return
+    const selectedCat = categories.value.find(c => c.id === catId || c.uuid === catId)
+    if (selectedCat) {
+      const eventType = (selectedCat.event_type_name || '').toLowerCase()
+      if (eventType === 'individual') {
+        newBracket.value.bracketType = 'individual'
+        newBracket.value.arrowsPerEnd = 3
+      } else if (eventType.includes('mixed') || eventType.includes('campuran')) {
+        newBracket.value.bracketType = 'mixed2'
+        newBracket.value.arrowsPerEnd = 4
+      } else {
+        newBracket.value.bracketType = 'team3'
+        newBracket.value.arrowsPerEnd = 6
+      }
+
+      // Auto-set score format based on bow division
+      const divName = (selectedCat.division_name || '').toLowerCase()
+      if (divName.includes('compound') || divName.includes('kompon')) {
+        newBracket.value.format = 'compound_total'
+      } else {
+        newBracket.value.format = 'recurve_set'
+      }
+    }
+    fetchBracketSizeInfo()
+  }
 )
 
 watch(
   () => newBracket.value.bracketType,
-  (type) => {
-    if (isEditing.value) return
-    if (type === 'team3') {
-      newBracket.value.endsPerMatch = 4
-      newBracket.value.arrowsPerEnd = 6
-    } else if (type === 'mixed2') {
-      newBracket.value.endsPerMatch = 4
-      newBracket.value.arrowsPerEnd = 4
-    } else {
-      newBracket.value.endsPerMatch = 5
-      newBracket.value.arrowsPerEnd = 3
+  () => {
+    if (!isEditing.value) {
+      fetchBracketSizeInfo()
     }
   }
 )
@@ -621,13 +648,13 @@ const updateBracket = async () => {
 
 const resetForm = () => {
   editBracketId.value = null
-  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
+  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1, total_qual_sessions: 0, unlocked_qual_sessions: 0, is_qual_locked: true }
   newBracket.value = {
     categoryId: '',
     bracketType: 'individual',
     format: 'recurve_set',
     bracketSize: 0,
-    endsPerMatch: 5,
+    endsPerMatch: 6,
     arrowsPerEnd: 3
   }
 }
@@ -676,9 +703,9 @@ const createBracket = async () => {
 }
 
 const bracketTypes = computed(() => [
-  { value: 'individual', title: computed(() => t('event_detail.individual')) || 'Perorangan', icon: 'ph:user' },
-  { value: 'team3', title: computed(() => t('event_detail.team3')) || 'Tim 3 Orang', icon: 'ph:users-three' },
-  { value: 'mixed2', title: computed(() => t('event_detail.mixed2')) || 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
+  { value: 'individual', title: t('event_detail.individual') || 'Perorangan', icon: 'ph:user' },
+  { value: 'team3', title: t('event_detail.team3') || 'Tim 3 Orang', icon: 'ph:users-three' },
+  { value: 'mixed2', title: t('event_detail.mixed2') || 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
 ])
 
 const availableBracketTypes = computed(() => {
@@ -766,15 +793,15 @@ const openCreateForCategory = (category) => {
   const eventType = (category.event_type_name || '').toLowerCase()
   if (eventType === 'individual') {
     newBracket.value.bracketType = 'individual'
-    newBracket.value.endsPerMatch = 5
+    newBracket.value.endsPerMatch = 6
     newBracket.value.arrowsPerEnd = 3
   } else if (eventType.includes('mixed') || eventType.includes('campuran')) {
     newBracket.value.bracketType = 'mixed2'
-    newBracket.value.endsPerMatch = 4
+    newBracket.value.endsPerMatch = 6
     newBracket.value.arrowsPerEnd = 4
   } else {
     newBracket.value.bracketType = 'team3'
-    newBracket.value.endsPerMatch = 4
+    newBracket.value.endsPerMatch = 6
     newBracket.value.arrowsPerEnd = 6
   }
   showCreateDialog.value = true

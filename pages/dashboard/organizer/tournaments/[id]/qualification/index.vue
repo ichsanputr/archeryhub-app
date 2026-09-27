@@ -7,7 +7,8 @@
       icon="ph:crosshair"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: (eventName !== 'Loading...' && eventName) || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_qualification.title') }
       ]"
     >
@@ -73,6 +74,10 @@
                     <span class="text-[10px] font-extrabold font-mono text-primary bg-primary/15 border border-primary/30 px-2 py-0.5 rounded-md">
                       {{ session.session_code }}
                     </span>
+                    <span v-if="session.is_locked" class="inline-flex items-center gap-1 text-[10px] font-extrabold text-rose-300 bg-rose-500/20 border border-rose-400/30 px-2 py-0.5 rounded-md shadow-2xs">
+                      <Icon icon="ph:lock-simple-fill" class="text-xs" />
+                      <span>{{ t('event_qualification.locked_badge', 'Scoring Terkunci') }}</span>
+                    </span>
                   </div>
 
                   <h3 class="font-black text-white text-base sm:text-lg leading-tight group-hover:text-primary transition-colors truncate">
@@ -80,13 +85,27 @@
                   </h3>
                 </div>
 
-                <!-- Action Edit Button in Header -->
-                <button type="button"
-                  @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)"
-                  class="size-8 rounded-xl bg-white/10 hover:bg-primary hover:text-navy text-white/80 border border-white/15 transition-all flex items-center justify-center active:scale-95 shrink-0"
-                  :title="t('event_qualification.edit_session')">
-                  <Icon icon="ph:pencil-simple-bold" class="text-sm" />
-                </button>
+                <!-- Action Header Buttons: Lock & Edit -->
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <!-- Action Lock/Unlock Button -->
+                  <button type="button"
+                    :disabled="lockingSessionId === session.uuid"
+                    @click.stop="isSubscriptionActive ? toggleLockSession(session) : (showPremiumModal = true)"
+                    class="size-8 rounded-xl border transition-all flex items-center justify-center active:scale-95 shrink-0 cursor-pointer disabled:opacity-50"
+                    :class="session.is_locked ? 'bg-rose-500/20 text-rose-300 border-rose-400/30 hover:bg-rose-500 hover:text-white' : 'bg-white/10 text-white/80 border-white/15 hover:bg-amber-400 hover:text-navy'"
+                    :title="session.is_locked ? t('event_qualification.unlock_scoring_session', 'Buka Kunci Scoring Sesi') : t('event_qualification.lock_scoring_session', 'Kunci Scoring Sesi')">
+                    <Icon v-if="lockingSessionId === session.uuid" icon="ph:spinner-gap-bold" class="text-sm animate-spin" />
+                    <Icon v-else :icon="session.is_locked ? 'ph:lock-simple-fill' : 'ph:lock-simple-open-bold'" class="text-sm" />
+                  </button>
+
+                  <!-- Action Edit Button in Header -->
+                  <button type="button"
+                    @click.stop="isSubscriptionActive ? editSession(session) : (showPremiumModal = true)"
+                    class="size-8 rounded-xl bg-white/10 hover:bg-primary hover:text-navy text-white/80 border border-white/15 transition-all flex items-center justify-center active:scale-95 shrink-0 cursor-pointer"
+                    :title="t('event_qualification.edit_session')">
+                    <Icon icon="ph:pencil-simple-bold" class="text-sm" />
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -104,24 +123,6 @@
                 </div>
               </div>
 
-              <!-- Schedule Box -->
-              <div v-if="session.session_date || session.start_time || session.end_time" class="bg-white rounded-2xl p-3 border border-slate-200/90 space-y-1.5 shadow-2xs">
-                <div v-if="session.session_date" class="flex items-center gap-2 text-xs font-bold text-slate-700">
-                  <Icon icon="ph:calendar-blank-bold" class="text-primary text-sm shrink-0" />
-                  <span class="truncate">{{ formatDate(session.session_date) }}</span>
-                </div>
-
-                <div v-if="session.start_time || session.end_time" class="flex items-center gap-2 text-xs font-bold text-slate-700">
-                  <Icon icon="ph:clock-bold" class="text-primary text-sm shrink-0" />
-                  <span class="truncate font-mono">
-                    {{ formatTime(session.start_time) }} - {{ formatTime(session.end_time) }}
-                  </span>
-                </div>
-              </div>
-              <div v-else class="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-dashed border-slate-200 text-xs text-slate-400 font-medium">
-                <Icon icon="ph:calendar-blank-bold" class="text-slate-400 text-sm shrink-0" />
-                <span class="text-[11px]">{{ t('event_qualification.schedule_not_set') }}</span>
-              </div>
 
               <!-- Format Rule Metrics (3-column pill grid) -->
               <div class="grid grid-cols-3 gap-2">
@@ -584,6 +585,7 @@ const router = useRouter()
 const { get, post, patch, delete: del } = useApi()
 const toast = useToast()
 const eventId = computed(() => route.params.id)
+const { tournamentTitle } = useTournamentContext()
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
 
@@ -720,6 +722,27 @@ const getSessionCategories = (session) => {
   return categories.value.filter(c => session.category_ids.includes(c.id || c.uuid))
 }
 
+const lockingSessionId = ref(null)
+
+const toggleLockSession = async (session) => {
+  if (!session?.uuid) return
+  lockingSessionId.value = session.uuid
+  try {
+    const res = await post(`/qualification/sessions/${session.uuid}/lock`, {})
+    session.is_locked = res?.is_locked ?? !session.is_locked
+    if (session.is_locked) {
+      toast.success(t('event_qualification.toast_session_locked', 'Scoring kualifikasi seluruh kategori dalam sesi ini berhasil dikunci'))
+    } else {
+      toast.success(t('event_qualification.toast_session_unlocked', 'Kunci scoring kualifikasi seluruh kategori dalam sesi ini berhasil dibuka'))
+    }
+  } catch (error) {
+    console.error('Failed to toggle session lock:', error)
+    toast.error(getApiErrorMessage(error, t('event_qualification.toast_lock_failed', 'Gagal mengubah status kunci scoring')))
+  } finally {
+    lockingSessionId.value = null
+  }
+}
+
 const goToSession = (session) => {
   // Use session_code as slug directly since it's already unique
   router.push(`/dashboard/organizer/tournaments/${eventId.value}/qualification/${session.session_code}`)
@@ -779,24 +802,6 @@ const saveSession = async () => {
   }
 }
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('id-ID', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  })
-}
-
-const formatTime = (timeStr) => {
-  if (!timeStr) return ''
-  // If it's a full ISO/SQL datetime string, extract HH:mm
-  if (timeStr.includes('T') || timeStr.includes('-')) {
-    const date = new Date(timeStr)
-    return date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
-  }
-  return timeStr.substring(0, 5) // Handle HH:mm:ss if it's already just time
-}
 
 const fetchEventName = async () => {
   const id = eventId.value

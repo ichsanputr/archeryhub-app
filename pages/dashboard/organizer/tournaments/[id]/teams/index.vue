@@ -7,7 +7,8 @@
             icon="ph:users-three"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+                { label: (eventName !== 'Loading...' && eventName) || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
                 { label: t('event_teams.title') }
             ]"
         >
@@ -534,6 +535,7 @@ import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const route = useRoute()
 const eventId = computed(() => (route.params.id || '').toString())
+const { tournamentTitle } = useTournamentContext()
 const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 const { t } = useI18n()

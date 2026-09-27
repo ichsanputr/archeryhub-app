@@ -3,9 +3,12 @@
         <!-- Breadcrumbs -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-2">
-                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}`" class="hover:text-primary transition-colors">Tournament
-                    </NuxtLink>
+                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-1.5 flex-wrap">
+                    <NuxtLink to="/dashboard/organizer" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-primary transition-colors">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-primary transition-colors">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <span class="text-slate-600 dark:text-slate-300">Registrasi Saya</span>
                 </nav>
@@ -50,9 +53,9 @@
                                     <div class="flex flex-col md:flex-row md:items-center gap-3 mb-4">
                                         <h3 class="text-3xl font-black text-navy dark:text-white tracking-tight">{{
                                             participant.full_name }}</h3>
-                                        <span
-                                            class="inline-flex px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 font-black text-[10px] capitalize tracking-widest border border-slate-200 dark:border-slate-600">
-                                            #{{ participant.bib_number || '-' }}
+                                        <span v-if="participant.athlete_code"
+                                            class="inline-flex px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 font-black text-[10px] capitalize tracking-widest border border-slate-200 dark:border-slate-600 font-mono">
+                                            {{ participant.athlete_code }}
                                         </span>
                                     </div>
 
@@ -197,6 +200,7 @@ const { t } = useI18n()
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 const { get } = useApi()
+const { tournamentTitle } = useTournamentContext()
 const route = useRoute()
 const eventId = route.params.id
 

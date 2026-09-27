@@ -173,6 +173,11 @@
                                                 <span v-else class="text-slate-500">
                                                     {{ isEn ? 'New account created (Default pass: Archeris123!)' : 'Akun baru dibuat otomatis (Sandi: Archeris123!)' }}
                                                 </span>
+
+                                                <div v-if="ath.missing_required_fields && ath.missing_required_fields.length > 0 && !ath.is_already_in_roster && !ath.is_already_registered" class="mt-1 flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                                    <Icon icon="ph:warning-circle-bold" class="text-xs shrink-0 text-amber-600" />
+                                                    <span>{{ isEn ? `Missing required: ${ath.missing_required_fields.join(', ')}` : `Data wajib belum lengkap: ${ath.missing_required_fields.join(', ')}` }}</span>
+                                                </div>
                                             </td>
                                             <td class="py-2.5 px-3 text-center">
                                                 <button
@@ -232,7 +237,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import BaseButton from '~/components/common/BaseButton.vue'
 import { useApi } from '~/composables/useApi'
@@ -243,19 +248,49 @@ const props = defineProps({
     tournamentId: { type: [String, Number], required: true },
     tournamentName: { type: String, default: 'Tournament' },
     categories: { type: Array, default: () => [] },
-    existingEmails: { type: Array, default: () => [] }
+    existingEmails: { type: Array, default: () => [] },
+    customFields: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['close', 'imported'])
 
 const { locale } = useI18n()
 const isEn = computed(() => locale.value !== 'id')
-const { post } = useApi()
+const { get, post } = useApi()
 
 const isDragging = ref(false)
 const verifying = ref(false)
 const fileInputRef = ref(null)
 const parsedRows = ref([])
+const localCustomFields = ref([])
+
+const loadCustomFields = async () => {
+    if (Array.isArray(props.customFields) && props.customFields.length > 0) {
+        localCustomFields.value = props.customFields
+        return
+    }
+    if (!props.tournamentId) return
+    try {
+        const res = await get(`/tournaments/${props.tournamentId}/custom-fields`)
+        localCustomFields.value = res?.fields || []
+    } catch (e) {
+        localCustomFields.value = []
+    }
+}
+
+watch(() => props.show, (val) => {
+    if (val) loadCustomFields()
+})
+
+watch(() => props.customFields, (val) => {
+    if (Array.isArray(val) && val.length > 0) {
+        localCustomFields.value = val
+    }
+}, { immediate: true })
+
+onMounted(() => {
+    loadCustomFields()
+})
 
 const close = () => {
     emit('close')
@@ -270,18 +305,43 @@ const triggerFileInput = () => {
     fileInputRef.value?.click()
 }
 
-// ─── CSV TEMPLATE GENERATOR (Natural common headers, NO category column) ─────
+// ─── CSV TEMPLATE GENERATOR (Natural common headers + Dynamic custom fields) ─────
 const downloadCsvTemplate = () => {
-    const headers = ['Full Name', 'Email', 'Gender', 'Phone Number', 'Date of Birth', 'Club Name']
+    const coreHeaders = ['Full Name', 'Email', 'Gender', 'Phone Number', 'Date of Birth', 'Club Name']
     
+    const validCustomFields = (localCustomFields.value || []).filter(f => 
+        f.is_active && !['heading', 'divider', 'notice'].includes(f.element_type)
+    )
+    
+    const customHeaderTitles = validCustomFields.map(f => f.label_id || f.label_en || f.field_key || f.uuid)
+    const allHeaders = [...coreHeaders, ...customHeaderTitles]
+
+    const getSampleCustomVal = (field, idx) => {
+        if (field.field_type === 'number') return idx === 0 ? '123' : '456'
+        if (field.field_type === 'select' || field.field_type === 'radio') {
+            if (Array.isArray(field.options) && field.options.length > 0) return field.options[idx % field.options.length]
+            return 'Pilihan 1'
+        }
+        if (field.field_type === 'checkbox') {
+            if (Array.isArray(field.options) && field.options.length > 0) return field.options[0]
+            return 'Ya'
+        }
+        if (field.field_type === 'date') return idx === 0 ? '2000-01-15' : '1998-07-22'
+        return idx === 0 ? 'Contoh 1' : 'Contoh 2'
+    }
+
+    const row1Custom = validCustomFields.map(f => getSampleCustomVal(f, 0))
+    const row2Custom = validCustomFields.map(f => getSampleCustomVal(f, 1))
+    const row3Custom = validCustomFields.map(f => getSampleCustomVal(f, 0))
+
     const sampleRows = [
-        ['Faris Aditya Pratama', 'faris.aditya@example.com', 'Male', '081234567890', '2008-05-20', 'Fast Archery Club'],
-        ['Rizky Kurniawan', 'rizky.kurniawan@example.com', 'Male', '081298765432', '2008-11-14', 'Eagle Archery'],
-        ['Siti Rahmawati', 'siti.rahmawati@example.com', 'Female', '081377889900', '2009-02-15', 'Fast Archery Club']
+        ['Faris Aditya Pratama', 'faris.aditya@example.com', 'Male', '081234567890', '2008-05-20', 'Fast Archery Club', ...row1Custom],
+        ['Rizky Kurniawan', 'rizky.kurniawan@example.com', 'Male', '081298765432', '2008-11-14', 'Eagle Archery', ...row2Custom],
+        ['Siti Rahmawati', 'siti.rahmawati@example.com', 'Female', '081377889900', '2009-02-15', 'Fast Archery Club', ...row3Custom]
     ]
 
     const csvLines = [
-        headers.join(','),
+        allHeaders.join(','),
         ...sampleRows.map(row => row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(','))
     ]
 
@@ -345,6 +405,26 @@ const processCsvText = async (csvText) => {
             club_name: headers.findIndex(h => h.includes('club') || h.includes('klub') || h.includes('sekolah') || h.includes('school') || h.includes('kontingen'))
         }
 
+        // Map custom fields
+        const validCustomFields = (localCustomFields.value || []).filter(f => 
+            f.is_active && !['heading', 'divider', 'notice'].includes(f.element_type)
+        )
+        const customFieldColMap = []
+        for (const field of validCustomFields) {
+            const fieldKeyNorm = (field.field_key || '').toLowerCase().trim()
+            const labelIdNorm = (field.label_id || '').toLowerCase().trim()
+            const labelEnNorm = (field.label_en || '').toLowerCase().trim()
+            
+            const foundIdx = headers.findIndex(h => 
+                (fieldKeyNorm && h === fieldKeyNorm) ||
+                (labelIdNorm && (h === labelIdNorm || h.includes(labelIdNorm))) ||
+                (labelEnNorm && (h === labelEnNorm || h.includes(labelEnNorm)))
+            )
+            if (foundIdx !== -1) {
+                customFieldColMap.push({ field_key: field.field_key, col_idx: foundIdx, field_type: field.field_type })
+            }
+        }
+
         const rawAthletes = []
         for (let i = 1; i < lines.length; i++) {
             const rawLine = lines[i].trim()
@@ -363,13 +443,28 @@ const processCsvText = async (csvText) => {
             const fullName = getCol(colMap.full_name)
             if (!email && !fullName) continue
 
+            // Extract custom fields values
+            const customFieldValues = {}
+            for (const cf of customFieldColMap) {
+                const rawVal = getCol(cf.col_idx)
+                if (rawVal !== '') {
+                    if (cf.field_type === 'number') {
+                        const num = Number(rawVal)
+                        customFieldValues[cf.field_key] = isNaN(num) ? rawVal : num
+                    } else {
+                        customFieldValues[cf.field_key] = rawVal
+                    }
+                }
+            }
+
             rawAthletes.push({
                 full_name: fullName,
                 email: email,
                 gender: getCol(colMap.gender) || 'male',
                 phone: getCol(colMap.phone),
                 date_of_birth: getCol(colMap.date_of_birth),
-                club_name: getCol(colMap.club_name)
+                club_name: getCol(colMap.club_name),
+                custom_fields: customFieldValues
             })
         }
 
@@ -402,6 +497,7 @@ const processCsvText = async (csvText) => {
                     phone: ath.phone,
                     date_of_birth: ath.date_of_birth,
                     club_name: ath.club_name,
+                    custom_fields: ath.custom_fields || {},
                     is_existing_user: false,
                     is_already_registered: false,
                     status: 'ready_new'
@@ -409,9 +505,20 @@ const processCsvText = async (csvText) => {
             })
         }
 
-        parsedRows.value = verifyResults.map(r => {
+        parsedRows.value = verifyResults.map((r, idx) => {
+            const rawAth = rawAthletes[idx] || {}
             const emailClean = (r.email || '').toLowerCase().trim()
             const isInCurrentRoster = emailClean && props.existingEmails.some(e => (e || '').toLowerCase().trim() === emailClean)
+            const athCustomFields = r.custom_fields || rawAth.custom_fields || {}
+
+            const missingRequired = validCustomFields
+                .filter(f => f.is_required)
+                .filter(f => {
+                    const val = athCustomFields[f.field_key]
+                    return val === undefined || val === null || val === '' || (Array.isArray(val) && val.length === 0)
+                })
+                .map(f => f.label_id || f.label_en || f.field_key)
+
             return {
                 row_index: r.row_index,
                 full_name: r.full_name,
@@ -421,6 +528,8 @@ const processCsvText = async (csvText) => {
                 date_of_birth: r.date_of_birth || '',
                 club_name: r.club_name || '',
                 avatar_url: r.avatar_url || '',
+                custom_fields: athCustomFields,
+                missing_required_fields: missingRequired,
                 is_existing_user: !!r.is_existing_user,
                 archer_id: r.archer_id || null,
                 is_already_registered: !!r.is_already_registered,
@@ -458,6 +567,7 @@ const applyImportedAthletes = () => {
             phone: r.phone,
             date_of_birth: r.date_of_birth,
             club_name: r.club_name,
+            custom_fields: r.custom_fields || {},
             category_ids: [],
             category_id: '',
             avatar_url: r.avatar_url,

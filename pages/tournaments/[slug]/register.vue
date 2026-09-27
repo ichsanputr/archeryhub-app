@@ -126,7 +126,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-xs font-black uppercase tracking-wider">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100/70 text-emerald-800 text-xs font-black">
                         <Icon icon="ph:check-circle-fill" class="text-emerald-600 text-sm" />
                         <span>{{ isEn ? 'Already Registered' : 'Sudah Terdaftar' }}</span>
                     </span>
@@ -144,12 +144,12 @@
                 <!-- Registration Summary Box -->
                 <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 text-left space-y-3.5 max-w-lg mx-auto">
                     <div class="flex items-center justify-between gap-3 border-b border-slate-200/60 pb-3">
-                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">{{ isEn ? 'Registered Archer' : 'Nama Atlet' }}</div>
+                        <div class="text-xs font-medium text-slate-400">{{ isEn ? 'Registered Archer' : 'Nama Atlet' }}</div>
                         <div class="text-xs sm:text-sm font-black text-navy">{{ myRegistration?.full_name || archerProfile?.full_name || user?.full_name }}</div>
                     </div>
 
                     <div v-if="myRegistration?.categories && myRegistration.categories.length > 0" class="flex items-start justify-between gap-3 border-b border-slate-200/60 pb-3">
-                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider mt-0.5">{{ isEn ? 'Category' : 'Kategori' }}</div>
+                        <div class="text-xs font-medium text-slate-400 mt-0.5">{{ isEn ? 'Category' : 'Kategori' }}</div>
                         <div class="text-right space-y-1">
                             <div v-for="cat in myRegistration.categories" :key="cat.id || cat.category_id" class="text-xs sm:text-sm font-bold text-navy">
                                 {{ [cat.division_name, cat.category_name, cat.gender_division_name, cat.event_type_name].filter(Boolean).join(' ') }}
@@ -158,7 +158,7 @@
                     </div>
 
                     <div class="flex items-center justify-between gap-3">
-                        <div class="text-xs font-medium text-slate-400 uppercase tracking-wider">{{ isEn ? 'Payment Status' : 'Status Pembayaran' }}</div>
+                        <div class="text-xs font-medium text-slate-400">{{ isEn ? 'Payment Status' : 'Status Pembayaran' }}</div>
                         <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold capitalize"
                             :class="myRegistration?.payment_status === 'paid' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'">
                             <Icon :icon="myRegistration?.payment_status === 'paid' ? 'ph:check-circle-fill' : 'ph:clock-bold'" />
@@ -306,99 +306,128 @@
                     <!-- ───────────────────────────────────────────────────────── -->
                     <!-- STEP 1: IDENTITY & MODE SELECTION                       -->
                     <!-- ───────────────────────────────────────────────────────── -->
-                    <div v-if="currentStep === 1" class="p-6 sm:p-8 space-y-8">
+                    <div v-if="currentStep === 1" class="p-4 sm:p-8 space-y-6 sm:space-y-8">
                         <div>
                             <h2 class="text-xl sm:text-2xl font-black text-navy tracking-tight">
                                 {{ isEn ? 'Select Registration Type' : 'Pilih Tipe Pendaftaran' }}
                             </h2>
-                            <div class="text-sm text-slate-500 mt-1">
+                            <div class="text-xs sm:text-sm text-slate-500 mt-1">
                                 {{ isEn ? 'Choose whether you are registering for yourself / team, or registering on behalf of other archers.' : 'Pilih apakah Anda mendaftar untuk diri sendiri & tim, atau mendaftarkan atlet lain sebagai perwakilan.' }}
                             </div>
                         </div>
 
-                        <!-- 2-Way Mode Selector Cards -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- 2-Way Mode Selector Cards: Horizontal on Mobile, Card Grid on Desktop -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             <!-- Option 1: Individual / Captain -->
                             <div
                                 @click="registrationMode = 'captain_team'"
-                                class="p-5 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-col justify-between group select-none"
+                                class="p-4 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-row sm:flex-col items-center sm:items-stretch justify-between gap-3.5 sm:gap-0 group select-none"
                                 :class="registrationMode === 'captain_team' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-white'">
-                                <div>
-                                    <div class="flex items-center justify-between gap-2 mb-4">
-                                        <div class="size-11 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                                <div class="flex items-center sm:block gap-3.5 sm:gap-0 min-w-0 flex-1">
+                                    <div class="flex items-center justify-between gap-2 sm:mb-4 shrink-0 sm:shrink">
+                                        <div class="size-11 sm:size-12 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
                                             <Icon icon="ph:user-bold" class="text-xl" />
                                         </div>
-                                        <span class="px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
+                                        <span class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
                                             :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
                                             {{ isEn ? 'Competing Athlete' : 'Peserta Bertanding' }}
                                         </span>
                                     </div>
-                                    <div class="font-black text-navy text-base sm:text-lg">
-                                        {{ isEn ? 'Self & Teammates' : 'Pendaftaran Mandiri & Rekan' }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
-                                        {{ isEn ? 'Choose this mode to register yourself for individual categories and invite or register teammates for team events.' : 'Pilih mode ini untuk mendaftar kategori perorangan serta mengajak atau mendaftarkan rekan untuk kategori beregu.' }}
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
+                                            <div class="font-black text-navy text-sm sm:text-lg leading-tight">
+                                                {{ isEn ? 'Self & Teammates' : 'Pendaftaran Mandiri & Rekan' }}
+                                            </div>
+                                            <span class="sm:hidden px-1.5 py-0.5 rounded text-[11px] font-bold shrink-0"
+                                                :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
+                                                {{ isEn ? 'Athlete' : 'Atlet' }}
+                                            </span>
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-slate-500 font-medium sm:mt-1 leading-snug sm:leading-relaxed line-clamp-2 sm:line-clamp-none">
+                                            {{ isEn ? 'Choose this mode to register yourself for individual categories and invite or register teammates for team events.' : 'Pilih mode ini untuk mendaftar kategori perorangan serta mengajak atau mendaftarkan rekan untuk kategori beregu.' }}
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <div class="hidden sm:flex mt-4 pt-3 border-t border-slate-100 items-center justify-between text-xs sm:text-sm">
                                     <span class="font-bold text-slate-400">{{ isEn ? 'Direct Entry' : 'Pendaftaran Langsung' }}</span>
                                     <div class="size-6 rounded-full flex items-center justify-center transition-all"
                                         :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                        <Icon icon="ph:check-bold" class="text-xs font-black" />
+                                        <Icon icon="ph:check-bold" class="text-xs sm:text-sm font-black" />
                                     </div>
+                                </div>
+
+                                <!-- Mobile Right Checkmark -->
+                                <div class="sm:hidden size-6 rounded-full flex items-center justify-center transition-all shrink-0 ml-1"
+                                    :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
+                                    <Icon icon="ph:check-bold" class="text-xs font-black" />
                                 </div>
                             </div>
 
                             <!-- Option 2: Club Delegation / Representative -->
                             <div
                                 @click="registrationMode = 'club_delegation'"
-                                class="p-5 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-col justify-between group select-none"
+                                class="p-4 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-row sm:flex-col items-center sm:items-stretch justify-between gap-3.5 sm:gap-0 group select-none"
                                 :class="registrationMode === 'club_delegation' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-white'">
-                                <div>
-                                    <div class="flex items-center justify-between gap-2 mb-4">
-                                        <div class="size-11 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                                <div class="flex items-center sm:block gap-3.5 sm:gap-0 min-w-0 flex-1">
+                                    <div class="flex items-center justify-between gap-2 sm:mb-4 shrink-0 sm:shrink">
+                                        <div class="size-11 sm:size-12 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
                                             <Icon icon="ph:users-three-bold" class="text-xl" />
                                         </div>
-                                        <span class="px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
+                                        <span class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
                                             :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
                                             {{ isEn ? 'Collective / Official' : 'Kolektif / Official' }}
                                         </span>
                                     </div>
-                                    <div class="font-black text-navy text-base sm:text-lg">
-                                        {{ isEn ? 'Club Delegation / Manager' : 'Pendaftaran Delegasi Klub / Manajer' }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-500 font-medium mt-1 leading-relaxed">
-                                        {{ isEn ? 'Choose this mode if you represent a club, school, or contingent registering multiple athletes together under one single invoice.' : 'Pilih mode ini jika Anda mewakili klub, sekolah, atau pengurus kontingen yang mendaftarkan banyak atlet sekaligus dalam satu tagihan.' }}
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
+                                            <div class="font-black text-navy text-sm sm:text-lg leading-tight">
+                                                {{ isEn ? 'Club Delegation' : 'Delegasi Klub / Official' }}
+                                            </div>
+                                            <span class="sm:hidden px-1.5 py-0.5 rounded text-[11px] font-bold shrink-0"
+                                                :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
+                                                {{ isEn ? 'Official' : 'Official' }}
+                                            </span>
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-slate-500 font-medium sm:mt-1 leading-snug sm:leading-relaxed line-clamp-2 sm:line-clamp-none">
+                                            {{ isEn ? 'Choose this mode if you represent a club, school, or contingent registering multiple athletes together under one single invoice.' : 'Pilih mode ini jika Anda mewakili klub, sekolah, atau pengurus kontingen yang mendaftarkan banyak atlet sekaligus dalam satu tagihan.' }}
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                                <div class="hidden sm:flex mt-4 pt-3 border-t border-slate-100 items-center justify-between text-xs sm:text-sm">
                                     <span class="font-bold text-slate-400">{{ isEn ? 'Batch Entry & Quotas' : 'Banyak Atlet & Kuota' }}</span>
                                     <div class="size-6 rounded-full flex items-center justify-center transition-all"
                                         :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                        <Icon icon="ph:check-bold" class="text-xs font-black" />
+                                        <Icon icon="ph:check-bold" class="text-xs sm:text-sm font-black" />
                                     </div>
+                                </div>
+
+                                <!-- Mobile Right Checkmark -->
+                                <div class="sm:hidden size-6 rounded-full flex items-center justify-center transition-all shrink-0 ml-1"
+                                    :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
+                                    <Icon icon="ph:check-bold" class="text-xs font-black" />
                                 </div>
                             </div>
                         </div>
 
-                        <!-- MODE 1: ARCHER PROFILE FORM -->
-                        <div v-if="registrationMode === 'captain_team'" class="rounded-2xl border border-slate-200/90 bg-slate-50/50 p-5 sm:p-6 space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
+                        <!-- MODE 1: UNIFIED ARCHER REGISTRATION FORM (Flat on mobile, bordered on desktop) -->
+                        <div v-if="registrationMode === 'captain_team'" class="rounded-2xl border-0 sm:border border-slate-200/90 bg-transparent sm:bg-slate-50/50 p-0 sm:p-6 space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
                             <div class="flex items-center justify-between gap-3 pb-3 border-b border-slate-200/70">
                                 <div>
                                     <h3 class="text-sm sm:text-base font-black text-navy">
-                                        {{ isEn ? 'Archer Profile Details' : 'Data Profil Atlet' }}
+                                        {{ isEn ? 'Archer Registration Form' : 'Formulir Pendaftaran Atlet' }}
                                     </h3>
-                                    <div class="text-xs text-slate-500 mt-0.5">
-                                        {{ isEn ? 'Used for age category validation, match brackets, and certificates.' : 'Digunakan untuk verifikasi usia kategori, bagan tanding, dan sertifikat.' }}
+                                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
+                                        {{ isEn ? 'Fill in the official participant information and tournament requirements.' : 'Lengkapi data identitas pemanah dan persyaratan resmi turnamen.' }}
                                     </div>
                                 </div>
-                                <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 text-xs font-bold shrink-0 hidden sm:inline-block">
-                                    {{ isEn ? 'Participant Info' : 'Data Peserta' }}
+                                <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 text-xs sm:text-sm font-bold shrink-0 hidden sm:inline-block">
+                                    {{ isEn ? 'Step 1: Archer Data' : 'Langkah 1: Data Atlet' }}
                                 </span>
                             </div>
 
+                            <!-- Core System Fields -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <BaseInput
                                     v-model="profileForm.full_name"
@@ -440,6 +469,15 @@
                                     :label="isEn ? 'Club / Contingent / School' : 'Klub / Asal Kontingen / Sekolah'"
                                     :placeholder="isEn ? 'Select or search club...' : 'Pilih atau cari klub...'" />
                             </div>
+
+                            <!-- DYNAMIC CUSTOM FIELDS (Flows seamlessly as part of unified form) -->
+                            <div v-if="customFields.length > 0" class="pt-2">
+                                <DynamicCustomFieldsRenderer
+                                    :fields="customFields"
+                                    v-model="customFieldAnswers"
+                                    :category-ids="selectedIndividualCategoryIds"
+                                />
+                            </div>
                         </div>
 
                         <!-- Step 1 Footer Action -->
@@ -461,7 +499,7 @@
                     <!-- ───────────────────────────────────────────────────────── -->
                     <div v-else-if="currentStep === 2" class="p-6 sm:p-8 space-y-8">
                         <div>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy/5 text-navy text-xs font-black uppercase tracking-wider mb-2">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy/5 text-navy text-xs font-black mb-2">
                                 <Icon icon="ph:target-bold" class="text-xs" />
                                 <span>{{ isEn ? 'Step 2 of 3' : 'Langkah 2 dari 3' }}</span>
                             </div>
@@ -560,7 +598,7 @@
                                             </div>
                                         </div>
                                         <div class="flex items-center gap-3 shrink-0">
-                                            <span class="text-sm sm:text-base font-black text-navy">
+                                            <span class="text-sm sm:text-base font-black" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-navy'">
                                                 {{ formatPrice(getFeeForCategory(cat.id)) }}
                                             </span>
                                             <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
@@ -618,7 +656,7 @@
                                             </div>
 
                                             <div class="flex items-center gap-4 shrink-0">
-                                                <span class="text-sm sm:text-base font-black text-navy">
+                                                <span class="text-sm sm:text-base font-black" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-navy'">
                                                     {{ formatPrice(getFeeForCategory(cat.id)) }}
                                                 </span>
                                                 <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
@@ -669,13 +707,13 @@
                                                 <div class="text-base font-bold text-navy leading-snug">
                                                     {{ isEn ? 'Bulk Import via CSV' : 'Import Massal via CSV' }}
                                                 </div>
-                                                <div class="text-xs text-slate-500 mt-1 leading-relaxed">
+                                                <div class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                                                     {{ isEn ? 'Download tailored CSV template and import dozens of archers at once.' : 'Unduh template CSV resmi turnamen ini dan unggah puluhan atlet sekaligus.' }}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="pt-1">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs sm:text-sm font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
                                                 <Icon icon="ph:upload-simple" class="text-sm" />
                                                 <span>{{ isEn ? 'Upload CSV' : 'Unggah File CSV' }}</span>
                                             </span>
@@ -694,13 +732,13 @@
                                                 <div class="text-base font-bold text-navy leading-snug">
                                                     {{ isEn ? 'Add Archer Manually' : 'Tambah Atlet Manual' }}
                                                 </div>
-                                                <div class="text-xs text-slate-500 mt-1 leading-relaxed">
+                                                <div class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                                                     {{ isEn ? 'Search registered database or create new archer accounts one-by-one.' : 'Cari di database atau daftarkan akun atlet baru satu per satu lewat form.' }}
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="pt-1">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs sm:text-sm font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
                                                 <Icon icon="ph:plus-bold" class="text-sm" />
                                                 <span>{{ isEn ? 'Add Single' : 'Tambah Manual' }}</span>
                                             </span>
@@ -715,12 +753,12 @@
                                         <!-- Top Row: Title & Main Actions -->
                                         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                                             <div class="flex items-center gap-2.5">
-                                                <div class="size-8 rounded-xl bg-navy/5 text-navy flex items-center justify-center font-bold text-xs">
+                                                <div class="size-8 rounded-xl bg-navy/5 text-navy flex items-center justify-center font-bold text-xs sm:text-sm">
                                                     <Icon icon="ph:users-three-bold" class="text-base" />
                                                 </div>
                                                 <div class="flex items-center gap-2">
-                                                    <span class="text-sm font-black text-navy">{{ isEn ? 'Delegation Roster' : 'Daftar Kontingen' }}</span>
-                                                    <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                                                    <span class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'Delegation Roster' : 'Daftar Kontingen' }}</span>
+                                                    <span class="text-xs sm:text-sm font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
                                                         {{ delegationAthletes.length }} {{ isEn ? (delegationAthletes.length === 1 ? 'Archer' : 'Archers') : 'Atlet' }}
                                                     </span>
                                                 </div>
@@ -792,13 +830,13 @@
                                                         :class="athleteClubFilter !== 'all' ? 'border-navy bg-navy text-primary' : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'">
                                                         <Icon icon="ph:buildings-bold" class="text-sm" />
                                                         <span>{{ athleteClubFilter !== 'all' ? athleteClubFilter : (isEn ? 'All Clubs' : 'Semua Klub') }}</span>
-                                                        <Icon icon="ph:caret-down-bold" class="text-[10px]" :class="{ 'rotate-180': showClubFilterDropdown }" />
+                                                        <Icon icon="ph:caret-down-bold" class="text-xs" :class="{ 'rotate-180': showClubFilterDropdown }" />
                                                     </button>
                                                     <div v-if="showClubFilterDropdown" class="absolute right-0 top-full mt-1.5 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200 w-52 overflow-hidden">
                                                         <div class="p-1.5 space-y-0.5">
                                                             <button type="button"
                                                                 @click.stop="athleteClubFilter = 'all'; showClubFilterDropdown = false"
-                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer"
                                                                 :class="athleteClubFilter === 'all' ? 'bg-navy text-primary' : 'text-slate-700 hover:bg-slate-100'">
                                                                 {{ isEn ? 'All Clubs' : 'Semua Klub' }}
                                                             </button>
@@ -806,7 +844,7 @@
                                                                 v-for="club in uniqueClubsInRoster"
                                                                 :key="club"
                                                                 @click.stop="athleteClubFilter = club; showClubFilterDropdown = false"
-                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer truncate"
+                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer truncate"
                                                                 :class="athleteClubFilter === club ? 'bg-navy text-primary' : 'text-slate-700 hover:bg-slate-100'">
                                                                 {{ club }}
                                                             </button>
@@ -819,29 +857,29 @@
 
                                     <!-- Bulk Action Floating Bar -->
                                     <div v-if="selectedAthleteEmails.length > 0" class="p-3 bg-navy/5 border border-navy/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 animate-fade-in">
-                                        <div class="flex items-center gap-2 text-xs font-bold text-navy">
-                                            <span class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center text-xs font-black">{{ selectedAthleteEmails.length }}</span>
+                                        <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-navy">
+                                            <span class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm font-black">{{ selectedAthleteEmails.length }}</span>
                                             <span>{{ isEn ? `${selectedAthleteEmails.length} archers selected` : `${selectedAthleteEmails.length} atlet dipilih` }}</span>
                                         </div>
                                         <div class="flex items-center gap-2">
                                             <button
                                                 type="button"
                                                 @click="showBulkCategoryModal = true"
-                                                class="px-3 py-1.5 rounded-xl bg-navy text-primary text-xs font-bold flex items-center gap-1.5 shadow-2xs hover:bg-navy/90 transition-colors cursor-pointer">
-                                                <Icon icon="ph:tag-bold" class="text-xs" />
+                                                class="px-3 py-1.5 rounded-xl bg-navy text-primary text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-2xs hover:bg-navy/90 transition-colors cursor-pointer">
+                                                <Icon icon="ph:tag-bold" class="text-xs sm:text-sm" />
                                                 <span>{{ isEn ? 'Assign Category' : 'Tetapkan Kategori' }}</span>
                                             </button>
                                             <button
                                                 type="button"
                                                 @click="removeSelectedAthletes"
-                                                class="px-3 py-1.5 rounded-xl bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer">
-                                                <Icon icon="ph:trash-bold" class="text-xs" />
+                                                class="px-3 py-1.5 rounded-xl bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors cursor-pointer">
+                                                <Icon icon="ph:trash-bold" class="text-xs sm:text-sm" />
                                                 <span>{{ isEn ? 'Remove Selected' : 'Hapus Terpilih' }}</span>
                                             </button>
                                             <button
                                                 type="button"
                                                 @click="selectedAthleteEmails = []"
-                                                class="text-xs text-slate-500 hover:text-navy font-bold px-2 py-1 cursor-pointer">
+                                                class="text-xs sm:text-sm text-slate-500 hover:text-navy font-bold px-2 py-1 cursor-pointer">
                                                 {{ isEn ? 'Deselect' : 'Batal' }}
                                             </button>
                                         </div>
@@ -865,14 +903,14 @@
                                                         <th class="py-3 px-3.5 w-28">{{ isEn ? 'Account' : 'Status Akun' }}</th>
                                                         <th class="py-3 px-3.5 w-[34%]">{{ isEn ? 'Category' : 'Kategori Lomba' }}</th>
                                                         <th class="py-3 px-4 w-32 text-right">{{ isEn ? 'Fee' : 'Biaya' }}</th>
-                                                        <th class="py-3 px-3 w-12 text-center text-slate-400">{{ isEn ? 'Action' : 'Aksi' }}</th>
+                                                        <th class="py-3 px-3 w-20 text-center text-slate-400">{{ isEn ? 'Action' : 'Aksi' }}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="divide-y divide-slate-100">
                                                     <tr v-if="paginatedDelegationAthletes.length === 0">
                                                         <td colspan="7" class="py-8 text-center text-slate-400">
                                                             <Icon icon="ph:user-slash" class="text-3xl mx-auto mb-1 text-slate-300" />
-                                                            <div class="text-xs font-bold">{{ isEn ? 'No archers match your search' : 'Tidak ada atlet yang cocok dengan pencarian' }}</div>
+                                                            <div class="text-xs sm:text-sm font-bold">{{ isEn ? 'No archers match your search' : 'Tidak ada atlet yang cocok dengan pencarian' }}</div>
                                                         </td>
                                                     </tr>
                                                     <tr v-for="(ath, idx) in paginatedDelegationAthletes" :key="idx" class="hover:bg-slate-50/60 transition-colors" :class="{ 'bg-navy/5': selectedAthleteEmails.includes(ath.email) }">
@@ -886,14 +924,25 @@
                                                         </td>
 
                                                         <!-- Index -->
-                                                        <td class="py-3 px-2 text-center font-bold text-slate-400 text-xs">
+                                                        <td class="py-3 px-2 text-center font-bold text-slate-400 text-xs sm:text-sm">
                                                             {{ (athleteCurrentPage - 1) * athletePageSize + idx + 1 }}
                                                         </td>
 
                                                         <!-- Archer Data -->
                                                         <td class="py-3 px-4">
-                                                            <div class="font-bold text-navy leading-snug">{{ ath.full_name }}</div>
-                                                            <div class="text-xs text-slate-500 truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                            <div class="flex items-center gap-2 flex-wrap">
+                                                                <span class="font-bold text-navy leading-snug">{{ ath.full_name }}</span>
+                                                                <button
+                                                                    v-if="!areRequiredCustomFieldsFilled(ath.custom_fields, customFields)"
+                                                                    type="button"
+                                                                    @click="editDelegationAthlete(ath)"
+                                                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 text-[11px] font-bold border border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
+                                                                    :title="isEn ? 'Required information is incomplete. Click to edit.' : 'Data wajib belum lengkap. Klik untuk melengkapi.'">
+                                                                    <Icon icon="ph:warning-circle-bold" class="text-xs text-amber-600" />
+                                                                    <span>{{ isEn ? 'Incomplete Data' : 'Data Belum Lengkap' }}</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="text-xs sm:text-sm text-slate-500 truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
                                                                 <span>{{ ath.email }}</span>
                                                                 <span v-if="ath.phone" class="text-slate-300">•</span>
                                                                 <span v-if="ath.phone">{{ ath.phone }}</span>
@@ -908,11 +957,11 @@
 
                                                         <!-- Account Status -->
                                                         <td class="py-3 px-3.5 whitespace-nowrap">
-                                                            <span v-if="ath.is_new_account" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
+                                                            <span v-if="ath.is_new_account" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-bold border border-emerald-200">
                                                                 <Icon icon="ph:user-plus-bold" />
                                                                 <span>{{ isEn ? 'New' : 'Akun Baru' }}</span>
                                                             </span>
-                                                            <span v-else class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200">
+                                                            <span v-else class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs sm:text-sm font-bold border border-slate-200">
                                                                 <Icon icon="ph:user-check-bold" />
                                                                 <span>{{ isEn ? 'Existing' : 'Akun Terdaftar' }}</span>
                                                             </span>
@@ -946,7 +995,7 @@
 
                                                                     <!-- Multiple Selected State -->
                                                                     <div v-else class="flex items-center gap-1.5 truncate min-w-0">
-                                                                        <span class="px-1.5 py-0.5 rounded-md bg-navy text-primary text-[10px] font-black shrink-0">
+                                                                        <span class="px-1.5 py-0.5 rounded-md bg-navy text-primary text-xs font-black shrink-0">
                                                                             {{ getArcherCategoryIds(ath).length }}
                                                                         </span>
                                                                         <span class="truncate font-bold">
@@ -957,25 +1006,34 @@
                                                                         </span>
                                                                     </div>
 
-                                                                    <Icon icon="ph:caret-down-bold" class="text-xs text-slate-400 group-hover:text-navy shrink-0 transition-transform" :class="{ 'rotate-180': activeCategoryDropdownAth === ath }" />
+                                                                    <Icon icon="ph:caret-down-bold" class="text-xs sm:text-sm text-slate-400 group-hover:text-navy shrink-0 transition-transform" :class="{ 'rotate-180': activeCategoryDropdownAth === ath }" />
                                                                 </button>
                                                             </div>
                                                         </td>
 
                                                         <!-- Fee -->
-                                                        <td class="py-3 px-3.5 text-right font-black text-navy whitespace-nowrap">
+                                                        <td class="py-3 px-3.5 text-right font-black whitespace-nowrap text-xs sm:text-sm" :class="!getArcherTotalFee(ath) ? 'text-emerald-600' : 'text-navy'">
                                                             {{ formatPrice(getArcherTotalFee(ath)) }}
                                                         </td>
 
                                                         <!-- Action -->
-                                                        <td class="py-3 px-3 text-center">
-                                                            <button
-                                                                type="button"
-                                                                @click="removeDelegationAthlete(ath)"
-                                                                class="size-7 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 inline-flex items-center justify-center transition-colors cursor-pointer"
-                                                                :title="isEn ? 'Remove athlete' : 'Hapus atlet'">
-                                                                <Icon icon="ph:trash" class="text-sm" />
-                                                            </button>
+                                                        <td class="py-3 px-3 text-center whitespace-nowrap">
+                                                            <div class="flex items-center justify-center gap-1">
+                                                                <button
+                                                                    type="button"
+                                                                    @click="editDelegationAthlete(ath)"
+                                                                    class="size-7 rounded-lg hover:bg-navy/10 text-slate-400 hover:text-navy inline-flex items-center justify-center transition-colors cursor-pointer"
+                                                                    :title="isEn ? 'Edit athlete data' : 'Edit data atlet'">
+                                                                    <Icon icon="ph:pencil-simple-bold" class="text-sm" />
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    @click="removeDelegationAthlete(ath)"
+                                                                    class="size-7 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 inline-flex items-center justify-center transition-colors cursor-pointer"
+                                                                    :title="isEn ? 'Remove athlete' : 'Hapus atlet'">
+                                                                    <Icon icon="ph:trash" class="text-sm" />
+                                                                </button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -996,14 +1054,14 @@
                                                     :disabled="athleteCurrentPage <= 1"
                                                     @click="athleteCurrentPage--"
                                                     class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors cursor-pointer">
-                                                    <Icon icon="ph:caret-left-bold" class="text-xs" />
+                                                    <Icon icon="ph:caret-left-bold" class="text-xs sm:text-sm" />
                                                 </button>
 
                                                 <button
                                                     v-for="page in athleteTotalPages"
                                                     :key="page"
                                                     @click="athleteCurrentPage = page"
-                                                    class="size-7 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                                                    class="size-7 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer"
                                                     :class="athleteCurrentPage === page ? 'bg-navy text-white font-black' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'">
                                                     {{ page }}
                                                 </button>
@@ -1013,7 +1071,7 @@
                                                     :disabled="athleteCurrentPage >= athleteTotalPages"
                                                     @click="athleteCurrentPage++"
                                                     class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors cursor-pointer">
-                                                    <Icon icon="ph:caret-right-bold" class="text-xs" />
+                                                    <Icon icon="ph:caret-right-bold" class="text-xs sm:text-sm" />
                                                 </button>
                                             </div>
                                         </div>
@@ -1027,7 +1085,7 @@
                                     <h3 class="text-base sm:text-lg font-black text-navy">
                                         {{ isEn ? 'Reserve Team Quota Slots' : 'Reservasi Kuota Tim' }}
                                     </h3>
-                                    <div class="text-sm text-slate-500 mt-0.5">
+                                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                                         {{ isEn ? 'Lock team quota slots now; name exact archers at Technical Meeting.' : 'Kunci kuota tim sekarang; susunan atlet dapat ditentukan saat Technical Meeting.' }}
                                     </div>
                                 </div>
@@ -1049,8 +1107,13 @@
                                                     <div class="text-sm sm:text-base font-black text-navy truncate">
                                                         {{ cat.name || `${cat.division_name || ''} Team`.trim() || 'Team Category' }}
                                                     </div>
-                                                    <div class="text-xs font-bold text-slate-500 mt-0.5">
-                                                        {{ formatPrice(getFeeForCategory(cat.id)) }} / team
+                                                    <div class="text-xs sm:text-sm font-bold mt-0.5" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-slate-500'">
+                                                        <template v-if="!getFeeForCategory(cat.id) || Number(getFeeForCategory(cat.id)) === 0">
+                                                            {{ isEn ? 'Free' : 'Gratis' }}
+                                                        </template>
+                                                        <template v-else>
+                                                            {{ formatPrice(getFeeForCategory(cat.id)) }} / {{ isEn ? 'team' : 'tim' }}
+                                                        </template>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1079,12 +1142,12 @@
                                         </div>
 
                                         <!-- Gate Checking Status Footer -->
-                                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-xs sm:text-sm">
                                             <div class="flex items-center gap-1.5 font-bold truncate">
                                                 <span
-                                                    class="px-2 py-0.5 rounded-md text-[11px] font-black inline-flex items-center gap-1 shrink-0"
+                                                    class="px-2 py-0.5 rounded-md text-xs sm:text-sm font-black inline-flex items-center gap-1 shrink-0"
                                                     :class="getTeamEligibility(cat).isEligible ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'">
-                                                    <Icon :icon="getTeamEligibility(cat).isEligible ? 'ph:check-circle-bold' : 'ph:warning-circle-bold'" class="text-xs" />
+                                                    <Icon :icon="getTeamEligibility(cat).isEligible ? 'ph:check-circle-bold' : 'ph:warning-circle-bold'" class="text-xs sm:text-sm" />
                                                     <span>{{ getTeamEligibility(cat).isEligible ? (isEn ? `Eligible (Max ${getTeamEligibility(cat).maxTeams} Team)` : `Memenuhi Syarat (Maks. ${getTeamEligibility(cat).maxTeams} Tim)`) : (isEn ? 'Roster Incomplete' : 'Roster Belum Cukup') }}</span>
                                                 </span>
                                                 <span class="text-slate-400 truncate hidden sm:inline">• {{ getTeamEligibility(cat).neededMessage }}</span>
@@ -1094,7 +1157,7 @@
                                                 v-if="!getTeamEligibility(cat).isEligible"
                                                 type="button"
                                                 @click="showAddAthleteModal = true"
-                                                class="text-[11px] font-black text-navy hover:underline shrink-0 flex items-center gap-0.5 cursor-pointer">
+                                                class="text-xs sm:text-sm font-black text-navy hover:underline shrink-0 flex items-center gap-0.5 cursor-pointer">
                                                 <Icon icon="ph:user-plus-bold" />
                                                 <span>{{ isEn ? '+ Add Archer' : '+ Tambah Atlet' }}</span>
                                             </button>
@@ -1109,7 +1172,7 @@
                                     <div class="text-xs sm:text-sm font-bold text-slate-700">
                                         {{ isEn ? 'No Team Categories Available' : 'Tidak Ada Kategori Beregu' }}
                                     </div>
-                                    <div class="text-xs text-slate-400 max-w-sm mx-auto">
+                                    <div class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
                                         {{ isEn ? 'This tournament only offers individual categories. You can proceed with individual roster above.' : 'Turnamen ini hanya menyediakan kategori perorangan/individu. Anda dapat langsung melanjutkan pendaftaran atlet individu di atas.' }}
                                     </div>
                                 </div>
@@ -1121,15 +1184,17 @@
                             <button
                                 type="button"
                                 @click="currentStep = 1"
-                                class="px-5 py-2.5 rounded-xl border border-slate-200 text-navy font-bold text-sm hover:bg-slate-50 transition-colors flex items-center gap-2 cursor-pointer self-start sm:self-auto">
+                                class="px-5 py-2.5 rounded-xl border border-slate-200 text-navy font-bold text-sm sm:text-base hover:bg-slate-50 transition-colors flex items-center gap-2 cursor-pointer self-start sm:self-auto">
                                 <Icon icon="ph:arrow-left-bold" />
                                 <span>{{ isEn ? 'Back to Type' : 'Kembali ke Tipe' }}</span>
                             </button>
 
                             <div class="flex items-center gap-4 self-end sm:self-auto">
                                 <div class="text-right hidden sm:block">
-                                    <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">{{ isEn ? 'Estimated Total' : 'Estimasi Biaya' }}</div>
-                                    <div class="text-base font-black text-navy tabular-nums">{{ formatPrice(totalCalculatedFee) }}</div>
+                                    <div class="text-xs sm:text-sm text-slate-400 font-bold">{{ isEn ? 'Estimated Total' : 'Estimasi Biaya' }}</div>
+                                    <div class="text-base sm:text-lg font-black tabular-nums" :class="totalCalculatedFee === 0 ? 'text-emerald-600' : 'text-navy'">
+                                        {{ formatPrice(totalCalculatedFee) }}
+                                    </div>
                                 </div>
 
                                 <BaseButton
@@ -1149,80 +1214,72 @@
                     <!-- STEP 3: REVIEW & PAYMENT CHECKOUT                        -->
                     <!-- ───────────────────────────────────────────────────────── -->
                     <div v-else-if="currentStep === 3" class="p-6 sm:p-8 space-y-6">
-                        <!-- Header -->
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 class="text-xl sm:text-2xl font-black text-navy tracking-tight">
-                                    {{ isEn ? 'Review Invoice & Payment' : 'Ringkasan & Pembayaran' }}
-                                </h2>
-                                <div class="text-sm text-slate-500 mt-0.5">
-                                    {{ isEn ? 'Review your itemized summary and complete your payment.' : 'Periksa rincian biaya pendaftaran dan selesaikan pembayaran.' }}
-                                </div>
-                            </div>
-
-                            <button
-                                type="button"
-                                @click="currentStep = 2"
-                                class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:text-navy hover:bg-slate-50 font-bold text-xs sm:text-sm flex items-center gap-2 cursor-pointer transition-colors self-start sm:self-center shrink-0">
-                                <Icon icon="ph:arrow-left-bold" />
-                                <span>{{ isEn ? 'Change Categories' : 'Ubah Kategori' }}</span>
-                            </button>
-                        </div>
-
                         <!-- Single Column Linear Flow -->
                         <div class="space-y-6">
                             
                             <!-- 1. Itemized Fee Breakdown -->
-                            <ItemizedFeeBreakdown :items="computedBreakdownItems" :currency="eventCurrency" />
+                            <ItemizedFeeBreakdown :items="computedBreakdownItems" :currency="eventCurrency">
+                                <template #actions>
+                                    <button
+                                        type="button"
+                                        @click="currentStep = 2"
+                                        class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs">
+                                        <Icon icon="ph:arrow-left-bold" class="text-xs" />
+                                        <span>{{ isEn ? 'Change Categories' : 'Ubah Kategori' }}</span>
+                                    </button>
+                                </template>
+                            </ItemizedFeeBreakdown>
 
                             <!-- 2. Payment Method & Checkout Card -->
                             <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-5">
                                 
-                                <!-- Payment Method Selector -->
-                                <div>
-                                    <div class="text-xs font-black text-navy mb-1">
-                                        {{ isEn ? 'Payment Method' : 'Metode Pembayaran' }}
-                                    </div>
-                                    <div class="text-xs text-slate-500 mb-3">
-                                        {{ isEn ? 'Choose how you would like to pay:' : 'Pilih cara pembayaran yang Anda inginkan:' }}
-                                    </div>
+                                <!-- Paid Payment Method Selector (when totalCalculatedFee > 0) -->
+                                <div v-if="totalCalculatedFee > 0" class="space-y-4">
+                                    <!-- Payment Method Selector -->
+                                    <div>
+                                        <div class="text-xs sm:text-sm font-black text-navy mb-1">
+                                            {{ isEn ? 'Payment Method' : 'Metode Pembayaran' }}
+                                        </div>
+                                        <div class="text-xs sm:text-sm text-slate-500 mb-3">
+                                            {{ isEn ? 'Choose how you would like to pay:' : 'Pilih cara pembayaran yang Anda inginkan:' }}
+                                        </div>
 
                                     <!-- Payment Radio Cards -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                         <div
                                             @click="paymentType = 'online'; manualMethodId = ''"
-                                            class="p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
+                                            class="p-3.5 sm:p-4 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
                                             :class="paymentType === 'online' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'">
                                             <div class="flex items-center justify-between mb-2">
                                                 <Icon icon="ph:lightning-bold" class="text-base" :class="paymentType === 'online' ? 'text-primary' : 'text-slate-400'" />
-                                                <div class="size-4 rounded-full flex items-center justify-center"
+                                                <div class="size-4.5 rounded-full flex items-center justify-center"
                                                     :class="paymentType === 'online' ? 'bg-navy text-primary' : 'border-2 border-slate-300'">
-                                                    <Icon v-if="paymentType === 'online'" icon="ph:check-bold" class="text-[9px] font-black" />
+                                                    <Icon v-if="paymentType === 'online'" icon="ph:check-bold" class="text-[10px] font-black" />
                                                 </div>
                                             </div>
                                             <div class="font-bold text-navy text-xs sm:text-sm leading-tight">
                                                 {{ isEn ? 'Instant Online' : 'Instan Online' }}
                                             </div>
-                                            <div class="text-xs text-slate-400 mt-0.5">
+                                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
                                                 {{ eventCurrency === 'IDR' ? 'QRIS & VA (Mayar)' : 'PayPal & Card' }}
                                             </div>
                                         </div>
 
                                         <div
                                             @click="paymentType = 'manual'"
-                                            class="p-3.5 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
+                                            class="p-3.5 sm:p-4 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
                                             :class="paymentType === 'manual' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'">
                                             <div class="flex items-center justify-between mb-2">
                                                 <Icon icon="ph:bank-bold" class="text-base" :class="paymentType === 'manual' ? 'text-primary' : 'text-slate-400'" />
-                                                <div class="size-4 rounded-full flex items-center justify-center"
+                                                <div class="size-4.5 rounded-full flex items-center justify-center"
                                                     :class="paymentType === 'manual' ? 'bg-navy text-primary' : 'border-2 border-slate-300'">
-                                                    <Icon v-if="paymentType === 'manual'" icon="ph:check-bold" class="text-[9px] font-black" />
+                                                    <Icon v-if="paymentType === 'manual'" icon="ph:check-bold" class="text-[10px] font-black" />
                                                 </div>
                                             </div>
                                             <div class="font-bold text-navy text-xs sm:text-sm leading-tight">
                                                 {{ isEn ? 'Manual Transfer' : 'Transfer Bank' }}
                                             </div>
-                                            <div class="text-xs text-slate-400 mt-0.5">
+                                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
                                                 {{ isEn ? 'Transfer & receipt' : 'Transfer & struk' }}
                                             </div>
                                         </div>
@@ -1240,7 +1297,7 @@
                                             </div>
                                             <div class="min-w-0">
                                                 <div class="text-xs sm:text-sm font-bold text-navy">QRIS & Virtual Account (Mayar)</div>
-                                                <div class="text-[11px] text-slate-500 font-medium">BCA, Mandiri, BRI, BNI, Permata, QRIS</div>
+                                                <div class="text-xs sm:text-sm text-slate-500 font-medium">BCA, Mandiri, BRI, BNI, Permata, QRIS</div>
                                             </div>
                                         </div>
 
@@ -1251,11 +1308,11 @@
                                             </div>
                                             <div class="min-w-0">
                                                 <div class="text-xs sm:text-sm font-bold text-navy">PayPal & Global Cards</div>
-                                                <div class="text-[11px] text-blue-600 font-medium">{{ `Processed in ${eventCurrency}` }}</div>
+                                                <div class="text-xs sm:text-sm text-blue-600 font-medium">{{ `Processed in ${eventCurrency}` }}</div>
                                             </div>
                                         </div>
 
-                                        <div class="flex items-center gap-2 text-xs text-slate-500 font-medium px-1">
+                                        <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium px-1">
                                             <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-sm shrink-0" />
                                             <span>{{ isEn ? 'Instant automatic payment verification.' : 'Verifikasi otomatis tanpa perlu upload struk.' }}</span>
                                         </div>
@@ -1272,7 +1329,7 @@
                                                     <div class="text-xs sm:text-sm font-black text-amber-950">
                                                         {{ isEn ? 'Transfer Account Not Available' : 'Rekening Transfer Belum Tersedia' }}
                                                     </div>
-                                                    <div class="text-xs text-amber-900/80 mt-1 leading-relaxed">
+                                                    <div class="text-xs sm:text-sm text-amber-900/80 mt-1 leading-relaxed">
                                                         {{ isEn 
                                                             ? 'The organizer has not configured manual bank transfer accounts for this event. Please use the instant online gateway or contact the organizer.' 
                                                             : 'Penyelenggara turnamen belum menambahkan rekening transfer bank manual untuk turnamen ini. Silakan gunakan metode online (otomatis) atau hubungi pihak panitia.' 
@@ -1284,7 +1341,7 @@
                                                 <button
                                                     type="button"
                                                     @click="paymentType = 'online'"
-                                                    class="px-3.5 py-1.5 rounded-xl bg-navy text-primary hover:bg-navy/90 font-bold text-xs shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
+                                                    class="px-3.5 py-1.5 rounded-xl bg-navy text-primary hover:bg-navy/90 font-bold text-xs sm:text-sm shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
                                                     <Icon icon="ph:lightning-bold" class="text-xs" />
                                                     <span>{{ isEn ? 'Switch to Online Gateway' : 'Beralih ke Pembayaran Online' }}</span>
                                                 </button>
@@ -1299,7 +1356,7 @@
                                                         <Icon icon="ph:bank-bold" class="text-sm text-slate-500" />
                                                         <span>{{ isEn ? 'Select Destination Bank:' : 'Pilih Rekening Tujuan Transfer:' }}</span>
                                                     </div>
-                                                    <span class="text-[11px] font-medium text-slate-400">
+                                                    <span class="text-xs sm:text-sm font-medium text-slate-400">
                                                         {{ isEn ? 'Tap to choose' : 'Pilih salah satu' }}
                                                     </span>
                                                 </div>
@@ -1337,7 +1394,7 @@
                                                                     </div>
                                                                     <div class="min-w-0">
                                                                         <div class="text-sm font-black text-navy truncate leading-tight">{{ m.payment_method || m.bank_name }}</div>
-                                                                        <div class="text-[11px] text-slate-500 font-medium truncate mt-0.5">
+                                                                        <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5">
                                                                             <span class="text-slate-400 font-normal">{{ isEn ? 'a/n' : 'a/n' }}</span> {{ m.account_name || m.account_holder }}
                                                                         </div>
                                                                     </div>
@@ -1345,8 +1402,8 @@
                                                             </div>
 
                                                             <!-- Selected Tag -->
-                                                            <span v-if="manualMethodId === (m.uuid || m.id)" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-navy text-primary text-[10px] font-black shrink-0 uppercase tracking-wider">
-                                                                <Icon icon="ph:check-bold" class="text-[10px]" />
+                                                            <span v-if="manualMethodId === (m.uuid || m.id)" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-navy text-primary text-xs font-black shrink-0">
+                                                                <Icon icon="ph:check-bold" class="text-xs" />
                                                                 <span>{{ isEn ? 'Selected' : 'Dipilih' }}</span>
                                                             </span>
                                                         </div>
@@ -1355,7 +1412,7 @@
                                                         <div class="rounded-xl p-2.5 flex items-center justify-between gap-2 transition-colors"
                                                             :class="manualMethodId === (m.uuid || m.id) ? 'bg-white border border-navy/15 shadow-2xs' : 'bg-slate-50 border border-slate-100 group-hover:bg-white group-hover:border-slate-200'">
                                                             <div class="min-w-0">
-                                                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ isEn ? 'Account Number' : 'Nomor Rekening' }}</div>
+                                                                <div class="text-xs font-bold text-slate-400">{{ isEn ? 'Account Number' : 'Nomor Rekening' }}</div>
                                                                 <div class="text-base sm:text-lg font-black text-slate-900 font-mono tracking-wider truncate leading-tight mt-0.5">
                                                                     {{ m.account_number }}
                                                                 </div>
@@ -1363,20 +1420,20 @@
                                                             <button
                                                                 type="button"
                                                                 @click.stop="copyAccountNumber(m.account_number, m.uuid || m.id)"
-                                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans font-bold transition-all shrink-0 cursor-pointer"
+                                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-sans font-bold transition-all shrink-0 cursor-pointer"
                                                                 :class="copiedBankId === (m.uuid || m.id)
                                                                     ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                                                                     : 'bg-slate-100 hover:bg-navy hover:text-primary text-slate-700 border border-slate-200/80 active:scale-95'"
                                                                 :title="isEn ? 'Copy account number' : 'Salin nomor rekening'">
-                                                                <Icon v-if="copiedBankId === (m.uuid || m.id)" icon="ph:check-bold" class="text-xs text-emerald-600" />
-                                                                <Icon v-else icon="ph:copy-simple-bold" class="text-xs" />
+                                                                <Icon v-if="copiedBankId === (m.uuid || m.id)" icon="ph:check-bold" class="text-xs sm:text-sm text-emerald-600" />
+                                                                <Icon v-else icon="ph:copy-simple-bold" class="text-xs sm:text-sm" />
                                                                 <span>{{ copiedBankId === (m.uuid || m.id) ? (isEn ? 'Copied' : 'Tersalin') : (isEn ? 'Copy' : 'Salin') }}</span>
                                                             </button>
                                                         </div>
 
                                                         <!-- Transfer Instructions (if any) -->
-                                                        <div v-if="m.instructions" class="mt-2.5 pt-2 border-t border-slate-100 text-xs text-slate-500 leading-relaxed flex items-start gap-1.5">
-                                                            <Icon icon="ph:info-bold" class="text-xs text-slate-400 shrink-0 mt-0.5" />
+                                                        <div v-if="m.instructions" class="mt-2.5 pt-2 border-t border-slate-100 text-xs sm:text-sm text-slate-500 leading-relaxed flex items-start gap-1.5">
+                                                            <Icon icon="ph:info-bold" class="text-xs sm:text-sm text-slate-400 shrink-0 mt-0.5" />
                                                             <span>{{ m.instructions }}</span>
                                                         </div>
                                                     </div>
@@ -1401,7 +1458,7 @@
                                                         <label class="text-xs sm:text-sm font-bold text-navy block">
                                                             {{ isEn ? 'Upload Transfer Receipt' : 'Unggah Bukti Transfer' }} <span class="text-rose-500">*</span>
                                                         </label>
-                                                        <span class="text-[11px] sm:text-xs text-slate-400 font-medium">
+                                                        <span class="text-xs text-slate-400 font-medium">
                                                             {{ isEn ? 'JPG, PNG, WEBP, PDF (Max 5MB)' : 'JPG, PNG, WEBP, PDF (Maks. 5MB)' }}
                                                         </span>
                                                     </div>
@@ -1412,7 +1469,7 @@
                                                     <div v-if="uploadingProof" class="p-6 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 flex flex-col items-center justify-center text-center gap-2">
                                                         <Icon icon="ph:spinner-gap-bold" class="text-2xl text-navy animate-spin" />
                                                         <div class="text-xs sm:text-sm font-bold text-navy">{{ isEn ? 'Uploading receipt...' : 'Mengunggah bukti transfer...' }}</div>
-                                                        <div class="text-xs text-slate-400">{{ isEn ? 'Please wait a moment' : 'Mohon tunggu sebentar' }}</div>
+                                                        <div class="text-xs sm:text-sm text-slate-400">{{ isEn ? 'Please wait a moment' : 'Mohon tunggu sebentar' }}</div>
                                                     </div>
 
                                                     <!-- State 2: Uploaded Card (Modern Structured Card) -->
@@ -1427,20 +1484,20 @@
                                                                     class="w-full h-full object-cover" />
                                                                 <div v-else class="flex flex-col items-center justify-center text-rose-500 p-1">
                                                                     <Icon icon="ph:file-pdf-bold" class="text-2xl" />
-                                                                    <span class="text-[10px] font-black uppercase tracking-wider mt-0.5">PDF</span>
+                                                                    <span class="text-xs font-black mt-0.5">PDF</span>
                                                                 </div>
                                                             </div>
 
                                                             <!-- Info & Badge -->
                                                             <div class="min-w-0 flex-1 space-y-1">
-                                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-                                                                    <Icon icon="ph:check-circle-fill" class="text-xs text-emerald-600 shrink-0" />
+                                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-bold">
+                                                                    <Icon icon="ph:check-circle-fill" class="text-xs sm:text-sm text-emerald-600 shrink-0" />
                                                                     <span>{{ isEn ? 'Receipt Attached' : 'Bukti Transfer Terlampir' }}</span>
                                                                 </div>
                                                                 <div class="text-xs sm:text-sm font-bold text-navy truncate" :title="proofFileName || 'transfer-receipt'">
                                                                     {{ proofFileName || (isEn ? 'Transfer Receipt' : 'Bukti Transfer') }}
                                                                 </div>
-                                                                <div class="text-[11px] sm:text-xs text-slate-500 flex items-center gap-2">
+                                                                <div class="text-xs sm:text-sm text-slate-500 flex items-center gap-2">
                                                                     <span v-if="proofFileSize">{{ proofFileSize }} • </span>
                                                                     <span>{{ isEn ? 'Ready for verification' : 'Siap diverifikasi panitia' }}</span>
                                                                 </div>
@@ -1479,12 +1536,12 @@
                                                                 <div class="text-xs sm:text-sm font-bold text-navy">
                                                                     {{ isEn ? 'Click or drag receipt photo / PDF to upload' : 'Klik atau seret foto bukti transfer / PDF ke sini' }}
                                                                 </div>
-                                                                <div class="text-xs text-slate-400 mt-0.5">
+                                                                <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
                                                                     {{ isEn ? 'Supports JPG, PNG, WEBP, or PDF (Max 5MB)' : 'Mendukung format JPG, PNG, WEBP, atau PDF (Maks. 5MB)' }}
                                                                 </div>
                                                             </div>
                                                             <div class="mt-1">
-                                                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-navy group-hover:text-primary text-slate-700 text-xs font-bold transition-colors">
+                                                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-navy group-hover:text-primary text-slate-700 text-xs sm:text-sm font-bold transition-colors">
                                                                     <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
                                                                     <span>{{ isEn ? 'Select File' : 'Pilih Berkas' }}</span>
                                                                 </span>
@@ -1496,17 +1553,20 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
 
                                 <!-- Total Amount & Checkout Button -->
                                 <div class="pt-4 border-t border-slate-100 space-y-3">
                                     <div class="flex items-center justify-between text-sm sm:text-base">
                                         <span class="text-slate-500 font-bold">{{ isEn ? 'Total Payment' : 'Total Pembayaran' }}</span>
-                                        <span class="text-xl sm:text-2xl font-black text-navy tabular-nums">{{ formatPrice(totalCalculatedFee) }}</span>
+                                        <span class="text-xl sm:text-2xl font-black tabular-nums" :class="totalCalculatedFee === 0 ? 'text-emerald-600' : 'text-navy'">
+                                            {{ formatPrice(totalCalculatedFee) }}
+                                        </span>
                                     </div>
 
                                     <BaseButton
                                         @click="handleSubmit"
-                                        :disabled="loading || (paymentType === 'manual' && (!manualMethodId || !proofFileUrl || !senderName))"
+                                        :disabled="loading || (totalCalculatedFee > 0 && paymentType === 'manual' && (!manualMethodId || !proofFileUrl || !senderName))"
                                         :loading="loading"
                                         variant="primary"
                                         size="lg"
@@ -1515,19 +1575,9 @@
                                         {{ checkoutButtonText }}
                                     </BaseButton>
 
-                                    <div v-if="submitError" class="text-xs font-bold text-red-500 text-center bg-red-50 p-2 rounded-xl border border-red-200">
+                                    <div v-if="submitError" class="text-xs sm:text-sm font-bold text-red-500 text-center bg-red-50 p-2 rounded-xl border border-red-200">
                                         {{ submitError }}
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- 3. Trust & Info Reassurance -->
-                            <div class="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 flex items-center gap-3 text-xs text-slate-500">
-                                <Icon icon="ph:shield-check-bold" class="text-emerald-600 text-xl shrink-0" />
-                                <div>
-                                    <span class="font-bold text-navy">{{ isEn ? 'Official Entry Verified' : 'Entri Resmi Terverifikasi' }}</span>
-                                    <span class="hidden sm:inline"> — </span>
-                                    <div class="sm:inline">{{ isEn ? 'Match brackets and official event certificates will be issued under your registered roster.' : 'Bagan pertandingan dan sertifikat resmi akan diterbitkan sesuai dengan data terdaftar.' }}</div>
                                 </div>
                             </div>
                         </div>
@@ -1536,17 +1586,20 @@
             </main>
         </div>
 
-        <!-- Add Athlete Modal for Representative Mode -->
+        <!-- Add/Edit Athlete Modal for Representative Mode -->
         <AddAthleteModal
             :show="showAddAthleteModal"
             :tournament-id="event.id || slug"
             :individual-categories="individualCategories"
+            :custom-fields="customFields"
             :default-club-id="delegationClubId"
             :default-club-name="delegationClubName"
             :existing-emails="delegationAthletes.map(a => a.email?.toLowerCase()).filter(Boolean)"
             :existing-archer-ids="delegationAthletes.map(a => a.archer_id).filter(Boolean)"
-            @close="showAddAthleteModal = false"
-            @add-athlete="handleAddAthlete" />
+            :edit-athlete="editingAthlete"
+            @close="handleCloseAthleteModal"
+            @save-athlete="handleSaveAthlete"
+            @add-athlete="handleSaveAthlete" />
 
         <!-- Bulk Import CSV/Excel Modal for Representative Mode -->
         <BulkImportModal
@@ -1555,6 +1608,7 @@
             :tournament-name="event.name || slug"
             :categories="categories"
             :existing-emails="delegationAthletes.map(a => a.email?.toLowerCase()).filter(Boolean)"
+            :custom-fields="customFields"
             @close="showBulkImportModal = false"
             @imported="handleBulkImported" />
 
@@ -1570,8 +1624,8 @@
                                 <Icon icon="ph:tag-bold" class="text-lg" />
                             </div>
                             <div>
-                                <h4 class="text-sm font-black text-navy">{{ isEn ? 'Bulk Assign Category' : 'Tetapkan Kategori Massal' }}</h4>
-                                <div class="text-xs text-slate-500">{{ isEn ? `Apply category to ${selectedAthleteEmails.length} selected archers` : `Terapkan ke ${selectedAthleteEmails.length} atlet terpilih` }}</div>
+                                <h4 class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'Bulk Assign Category' : 'Tetapkan Kategori Massal' }}</h4>
+                                <div class="text-xs sm:text-sm text-slate-500">{{ isEn ? `Apply category to ${selectedAthleteEmails.length} selected archers` : `Terapkan ke ${selectedAthleteEmails.length} atlet terpilih` }}</div>
                             </div>
                         </div>
                         <button type="button" @click="showBulkCategoryModal = false" class="size-8 rounded-lg text-slate-400 hover:text-navy flex items-center justify-center cursor-pointer">
@@ -1581,9 +1635,9 @@
 
                     <!-- Selected Archers Summary Bar with Gender Badges -->
                     <div class="p-3 bg-slate-50/90 border-b border-slate-100 space-y-1.5">
-                        <div class="flex items-center justify-between text-[11px] font-bold text-slate-500">
+                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-500">
                             <span class="flex items-center gap-1">
-                                <Icon icon="ph:users-three-bold" class="text-xs text-navy" />
+                                <Icon icon="ph:users-three-bold" class="text-xs sm:text-sm text-navy" />
                                 <span>{{ isEn ? 'Selected Archers & Gender' : 'Atlet Terpilih & Gender' }}</span>
                             </span>
                             <span class="text-slate-400">{{ selectedAthletesForBulk.length }} {{ isEn ? 'archers' : 'atlet' }}</span>
@@ -1592,10 +1646,10 @@
                             <div
                                 v-for="ath in selectedAthletesForBulk"
                                 :key="ath.email"
-                                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs font-bold text-navy shadow-2xs">
+                                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-bold text-navy shadow-2xs">
                                 <span class="truncate max-w-[130px]">{{ ath.full_name }}</span>
                                 <span
-                                    class="px-1.5 py-0.5 rounded text-[10px] font-black inline-flex items-center gap-0.5"
+                                    class="px-1.5 py-0.5 rounded text-xs font-black inline-flex items-center gap-0.5"
                                     :class="ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f'
                                         ? 'bg-rose-50 text-rose-700'
                                         : 'bg-sky-50 text-sky-700'">
@@ -1603,7 +1657,7 @@
                                         :icon="ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f'
                                             ? 'ph:gender-female-bold'
                                             : 'ph:gender-male-bold'"
-                                        class="text-[10px]" />
+                                        class="text-xs" />
                                     {{ ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f' ? (isEn ? 'Female' : 'Putri') : (isEn ? 'Male' : 'Putra') }}
                                 </span>
                             </div>
@@ -1623,11 +1677,11 @@
                             ]">
                             <div class="min-w-0 pr-3 space-y-1">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-xs font-black text-navy group-hover:underline truncate">{{ getCategoryFullName(cat) }}</span>
+                                    <span class="text-xs sm:text-sm font-black text-navy group-hover:underline truncate">{{ getCategoryFullName(cat) }}</span>
                                     <!-- Gender Chip -->
                                     <span
                                         :class="[
-                                            'px-2 py-0.5 rounded-md text-[10px] font-black border inline-flex items-center gap-1',
+                                            'px-2 py-0.5 rounded-md text-xs font-black border inline-flex items-center gap-1',
                                             cat.gender_division_name?.toLowerCase().includes('putri') || cat.gender_division_name?.toLowerCase().includes('women') || cat.gender_division_name?.toLowerCase().includes('female')
                                                 ? 'bg-rose-50 text-rose-700 border-rose-200'
                                                 : cat.gender_division_name?.toLowerCase().includes('putra') || cat.gender_division_name?.toLowerCase().includes('men') || cat.gender_division_name?.toLowerCase().includes('male')
@@ -1648,23 +1702,23 @@
                                 </div>
                                 
                                 <!-- Compatibility Status -->
-                                <div class="flex items-center gap-1.5 text-[11px] font-medium">
+                                <div class="flex items-center gap-1.5 text-xs sm:text-sm font-medium">
                                     <span v-if="getBulkCategoryMatchStats(cat).allMatched" class="text-emerald-600 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:check-circle-bold" class="text-xs" />
+                                        <Icon icon="ph:check-circle-bold" class="text-xs sm:text-sm" />
                                         <span>{{ isEn ? `Compatible with all ${selectedAthletesForBulk.length} selected archers` : `Kompatibel untuk semua ${selectedAthletesForBulk.length} atlet terpilih` }}</span>
                                     </span>
                                     <span v-else-if="getBulkCategoryMatchStats(cat).partial" class="text-amber-600 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:warning-circle-bold" class="text-xs" />
+                                        <Icon icon="ph:warning-circle-bold" class="text-xs sm:text-sm" />
                                         <span>{{ isEn ? `Compatible with ${getBulkCategoryMatchStats(cat).matched} of ${selectedAthletesForBulk.length} archers (Partial)` : `Hanya kompatibel untuk ${getBulkCategoryMatchStats(cat).matched} dari ${selectedAthletesForBulk.length} atlet` }}</span>
                                     </span>
                                     <span v-else class="text-rose-500 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:prohibit-bold" class="text-xs" />
+                                        <Icon icon="ph:prohibit-bold" class="text-xs sm:text-sm" />
                                         <span>{{ isEn ? 'Gender incompatible with selected archer(s)' : 'Gender tidak cocok dengan atlet terpilih' }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="text-right shrink-0">
-                                <span class="text-xs font-black text-navy whitespace-nowrap block">{{ formatPrice(getFeeForCategory(cat.id)) }}</span>
+                                <span class="text-xs sm:text-sm font-black text-navy whitespace-nowrap block">{{ formatPrice(getFeeForCategory(cat.id)) }}</span>
                             </div>
                         </div>
                     </div>
@@ -1696,13 +1750,13 @@
                 <!-- Popover Header -->
                 <div class="px-3.5 py-2.5 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-black text-navy">{{ isEn ? 'Competition Categories' : 'Kategori Lomba' }}</span>
-                        <span v-if="activeCategoryDropdownAth && getArcherCategoryIds(activeCategoryDropdownAth).length > 0" class="px-1.5 py-0.5 rounded-md bg-navy text-primary text-[10px] font-black">
+                        <span class="text-xs sm:text-sm font-black text-navy">{{ isEn ? 'Competition Categories' : 'Kategori Lomba' }}</span>
+                        <span v-if="activeCategoryDropdownAth && getArcherCategoryIds(activeCategoryDropdownAth).length > 0" class="px-1.5 py-0.5 rounded-md bg-navy text-primary text-xs font-black">
                             {{ getArcherCategoryIds(activeCategoryDropdownAth).length }}
                         </span>
                     </div>
                     <button type="button" @click.stop="activeCategoryDropdownAth = null" class="size-6 rounded-md hover:bg-slate-200 text-slate-400 hover:text-navy flex items-center justify-center transition-colors cursor-pointer">
-                        <Icon icon="ph:x-bold" class="text-xs" />
+                        <Icon icon="ph:x-bold" class="text-xs sm:text-sm" />
                     </button>
                 </div>
 
@@ -1712,29 +1766,29 @@
                         v-for="cat in activeCategoryDropdownAth ? availableCategoriesForGender(activeCategoryDropdownAth.gender) : []"
                         :key="cat.id"
                         @click.stop="toggleArcherCategory(activeCategoryDropdownAth, cat.id)"
-                        class="flex items-center justify-between p-2 rounded-xl text-xs font-medium cursor-pointer transition-colors"
+                        class="flex items-center justify-between p-2 rounded-xl text-xs sm:text-sm font-medium cursor-pointer transition-colors"
                         :class="isArcherCategorySelected(activeCategoryDropdownAth, cat.id) ? 'bg-navy/5 text-navy font-bold' : 'hover:bg-slate-50 text-slate-700'">
                         <div class="flex items-center gap-2.5 min-w-0 pr-2">
-                            <div class="size-4 rounded border flex items-center justify-center shrink-0 transition-colors"
+                            <div class="size-4.5 rounded border flex items-center justify-center shrink-0 transition-colors"
                                 :class="isArcherCategorySelected(activeCategoryDropdownAth, cat.id) ? 'bg-navy border-navy text-primary' : 'border-slate-300 bg-white'">
-                                <Icon v-if="isArcherCategorySelected(activeCategoryDropdownAth, cat.id)" icon="ph:check-bold" class="text-[10px]" />
+                                <Icon v-if="isArcherCategorySelected(activeCategoryDropdownAth, cat.id)" icon="ph:check-bold" class="text-xs" />
                             </div>
                             <span class="truncate">{{ getCategoryFullName(cat) }}</span>
                         </div>
-                        <span class="text-[11px] font-bold text-slate-500 whitespace-nowrap">
+                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">
                             {{ formatPrice(getFeeForCategory(cat.id)) }}
                         </span>
                     </div>
                 </div>
 
                 <!-- Popover Footer -->
-                <div class="px-3.5 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs">
+                <div class="px-3.5 py-2 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm">
                     <div class="text-slate-500">
                         <span>Total: </span>
                         <span class="font-black text-navy">{{ activeCategoryDropdownAth ? formatPrice(getArcherTotalFee(activeCategoryDropdownAth)) : '' }}</span>
                     </div>
                     <button type="button" @click.stop="activeCategoryDropdownAth = null"
-                        class="px-3 py-1 rounded-lg bg-navy text-primary font-bold text-xs hover:bg-navy/90 transition-colors cursor-pointer shadow-2xs">
+                        class="px-3 py-1 rounded-lg bg-navy text-primary font-bold text-xs sm:text-sm hover:bg-navy/90 transition-colors cursor-pointer shadow-2xs">
                         {{ isEn ? 'Done' : 'Selesai' }}
                     </button>
                 </div>
@@ -1760,6 +1814,7 @@ import PartnerSelectorModal from '~/components/tournament/register/PartnerSelect
 import AddAthleteModal from '~/components/tournament/register/AddAthleteModal.vue'
 import BulkImportModal from '~/components/tournament/register/BulkImportModal.vue'
 import ItemizedFeeBreakdown from '~/components/tournament/register/ItemizedFeeBreakdown.vue'
+import DynamicCustomFieldsRenderer from '~/components/tournaments/DynamicCustomFieldsRenderer.vue'
 import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
 import { formatMoney, getPaymentGatewayForCurrency, getCurrencySymbol } from '~/composables/useCurrency'
@@ -1809,7 +1864,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         const eventId = eventResponse.uuid || eventResponse.id
 
-        const [categoriesResponse, profileResponse, channelsRes, myRegistrationRes, paymentMethodsRes] = await Promise.all([
+        const [categoriesResponse, profileResponse, channelsRes, myRegistrationRes, paymentMethodsRes, customFieldsRes] = await Promise.all([
             $fetch(`${apiBaseUrl}/tournaments/${slug}/categories?limit=100`).catch(() => 
                 $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ data: [] }))
             ),
@@ -1818,12 +1873,16 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             token ? $fetch(`${apiBaseUrl}/tournaments/${slug}/participants/me`, fetchOptions).catch(() => 
                 $fetch(`${apiBaseUrl}/events/${slug}/my-registration`, fetchOptions).catch(() => null)
             ) : Promise.resolve(null),
-            $fetch(`${apiBaseUrl}/events/${slug}/payment-methods`).catch(() => ({ data: [] }))
+            $fetch(`${apiBaseUrl}/events/${slug}/payment-methods`).catch(() => ({ data: [] })),
+            $fetch(`${apiBaseUrl}/tournaments/${slug}/custom-fields/public`).catch(() => ({ fields: [] }))
         ])
 
         if (myRegistrationRes && ((Array.isArray(myRegistrationRes.categories) && myRegistrationRes.categories.length > 0) || myRegistrationRes.archer_id)) {
-            const isNotCancelled = (myRegistrationRes.payment_status || '').toLowerCase() !== 'cancelled'
-            if (isNotCancelled && route.query.mode !== 'delegation') {
+            const invalidStatuses = ['cancelled', 'canceled', 'expired', 'failed', 'rejected', 'deleted']
+            const pStatus = (myRegistrationRes.status || '').toLowerCase()
+            const payStatus = (myRegistrationRes.payment_status || '').toLowerCase()
+            const isCancelled = invalidStatuses.includes(pStatus) || invalidStatuses.includes(payStatus)
+            if (!isCancelled && route.query.mode !== 'delegation') {
                 return navigateTo(`/tournaments/${slug}`)
             }
         }
@@ -1897,7 +1956,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             paymentChannels: channelsRes?.data || [],
             myRegistration: myRegistrationRes?.data || null,
             orgManualMethods: paymentMethodsRes?.data || [],
-            archerProfile: archerProfileData
+            archerProfile: archerProfileData,
+            customFields: customFieldsRes?.fields || []
         }
     } catch (err) {
         console.error('Failed to fetch event registration:', err)
@@ -1925,6 +1985,7 @@ const partnerModalGender = ref('')
 
 // Mode 2 State: Representative
 const showAddAthleteModal = ref(false)
+const editingAthlete = ref(null)
 const showBulkImportModal = ref(false)
 const delegationClubId = ref('')
 const delegationClubName = ref('')
@@ -2215,8 +2276,11 @@ const isAlreadyRegistered = computed(() => {
     if (!myRegistration.value) return false
     const hasCategories = Array.isArray(myRegistration.value.categories) && myRegistration.value.categories.length > 0
     const hasArcherId = !!myRegistration.value.archer_id
-    const isNotCancelled = (myRegistration.value.payment_status || '').toLowerCase() !== 'cancelled'
-    return (hasCategories || hasArcherId) && isNotCancelled
+    const invalidStatuses = ['cancelled', 'canceled', 'expired', 'failed', 'rejected', 'deleted']
+    const pStatus = (myRegistration.value.status || '').toLowerCase()
+    const payStatus = (myRegistration.value.payment_status || '').toLowerCase()
+    const isCancelled = invalidStatuses.includes(pStatus) || invalidStatuses.includes(payStatus)
+    return (hasCategories || hasArcherId) && !isCancelled
 })
 
 watch(isAlreadyRegistered, (already) => {
@@ -2230,10 +2294,16 @@ onMounted(async () => {
     try {
         const checkRes = await get(`/tournaments/${slug}/participants/me`)
         if (checkRes && ((Array.isArray(checkRes.categories) && checkRes.categories.length > 0) || checkRes.archer_id)) {
-            myClientRegistration.value = checkRes
-            if (!allowRegisterAnotherDelegation.value && route.query.mode !== 'delegation') {
-                toast.info(isEn.value ? 'You are already registered for this tournament.' : 'Anda sudah terdaftar pada turnamen ini.')
-                navigateTo(`/tournaments/${slug}`)
+            const invalidStatuses = ['cancelled', 'canceled', 'expired', 'failed', 'rejected', 'deleted']
+            const pStatus = (checkRes.status || '').toLowerCase()
+            const payStatus = (checkRes.payment_status || '').toLowerCase()
+            const isCancelled = invalidStatuses.includes(pStatus) || invalidStatuses.includes(payStatus)
+            if (!isCancelled) {
+                myClientRegistration.value = checkRes
+                if (!allowRegisterAnotherDelegation.value && route.query.mode !== 'delegation') {
+                    toast.info(isEn.value ? 'You are already registered for this tournament.' : 'Anda sudah terdaftar pada turnamen ini.')
+                    navigateTo(`/tournaments/${slug}`)
+                }
             }
         }
     } catch (e) {
@@ -2246,6 +2316,22 @@ const eventCurrency = computed(() => event.value?.currency || 'IDR')
 const onlineGateway = computed(() => getPaymentGatewayForCurrency(eventCurrency.value))
 const categories = computed(() => data.value?.categories || [])
 const orgManualMethods = computed(() => data.value?.orgManualMethods || [])
+const customFields = computed(() => data.value?.customFields || [])
+const customFieldAnswers = ref({})
+
+const areRequiredCustomFieldsFilled = (answers, fields) => {
+    if (!fields || fields.length === 0) return true
+    for (const f of fields) {
+        const isDataField = !f.element_type || f.element_type === 'field'
+        if (f.is_active && f.is_required && isDataField) {
+            const val = answers?.[f.field_key]
+            if (val === undefined || val === null || val === '' || (Array.isArray(val) && val.length === 0)) {
+                return false
+            }
+        }
+    }
+    return true
+}
 const paymentMethodOptions = [
     { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
     { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
@@ -2596,10 +2682,12 @@ const totalCalculatedFee = computed(() => {
 const isStep1Valid = computed(() => {
     if (!registrationMode.value) return false
     if (registrationMode.value === 'captain_team') {
-        return !!(
+        const basicValid = !!(
             profileForm.value.full_name?.trim() &&
             profileForm.value.gender
         )
+        if (!basicValid) return false
+        return areRequiredCustomFieldsFilled(customFieldAnswers.value, customFields.value)
     }
     if (registrationMode.value === 'club_delegation') {
         return true
@@ -2613,8 +2701,9 @@ const isStep2Valid = computed(() => {
     } else {
         const hasAthletes = delegationAthletes.value.length > 0
         const allAthletesHaveCategory = delegationAthletes.value.length > 0 && delegationAthletes.value.every(a => getArcherCategoryIds(a).length > 0)
+        const allAthletesHaveRequiredCustom = delegationAthletes.value.every(a => areRequiredCustomFieldsFilled(a.custom_fields, customFields.value))
         const hasTeams = Object.values(delegationTeamBookings.value).some(c => c > 0)
-        return (hasAthletes && allAthletesHaveCategory) || hasTeams
+        return (hasAthletes && allAthletesHaveCategory && allAthletesHaveRequiredCustom) || hasTeams
     }
 })
 
@@ -2632,9 +2721,15 @@ const goToStep = async (step) => {
     if (step === 2) {
         if (!isStep1Valid.value) {
             if (registrationMode.value === 'captain_team') {
-                toast.warning(isEn.value 
-                    ? 'Please fill in your name and select your gender.' 
-                    : 'Mohon lengkapi nama dan pilih jenis kelamin terlebih dahulu.')
+                if (!profileForm.value.full_name?.trim() || !profileForm.value.gender) {
+                    toast.warning(isEn.value 
+                        ? 'Please fill in your name and select your gender.' 
+                        : 'Mohon lengkapi nama dan pilih jenis kelamin terlebih dahulu.')
+                } else if (!areRequiredCustomFieldsFilled(customFieldAnswers.value, customFields.value)) {
+                    toast.warning(isEn.value 
+                        ? 'Please fill in all required additional fields.' 
+                        : 'Mohon lengkapi semua data persyaratan tambahan yang wajib diisi.')
+                }
             } else {
                 toast.warning(isEn.value 
                     ? 'Please fill in representative name and select club.' 
@@ -2670,9 +2765,12 @@ const goToStep = async (step) => {
         if (registrationMode.value === 'captain_team') {
             toast.warning(isEn.value ? 'Please select at least 1 competition category.' : 'Silakan pilih minimal 1 kategori pertandingan.')
         } else {
-            const missingCat = delegationAthletes.value.some(a => !a.category_id)
+            const missingCat = delegationAthletes.value.some(a => getArcherCategoryIds(a).length === 0)
+            const missingCustom = delegationAthletes.value.some(a => !areRequiredCustomFieldsFilled(a.custom_fields, customFields.value))
             if (missingCat) {
                 toast.warning(isEn.value ? 'Please select a competition category for all athletes in the roster.' : 'Mohon pilih kategori lomba untuk semua atlet di dalam daftar.')
+            } else if (missingCustom) {
+                toast.warning(isEn.value ? 'Please complete all required fields for every athlete in the roster (click Incomplete Data or Edit icon).' : 'Mohon lengkapi seluruh data wajib untuk semua atlet di dalam daftar (klik Data Belum Lengkap atau ikon Edit).')
             } else {
                 toast.warning(isEn.value ? 'Please add at least 1 athlete or reserve team quota.' : 'Silakan tambahkan minimal 1 atlet atau reservasi kuota tim.')
             }
@@ -2683,7 +2781,10 @@ const goToStep = async (step) => {
 }
 
 const displayValue = (val) => val || '-'
-const formatPrice = (val) => {
+const formatPrice = (val, allowFree = true) => {
+    if (allowFree && (!val || Number(val) === 0)) {
+        return isEn.value ? 'Free' : 'Gratis'
+    }
     return formatMoney(val, eventCurrency.value)
 }
 
@@ -2738,6 +2839,44 @@ const removePartner = (catId, partnerIdx) => {
 }
 
 // ─── REPRESENTATIVE ATHLETE ACTIONS ───────────────────────────────────────────
+const editDelegationAthlete = (ath) => {
+    editingAthlete.value = JSON.parse(JSON.stringify(ath))
+    showAddAthleteModal.value = true
+}
+
+const handleCloseAthleteModal = () => {
+    showAddAthleteModal.value = false
+    editingAthlete.value = null
+}
+
+const handleSaveAthlete = (athData) => {
+    if (editingAthlete.value) {
+        const idx = delegationAthletes.value.findIndex(a => 
+            (editingAthlete.value.email && a.email?.toLowerCase()?.trim() === editingAthlete.value.email?.toLowerCase()?.trim()) ||
+            (editingAthlete.value.archer_id && a.archer_id && a.archer_id === editingAthlete.value.archer_id) ||
+            (a.full_name === editingAthlete.value.full_name && a.gender === editingAthlete.value.gender)
+        )
+        if (idx !== -1) {
+            const currentItem = delegationAthletes.value[idx]
+            const existingCatIds = getArcherCategoryIds(currentItem)
+            delegationAthletes.value[idx] = {
+                ...currentItem,
+                ...athData,
+                category_ids: athData.category_ids?.length ? athData.category_ids : existingCatIds,
+                category_id: athData.category_id || currentItem.category_id
+            }
+            toast.success(isEn.value ? 'Athlete updated successfully' : 'Data atlet berhasil diperbarui')
+        } else {
+            delegationAthletes.value.unshift(athData)
+            toast.success(isEn.value ? 'Athlete added to roster' : 'Atlet berhasil ditambahkan ke daftar')
+        }
+        editingAthlete.value = null
+        showAddAthleteModal.value = false
+    } else {
+        handleAddAthlete(athData)
+    }
+}
+
 const handleAddAthlete = (athData) => {
     const emailClean = (athData.email || '').toLowerCase().trim()
     const isDuplicate = delegationAthletes.value.some(a => {
@@ -2755,6 +2894,7 @@ const handleAddAthlete = (athData) => {
     delegationAthletes.value.unshift(athData)
     athleteCurrentPage.value = 1
     showAddAthleteModal.value = false
+    editingAthlete.value = null
     toast.success(isEn.value ? 'Athlete added to roster' : 'Atlet berhasil ditambahkan ke daftar')
 }
 
@@ -3114,7 +3254,8 @@ const handleSubmit = async () => {
                 ...payload,
                 athlete_id: profileId,
                 event_category_ids: indCatIDs,
-                team_registrations: teamRegistrations
+                team_registrations: teamRegistrations,
+                custom_fields: customFieldAnswers.value
             }
         } else {
             // First, create any new archer accounts that were entered
@@ -3150,7 +3291,8 @@ const handleSubmit = async () => {
                     phone: a.phone,
                     date_of_birth: a.date_of_birth,
                     category_ids: catIds,
-                    club_id: a.club_id || delegationClubId.value || archerProfile.value?.club_id || null
+                    club_id: a.club_id || delegationClubId.value || archerProfile.value?.club_id || null,
+                    custom_fields: a.custom_fields || {}
                 })
             }
 
@@ -3192,7 +3334,7 @@ const handleSubmit = async () => {
                 window.location.href = redirectUrl
                 return
             }
-            refCode = paymentRes.reference_code || paymentRes.uuid || registrationId
+            refCode = paymentRes?.reference || paymentRes?.reference_code || paymentRes?.uuid || registrationId
         } else if (paymentType.value === 'manual' && totalCalculatedFee.value > 0) {
             // Step 1: Create manual payment transaction (links to registration_id & all participant_ids)
             const registrationIdStr = registrationId
@@ -3206,7 +3348,7 @@ const handleSubmit = async () => {
             })
 
             // Step 2: Upload proof (mark as awaiting_verification)
-            const paymentReference = manualPaymentRes?.reference || manualPaymentRes?.Reference
+            const paymentReference = manualPaymentRes?.reference || manualPaymentRes?.Reference || manualPaymentRes?.data?.reference || manualPaymentRes?.uuid
             if (paymentReference && proofFileUrl.value) {
                 await post(`/payment/manual/${paymentReference}/upload-proof`, {
                     proof_url: proofFileUrl.value,
@@ -3217,7 +3359,7 @@ const handleSubmit = async () => {
             refCode = paymentReference || registrationId
         } else {
             // Free / Rp 0 registration
-            refCode = res.reference_code || res.transaction_id || registrationId
+            refCode = res.reference || res.reference_code || res.transaction_id || ''
         }
 
         registrationSuccess.value = true
@@ -3226,7 +3368,7 @@ const handleSubmit = async () => {
             if (refCode) {
                 navigateTo(`/dashboard/archer/payments/${refCode}`)
             } else {
-                navigateTo(`/tournaments/${slug}`)
+                navigateTo(`/dashboard/archer/tournaments/${slug || event.value.slug || event.value.id}/my-registration`)
             }
         }, 800)
 

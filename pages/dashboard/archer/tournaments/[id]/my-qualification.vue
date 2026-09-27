@@ -1,58 +1,36 @@
 <template>
-    <div class="flex flex-col gap-6 md:gap-8 pb-16">
-        <!-- Header (Standard Dashboard Navy Style) -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Theme Motif Pattern -->
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-
-            <!-- Decorative Background Elements -->
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-
-            <!-- Header Content -->
-            <div class="relative p-6 sm:p-8">
-                <div class="flex items-center gap-2 text-xs sm:text-sm text-white/70 mb-3">
-                    <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">{{ t('qualification.nav_event') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-xs" />
-                    <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors">{{ eventName || t('qualification.event_fallback') }}</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-xs" />
-                    <span class="text-white/90 font-medium">{{ t('qualification.nav_title') }}</span>
-                </div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-start gap-4">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md shrink-0">
-                            <Icon icon="ph:chart-line-up-bold" class="text-white text-2xl" />
-                        </div>
-                        <div class="min-w-0">
-                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">{{ t('qualification.title') }}</h1>
-                            <div class="text-slate-300 text-xs sm:text-sm mt-1.5">{{ t('qualification.subtitle') }}</div>
-                        </div>
+    <div class="flex flex-col gap-6 pb-12">
+        <!-- Header (Standard DashboardHeader) -->
+        <DashboardHeader
+            :title="t('qualification.title')"
+            :subtitle="t('qualification.subtitle')"
+            icon="ph:chart-line-up-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/archer' },
+                { label: t('sidebar.my_events', 'Turnamen Saya'), to: '/dashboard/archer/tournaments' },
+                { label: t('qualification.title', 'Kualifikasi') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex items-center gap-3 shrink-0">
+                    <div v-if="myCategories.length > 1" class="relative">
+                        <select
+                            v-model="categoryId"
+                            @change="updateResultsData"
+                            class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-white/50 cursor-pointer transition-colors appearance-none shadow-xs">
+                            <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
+                                {{ c.title }}
+                            </option>
+                        </select>
+                        <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none text-xs" />
                     </div>
-                    <div class="flex items-center gap-3 shrink-0">
-                        <div v-if="myCategories.length > 1" class="relative">
-                            <select
-                                v-model="categoryId"
-                                @change="updateResultsData"
-                                class="h-10 sm:h-11 pl-4 pr-9 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs sm:text-sm font-bold text-white focus:outline-none focus:border-white/50 cursor-pointer transition-colors appearance-none shadow-xs">
-                                <option v-for="c in categoryOptions" :key="c.value" :value="c.value" class="bg-navy text-white py-2">
-                                    {{ c.title }}
-                                </option>
-                            </select>
-                            <Icon icon="ph:caret-down-bold" class="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 pointer-events-none text-xs" />
-                        </div>
-                        <div v-else-if="categoryName || (categoryOptions.length === 1)"
-                            class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs sm:text-sm font-bold text-white tracking-wide shadow-xs">
-                            {{ categoryName || categoryOptions[0]?.title }}
-                        </div>
+                    <div v-else-if="categoryName || (categoryOptions.length === 1)"
+                        class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-xs sm:text-sm font-bold text-white tracking-wide shadow-xs">
+                        {{ categoryName || categoryOptions[0]?.title }}
                     </div>
                 </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
 
         <!-- Loading Skeleton -->
         <div v-if="isLoading" class="space-y-6">
@@ -78,11 +56,7 @@
                                 {{ userProfile?.full_name || t('qualification.archer') }}
                             </h2>
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 mt-2 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
-                                <span class="px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold font-mono text-xs sm:text-sm">
-                                    BIB #{{ userProfile?.bib_number || '-' }}
-                                </span>
-                                <span>•</span>
-                                <span>{{ currentCategoryName || categoryName || '-' }}</span>
+                                <span class="font-bold text-slate-900 dark:text-white">{{ currentCategoryName || categoryName || '-' }}</span>
                                 <span>•</span>
                                 <span>{{ userProfile?.club_name || t('qualification.independent') }}</span>
                             </div>
@@ -114,7 +88,7 @@
                             {{ qualTotalScore || 0 }}
                         </span>
                     </div>
-                    <div class="size-14 bg-slate-50 dark:bg-slate-700/60 border border-slate-200/70 dark:border-slate-600 rounded-2xl flex items-center justify-center text-slate-700 dark:text-slate-200 group-hover:bg-navy group-hover:text-white transition-all shadow-2xs">
+                    <div class="size-12 sm:size-14 rounded-2xl bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shadow-2xs">
                         <Icon icon="ph:chart-bar-bold" class="text-2xl" />
                     </div>
                 </div>
@@ -129,7 +103,7 @@
                             {{ qualTotalTenX || 0 }}
                         </span>
                     </div>
-                    <div class="size-14 bg-slate-50 dark:bg-slate-700/60 border border-slate-200/70 dark:border-slate-600 rounded-2xl flex items-center justify-center text-slate-700 dark:text-slate-200 group-hover:bg-navy group-hover:text-white transition-all shadow-2xs">
+                    <div class="size-12 sm:size-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shadow-2xs">
                         <Icon icon="ph:target-bold" class="text-2xl" />
                     </div>
                 </div>
@@ -144,7 +118,7 @@
                             {{ qualTotalX || 0 }}
                         </span>
                     </div>
-                    <div class="size-14 bg-slate-50 dark:bg-slate-700/60 border border-slate-200/70 dark:border-slate-600 rounded-2xl flex items-center justify-center text-slate-700 dark:text-slate-200 group-hover:bg-navy group-hover:text-white transition-all shadow-2xs">
+                    <div class="size-12 sm:size-14 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shadow-2xs">
                         <Icon icon="ph:star-bold" class="text-2xl" />
                     </div>
                 </div>
@@ -154,7 +128,7 @@
             <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs overflow-hidden">
                 <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2.5">
-                        <div class="size-8 rounded-lg bg-navy text-white flex items-center justify-center shrink-0">
+                        <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shrink-0">
                             <Icon icon="ph:pencil-line-bold" class="text-base" />
                         </div>
                         <span>{{ t('qualification.history_title') }}</span>
@@ -267,11 +241,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { useImageOrDefault } from '~/composables/useImageHelper'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useEventContext } from '~/composables/useTournamentContext'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 const { get } = useApi()
 const route = useRoute()

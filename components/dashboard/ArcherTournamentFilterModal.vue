@@ -58,7 +58,7 @@
                 <label class="block text-xs sm:text-sm font-bold text-navy">
                   {{ t('my_events.filter_status_label') }}
                 </label>
-                <div class="grid grid-cols-3 gap-2.5">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   <button
                     v-for="opt in statusOptions"
                     :key="opt.value"
@@ -201,7 +201,8 @@ const draftFilters = ref({
 const statusOptions = computed(() => [
   { label: t('common.all'), value: 'all' },
   { label: t('my_events.opt_registered'), value: 'paid' },
-  { label: t('my_events.opt_pending'), value: 'pending' }
+  { label: t('my_events.opt_pending'), value: 'pending' },
+  { label: t('payment_status.badge_cancelled', 'Dibatalkan'), value: 'cancelled' }
 ])
 
 const timelineOptions = computed(() => [

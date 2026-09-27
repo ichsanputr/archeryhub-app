@@ -79,7 +79,7 @@
             class="font-bold"
             :class="isPaid ? 'text-emerald-700 dark:text-emerald-400' : (isRejected || isCancelled) ? 'text-rose-700 dark:text-rose-400' : 'text-amber-700 dark:text-amber-400'"
           >
-            {{ isPaid ? t('org_event_payments.timeline_approved_title') : isRejected ? t('org_event_payments.timeline_rejected_title') : isCancelled ? t('org_event_payments.timeline_cancelled_title', 'Pembayaran Dibatalkan') : t('org_event_payments.timeline_pending_title') }}
+            {{ stageTitle }}
           </div>
           <div class="text-slate-500 dark:text-slate-400 leading-relaxed">
             <template v-if="isPaid">
@@ -94,8 +94,16 @@
             <template v-else-if="isCancelled">
               <span>{{ t('org_event_payments.timeline_cancelled_desc', 'Tagihan pembayaran telah dibatalkan atau kedaluwarsa.') }}</span>
             </template>
+            <template v-else-if="isManual">
+              <span v-if="hasProof">
+                {{ t('org_event_payments.timeline_pending_desc') }}
+              </span>
+              <span v-else>
+                {{ t('org_event_payments.timeline_manual_waiting_proof_desc', 'Menunggu peserta mengunggah bukti transfer sebelum dapat diverifikasi panitia.') }}
+              </span>
+            </template>
             <template v-else>
-              {{ t('org_event_payments.timeline_pending_desc') }}
+              {{ t('org_event_payments.timeline_online_pending_desc', 'Menunggu penyelesaian pembayaran otomatis melalui payment gateway (Mayar/PayPal).') }}
             </template>
           </div>
           <div v-if="isCancelled && (payment?.cancelled_at || payment?.updated_at || payment?.expired_at || payment?.created_at)" class="text-xs text-slate-400 font-medium font-mono pt-0.5 flex items-center gap-1.5">
@@ -157,6 +165,19 @@ const isManual = computed(() => {
 
 const hasProof = computed(() => {
   return !!(props.payment?.proof_uploaded_at || props.payment?.proof_url)
+})
+
+const stageTitle = computed(() => {
+  if (isPaid.value) return t('org_event_payments.timeline_approved_title')
+  if (isRejected.value) return t('org_event_payments.timeline_rejected_title')
+  if (isCancelled.value) return t('org_event_payments.timeline_cancelled_title', 'Pembayaran Dibatalkan')
+  if (isManual.value) {
+    if (hasProof.value) {
+      return t('org_event_payments.timeline_pending_title')
+    }
+    return t('org_event_payments.timeline_waiting_proof_title', 'Menunggu Bukti Transfer')
+  }
+  return t('org_event_payments.timeline_online_pending_title', 'Menunggu Pembayaran Otomatis')
 })
 
 const formatAmount = (val: number) => {

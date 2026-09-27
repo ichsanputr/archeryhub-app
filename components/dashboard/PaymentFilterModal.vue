@@ -209,6 +209,7 @@ const statusOptions = computed(() => [
 
 const methodOptions = computed(() => [
   { label: t('common.all'), value: 'all' },
+  { label: t('archer_payments_list.method_free'), value: 'free' },
   { label: t('archer_payments_list.method_manual'), value: 'manual' },
   { label: t('archer_payments_list.method_mayar'), value: 'mayar' },
   { label: 'PayPal', value: 'paypal' }

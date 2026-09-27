@@ -80,8 +80,6 @@
               </div>
               <div class="flex items-center gap-2 mt-0.5 text-xs text-slate-400 font-medium">
                 <span class="font-mono text-slate-400">{{ item.code || '-' }}</span>
-                <span class="text-slate-300">•</span>
-                <span class="text-slate-600 font-semibold">{{ formatLocationType(item.location_type) }}</span>
               </div>
             </div>
           </div>

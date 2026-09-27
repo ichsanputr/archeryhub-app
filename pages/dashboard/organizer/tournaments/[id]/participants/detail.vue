@@ -17,6 +17,7 @@ const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const { get, put, post } = useApi()
+const { tournamentTitle } = useTournamentContext()
 const toast = useToast()
 
 const eventId = computed(() => route.params.id)
@@ -109,6 +110,20 @@ const participantTransactions = computed(() => {
     }
     return []
 })
+
+const trxCurrentPage = ref(1)
+const trxPerPage = ref(5)
+const trxTotalPages = computed(() => Math.ceil(participantTransactions.value.length / trxPerPage.value) || 1)
+const paginatedTransactions = computed(() => {
+    const start = (trxCurrentPage.value - 1) * trxPerPage.value
+    return participantTransactions.value.slice(start, start + trxPerPage.value)
+})
+
+const changeTrxPage = (page) => {
+    if (page >= 1 && page <= trxTotalPages.value) {
+        trxCurrentPage.value = page
+    }
+}
 
 const proofUrl = computed(() => {
     if (!participant.value) return null
@@ -263,11 +278,18 @@ const getTrxStatusInfo = (status) => {
             icon: 'ph:clock-bold'
         }
     }
-    if (['pending', 'waiting', 'unpaid', 'belum_bayar'].includes(s)) {
+    if (['pending', 'waiting'].includes(s)) {
         return {
             label: t('participant.detail.status_pending'),
             badgeClass: 'bg-blue-50 text-blue-700 border-blue-200',
             icon: 'ph:hourglass-bold'
+        }
+    }
+    if (s === 'expired') {
+        return {
+            label: isEn.value ? 'Expired' : 'Kedaluwarsa',
+            badgeClass: 'bg-slate-100 text-slate-700 border-slate-200',
+            icon: 'ph:clock-countdown-bold'
         }
     }
     if (['refund', 'refunded', 'dikembalikan'].includes(s)) {
@@ -298,10 +320,16 @@ const participantStatusInfo = computed(() => {
             badgeClass: 'bg-amber-50 text-amber-800 border border-amber-200'
         }
     }
-    if (['pending', 'waiting', 'unpaid', 'belum_bayar'].includes(s)) {
+    if (['pending', 'waiting'].includes(s)) {
         return {
             label: t('participant.detail.status_pending'),
             badgeClass: 'bg-blue-50 text-blue-700 border border-blue-200'
+        }
+    }
+    if (s === 'expired') {
+        return {
+            label: isEn.value ? 'Expired' : 'Kedaluwarsa',
+            badgeClass: 'bg-slate-100 text-slate-700 border border-slate-200'
         }
     }
     return {
@@ -405,13 +433,17 @@ const needsManualConfirmation = computed(() => {
                             <Icon icon="ph:user-bold" class="text-white text-2xl sm:text-3xl" />
                         </div>
                         <div class="min-w-0">
-                            <div class="flex items-center gap-2 text-xs sm:text-sm text-white/70 mb-1.5">
-                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/participants`" class="hover:text-white transition-colors">
-                                    {{ t('dashboard.participants_list.title') }}
-                                </NuxtLink>
-                                <Icon icon="ph:caret-right-bold" class="text-xs" />
-                                <span class="text-primary font-medium">{{ t('participant.detail.title') }}</span>
-                            </div>
+                            <nav class="flex text-xs font-bold text-white/50 tracking-wider items-center gap-1.5 flex-wrap mb-2">
+                                <NuxtLink to="/dashboard/organizer" class="hover:text-white transition-colors text-white/60">Dashboard</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors text-white/60">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/participants`" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.participants_list.title', 'Peserta') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <span class="text-white font-bold truncate max-w-[200px] sm:max-w-xs">{{ participant?.full_name || t('participant.detail.title') }}</span>
+                            </nav>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white truncate">
                                 {{ participant?.full_name || t('participant.detail.title') }}
                             </h1>
@@ -473,30 +505,52 @@ const needsManualConfirmation = computed(() => {
 
                             <!-- Data Fields Grid -->
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5">
-                                <div>
+                                <div v-if="participant.email && String(participant.email).trim() && participant.email !== '-'">
                                     <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.email_label') }}</span>
-                                    <span class="text-sm sm:text-base text-slate-900 font-bold truncate block">{{ participant.email || '-' }}</span>
+                                    <span class="text-sm sm:text-base text-slate-900 font-bold truncate block">{{ participant.email }}</span>
                                 </div>
-                                <div>
+                                <div v-if="participant.phone && String(participant.phone).trim() && participant.phone !== '-'">
                                     <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.phone_label') }}</span>
-                                    <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.phone || '-' }}</span>
+                                    <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.phone }}</span>
                                 </div>
-                                <div>
+                                <div v-if="participant.gender && String(participant.gender).trim() && participant.gender !== '-'">
                                     <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.gender_label') }}</span>
-                                    <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.gender === 'male' ? t('participant.detail.gender_male') : (participant.gender === 'female' ? t('participant.detail.gender_female') : (participant.gender || '-')) }}</span>
+                                    <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.gender === 'male' ? t('participant.detail.gender_male') : (participant.gender === 'female' ? t('participant.detail.gender_female') : participant.gender) }}</span>
                                 </div>
-                                <div>
+                                <div v-if="participant.birth_date && formatDate(participant.birth_date) !== '-'">
                                     <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.birth_date_label') }}</span>
                                     <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ formatDate(participant.birth_date) }}</span>
                                 </div>
-                                <div>
-                                    <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.bow_division_label') }}</span>
-                                    <span class="text-sm sm:text-base text-slate-900 font-bold block capitalize">{{ participant.bow_type || '-' }}</span>
-                                </div>
-                                <div>
-                                    <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">{{ t('participant.detail.hand_dominance_label') }}</span>
-                                    <span class="text-sm sm:text-base text-slate-900 font-bold block">{{ participant.hand_dominance === 'right' ? t('participant.detail.hand_right') : (participant.hand_dominance === 'left' ? t('participant.detail.hand_left') : (participant.hand_dominance || '-')) }}</span>
-                                </div>
+                                <!-- Dynamic Form Registration Fields (Configured in /registration-form) -->
+                                <template v-if="participant.custom_fields && participant.custom_fields.length > 0">
+                                    <template
+                                        v-for="cf in participant.custom_fields"
+                                        :key="cf.field_uuid || cf.field_key"
+                                    >
+                                        <div
+                                            v-if="cf.field_value && String(cf.field_value).trim() && cf.field_value !== '-'"
+                                            :class="cf.col_span === 12 ? 'sm:col-span-2' : ''"
+                                        >
+                                            <span class="text-xs sm:text-sm text-slate-500 block mb-1 font-medium">
+                                                {{ cf.label_id || cf.field_key }}
+                                                <span v-if="cf.label_en" class="text-xs text-slate-400 font-normal">({{ cf.label_en }})</span>
+                                            </span>
+                                            <div v-if="cf.field_type === 'file'" class="pt-0.5">
+                                                <a
+                                                    :href="cf.field_value"
+                                                    target="_blank"
+                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-navy/5 text-navy hover:bg-navy/10 border border-slate-200 font-bold text-xs transition-colors"
+                                                >
+                                                    <Icon icon="ph:file-arrow-down-bold" class="text-primary text-sm" />
+                                                    <span>{{ t('common.download_file', 'Buka / Unduh Berkas') }}</span>
+                                                </a>
+                                            </div>
+                                            <span v-else class="text-sm sm:text-base text-slate-900 font-bold block break-words">
+                                                {{ cf.field_value }}
+                                            </span>
+                                        </div>
+                                    </template>
+                                </template>
                             </div>
                         </div>
 
@@ -564,92 +618,113 @@ const needsManualConfirmation = computed(() => {
 
                             <!-- Transactions List -->
                             <div v-if="participantTransactions.length > 0" class="space-y-3 pt-1">
-                                <div v-for="(trx, idx) in participantTransactions" :key="trx.id || trx.uuid || idx"
-                                    class="p-4 sm:p-5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition-colors space-y-3">
+                                <div v-for="(trx, idx) in paginatedTransactions" :key="trx.id || trx.uuid || idx"
+                                    class="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white hover:border-slate-300 transition-all shadow-xs space-y-3">
                                     
-                                    <!-- Top Row: Reference, Method & Status, Amount -->
                                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                        <div class="flex flex-wrap items-center gap-2.5">
-                                            <!-- Reference Tag with Link -->
-                                            <NuxtLink
-                                                v-if="trx.reference || trx.id"
-                                                :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
-                                                class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-mono font-bold bg-white hover:bg-slate-100 border border-slate-200 text-navy shadow-2xs transition-colors cursor-pointer group"
-                                                :title="t('archer_payment_detail.header_title', 'Buka Detail Tagihan')"
-                                            >
-                                                <Icon icon="ph:receipt-bold" class="text-slate-400 text-xs" />
-                                                <span>{{ trx.reference || trx.id || ('TRX-' + (idx + 1)) }}</span>
-                                                <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400" />
-                                            </NuxtLink>
-                                            <span v-else class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-mono font-bold bg-white border border-slate-200 text-slate-800 shadow-2xs">
-                                                <Icon icon="ph:hash-bold" class="text-slate-400 text-xs" />
-                                                {{ 'TRX-' + (idx + 1) }}
-                                            </span>
+                                        <!-- Left info: Reference, Method & Date -->
+                                        <div class="space-y-1">
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <NuxtLink
+                                                    v-if="trx.reference || trx.id"
+                                                    :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
+                                                    class="font-mono text-sm font-bold text-navy hover:text-primary transition-colors inline-flex items-center gap-1 group"
+                                                >
+                                                    <span>{{ trx.reference || trx.id }}</span>
+                                                    <Icon icon="ph:arrow-up-right-bold" class="text-xs text-slate-400 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                                </NuxtLink>
+                                                <span v-else class="font-mono text-sm font-bold text-slate-800">
+                                                    {{ 'TRX-' + ((trxCurrentPage - 1) * trxPerPage + idx + 1) }}
+                                                </span>
+                                            </div>
+                                            
+                                            <div class="flex items-center gap-2 text-xs text-slate-500 flex-wrap">
+                                                <span class="font-medium text-slate-700">{{ getTrxMethodInfo(trx).label }}</span>
+                                                <span class="text-slate-300">•</span>
+                                                <span class="flex items-center gap-1">
+                                                    <Icon icon="ph:calendar-blank-bold" class="text-slate-400 text-xs" />
+                                                    {{ formatDateTime(trx.paid_at || trx.created_at) }}
+                                                </span>
+                                                <template v-if="trx.verified_by">
+                                                    <span class="text-slate-300">•</span>
+                                                    <span class="text-emerald-700 font-medium flex items-center gap-1">
+                                                        <Icon icon="ph:user-check-bold" class="text-xs" />
+                                                        {{ trx.verified_by }}
+                                                    </span>
+                                                </template>
+                                            </div>
+                                        </div>
 
-                                            <!-- Method Badge -->
-                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold border"
-                                                :class="getTrxMethodInfo(trx).badgeClass">
-                                                <Icon :icon="getTrxMethodInfo(trx).icon" class="text-sm" />
-                                                <span>{{ getTrxMethodInfo(trx).label }}</span>
+                                        <!-- Right info: Amount & Status Badge -->
+                                        <div class="flex items-center sm:flex-col sm:items-end justify-between gap-2">
+                                            <span class="text-base sm:text-lg font-black tracking-tight"
+                                                :class="isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? 'text-purple-700' : 'text-navy'">
+                                                {{ isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? '- ' : '' }}Rp {{ formatCurrency(trx.amount || trx.total_amount || 0) }}
                                             </span>
-
-                                            <!-- Status Badge -->
-                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs sm:text-sm font-bold border"
+                                            
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border shadow-2xs"
                                                 :class="getTrxStatusInfo(trx.status).badgeClass">
-                                                <Icon :icon="getTrxStatusInfo(trx.status).icon" class="text-sm" />
+                                                <Icon :icon="getTrxStatusInfo(trx.status).icon" class="text-xs" />
                                                 <span>{{ getTrxStatusInfo(trx.status).label }}</span>
                                             </span>
                                         </div>
-
-                                        <!-- Amount -->
-                                        <div class="text-left sm:text-right">
-                                            <span class="text-base sm:text-lg font-black"
-                                                :class="isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? 'text-purple-700' : 'text-slate-900'">
-                                                {{ isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? '- ' : '+ ' }}Rp {{ formatCurrency(trx.amount || trx.total_amount || 0) }}
-                                            </span>
-                                        </div>
                                     </div>
 
-                                    <!-- Middle / Bottom Row: Time, Notes, Verifier, Proof & Payment Link -->
-                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2.5 border-t border-slate-200/70 text-xs sm:text-sm text-slate-600">
-                                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1">
-                                            <!-- Timestamp -->
-                                            <span class="flex items-center gap-1.5 font-medium">
-                                                <Icon icon="ph:calendar-blank-bold" class="text-slate-400" />
-                                                {{ formatDateTime(trx.paid_at || trx.created_at) }}
-                                            </span>
-
-                                            <!-- Verifier info if available -->
-                                            <span v-if="trx.verified_by" class="flex items-center gap-1.5 font-medium text-slate-700">
-                                                <Icon icon="ph:user-check-bold" class="text-emerald-600" />
-                                                <span>{{ t('participant.detail.verifier_label') }}: {{ trx.verified_by }}</span>
-                                            </span>
+                                    <!-- Extra: Proof link & Notes if available -->
+                                    <div v-if="trx.proof_url || trx.rejection_reason || trx.notes || trx.description" class="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                        <div v-if="trx.rejection_reason || trx.notes || trx.description" class="text-xs text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-100 flex-1">
+                                            <span class="font-bold text-slate-800">{{ t('participant.detail.notes_label_short') }}:</span> {{ trx.rejection_reason || trx.notes || trx.description }}
                                         </div>
-
-                                        <!-- Action Buttons: View Proof & Payment Detail Link -->
-                                        <div class="flex items-center gap-2 shrink-0">
-                                            <div v-if="trx.proof_url">
-                                                <button type="button" @click="openProofZoom(trx.proof_url)"
-                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 hover:text-navy bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer">
-                                                    <Icon icon="ph:image-bold" class="text-slate-500" />
-                                                    <span>{{ t('participant.detail.view_proof_btn') }}</span>
-                                                </button>
-                                            </div>
-                                            <NuxtLink
-                                                v-if="trx.reference || trx.id"
-                                                :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
-                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-navy hover:text-navy-dark bg-white hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors shadow-2xs cursor-pointer"
-                                            >
-                                                <Icon icon="ph:receipt-bold" class="text-primary text-xs" />
-                                                <span>{{ t('common.detail', 'Detail Tagihan') }}</span>
-                                                <Icon icon="ph:arrow-right-bold" class="text-[10px]" />
-                                            </NuxtLink>
+                                        <div v-if="trx.proof_url" class="shrink-0">
+                                            <button type="button" @click="openProofZoom(trx.proof_url)"
+                                                class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-navy transition-colors cursor-pointer">
+                                                <Icon icon="ph:image-bold" class="text-slate-400" />
+                                                <span class="underline underline-offset-2">{{ t('participant.detail.view_proof_btn') }}</span>
+                                            </button>
                                         </div>
                                     </div>
+                                </div>
 
-                                    <!-- Notes if present -->
-                                    <div v-if="trx.rejection_reason || trx.notes || trx.description" class="pt-1 text-xs sm:text-sm text-slate-700 bg-white rounded-lg p-2.5 border border-slate-200/80">
-                                        <span class="font-bold text-slate-900">{{ t('participant.detail.notes_label_short') }}:</span> {{ trx.rejection_reason || trx.notes || trx.description }}
+                                <!-- Pagination Controls -->
+                                <div v-if="participantTransactions.length > trxPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-200">
+                                    <div class="text-xs text-slate-500 font-medium">
+                                        {{ t('common.showing', 'Menampilkan') }} <span class="font-bold text-navy">{{ (trxCurrentPage - 1) * trxPerPage + 1 }}</span> - <span class="font-bold text-navy">{{ Math.min(trxCurrentPage * trxPerPage, participantTransactions.length) }}</span> {{ t('common.from', 'dari') }} <span class="font-bold text-navy">{{ participantTransactions.length }}</span> {{ t('participant.detail.transactions_count_unit', 'transaksi') }}
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <button
+                                            type="button"
+                                            @click="changeTrxPage(trxCurrentPage - 1)"
+                                            :disabled="trxCurrentPage <= 1"
+                                            class="size-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                                            title="Previous"
+                                        >
+                                            <Icon icon="ph:caret-left-bold" class="text-xs" />
+                                        </button>
+
+                                        <button
+                                            v-for="p in trxTotalPages"
+                                            :key="p"
+                                            type="button"
+                                            @click="changeTrxPage(p)"
+                                            :class="[
+                                                'size-8 rounded-lg text-xs font-bold transition-all flex items-center justify-center cursor-pointer',
+                                                trxCurrentPage === p
+                                                    ? 'bg-navy text-primary shadow-2xs font-black'
+                                                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-2xs'
+                                            ]"
+                                        >
+                                            {{ p }}
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            @click="changeTrxPage(trxCurrentPage + 1)"
+                                            :disabled="trxCurrentPage >= trxTotalPages"
+                                            class="size-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:pointer-events-none flex items-center justify-center text-slate-700 transition-colors shadow-2xs cursor-pointer"
+                                            title="Next"
+                                        >
+                                            <Icon icon="ph:caret-right-bold" class="text-xs" />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -752,31 +827,10 @@ const needsManualConfirmation = computed(() => {
                                         <span class="text-slate-500 font-medium">{{ t('participant.detail.sender_account_name') }}:</span>
                                         <span class="font-bold text-slate-900">{{ participant.transaction.sender_name }}</span>
                                     </div>
-                                    <div v-if="participant.transaction?.amount" class="flex items-center justify-between">
+                                     <div v-if="participant.transaction?.amount" class="flex items-center justify-between">
                                         <span class="text-slate-500 font-medium">{{ t('participant.detail.amount_label') }}:</span>
                                         <span class="font-bold text-slate-900">Rp {{ formatCurrency(participant.transaction.amount) }}</span>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Informational Centralized Verification Notice when Pending/Awaiting Verification -->
-                            <div v-if="needsManualConfirmation || (participant.payment_status || '').toLowerCase() === 'awaiting_verification'" class="pt-2">
-                                <div class="p-3.5 bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 rounded-xl space-y-2.5">
-                                    <div class="flex items-start gap-2 text-xs text-amber-900 dark:text-amber-300">
-                                        <Icon icon="ph:info-bold" class="text-base text-amber-600 shrink-0 mt-0.5" />
-                                        <div class="leading-relaxed font-medium">
-                                            <span class="font-bold">{{ t('participant.detail.verification_notice_title') }}:</span>
-                                            {{ t('participant.detail.verification_notice_desc') }}
-                                        </div>
-                                    </div>
-                                    <NuxtLink
-                                        :to="`/dashboard/organizer/tournaments/${eventId}/payments`"
-                                        class="w-full h-9 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
-                                    >
-                                        <Icon icon="ph:credit-card-bold" class="text-sm" />
-                                        <span>{{ t('participant.detail.go_to_payments') }}</span>
-                                        <Icon icon="ph:arrow-right-bold" class="text-xs" />
-                                    </NuxtLink>
                                 </div>
                             </div>
                         </div>

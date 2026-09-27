@@ -7,7 +7,7 @@
             icon="ph:calendar-check"
             :breadcrumbs="[
                 { label: 'Dashboard', to: '/dashboard/organizer' },
-                { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+                { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
                 { label: event?.name || t('dashboard_event_overview.summary_title') }
             ]"
         >
@@ -244,16 +244,16 @@
                                 class="flex items-center justify-between p-4 bg-slate-50/70 rounded-xl border border-slate-100 transition-transform hover:-translate-y-0.5">
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class="w-10 h-10 rounded-xl bg-red-500/10 text-red-600 flex items-center justify-center">
-                                        <Icon icon="ph:warning-circle-fill" class="text-xl" />
+                                        class="w-10 h-10 rounded-xl bg-slate-500/10 text-slate-600 flex items-center justify-center">
+                                        <Icon icon="ph:clock-countdown-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <span class="block text-sm font-bold text-navy leading-tight">{{ t('dashboard_event_overview.payment_unpaid') }}</span>
-                                        <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_unpaid_desc') }}</span>
+                                        <span class="block text-sm font-bold text-navy leading-tight">{{ t('dashboard_event_overview.payment_expired') }}</span>
+                                        <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_expired_desc') }}</span>
                                     </div>
                                 </div>
-                                <span class="text-2xl font-black text-red-600 font-mono">{{
-                                    registrationStats.payment.belum_lunas }}</span>
+                                <span class="text-2xl font-black text-slate-600 font-mono">{{
+                                    registrationStats.payment.expired }}</span>
                             </div>
                         </div>
                     </div>
@@ -800,7 +800,7 @@ const registrationStats = computed(() => {
         byPayment: {
             lunas: 0,
             menunggu_acc: 0,
-            belum_lunas: 0
+            expired: 0
         }
     }
 
@@ -821,8 +821,8 @@ const registrationStats = computed(() => {
         // Payment stats
         const status = p.payment_status?.toLowerCase()
         if (status === 'lunas' || status === 'paid') stats.byPayment.lunas++
-        else if (status === 'menunggu_acc' || status === 'menunggu acc' || status === 'pending') stats.byPayment.menunggu_acc++
-        else stats.byPayment.belum_lunas++
+        else if (status === 'menunggu_acc' || status === 'menunggu acc' || status === 'pending' || status === 'awaiting_verification') stats.byPayment.menunggu_acc++
+        else if (status === 'expired' || status === 'cancelled') stats.byPayment.expired++
     })
 
     return {

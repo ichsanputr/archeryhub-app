@@ -7,7 +7,8 @@
       icon="ph:users"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('dashboard.participants_list.title') }
       ]"
     >
@@ -17,13 +18,6 @@
             @click="showBatchCheckinModal = true">
             <span class="hidden sm:inline">{{ t('dashboard.participants_list.batch_checkin_btn', 'Check-in Kolektif') }}</span>
             <span class="sm:hidden">{{ t('dashboard.participants_list.batch_checkin_btn', 'Check-in') }}</span>
-          </BaseButton>
-          <BaseButton variant="white" icon="ph:download" class="h-10 sm:h-11 px-5 border-white/20 text-xs sm:text-sm font-bold"
-            :loading="isExporting"
-            @click="canExportData ? exportCSV() : (showPremiumModal = true)"
-            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
-            <span class="hidden sm:inline">{{ t('dashboard.participants_list.export_csv') }}</span>
-            <span class="sm:hidden">{{ t('dashboard.participants_list.export_short') }}</span>
           </BaseButton>
           <BaseButton :to="canCreateEvent ? `/dashboard/organizer/tournaments/${eventId}/participants/add` : undefined"
             variant="primary" icon="ph:user-plus-bold"
@@ -331,7 +325,7 @@ const toggleReregister = async (participant) => {
         isTogglingReregister.value[id] = false
     }
 }
-const { setEvent, clearEvent } = useEventContext()
+const { setEvent, clearEvent, tournamentTitle } = useEventContext()
 const apiBaseUrl = useApiBaseUrl()
 const { isSubscriptionActive, canExportData, canCreateEvent } = useSubscription()
 const showPremiumModal = ref(false)
@@ -447,8 +441,10 @@ const activeFilterChips = computed(() => {
         let label = t('dashboard.participants_list.status_options.pending')
         if (filters.value.status === 'paid') {
             label = t('dashboard.participants_list.status_options.paid')
-        } else if (filters.value.status === 'unpaid') {
-            label = isEn.value ? 'Unpaid' : 'Belum Bayar'
+        } else if (filters.value.status === 'expired') {
+            label = isEn.value ? 'Expired' : 'Kedaluwarsa'
+        } else if (filters.value.status === 'cancelled') {
+            label = isEn.value ? 'Cancelled' : 'Dibatalkan'
         }
         chips.push({ key: 'status', label: `${t('dashboard.participants_list.filter_modal.payment_status')}: ${label}` })
     }
@@ -691,8 +687,8 @@ const getFilteredCategoryLabels = (participant) => {
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
     if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('dashboard.participants_list.status_options.paid')
-    if (s === 'unpaid' || s === 'belum_bayar') return isEn.value ? 'Unpaid' : 'Belum Bayar'
-    if (s === 'rejected' || s === 'ditolak') return isEn.value ? 'Rejected' : 'Ditolak'
+    if (s === 'expired') return isEn.value ? 'Expired' : 'Kedaluwarsa'
+    if (s === 'cancelled' || s === 'canceled' || s === 'rejected' || s === 'ditolak') return isEn.value ? 'Cancelled' : 'Dibatalkan'
     return t('dashboard.participants_list.status_options.pending')
 }
 
@@ -701,10 +697,10 @@ const getStatusClass = (status) => {
     if (s === 'paid' || s === 'lunas' || s === 'registered' || s === 'terdaftar') {
         return 'bg-emerald-50 text-emerald-700 border-emerald-200'
     }
-    if (s === 'unpaid' || s === 'belum_bayar') {
+    if (s === 'expired') {
         return 'bg-slate-100 text-slate-700 border-slate-200'
     }
-    if (s === 'rejected' || s === 'ditolak') {
+    if (s === 'cancelled' || s === 'canceled' || s === 'rejected' || s === 'ditolak') {
         return 'bg-rose-50 text-rose-700 border-rose-200'
     }
     return 'bg-amber-50 text-amber-700 border-amber-200'

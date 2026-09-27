@@ -33,7 +33,7 @@
                         </div>
 
                         <!-- Footer Actions -->
-                        <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex-shrink-0">
+                        <div v-if="!hideFooter" class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50/50 flex-shrink-0">
                             <slot name="action">
                                 <BaseButton variant="white" @click="handleClose">{{ t('common.cancel') }}</BaseButton>
                             </slot>
@@ -67,6 +67,10 @@ const props = defineProps({
     size: {
         type: String,
         default: 'lg'
+    },
+    hideFooter: {
+        type: Boolean,
+        default: false
     }
 })
 

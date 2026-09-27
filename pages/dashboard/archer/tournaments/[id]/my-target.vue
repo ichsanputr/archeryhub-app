@@ -1,44 +1,16 @@
 <template>
-  <div class="flex flex-col gap-6 md:gap-8 pb-16">
-    <!-- Header Banner (Standard Dashboard Navy Style) -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8">
-        <div class="flex items-center gap-2 text-xs sm:text-sm text-white/70 mb-3">
-          <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">
-            {{ t('my_target.nav_event') }}
-          </NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-xs" />
-          <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors">
-            {{ event?.name || t('my_target.nav_overview') }}
-          </NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-xs" />
-          <span class="text-white/90 font-medium">{{ t('my_target.nav_title') }}</span>
-        </div>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div class="flex items-start gap-4">
-            <div
-              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md shrink-0">
-              <Icon icon="ph:crosshair-bold" class="text-white text-2xl" />
-            </div>
-            <div class="min-w-0">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">
-                {{ t('my_target.title') }}
-              </h1>
-              <div class="text-slate-300 text-xs sm:text-sm mt-1.5">
-                {{ t('my_target.subtitle') }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="flex flex-col gap-6 pb-12">
+    <!-- Header Banner (Standard DashboardHeader) -->
+    <DashboardHeader
+      :title="t('my_target.title')"
+      :subtitle="t('my_target.subtitle')"
+      icon="ph:crosshair-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/archer' },
+        { label: t('sidebar.my_events', 'Turnamen Saya'), to: '/dashboard/archer/tournaments' },
+        { label: t('my_target.title') }
+      ]"
+    />
 
     <!-- Loading Skeleton -->
     <div v-if="isLoading" class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-6 sm:p-8">
@@ -64,8 +36,8 @@
           <!-- 1. TARGET ASSIGNMENT SECTION -->
           <div class="space-y-4">
             <div class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-700">
-              <div class="flex items-center gap-2">
-                <div class="size-7 rounded-lg bg-navy/5 dark:bg-slate-700 text-navy dark:text-white flex items-center justify-center">
+              <div class="flex items-center gap-2.5">
+                <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
                   <Icon icon="ph:crosshair-bold" class="text-base" />
                 </div>
                 <h2 class="text-base font-bold text-slate-900 dark:text-white">
@@ -175,8 +147,8 @@
           <!-- 2. SCHEDULE / TIMETABLE SECTION -->
           <div class="space-y-4 border-t border-slate-100 dark:border-slate-700 pt-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2.5 border-b border-slate-100 dark:border-slate-700">
-              <div class="flex items-center gap-2">
-                <div class="size-7 rounded-lg bg-navy/5 dark:bg-slate-700 text-navy dark:text-white flex items-center justify-center">
+              <div class="flex items-center gap-2.5">
+                <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
                   <Icon icon="ph:calendar-check-bold" class="text-base" />
                 </div>
                 <h2 class="text-base font-bold text-slate-900 dark:text-white">
@@ -207,8 +179,24 @@
               </div>
             </div>
 
-            <!-- Schedule Container -->
-            <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+            <!-- Empty Schedule State -->
+            <div v-if="scheduleDays.length === 0 || activeDayItems.length === 0"
+              class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-700/30 p-8 text-center space-y-3">
+              <div class="size-14 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-800 flex items-center justify-center mx-auto shadow-2xs">
+                <Icon icon="ph:calendar-x-bold" class="text-2xl" />
+              </div>
+              <div class="space-y-1 max-w-md mx-auto">
+                <h3 class="text-sm sm:text-base font-bold text-slate-800 dark:text-white">
+                  {{ t('my_target.empty_schedule') }}
+                </h3>
+                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                  {{ t('my_target.empty_schedule_desc') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Schedule Items Table Container -->
+            <div v-else class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
               
               <!-- Date header for active day -->
               <div v-if="activeDay?.schedule_date" class="px-5 py-3 bg-slate-50 dark:bg-slate-800/90 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs sm:text-sm">
@@ -221,21 +209,8 @@
                 </span>
               </div>
 
-              <!-- Empty Schedule State -->
-              <div v-if="activeDayItems.length === 0" class="p-8 sm:p-10 text-center space-y-2.5 bg-white dark:bg-slate-800">
-                <div class="size-12 rounded-xl bg-slate-50 dark:bg-slate-700 flex items-center justify-center mx-auto text-slate-400">
-                  <Icon icon="ph:calendar-x-bold" class="text-xl" />
-                </div>
-                <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
-                  {{ t('my_target.empty_schedule') }}
-                </div>
-                <div class="text-xs text-slate-400 max-w-sm mx-auto">
-                  {{ t('my_target.empty_schedule_desc') }}
-                </div>
-              </div>
-
               <!-- Schedule Items Table -->
-              <div v-else class="overflow-x-auto bg-white dark:bg-slate-800">
+              <div class="overflow-x-auto bg-white dark:bg-slate-800">
                 <table class="w-full text-left">
                   <thead class="bg-slate-50/80 dark:bg-slate-800 border-b border-slate-100 dark:border-slate-700 text-xs font-bold text-slate-500 select-none">
                     <tr>
@@ -378,7 +353,9 @@
           <!-- Venue & Event Card -->
           <div class="p-4 bg-slate-50/80 dark:bg-slate-700/40 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-3">
             <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200/60 dark:border-slate-700 pb-2">
-              <Icon icon="ph:map-pin-bold" class="text-slate-500 text-base" />
+              <div class="size-6 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
+                <Icon icon="ph:map-pin-bold" class="text-xs" />
+              </div>
               <span>{{ t('my_target.venue_title') }}</span>
             </h4>
 
@@ -414,12 +391,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 import { useApi } from '~/composables/useApi'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t, locale } = useI18n()
+const { t } = useDashboardI18n()
 const route = useRoute()
 const { get } = useApi()
 

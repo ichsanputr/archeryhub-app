@@ -7,7 +7,8 @@
       icon="ph:target"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: (eventName !== 'Loading...' && eventName) || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_targets.title') }
       ]"
     >
@@ -336,6 +337,7 @@ const { get, post, put, delete: deleteApi } = useApi()
 const toast = useToast()
 
 const eventId = route.params.id
+const { tournamentTitle } = useTournamentContext()
 const eventName = ref('Loading...')
 
 const targets = ref([])

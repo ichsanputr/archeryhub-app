@@ -311,6 +311,7 @@ const isManualSlug = ref(false)
 const submitting = ref(false)
 
 const categoryOptions = [
+    { value: 'about', label: 'About Archeris (Tentang Archeris)' },
     { value: 'accounts', label: 'Accounts & Profile (Akun & Profil)' },
     { value: 'tournaments', label: 'Tournaments Management (Turnamen)' },
     { value: 'scorekeeper', label: 'Scorekeeper (Pencatatan Skor)' },

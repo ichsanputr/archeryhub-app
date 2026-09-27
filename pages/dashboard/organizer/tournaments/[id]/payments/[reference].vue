@@ -16,6 +16,7 @@ const { t } = useDashboardI18n()
 const route = useRoute()
 const router = useRouter()
 const { get, post } = useApi()
+const { tournamentTitle } = useTournamentContext()
 const toast = useToast()
 const apiBaseUrl = useApiBaseUrl()
 
@@ -78,7 +79,6 @@ watch(categoryBreakdown, (cats) => {
 // Proof Lightbox
 const showImageModal = ref(false)
 const selectedImageUrl = ref('')
-const copiedRef = ref(false)
 
 // Reject Modal
 const showRejectModal = ref(false)
@@ -88,15 +88,6 @@ const openImageModal = (url) => {
   if (!url) return
   selectedImageUrl.value = url
   showImageModal.value = true
-}
-
-const copyReference = () => {
-  if (!reference.value) return
-  navigator.clipboard.writeText(reference.value)
-  copiedRef.value = true
-  setTimeout(() => {
-    copiedRef.value = false
-  }, 2000)
 }
 
 const loadPaymentDetails = async () => {
@@ -124,19 +115,19 @@ const isPaid = (status) => {
 
 const isManualMethod = computed(() => {
   const m = (payment.value?.payment_method || '').toLowerCase()
-  return m === 'manual' || String(reference.value || '').toUpperCase().startsWith('PAY-MANUAL-')
+  return m === 'manual' || m === 'manual_transfer' || m === 'bank_transfer' || String(reference.value || '').toUpperCase().startsWith('PAY-MANUAL-')
 })
 
 const isAwaitingVerif = computed(() => {
   const s = (payment.value?.status || '').toLowerCase()
-  return s === 'awaiting_verification' || (isManualMethod.value && !!payment.value?.proof_url && !isPaid(s) && s !== 'rejected')
+  return isManualMethod.value && (s === 'awaiting_verification' || (!!payment.value?.proof_url && !isPaid(s) && s !== 'rejected' && !['cancelled', 'canceled', 'expired', 'failed'].includes(s)))
 })
 
 const getStatusBadgeClass = (status) => {
   if (isPaid(status)) return 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/50 dark:text-emerald-300 dark:border-emerald-800'
   if (isAwaitingVerif.value) return 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/50 dark:text-amber-300 dark:border-amber-800'
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800'
+  if (['pending'].includes(s)) return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300 dark:border-blue-800'
   return 'bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/50 dark:text-rose-300 dark:border-rose-800'
 }
 
@@ -144,7 +135,7 @@ const getStatusDotClass = (status) => {
   if (isPaid(status)) return 'bg-emerald-500'
   if (isAwaitingVerif.value) return 'bg-amber-500 animate-pulse'
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return 'bg-blue-500'
+  if (['pending'].includes(s)) return 'bg-blue-500'
   return 'bg-rose-500'
 }
 
@@ -152,7 +143,7 @@ const getStatusLabel = (status) => {
   if (isPaid(status)) return t('org_event_payments.status_paid') || 'Lunas'
   if (isAwaitingVerif.value) return t('org_event_payments.status_awaiting') || 'Menunggu Verifikasi'
   const s = (status || '').toLowerCase()
-  if (['pending', 'unpaid'].includes(s)) return t('org_event_payments.status_pending') || 'Menunggu Pembayaran'
+  if (['pending'].includes(s)) return t('org_event_payments.status_pending') || 'Menunggu Pembayaran'
   if (s === 'rejected') return t('org_event_payments.status_rejected') || 'Ditolak'
   if (['cancelled', 'canceled'].includes(s)) return t('org_event_payments.status_cancelled') || 'Dibatalkan'
   if (s === 'expired') return t('payment_status.badge_expired', 'Kedaluwarsa')
@@ -251,7 +242,11 @@ onMounted(() => {
           </NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-xs" />
           <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-white transition-colors">
-            {{ t('events.list.title') || 'Turnamen' }}
+            {{ t('dashboard.sidebar.my_events', 'My Tournaments') }}
+          </NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-xs" />
+          <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-white transition-colors">
+            {{ payment?.event_name || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}
           </NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-xs" />
           <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/payments`" class="hover:text-white transition-colors">
@@ -287,15 +282,6 @@ onMounted(() => {
 
           <!-- Header Actions -->
           <div class="flex items-center gap-2.5 flex-wrap">
-            <button
-              @click="copyReference"
-              class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs sm:text-sm font-bold transition-all border border-white/10 flex items-center gap-1.5 cursor-pointer shadow-xs"
-              :title="t('org_event_payments.copy_ref_btn') || 'Salin Kode Pembayaran'"
-            >
-              <Icon :icon="copiedRef ? 'ph:check-bold' : 'ph:copy-simple-bold'" class="size-4" :class="copiedRef ? 'text-primary' : ''" />
-              <span>{{ copiedRef ? (t('org_event_payments.ref_copied') || 'Tersalin!') : (t('org_event_payments.copy_ref_btn') || 'Salin Referensi') }}</span>
-            </button>
-
             <a
               v-if="isPaid(payment?.status)"
               :href="getInvoiceUrl(reference)"
@@ -346,59 +332,6 @@ onMounted(() => {
     <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
       <!-- Left 2 Cols: Unified Main Parent Card -->
       <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm divide-y divide-slate-100 dark:divide-slate-700 overflow-hidden">
-
-        <!-- Status Action Banner (If Awaiting Verification) -->
-        <div
-          v-if="isAwaitingVerif"
-          class="bg-amber-50 dark:bg-amber-950/30 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-amber-200/80 dark:border-amber-800/80"
-        >
-          <div class="flex items-start gap-3.5">
-            <div class="size-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-              <Icon icon="ph:hourglass-bold" class="size-5" />
-            </div>
-            <div>
-              <div class="font-bold text-sm sm:text-base text-navy dark:text-amber-200">{{ t('org_event_payments.stat_awaiting') }}</div>
-              <div class="text-xs sm:text-sm text-amber-800 dark:text-amber-300/80 mt-0.5 leading-relaxed">
-                {{ t('org_event_payments.stat_awaiting_sub') }}
-              </div>
-            </div>
-          </div>
-          <div class="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
-            <button
-              @click="showRejectModal = true"
-              :disabled="isProcessing"
-              class="px-4 py-2 bg-white dark:bg-slate-800 hover:bg-rose-50 text-rose-600 border border-rose-200 dark:border-rose-900 rounded-xl font-bold text-xs sm:text-sm transition-colors flex-1 sm:flex-initial flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
-            >
-              <Icon icon="ph:x-bold" class="size-4" />
-              <span>{{ t('org_event_payments.reject_btn') }}</span>
-            </button>
-            <button
-              @click="verifyInvoice('approve')"
-              :disabled="isProcessing"
-              class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-2xs transition-colors flex-1 sm:flex-initial flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <Icon v-if="isProcessing" icon="ph:spinner-bold" class="size-4 animate-spin" />
-              <Icon v-else icon="ph:check-bold" class="size-4" />
-              <span>{{ t('org_event_payments.approve_btn') }}</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Rejection Notice (If Rejected) -->
-        <div
-          v-else-if="payment.status === 'rejected'"
-          class="bg-rose-50 dark:bg-rose-950/30 p-5 sm:p-6 flex items-start gap-3.5 border-b border-rose-200/80 dark:border-rose-800/80"
-        >
-          <div class="size-10 rounded-xl bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
-            <Icon icon="ph:warning-circle-bold" class="size-5" />
-          </div>
-          <div>
-            <div class="font-bold text-sm sm:text-base text-rose-900 dark:text-rose-200">{{ t('org_event_payments.status_rejected') }}</div>
-            <div class="text-xs sm:text-sm text-rose-700 dark:text-rose-300/80 mt-1 leading-relaxed">
-              <strong>{{ t('org_event_payments.rejection_reason') }}</strong> {{ payment.rejection_reason || '-' }}
-            </div>
-          </div>
-        </div>
 
         <!-- Section 1: Payer & Registrant Account Card -->
         <div class="p-5 sm:p-6 space-y-4">
@@ -455,14 +388,6 @@ onMounted(() => {
                 </h3>
                 <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('org_event_payments.reg_details_subtitle') }}</div>
               </div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="px-3 py-1 rounded-full text-xs font-bold bg-navy/5 text-navy dark:bg-slate-700 dark:text-white border border-navy/10">
-                {{ categoryBreakdown.length }} {{ t('events.categories', 'Kategori') }}
-              </span>
-              <span class="px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-dark dark:text-primary border border-primary/20">
-                {{ (payment.participants ? payment.participants.length : 0) }} {{ t('org_event_payments.athletes_registered') }}
-              </span>
             </div>
           </div>
 
@@ -684,6 +609,77 @@ onMounted(() => {
 
           <div v-else class="p-8 text-center bg-slate-50 dark:bg-slate-700/30 rounded-xl text-slate-400 text-xs sm:text-sm italic">
             {{ t('org_event_payments.no_proof_uploaded') }}
+          </div>
+        </div>
+
+        <!-- Status Action Banner (If Awaiting Verification - Moved to Bottom Card) -->
+        <div
+          v-if="isAwaitingVerif"
+          class="bg-amber-50 dark:bg-amber-950/30 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-amber-200/80 dark:border-amber-800/80"
+        >
+          <div class="flex items-start gap-3.5">
+            <div class="size-10 rounded-xl bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+              <Icon icon="ph:hourglass-bold" class="size-5" />
+            </div>
+            <div>
+              <div class="font-bold text-sm sm:text-base text-navy dark:text-amber-200">{{ t('org_event_payments.stat_awaiting') }}</div>
+              <div class="text-xs sm:text-sm text-amber-800 dark:text-amber-300/80 mt-0.5 leading-relaxed">
+                {{ t('org_event_payments.stat_awaiting_sub') }}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5 w-full sm:w-auto shrink-0">
+            <button
+              @click="showRejectModal = true"
+              :disabled="isProcessing"
+              class="px-4 py-2 bg-white dark:bg-slate-800 hover:bg-rose-50 text-rose-600 border border-rose-200 dark:border-rose-900 rounded-xl font-bold text-xs sm:text-sm transition-colors flex-1 sm:flex-initial flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+            >
+              <Icon icon="ph:x-bold" class="size-4" />
+              <span>{{ t('org_event_payments.reject_btn') }}</span>
+            </button>
+            <button
+              @click="verifyInvoice('approve')"
+              :disabled="isProcessing"
+              class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs sm:text-sm shadow-2xs transition-colors flex-1 sm:flex-initial flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Icon v-if="isProcessing" icon="ph:spinner-bold" class="size-4 animate-spin" />
+              <Icon v-else icon="ph:check-bold" class="size-4" />
+              <span>{{ t('org_event_payments.approve_btn') }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Rejection Notice (If Rejected - Moved to Bottom Card) -->
+        <div
+          v-else-if="payment.status === 'rejected'"
+          class="bg-rose-50 dark:bg-rose-950/30 p-5 sm:p-6 flex items-start gap-3.5 border-t border-rose-200/80 dark:border-rose-800/80"
+        >
+          <div class="size-10 rounded-xl bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+            <Icon icon="ph:warning-circle-bold" class="size-5" />
+          </div>
+          <div>
+            <div class="font-bold text-sm sm:text-base text-rose-900 dark:text-rose-200">{{ t('org_event_payments.status_rejected') }}</div>
+            <div class="text-xs sm:text-sm text-rose-700 dark:text-rose-300/80 mt-1 leading-relaxed">
+              <strong>{{ t('org_event_payments.rejection_reason') }}</strong> {{ payment.rejection_reason || '-' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Online Gateway Notice (If Online Gateway & Pending - Moved to Bottom Card) -->
+        <div
+          v-else-if="!isManualMethod && !isPaid(payment.status) && !['cancelled', 'canceled', 'expired', 'failed', 'rejected'].includes((payment.status || '').toLowerCase())"
+          class="bg-blue-50 dark:bg-blue-950/30 p-5 sm:p-6 flex items-start gap-3.5 border-t border-blue-200/80 dark:border-blue-800/80"
+        >
+          <div class="size-10 rounded-xl bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-300 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+            <Icon icon="ph:hourglass-bold" class="size-5 animate-pulse" />
+          </div>
+          <div>
+            <div class="font-bold text-sm sm:text-base text-navy dark:text-blue-200">
+              {{ t('org_event_payments.online_pending_title') }} ({{ formatPaymentMethodName(payment.payment_method) }})
+            </div>
+            <div class="text-xs sm:text-sm text-blue-800 dark:text-blue-300/80 mt-1 leading-relaxed">
+              {{ t('org_event_payments.online_pending_desc') }}
+            </div>
           </div>
         </div>
       </div>

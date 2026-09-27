@@ -241,7 +241,8 @@
     "archers": "Pemanah",
     "management": "Manajemen",
     "tournaments": "Turnamen",
-    "articles": "Artikel"
+    "articles": "Artikel",
+    "search_menu": "Cari menu..."
   },
   "archer_certificates": {
     "breadcrumb": "Sertifikat",
@@ -4999,7 +5000,7 @@
     "share_button": "Bagikan",
     "stats": {
       "total_archers": "Total Pemanah",
-      "total_teams": "Total Tim Resmi",
+      "total_teams": "Total Tim",
       "completion": "Penyelesaian",
       "time_left": "Sisa Waktu"
     },

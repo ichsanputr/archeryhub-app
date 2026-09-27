@@ -39,7 +39,7 @@
                             class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                             :class="activeTab === 'registered' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-600 hover:text-navy'">
                             <span class="size-2 rounded-full bg-emerald-500 shrink-0"></span>
-                            <span class="truncate">{{ isEn ? 'Registered (Rp 0)' : 'Sudah Terdaftar (Rp 0)' }}</span>
+                            <span class="truncate">{{ isEn ? 'Registered (Free)' : 'Sudah Terdaftar (Gratis)' }}</span>
                         </button>
                         <button
                             type="button"
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <!-- TAB 1: REGISTERED IN EVENT (RP 0) -->
+                <!-- TAB 1: REGISTERED IN EVENT (FREE) -->
                 <div v-if="activeTab === 'registered'" class="flex-1 overflow-y-auto p-5 space-y-3 max-h-[420px]">
                     <div v-if="loading" class="py-14 text-center text-slate-400">
                         <Icon icon="ph:spinner-gap-bold" class="text-3xl animate-spin mx-auto mb-2 text-navy" />
@@ -73,7 +73,7 @@
                         </div>
                         <div class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'No other individual archers registered yet' : 'Belum ada atlet individu terdaftar lainnya' }}</div>
                         <div class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
-                            {{ isEn ? 'Archers registered in this division will appear here with no extra fee (Rp 0). You can also search the database or add a new archer.' : 'Atlet yang mendaftar kategori individu pada divisi ini akan otomatis muncul di sini tanpa biaya tambahan (Rp 0). Anda juga dapat mencari di database atau membuat profil atlet baru.' }}
+                            {{ isEn ? 'Archers registered in this division will appear here with no extra fee (Free). You can also search the database or add a new archer.' : 'Atlet yang mendaftar kategori individu pada divisi ini akan otomatis muncul di sini tanpa biaya tambahan (Gratis). Anda juga dapat mencari di database atau membuat profil atlet baru.' }}
                         </div>
                     </div>
 
@@ -103,7 +103,7 @@
                             <div class="flex items-center gap-3 shrink-0">
                                 <span class="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-black border border-emerald-300">
                                     <Icon icon="ph:check-bold" />
-                                    {{ isEn ? 'Rp 0 (Registered)' : 'Rp 0 (Sudah Bayar)' }}
+                                    {{ isEn ? 'Free (Registered)' : 'Gratis (Sudah Terdaftar)' }}
                                 </span>
                                 <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
                                     <Icon icon="ph:plus-bold" class="text-sm" />
@@ -171,7 +171,7 @@
                                     <span
                                         class="inline-flex items-center gap-1 px-3 py-1 rounded-xl text-xs sm:text-sm font-black border"
                                         :class="archer.is_already_registered_individual ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'">
-                                        {{ archer.is_already_registered_individual ? 'Rp 0' : (isEn ? '+ Individual Fee' : '+ Biaya Individu') }}
+                                        {{ archer.is_already_registered_individual ? (isEn ? 'Free' : 'Gratis') : (isEn ? '+ Individual Fee' : '+ Biaya Individu') }}
                                     </span>
                                     <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
                                         <Icon icon="ph:plus-bold" class="text-sm" />

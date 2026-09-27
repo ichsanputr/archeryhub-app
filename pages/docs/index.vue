@@ -241,6 +241,7 @@ const filteredDocsByCat = (categoryId: string) => {
 
 const categories = computed(() => [
     { id: 'all', label: locale.value === 'id' ? 'Semua Panduan' : 'All Guides', icon: 'ph:squares-four-bold', description: locale.value === 'id' ? 'Jelajahi seluruh artikel panduan resmi Archeris' : 'Browse all official documentation articles' },
+    { id: 'about', label: locale.value === 'id' ? 'Tentang Archeris' : 'About Archeris', icon: 'ph:info-bold', description: locale.value === 'id' ? 'Pengenalan platform Archeris, tiket event panahan, dan sistem skoring digital' : 'Introduction to Archeris platform, archery event ticketing, and digital scoring system' },
     { id: 'accounts', label: locale.value === 'id' ? 'Tipe Akun' : 'User Accounts', icon: 'ph:users-three-bold', description: locale.value === 'id' ? 'Jenis akun, hak akses, dan pengaturan profil' : 'Account types, permissions, and profile setups' },
     { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournament Setup', icon: 'ph:trophy-bold', description: locale.value === 'id' ? 'Pengaturan event, jadwal, arena, dan widget embed' : 'Event wizards, schedules, venue setup, and embed widgets' },
     { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper Operations', icon: 'ph:device-mobile-bold', description: locale.value === 'id' ? 'Login kode singkat, input skor, dan koreksi poin' : 'Mobile short-code login, score inputs, and corrections' },

@@ -202,24 +202,20 @@
                   {{ isEn ? 'Archery Specifications & Club' : 'Klub & Spesifikasi Memanah' }}
                 </h3>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                  {{ isEn ? 'Your primary archery category, hand dominance, and club origin.' : 'Kategori divisi panahan utama, dominansi tangan, dan klub asal Anda.' }}
+                  {{ isEn ? 'Your primary archery category and club origin.' : 'Kategori divisi panahan utama dan klub asal Anda.' }}
                 </div>
               </div>
             </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            <BaseSelect
-              v-model="accountForm.bow_type"
-              :label="isEn ? 'Primary Bow Division' : 'Divisi Busur Utama'"
-              :items="bowTypeOptions"
-              icon="ph:crosshair-bold" />
-
-            <BaseSelect
-              v-model="accountForm.hand_dominance"
-              :label="isEn ? 'Hand Dominance' : 'Dominansi Tangan'"
-              :items="handDominanceOptions"
-              icon="ph:hand-pointing-bold" />
+            <div class="md:col-span-2">
+              <BaseSelect
+                v-model="accountForm.bow_type"
+                :label="isEn ? 'Primary Bow Division' : 'Divisi Busur Utama'"
+                :items="bowTypeOptions"
+                icon="ph:crosshair-bold" />
+            </div>
 
             <div class="md:col-span-2">
               <ClubSelector 
@@ -881,17 +877,11 @@ const bowTypeOptions = computed(() => [
   { title: 'Standard Bow', value: 'standard_bow' }
 ])
 
-const handDominanceOptions = computed(() => [
-  { title: isEn.value ? 'Right Handed' : 'Tangan Kanan (Right Handed)', value: 'right' },
-  { title: isEn.value ? 'Left Handed' : 'Tangan Kiri (Left Handed)', value: 'left' }
-])
-
 const accountForm = ref({
   full_name: '',
   username: '',
   date_of_birth: '',
   gender: 'male',
-  hand_dominance: 'right',
   phone: '',
   email: '',
   emergency_contact_name: '',
@@ -1030,7 +1020,6 @@ const loadProfile = async () => {
       username: data.username || '',
       date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString().split('T')[0] : '',
       gender: data.gender || 'male',
-      hand_dominance: data.hand_dominance || 'right',
       phone: data.phone || '',
       email: data.email || '',
       emergency_contact_name: data.emergency_contact_name || '',

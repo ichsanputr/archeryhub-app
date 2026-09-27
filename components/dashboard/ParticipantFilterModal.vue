@@ -58,7 +58,7 @@
                 <label class="block text-xs font-bold text-navy">
                   {{ t('dashboard.participants_list.filter_modal.payment_status') }}
                 </label>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
                   <button
                     type="button"
                     @click="draftFilters.status = 'Semua'"
@@ -103,16 +103,30 @@
 
                   <button
                     type="button"
-                    @click="draftFilters.status = 'unpaid'"
+                    @click="draftFilters.status = 'expired'"
                     :class="[
                       'py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer',
-                      draftFilters.status === 'unpaid'
+                      draftFilters.status === 'expired'
                         ? 'bg-white border-navy text-navy font-black shadow-2xs ring-1 ring-navy/20'
                         : 'bg-slate-50 text-slate-700 border-slate-200/90 hover:bg-slate-100 hover:border-slate-300'
                     ]"
                   >
-                    <Icon v-if="draftFilters.status === 'unpaid'" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
-                    <span>{{ isEn ? 'Unpaid' : 'Belum Bayar' }}</span>
+                    <Icon v-if="draftFilters.status === 'expired'" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
+                    <span>{{ isEn ? 'Expired' : 'Kedaluwarsa' }}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    @click="draftFilters.status = 'cancelled'"
+                    :class="[
+                      'py-2.5 px-3 rounded-xl border text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer',
+                      draftFilters.status === 'cancelled'
+                        ? 'bg-white border-navy text-navy font-black shadow-2xs ring-1 ring-navy/20'
+                        : 'bg-slate-50 text-slate-700 border-slate-200/90 hover:bg-slate-100 hover:border-slate-300'
+                    ]"
+                  >
+                    <Icon v-if="draftFilters.status === 'cancelled'" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
+                    <span>{{ isEn ? 'Cancelled' : 'Dibatalkan' }}</span>
                   </button>
                 </div>
               </div>

@@ -7,7 +7,8 @@
       icon="ph:coins-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('org_revenue.header_title') }
       ]"
     />
@@ -80,6 +81,7 @@ import { useRoute } from 'vue-router'
 const { t } = useI18n()
 const route = useRoute()
 const { get } = useApi()
+const { tournamentTitle } = useTournamentContext()
 
 const eventId = computed(() => route.params.id as string)
 

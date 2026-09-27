@@ -639,18 +639,62 @@ const computedFilteredItems = computed(() => {
 
   // Client sort
   if (internalSortBy.value) {
+    const targetCol = effectiveColumns.value.find(c => c.key === internalSortBy.value || c.sortKey === internalSortBy.value)
+    const effectiveKey = targetCol?.sortKey || internalSortBy.value
+
+    const extractSortValue = (item) => {
+      if (!item) return ''
+      if (item[effectiveKey] !== undefined && item[effectiveKey] !== null) return item[effectiveKey]
+      if (item[internalSortBy.value] !== undefined && item[internalSortBy.value] !== null) return item[internalSortBy.value]
+      
+      // Smart aliases for common table slot keys
+      if (internalSortBy.value === 'reference') {
+        return item.reference || item.invoice_no || item.id || ''
+      }
+      if (internalSortBy.value === 'profile' || internalSortBy.value === 'archer' || internalSortBy.value === 'athlete') {
+        return item.full_name || item.name || item.athlete_name || ''
+      }
+      if (internalSortBy.value === 'category') {
+        return item.category_name || item.division || item.category || ''
+      }
+      if (internalSortBy.value === 'club') {
+        return item.club_name || item.club || ''
+      }
+      if (internalSortBy.value === 'status') {
+        return item.payment_status || item.status || ''
+      }
+      if (internalSortBy.value === 'checkin') {
+        return item.last_reregistration_at || item.checked_in || ''
+      }
+      if (internalSortBy.value === 'registered_at' || internalSortBy.value === 'date') {
+        return item.registration_date || item.created_at || item.start_date || ''
+      }
+      if (internalSortBy.value === 'paid_at') {
+        return item.paid_at || item.created_at || ''
+      }
+      if (internalSortBy.value === 'amount') {
+        return Number(item.amount || item.total_amount || item.payment_amount || 0)
+      }
+      if (internalSortBy.value === 'method') {
+        return item.payment_method || item.method || ''
+      }
+      return ''
+    }
+
     list.sort((a, b) => {
-      const valA = a[internalSortBy.value]
-      const valB = b[internalSortBy.value]
+      const valA = extractSortValue(a)
+      const valB = extractSortValue(b)
       if (valA === valB) return 0
-      if (valA === null || valA === undefined) return 1
-      if (valB === null || valB === undefined) return -1
+      if (valA === null || valA === undefined || valA === '') return 1
+      if (valB === null || valB === undefined || valB === '') return -1
 
       let cmp = 0
       if (typeof valA === 'number' && typeof valB === 'number') {
         cmp = valA - valB
+      } else if (!isNaN(Number(valA)) && !isNaN(Number(valB)) && typeof valA !== 'boolean' && typeof valB !== 'boolean') {
+        cmp = Number(valA) - Number(valB)
       } else {
-        cmp = String(valA).localeCompare(String(valB))
+        cmp = String(valA).localeCompare(String(valB), undefined, { numeric: true, sensitivity: 'base' })
       }
       return internalSortOrder.value === 'desc' ? -cmp : cmp
     })

@@ -324,16 +324,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
-                                        <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
-                                            <Icon icon="ph:hand-pointing-bold" class="text-lg text-slate-700" />
-                                        </div>
-                                        <div class="min-w-0">
-                                            <span class="text-xs font-medium text-slate-500 block leading-none mb-1">{{ t('archers.public.hand_dominance', 'Dominansi Tangan') }}</span>
-                                            <div class="font-bold text-slate-900 text-xs sm:text-sm truncate">{{ handDominanceLabel }}</div>
-                                        </div>
-                                    </div>
-
                                     <div v-if="archer.height_cm || archer.weight_kg" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 flex items-center gap-3">
                                         <div class="size-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-700 shrink-0 shadow-2xs">
                                             <Icon icon="ph:barbell-bold" class="text-lg text-slate-700" />
@@ -703,13 +693,6 @@ const genderLabel = computed(() => {
     if (val === 'male' || val === 'm' || val === 'laki-laki') return t('archers.public.male', 'Laki-laki')
     if (val === 'female' || val === 'f' || val === 'perempuan') return t('archers.public.female', 'Perempuan')
     return '-'
-})
-
-const handDominanceLabel = computed(() => {
-    const val = (archer.value?.hand_dominance || '').toLowerCase()
-    if (val === 'right' || val === 'kanan') return t('archers.public.hand_right', 'Tangan Kanan')
-    if (val === 'left' || val === 'kiri') return t('archers.public.hand_left', 'Tangan Kiri')
-    return archer.value?.hand_dominance || '-'
 })
 
 const bowTypes = computed(() => {

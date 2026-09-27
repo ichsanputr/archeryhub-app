@@ -3,17 +3,13 @@ import { Icon } from '@iconify/vue'
 import QrcodeVue from 'qrcode.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useApi } from '~/composables/useApi'
-import { useAuth } from '~/composables/useAuth'
-import { useToast } from '~/composables/useToast'
-import { getImageUrl, useImageOrDefault } from '~/composables/useImageHelper'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 const { user } = useAuth()
 const toast = useToast()
 const route = useRoute()
@@ -33,52 +29,43 @@ const showImageDialog = ref(false)
 const selectedImage = ref('')
 
 const isProcessingPayment = ref(false)
-const showCancelConfirm = ref(false)
 const isCancelling = ref(false)
+const showCancelConfirm = ref(false)
 
-const parseInstructionGroups = (raw) => {
-    if (!raw) return []
-    try {
-        const parsed = JSON.parse(raw)
-        if (Array.isArray(parsed)) {
-            return parsed
-                .map(group => ({
-                    title: group.title || '',
-                    steps: Array.isArray(group.steps) ? group.steps : []
-                }))
-                .filter(g => g.steps.length > 0)
-        }
-    } catch {
-        // Not JSON
-    }
-    return []
-}
-
-const handleTransactionPayment = async (transaction) => {
-    if (!transaction) return
-    if (transaction.checkout_url) {
-        window.open(transaction.checkout_url, '_blank')
-        if (transaction.reference) {
-            navigateTo(`/dashboard/archer/payments/${transaction.reference}`)
-        }
-    } else if (transaction.reference) {
-        navigateTo(`/dashboard/archer/payments/${transaction.reference}`)
-    }
-}
-
-const cancelRegistration = async () => {
+const handleCancelRegistration = async () => {
+    if (!participant.value) return
     isCancelling.value = true
     try {
-        await del(`/tournaments/${eventId}/participants/me`)
+        const participantId = participant.value.id || participant.value.participant_id || participant.value.uuid
+        if (participant.value.transaction?.reference) {
+            await post(`/payments/${participant.value.transaction.reference}/cancel`)
+        } else if (participantId) {
+            await del(`/tournaments/participants/${participantId}`)
+        }
+        toast.success(t('my_registration.toast_cancel_success', 'Pendaftaran berhasil dibatalkan'))
         showCancelConfirm.value = false
-        toast.success(t('my_registration.toast_cancel_success'))
-        navigateTo('/dashboard/archer/tournaments')
+        await fetchInitialData()
     } catch (e) {
         console.error('Failed to cancel registration:', e)
-        toast.error(t('my_registration.toast_cancel_failed'))
+        toast.error(e?.data?.message || t('my_registration.toast_cancel_failed', 'Gagal membatalkan pendaftaran'))
     } finally {
         isCancelling.value = false
     }
+}
+
+const formatPaymentMethodName = (method) => {
+    if (isFreeRegistration.value) return `${t('archer_payment_detail.free_badge', 'Pendaftaran Gratis')} (${formatCurrency(0)})`
+    if (!method) return '-'
+    const m = String(method).toLowerCase()
+    if (m === 'free' || m === 'free_registration') return `${t('archer_payment_detail.free_badge', 'Pendaftaran Gratis')} (${formatCurrency(0)})`
+    if (m === 'manual' || m === 'manual_transfer' || m === 'bank_transfer') return t('archer_payments_list.method_manual', 'Transfer Bank Manual')
+    if (m === 'mayar') return 'Mayar'
+    if (m === 'paypal') return 'PayPal'
+    if (m === 'midtrans') return 'Midtrans'
+    if (m === 'xendit') return 'Xendit'
+    if (m === 'qris') return 'QRIS'
+    if (m === 'cash' || m === 'tunai') return t('payment_method.cash', 'Tunai')
+    return method.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
 }
 
 const initiatePaymentGateway = async () => {
@@ -98,9 +85,65 @@ const initiatePaymentGateway = async () => {
 }
 
 const isPaid = (status) => {
-    const s = (status || '').toLowerCase()
-    return ['paid', 'lunas', 'registered', 'terdaftar', 'success', 'completed'].includes(s)
+    const ps = (status || participant.value?.payment_status || '').toLowerCase()
+    const ts = (participant.value?.transaction?.status || '').toLowerCase()
+    return ['paid', 'lunas', 'registered', 'terdaftar', 'success', 'completed'].includes(ps) ||
+           ['paid', 'lunas', 'registered', 'terdaftar', 'success', 'completed'].includes(ts)
 }
+
+const activeCategories = computed(() => {
+    const cats = participant.value?.categories || []
+    const nonCancelled = cats.filter(c => {
+        const s = (c.payment_status || '').toLowerCase()
+        return s !== 'cancelled' && s !== 'canceled' && s !== 'expired' && s !== 'failed'
+    })
+    return nonCancelled.length > 0 ? nonCancelled : cats
+})
+
+const displayPaymentAmount = computed(() => {
+    if (participant.value?.transaction?.total_amount) {
+        return Number(participant.value.transaction.total_amount)
+    }
+    if (activeCategories.value.length > 0) {
+        return activeCategories.value.reduce((sum, c) => sum + Number(c.payment_amount || c.fee || 0), 0)
+    }
+    return Number(participant.value?.payment_amount || 0)
+})
+
+const isCancelled = computed(() => {
+    const ps = (participant.value?.payment_status || '').toLowerCase()
+    const ts = (participant.value?.transaction?.status || '').toLowerCase()
+
+    // If active transaction is pending, paid, or awaiting_verification -> NOT cancelled
+    if (['pending', 'paid', 'lunas', 'awaiting_verification', 'menunggu_acc'].includes(ts)) {
+        return false
+    }
+    const hasActiveCat = (participant.value?.categories || []).some(c => {
+        const cs = (c.payment_status || '').toLowerCase()
+        return ['pending', 'paid', 'lunas', 'awaiting_verification', 'menunggu_acc'].includes(cs)
+    })
+    if (hasActiveCat) {
+        return false
+    }
+
+    return ['cancelled', 'canceled', 'expired', 'failed'].includes(ps) || ['cancelled', 'canceled', 'expired', 'failed'].includes(ts)
+})
+
+const isRejected = computed(() => {
+    if (isPaid() || !isCancelled.value) {
+        const ts = (participant.value?.transaction?.status || '').toLowerCase()
+        return ts === 'rejected'
+    }
+    const ps = (participant.value?.payment_status || '').toLowerCase()
+    const ts = (participant.value?.transaction?.status || '').toLowerCase()
+    return ps === 'rejected' || ts === 'rejected'
+})
+
+const isAwaitingVerification = computed(() => {
+    const ps = (participant.value?.payment_status || '').toLowerCase()
+    const ts = (participant.value?.transaction?.status || '').toLowerCase()
+    return !isPaid() && !isCancelled.value && !isRejected.value && (ps === 'awaiting_verification' || ts === 'awaiting_verification' || !!participantProofUrl.value)
+})
 
 const formatCurrency = (val) => {
     return new Intl.NumberFormat('id-ID').format(val || 0)
@@ -160,74 +203,9 @@ const isDelegatedByOther = computed(() => {
     return !isInvoiceOwner.value || (participant.value?.registration_source === 'invited' && !isInvoiceOwner.value)
 })
 
-// Re-upload proof state
-const showReuploadModal = ref(false)
-const reuploadSenderName = ref('')
-const reuploadFileUrl = ref('')
-const reuploadPreviewUrl = ref('')
-const isReuploading = ref(false)
-const reuploadFileInputRef = ref(null)
-
-const triggerReuploadFileInput = () => {
-    reuploadFileInputRef.value?.click()
-}
-
-const handleReuploadFileChange = async (evt) => {
-    const file = evt.target.files?.[0]
-    if (!file) return
-    if (file.size > 5 * 1024 * 1024) {
-        toast.error(t('my_registration.toast_file_limit', 'Ukuran berkas maksimal 5MB'))
-        return
-    }
-    reuploadPreviewUrl.value = URL.createObjectURL(file)
-    isReuploading.value = true
-    try {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('caption', `proof-reupload-${participant.value?.transaction?.reference || eventId}-${Date.now()}`)
-        const res = await upload('/media/upload', formData)
-        reuploadFileUrl.value = res.url || res.URL || ''
-        toast.success(t('my_registration.toast_file_uploaded', 'Bukti berhasil diunggah'))
-    } catch (err) {
-        toast.error(t('my_registration.toast_upload_error', 'Gagal mengunggah berkas: ') + (err?.data?.error || err?.message || 'Error'))
-        reuploadPreviewUrl.value = ''
-    } finally {
-        isReuploading.value = false
-    }
-}
-
-const submitReuploadProof = async () => {
-    const refCode = participant.value?.transaction?.reference
-    if (!refCode) {
-        toast.error(t('my_registration.toast_no_transaction', 'Data transaksi tidak ditemukan'))
-        return
-    }
-    if (!reuploadFileUrl.value || !reuploadSenderName.value.trim()) {
-        toast.warning(t('my_registration.toast_fill_required', 'Mohon lengkapi nama pengirim dan pilih berkas'))
-        return
-    }
-    isReuploading.value = true
-    try {
-        await post(`/payment/manual/${refCode}/upload-proof`, {
-            proof_url: reuploadFileUrl.value,
-            sender_name: reuploadSenderName.value.trim()
-        })
-        toast.success(t('my_registration.toast_proof_sent', 'Bukti pembayaran berhasil dikirim'))
-        showReuploadModal.value = false
-        reuploadFileUrl.value = ''
-        reuploadPreviewUrl.value = ''
-        reuploadSenderName.value = ''
-        await fetchInitialData()
-    } catch (err) {
-        toast.error(err?.data?.error || t('my_registration.toast_proof_failed', 'Gagal mengirim bukti'))
-    } finally {
-        isReuploading.value = false
-    }
-}
-
 const primaryCategory = computed(() => {
-    if (participant.value?.categories && participant.value.categories.length > 0) {
-        return participant.value.categories[0]
+    if (activeCategories.value && activeCategories.value.length > 0) {
+        return activeCategories.value[0]
     }
     return null
 })
@@ -396,57 +374,37 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 md:gap-8 pb-16">
-        <!-- Header (Standard Dashboard Navy Style) -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <div class="absolute inset-0"
-                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-            </div>
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/5 blur-3xl"></div>
-
-            <div class="relative p-6 sm:p-8">
-                <div class="flex items-center gap-2 text-xs sm:text-sm text-white/70 mb-3">
-                    <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">
-                        {{ t('my_registration.my_events') }}
+    <div class="flex flex-col gap-6 pb-12">
+        <!-- Header (Standard DashboardHeader with Golden Accent & Motif) -->
+        <DashboardHeader
+            :title="t('my_registration.page_title')"
+            :subtitle="t('my_registration.header_subtitle')"
+            icon="ph:ticket-bold"
+            :breadcrumbs="[
+                { label: 'Dashboard', to: '/dashboard/archer' },
+                { label: t('sidebar.my_events', 'Turnamen Saya'), to: '/dashboard/archer/tournaments' },
+                { label: t('my_registration.page_title', 'Status Registrasi') }
+            ]"
+        >
+            <template #actions>
+                <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+                    <button
+                        v-if="participant && !isPaid(participant.payment_status) && !isCancelled && !isDelegatedByOther && participant.registration_source !== 'invited'"
+                        type="button"
+                        @click="showCancelConfirm = true"
+                        class="inline-flex items-center gap-1.5 h-10 sm:h-11 px-4 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-xs sm:text-sm font-bold text-rose-100 hover:text-white backdrop-blur-sm transition-colors shadow-xs"
+                    >
+                        <Icon icon="ph:trash-bold" class="text-xs sm:text-sm" />
+                        <span>{{ t('my_registration.cancel_registration_btn', 'Batalkan Pendaftaran') }}</span>
+                    </button>
+                    <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`"
+                        class="inline-flex items-center gap-1.5 h-10 sm:h-11 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-bold text-white backdrop-blur-sm transition-colors shadow-xs">
+                        <Icon icon="ph:arrow-left-bold" class="text-xs" />
+                        <span>{{ t('my_registration.back_to_overview') }}</span>
                     </NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-xs" />
-                    <span class="text-white/90 font-medium">{{ t('my_registration.registration_status') }}</span>
                 </div>
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-start gap-4">
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md shrink-0">
-                            <Icon icon="ph:ticket-bold" class="text-white text-2xl" />
-                        </div>
-                        <div class="min-w-0">
-                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">
-                                {{ t('my_registration.page_title') }}
-                            </h1>
-                            <div class="text-slate-300 text-xs sm:text-sm mt-1.5">
-                                {{ t('my_registration.header_subtitle') }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2.5 shrink-0">
-                        <NuxtLink :to="`/dashboard/archer/tournaments/${eventId}/overview`"
-                            class="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs sm:text-sm font-bold text-white backdrop-blur-sm transition-colors shadow-xs">
-                            <Icon icon="ph:arrow-left-bold" class="text-xs" />
-                            <span>{{ t('my_registration.back_to_overview') }}</span>
-                        </NuxtLink>
-                        <!-- Only show Cancel Registration if the registration/tournament is 100% free and user is the invoice owner -->
-                        <div v-if="participant && isFreeRegistration && !isDelegatedByOther && participant.registration_source !== 'invited'">
-                            <BaseButton variant="danger" @click="showCancelConfirm = true" :loading="isCancelling"
-                                class="h-10 px-4 text-xs sm:text-sm font-bold shadow-md shadow-red-500/20">
-                                <Icon icon="ph:x-circle-bold" class="mr-1.5" />
-                                {{ t('my_registration.cancel') }}
-                            </BaseButton>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </template>
+        </DashboardHeader>
 
         <div v-if="isLoading" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 space-y-6">
@@ -474,22 +432,6 @@ onMounted(() => {
                                 <div class="flex-1 min-w-0">
                                     <div class="flex flex-wrap items-center gap-2.5">
                                         <h2 class="text-xl sm:text-2xl font-black text-slate-900 truncate">{{ participant.full_name }}</h2>
-                                        <span v-if="isPaid(participant.payment_status)"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                            {{ t('my_registration.paid') }}
-                                        </span>
-                                        <span v-else-if="participant.transaction?.status === 'rejected' || participant.payment_status === 'rejected'"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-rose-50 text-rose-700 border border-rose-200">
-                                            {{ t('my_registration.payment_rejected') }}
-                                        </span>
-                                        <span v-else-if="participant.transaction?.status === 'awaiting_verification' || participant.payment_status === 'awaiting_verification'"
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                                            {{ t('my_registration.awaiting_verification') }}
-                                        </span>
-                                        <span v-else
-                                            class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs sm:text-sm font-bold bg-blue-50 text-blue-700 border border-blue-200">
-                                            {{ t('my_registration.awaiting_payment') }}
-                                        </span>
                                     </div>
                                     <div class="flex flex-wrap items-center gap-2.5 mt-1.5 text-sm sm:text-base text-slate-600 font-medium">
                                         <span>{{ participant.club_name || t('my_registration.independent') }}</span>
@@ -506,9 +448,9 @@ onMounted(() => {
                             <!-- 4-Grid Athlete Pass Metrics -->
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs sm:text-sm">
                                 <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-center">
-                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.bib_number') }}</span>
+                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.athlete_code_label', 'Kode Atlet') }}</span>
                                     <span class="text-slate-900 font-black text-sm sm:text-base font-mono">
-                                        {{ participant.bib_number || participant.athlete_code || ('#' + (participant.id || '101')) }}
+                                        {{ participant.athlete_code || ('ARC-' + (participant.archer_id || participant.id || '').substring(0, 6).toUpperCase()) }}
                                     </span>
                                 </div>
 
@@ -521,15 +463,27 @@ onMounted(() => {
 
                                 <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-center">
                                     <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.reregistration_status') }}</span>
-                                    <span class="font-bold text-sm sm:text-base block" :class="participant.last_reregistration_at ? 'text-emerald-700' : 'text-slate-600'">
+                                    <span class="font-bold text-sm sm:text-base block text-slate-900">
                                         {{ participant.last_reregistration_at ? t('my_registration.checked_in') : t('my_registration.not_checked_in') }}
                                     </span>
                                 </div>
 
                                 <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-center">
-                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.target_number') }}</span>
-                                    <span class="text-slate-900 font-black text-sm sm:text-base truncate block" :title="targetSummaryText">
-                                        {{ targetSummaryText }}
+                                    <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.registration_status_label', 'Status Registrasi') }}</span>
+                                    <span v-if="isPaid(participant.payment_status)" class="font-black text-sm sm:text-base block text-slate-900 truncate">
+                                        {{ t('my_registration.paid', 'Terdaftar (Lunas)') }}
+                                    </span>
+                                    <span v-else-if="isCancelled" class="font-black text-sm sm:text-base block text-slate-900 truncate">
+                                        {{ t('payment_status.badge_cancelled', 'Dibatalkan') }}
+                                    </span>
+                                    <span v-else-if="isRejected" class="font-black text-sm sm:text-base block text-slate-900 truncate">
+                                        {{ t('my_registration.payment_rejected', 'Ditolak') }}
+                                    </span>
+                                    <span v-else-if="isAwaitingVerification" class="font-black text-sm sm:text-base block text-slate-900 truncate">
+                                        {{ t('my_registration.awaiting_verification', 'Menunggu Verifikasi') }}
+                                    </span>
+                                    <span v-else class="font-black text-sm sm:text-base block text-slate-900 truncate">
+                                        {{ t('my_registration.awaiting_payment', 'Menunggu Pembayaran') }}
                                     </span>
                                 </div>
                             </div>
@@ -538,17 +492,19 @@ onMounted(() => {
                         <!-- Section 2: Registered Categories -->
                         <div class="border-t border-slate-100 pt-6 space-y-3.5">
                             <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                                    <Icon icon="ph:stack-bold" class="text-slate-500 text-lg" />
+                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2.5">
+                                    <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+                                        <Icon icon="ph:stack-bold" class="text-base" />
+                                    </div>
                                     <span>{{ t('my_registration.registered_categories') }}</span>
                                 </h3>
                                 <span class="text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
-                                    {{ participant.categories?.length || 1 }} {{ (participant.categories?.length || 1) === 1 ? t('my_registration.category_unit_single') : t('my_registration.categories_unit') }}
+                                    {{ activeCategories.length || 1 }} {{ (activeCategories.length || 1) === 1 ? t('my_registration.category_unit_single') : t('my_registration.categories_unit') }}
                                 </span>
                             </div>
 
                             <div class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
-                                <div v-for="cat in participant.categories" :key="cat.id"
+                                <div v-for="cat in activeCategories" :key="cat.id"
                                     class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/50 transition-colors">
                                     <div>
                                         <div class="text-sm sm:text-base font-bold text-slate-900">
@@ -576,8 +532,10 @@ onMounted(() => {
                         <!-- Section 3: Payment Details (Moved to Left Column) -->
                         <div class="border-t border-slate-100 pt-6 space-y-4">
                             <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                                    <Icon icon="ph:credit-card-bold" class="text-slate-500 text-lg" />
+                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2.5">
+                                    <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center font-bold shrink-0 shadow-2xs">
+                                        <Icon icon="ph:credit-card-bold" class="text-base" />
+                                    </div>
                                     <span>{{ t('my_registration.payment_details_title') }}</span>
                                 </h3>
                             </div>
@@ -586,7 +544,7 @@ onMounted(() => {
                                 <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
                                     <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.total_bill') }}</span>
                                     <span class="text-slate-900 font-black text-base sm:text-lg">
-                                        Rp {{ formatCurrency(participant.payment_amount) }}
+                                        Rp {{ formatCurrency(displayPaymentAmount) }}
                                     </span>
                                 </div>
                                 <div v-if="participant.transaction?.reference" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
@@ -600,7 +558,7 @@ onMounted(() => {
                                 <div v-if="participant.transaction?.payment_method" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
                                     <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.method') }}</span>
                                     <span class="font-bold text-slate-900 text-xs sm:text-sm truncate block">
-                                        {{ participant.transaction.payment_method }}
+                                        {{ formatPaymentMethodName(participant.transaction.payment_method) }}
                                     </span>
                                 </div>
                             </div>
@@ -608,8 +566,10 @@ onMounted(() => {
                             <!-- Uploaded Proof Preview (If exists) -->
                             <div v-if="participantProofUrl" class="p-4 bg-slate-50/90 rounded-xl border border-slate-200 space-y-3">
                                 <div class="flex items-center justify-between text-xs sm:text-sm">
-                                    <span class="font-bold text-slate-800 flex items-center gap-1.5">
-                                        <Icon icon="ph:image-square-bold" class="text-slate-500 text-sm sm:text-base" />
+                                    <span class="font-bold text-slate-800 flex items-center gap-2">
+                                        <div class="size-7 rounded-lg bg-navy/5 text-navy flex items-center justify-center font-bold shrink-0">
+                                            <Icon icon="ph:image-square-bold" class="text-sm" />
+                                        </div>
                                         <span>{{ t('my_registration.payment_proof_title') }}</span>
                                     </span>
                                     <span v-if="participant.transaction?.sender_name" class="text-xs sm:text-sm text-slate-500 font-medium truncate max-w-[200px]" :title="participant.transaction.sender_name">
@@ -634,47 +594,70 @@ onMounted(() => {
                                 <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
                                     class="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
                                     <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
-                                    <span>{{ t('my_registration.view_payment_detail') }}</span>
+                                    <span>{{ t('my_registration.view_payment_detail', 'Lihat Detail Pembayaran') }}</span>
                                 </NuxtLink>
                             </div>
 
-                            <!-- Case 2: Rejected (Ditolak Panitia) -->
-                            <div v-else-if="participant.transaction?.status === 'rejected' || participant.payment_status === 'rejected'" class="space-y-3 pt-1">
+                            <!-- Case 2: Cancelled (Dibatalkan) -->
+                            <div v-else-if="isCancelled" class="space-y-3 pt-1">
+                                <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-2 text-left">
+                                    <div class="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
+                                        <Icon icon="ph:prohibit-bold" class="text-base shrink-0 text-rose-600" />
+                                        <span>{{ t('my_registration.cancelled_notice_title', 'Pendaftaran / Tagihan Dibatalkan') }}</span>
+                                    </div>
+                                    <div class="text-xs text-rose-700 leading-relaxed font-medium">
+                                        {{ t('my_registration.cancelled_notice_desc', 'Tagihan transaksi pendaftaran ini telah dibatalkan. Pembayaran tidak dapat dilanjutkan.') }}
+                                    </div>
+                                </div>
+                                <NuxtLink :to="`/tournaments/${eventId}/register`"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-navy text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                                    <Icon icon="ph:arrow-clockwise-bold" class="text-base" />
+                                    <span>{{ t('my_registration.register_again', 'Daftar Ulang Turnamen') }}</span>
+                                </NuxtLink>
+                                <NuxtLink v-if="participant.transaction?.reference" :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                    class="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
+                                    <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
+                                    <span>{{ t('my_registration.view_payment_detail', 'Lihat Detail Tagihan') }}</span>
+                                </NuxtLink>
+                            </div>
+
+                            <!-- Case 3: Rejected (Ditolak Panitia) -->
+                            <div v-else-if="isRejected" class="space-y-3 pt-1">
                                 <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-2 text-left">
                                     <div class="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
                                         <Icon icon="ph:warning-circle-bold" class="text-base shrink-0 text-rose-600" />
-                                        <span>{{ t('my_registration.proof_rejected_title') }}</span>
+                                        <span>{{ t('my_registration.proof_rejected_title', 'Bukti Pembayaran Ditolak') }}</span>
                                     </div>
                                     <div class="text-xs text-rose-700 leading-relaxed font-medium">
-                                        {{ t('my_registration.proof_rejected_desc') }}
+                                        {{ t('my_registration.proof_rejected_desc', 'Bukti transfer ditolak oleh panitia. Silakan buka halaman detail pembayaran untuk mengunggah ulang bukti baru.') }}
                                     </div>
                                     <div v-if="participant.transaction?.rejection_reason" class="p-2.5 bg-white/90 rounded-lg border border-rose-200 text-xs text-rose-900">
-                                        <span class="font-bold block text-rose-950 mb-0.5">{{ t('my_registration.rejection_reason_label') }}</span>
+                                        <span class="font-bold block text-rose-950 mb-0.5">{{ t('my_registration.rejection_reason_label', 'Catatan Penolakan:') }}</span>
                                         <span class="italic font-medium">"{{ participant.transaction.rejection_reason }}"</span>
                                     </div>
                                 </div>
-                                <button
-                                    type="button"
-                                    @click="showReuploadModal = true"
-                                    class="w-full py-2.5 px-4 rounded-xl bg-rose-600 text-white hover:bg-rose-700 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-xs cursor-pointer">
-                                    <Icon icon="ph:upload-simple-bold" class="text-sm" />
-                                    <span>{{ t('my_registration.reupload_proof') }}</span>
-                                </button>
+                                <NuxtLink v-if="participant.transaction?.reference"
+                                    :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                    class="w-full py-2.5 px-4 rounded-xl bg-primary hover:bg-primary-hover text-navy text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                                    <Icon icon="ph:credit-card-bold" class="text-base" />
+                                    <span>{{ t('my_registration.view_payment_detail', 'Lihat Detail Pembayaran') }}</span>
+                                    <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                </NuxtLink>
                             </div>
 
-                            <!-- Case 3: Awaiting Verification (Menunggu Verifikasi Panitia) -->
-                            <div v-else-if="participant.transaction?.status === 'awaiting_verification' || participant.payment_status === 'awaiting_verification' || (participantProofUrl && !isPaid(participant.payment_status))" class="space-y-3 pt-1">
+                            <!-- Case 4: Awaiting Verification (Menunggu Verifikasi Panitia) -->
+                            <div v-else-if="isAwaitingVerification" class="space-y-3 pt-1">
                                 <!-- Delegation notice if registered by another account -->
                                 <div v-if="isDelegatedByOther" class="p-4 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
                                     <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
                                         <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
-                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
+                                        <span>{{ t('my_registration.delegation_registration_title', 'Pendaftaran Kolektif') }}</span>
                                     </div>
                                     <div class="text-xs text-blue-800 leading-relaxed font-medium">
                                         {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
                                     </div>
                                     <div class="text-[11px] text-blue-700/80 pt-0.5">
-                                        {{ t('my_registration.awaiting_verification_desc') }}
+                                        {{ t('my_registration.awaiting_verification_desc', 'Bukti transfer sedang menunggu proses verifikasi oleh panitia pelaksana.') }}
                                     </div>
                                 </div>
 
@@ -683,96 +666,54 @@ onMounted(() => {
                                     <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-1.5 text-left">
                                         <div class="text-xs sm:text-sm font-bold text-amber-800 flex items-center gap-1.5">
                                             <Icon icon="ph:hourglass-medium-bold" class="text-sm shrink-0" />
-                                            <span>{{ t('my_registration.awaiting_verification_title') }}</span>
+                                            <span>{{ t('my_registration.awaiting_verification_title', 'Menunggu Verifikasi Pembayaran') }}</span>
                                         </div>
                                         <div class="text-xs sm:text-sm text-amber-700/90 leading-relaxed font-medium">
-                                            {{ t('my_registration.awaiting_verification_desc') }}
+                                            {{ t('my_registration.awaiting_verification_desc', 'Bukti transfer sedang menunggu proses verifikasi oleh panitia pelaksana.') }}
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <button
-                                            type="button"
-                                            @click="showReuploadModal = true"
-                                            class="flex-1 py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
-                                            <Icon icon="ph:arrows-clockwise-bold" class="text-sm" />
-                                            <span>{{ t('my_registration.btn_change_proof') }}</span>
-                                        </button>
-                                        <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction?.reference || ''}`"
-                                            class="flex-1 py-2.5 px-3 rounded-xl bg-navy text-white hover:bg-navy/90 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-xs">
-                                            <Icon icon="ph:receipt-bold" class="text-sm" />
-                                            <span>{{ t('my_registration.btn_invoice_detail') }}</span>
-                                        </NuxtLink>
-                                    </div>
+                                    <NuxtLink v-if="participant.transaction?.reference"
+                                        :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
+                                        class="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
+                                        <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
+                                        <span>{{ t('my_registration.view_payment_detail', 'Lihat Detail Pembayaran') }}</span>
+                                    </NuxtLink>
                                 </template>
                             </div>
 
-                            <!-- Case 4: Pending Unpaid with Existing Transaction -->
+                            <!-- Case 5: Pending Payment with Existing Transaction -->
                             <div v-else-if="!isPaid(participant.payment_status) && participant.transaction" class="space-y-3 pt-1">
                                 <!-- Delegation notice if registered by another account -->
                                 <div v-if="isDelegatedByOther" class="p-4 bg-blue-50/80 border border-blue-200/80 rounded-xl space-y-1.5 text-left">
                                     <div class="text-xs sm:text-sm font-bold text-blue-900 flex items-center gap-1.5">
                                         <Icon icon="ph:users-three-bold" class="text-base shrink-0 text-blue-600" />
-                                        <span>{{ t('my_registration.delegation_registration_title') }}</span>
+                                        <span>{{ t('my_registration.delegation_registration_title', 'Pendaftaran Kolektif') }}</span>
                                     </div>
                                     <div class="text-xs text-blue-800 leading-relaxed font-medium">
                                         {{ t('my_registration.delegation_registered_by', { name: participant.transaction?.registered_by_name || participant.transaction?.payer_name || 'Perwakilan / Klub' }) }}
                                     </div>
                                 </div>
 
-                                <!-- Self registered owner payment buttons -->
+                                <!-- Self registered owner: Direct cleanly to payment detail page -->
                                 <template v-else>
-                                    <!-- Online Gateway Checkout Button (Direct to Mayar/PayPal) -->
-                                    <a
-                                        v-if="participant.transaction.checkout_url"
-                                        :href="participant.transaction.checkout_url"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
-                                    >
-                                        <Icon :icon="participant.transaction.payment_method?.toLowerCase() === 'paypal' ? 'logos:paypal' : 'ph:credit-card-bold'" class="text-base" />
-                                        <span>{{ participant.transaction.payment_method?.toLowerCase() === 'paypal' ? t('archer_payment_detail.btn_pay_paypal') : t('archer_payment_detail.btn_pay_mayar') }}</span>
-                                        <Icon icon="ph:arrow-square-out-bold" class="text-xs" />
-                                    </a>
-
-                                    <!-- Manual Bank Transfer or Fallback to Internal Payment Page -->
                                     <NuxtLink
-                                        v-else
                                         :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
+                                        class="w-full py-3 px-4 rounded-xl bg-primary hover:bg-primary-hover text-navy text-xs sm:text-sm font-black transition-all flex items-center justify-center gap-2 shadow-sm"
                                     >
                                         <Icon icon="ph:credit-card-bold" class="text-base" />
-                                        <span>{{ participant.transaction.payment_method === 'manual' ? t('my_registration.complete_transfer_upload') : t('my_registration.pay_now') }}</span>
+                                        <span>{{ t('my_registration.pay_now', 'Lanjutkan Pembayaran') }}</span>
                                         <Icon icon="ph:arrow-right-bold" class="text-xs" />
-                                    </NuxtLink>
-
-                                    <!-- Bill Details: Always navigates to internal receipt/invoice page -->
-                                    <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="w-full py-2 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5">
-                                        <Icon icon="ph:receipt-bold" class="text-xs" />
-                                        <span>{{ t('my_registration.bill_detail') }}</span>
                                     </NuxtLink>
                                 </template>
                             </div>
 
-                            <!-- Case 5: Pending Unpaid without Transaction -->
+                            <!-- Case 6: Pending Payment without Transaction -->
                             <div v-else-if="!isPaid(participant.payment_status) && !participant.transaction && !isDelegatedByOther">
                                 <BaseButton variant="primary" block @click="initiatePaymentGateway"
                                     :loading="isProcessingPayment" class="h-11 text-xs sm:text-sm font-bold justify-center">
                                     <Icon icon="ph:lightning-bold" class="text-base mr-1.5" />
                                     <span>{{ t('my_registration.pay_online_auto') }}</span>
                                 </BaseButton>
-                            </div>
-
-                            <!-- Cancellation Button (only when unpaid and self-registered owner) -->
-                            <div v-if="!isPaid(participant.payment_status) && !isDelegatedByOther && participant.registration_source !== 'invited'" class="pt-2">
-                                <button
-                                    type="button"
-                                    @click="showCancelConfirm = true"
-                                    class="w-full py-2 px-3 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-1.5"
-                                >
-                                    <Icon icon="ph:trash-bold" class="text-xs" />
-                                    <span>{{ t('my_registration.cancel_registration_btn') }}</span>
-                                </button>
                             </div>
                         </div>
 
@@ -784,15 +725,11 @@ onMounted(() => {
                         <!-- Section 1: Official Field Check-in QR Pass -->
                         <div class="space-y-3.5 text-center">
                             <div class="flex items-center justify-between text-xs sm:text-sm pb-2.5 border-b border-slate-100">
-                                <span class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
-                                    <Icon icon="ph:qr-code-bold" class="text-slate-700 text-base" />
+                                <span class="font-bold text-slate-900 text-xs sm:text-sm flex items-center gap-2">
+                                    <div class="size-7 rounded-lg bg-navy/5 text-navy flex items-center justify-center font-bold shrink-0">
+                                        <Icon icon="ph:qr-code-bold" class="text-sm" />
+                                    </div>
                                     <span>{{ t('my_registration.qr_checkin_badge') }}</span>
-                                </span>
-                                <span v-if="isPaid(participant.payment_status)" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 text-xs sm:text-sm">
-                                    {{ t('my_registration.ready_to_compete') }}
-                                </span>
-                                <span v-else class="text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200 text-xs sm:text-sm">
-                                    {{ t('my_registration.qr_locked_unpaid_badge') }}
                                 </span>
                             </div>
 
@@ -805,7 +742,22 @@ onMounted(() => {
                                 </div>
                             </div>
 
-                            <!-- Locked QR Placeholder (When Pending / Unpaid) -->
+                            <!-- Cancelled QR Placeholder -->
+                            <div v-else-if="isCancelled" class="flex flex-col items-center justify-center p-6 bg-rose-50/50 rounded-2xl border border-dashed border-rose-200 space-y-3">
+                                <div class="size-14 rounded-2xl bg-rose-100 border border-rose-200 flex items-center justify-center text-rose-600 shadow-xs">
+                                    <Icon icon="ph:prohibit-bold" class="text-2xl" />
+                                </div>
+                                <div class="space-y-1 max-w-[220px]">
+                                    <div class="text-xs sm:text-sm font-bold text-rose-900">
+                                        {{ t('my_registration.qr_cancelled_title', 'QR Tidak Aktif') }}
+                                    </div>
+                                    <div class="text-xs sm:text-sm text-rose-700 leading-relaxed">
+                                        {{ t('my_registration.qr_cancelled_desc', 'Pendaftaran telah dibatalkan sehingga tiket check-in tidak dapat digunakan.') }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Locked QR Placeholder (When Pending) -->
                             <div v-else class="flex flex-col items-center justify-center p-6 bg-slate-50/80 rounded-2xl border border-dashed border-slate-300 space-y-3">
                                 <div class="size-14 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-xs">
                                     <Icon icon="ph:lock-key-bold" class="text-2xl" />
@@ -862,95 +814,23 @@ onMounted(() => {
         </div>
 
         <!-- Cancel Confirmation Dialog -->
-        <AppDialog v-model:show="showCancelConfirm" :title="t('my_registration.cancel_dialog_title')"
-            :message="t('my_registration.cancel_dialog_desc')"
-            type="danger" icon="ph:warning-circle-bold"
-            :confirm-text="t('my_registration.cancel_dialog_confirm')"
-            :cancel-text="t('my_registration.cancel_dialog_back')" @confirm="cancelRegistration" />
+        <AppDialog
+            v-model:show="showCancelConfirm"
+            :title="t('my_registration.cancel_confirm_title', 'Batalkan Pendaftaran?')"
+            :message="t('my_registration.cancel_confirm_desc', 'Apakah Anda yakin ingin membatalkan pendaftaran turnamen ini? Tagihan yang belum dibayar akan dibatalkan.')"
+            type="danger"
+            icon="ph:warning-bold"
+            :confirmText="t('my_registration.cancel_confirm_btn', 'Ya, Batalkan')"
+            :cancelText="t('common.cancel', 'Batal')"
+            :loading="isCancelling"
+            @confirm="handleCancelRegistration"
+        />
 
         <!-- Image Preview Dialog -->
-        <AppDialog v-model:show="showImageDialog" :title="t('my_registration.payment_proof_title')" message="" type="info" icon="ph:image-bold">
+        <AppDialog v-model:show="showImageDialog" :title="t('my_registration.payment_proof_title', 'Bukti Transfer')" message="" type="info" icon="ph:image-bold">
             <div class="flex justify-center p-2">
                 <img :src="selectedImage" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-md" />
             </div>
         </AppDialog>
-
-        <!-- Re-upload Proof Modal -->
-        <div v-if="showReuploadModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs animate-in fade-in duration-150" @click.self="showReuploadModal = false">
-            <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-5">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <div class="flex items-center gap-2.5">
-                        <div class="size-10 rounded-2xl bg-navy/5 text-navy flex items-center justify-center font-black">
-                            <Icon icon="ph:upload-simple-bold" class="text-xl" />
-                        </div>
-                        <div>
-                            <h4 class="font-black text-navy text-base">{{ t('my_registration.reupload_modal_title') }}</h4>
-                            <div class="text-xs text-slate-400 font-mono">{{ participant?.transaction?.reference || t('my_registration.reupload_manual_fallback') }}</div>
-                        </div>
-                    </div>
-                    <button type="button" @click="showReuploadModal = false" class="size-8 rounded-xl hover:bg-slate-100 text-slate-400 hover:text-navy flex items-center justify-center transition-colors cursor-pointer">
-                        <Icon icon="ph:x-bold" class="text-base" />
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">{{ t('my_registration.reupload_sender_name_label') }} <span class="text-rose-500">*</span></label>
-                        <input
-                            v-model="reuploadSenderName"
-                            type="text"
-                            :placeholder="t('my_registration.reupload_sender_name_placeholder')"
-                            class="w-full h-11 px-4 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium outline-none focus:bg-white focus:border-navy focus:ring-2 focus:ring-navy/10 transition-all text-navy"
-                        />
-                    </div>
-
-                    <div>
-                        <label class="block text-xs sm:text-sm font-bold text-navy mb-1.5">{{ t('my_registration.reupload_file_label') }} <span class="text-rose-500">*</span></label>
-                        <input ref="reuploadFileInputRef" type="file" accept="image/*,.pdf" class="hidden" @change="handleReuploadFileChange" />
-
-                        <div v-if="isReuploading" class="p-6 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 flex flex-col items-center justify-center text-center gap-2">
-                            <Icon icon="ph:spinner-gap-bold" class="text-2xl text-navy animate-spin" />
-                            <div class="text-xs sm:text-sm font-bold text-navy">{{ t('my_registration.reupload_uploading') }}</div>
-                        </div>
-
-                        <div v-else-if="reuploadFileUrl" class="p-4 rounded-2xl border border-emerald-300 bg-emerald-50/60 flex items-center justify-between gap-3">
-                            <div class="flex items-center gap-3 min-w-0">
-                                <div class="size-12 rounded-xl overflow-hidden bg-white border border-emerald-200 flex items-center justify-center shrink-0 shadow-xs">
-                                    <img v-if="!reuploadFileUrl.toLowerCase().endsWith('.pdf')" :src="reuploadPreviewUrl || reuploadFileUrl" class="w-full h-full object-cover" />
-                                    <Icon v-else icon="ph:file-pdf-bold" class="text-2xl text-rose-500" />
-                                </div>
-                                <div class="min-w-0">
-                                    <div class="text-xs font-bold text-emerald-800">{{ t('my_registration.reupload_file_attached') }}</div>
-                                    <div class="text-[11px] text-slate-500 truncate">{{ t('my_registration.reupload_file_ready') }}</div>
-                                </div>
-                            </div>
-                            <button type="button" @click="triggerReuploadFileInput" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:text-navy cursor-pointer">
-                                {{ t('my_registration.reupload_change_file') }}
-                            </button>
-                        </div>
-
-                        <div v-else @click="triggerReuploadFileInput" class="border-2 border-dashed border-slate-200 hover:border-navy rounded-2xl p-5 text-center cursor-pointer transition-colors bg-slate-50/50 hover:bg-slate-50 group">
-                            <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl text-slate-400 group-hover:text-navy mx-auto mb-1.5 transition-colors" />
-                            <div class="text-xs sm:text-sm font-bold text-navy">{{ t('my_registration.reupload_dropzone_title') }}</div>
-                            <div class="text-[11px] text-slate-400 mt-0.5">{{ t('my_registration.reupload_dropzone_hint') }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-2.5 pt-2 border-t border-slate-100">
-                    <button type="button" @click="showReuploadModal = false" class="px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
-                        {{ t('my_registration.reupload_cancel') }}
-                    </button>
-                    <button
-                        type="button"
-                        @click="submitReuploadProof"
-                        :disabled="!reuploadFileUrl || !reuploadSenderName.trim() || isReuploading"
-                        class="px-5 py-2.5 rounded-xl bg-navy hover:bg-navy/90 disabled:opacity-50 text-white font-bold text-xs sm:text-sm transition-colors shadow-xs flex items-center gap-1.5 cursor-pointer">
-                        <Icon v-if="isReuploading" icon="ph:spinner-bold" class="animate-spin text-sm" />
-                        <span>{{ t('my_registration.reupload_submit') }}</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 </template>

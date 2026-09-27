@@ -289,6 +289,26 @@
                     <span class="size-1.5 rounded-full bg-emerald-400"></span>
                     <span class="leading-none">{{ t('my_events.registered') }}</span>
                   </span>
+                  <span v-else-if="getMainStatusLabel(event) === 'Cancelled'"
+                    class="text-xs font-bold text-rose-400 inline-flex items-center gap-1.5 shrink-0">
+                    <span class="size-1.5 rounded-full bg-rose-400"></span>
+                    <span class="leading-none">{{ t('payment_status.badge_cancelled', 'Dibatalkan') }}</span>
+                  </span>
+                  <span v-else-if="getMainStatusLabel(event) === 'Rejected'"
+                    class="text-xs font-bold text-rose-400 inline-flex items-center gap-1.5 shrink-0">
+                    <span class="size-1.5 rounded-full bg-rose-400"></span>
+                    <span class="leading-none">{{ t('payment_status.badge_rejected', 'Ditolak') }}</span>
+                  </span>
+                  <span v-else-if="getMainStatusLabel(event) === 'AwaitingVerification'"
+                    class="text-xs font-bold text-amber-400 inline-flex items-center gap-1.5 shrink-0">
+                    <span class="size-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    <span class="leading-none">{{ t('payment_status.badge_awaiting_verification', 'Menunggu Verifikasi') }}</span>
+                  </span>
+                  <span v-else-if="getMainStatusLabel(event) === 'Expired'"
+                    class="text-xs font-bold text-slate-400 inline-flex items-center gap-1.5 shrink-0">
+                    <span class="size-1.5 rounded-full bg-slate-400"></span>
+                    <span class="leading-none">{{ t('payment_status.badge_expired', 'Kedaluwarsa') }}</span>
+                  </span>
                   <span v-else
                     class="text-xs font-bold text-amber-400 inline-flex items-center gap-1.5 shrink-0">
                     <span class="size-1.5 rounded-full bg-amber-400"></span>
@@ -360,10 +380,21 @@
               </div>
 
               <!-- Payment Alert (Only when pending) -->
-              <div v-if="event.payment_amount && event.payment_status !== 'lunas' && event.payment_status !== 'paid'"
+              <div v-if="getMainStatusLabel(event) === 'Pending' && event.payment_amount"
                 class="bg-amber-50 border border-amber-200/80 rounded-xl p-3 flex items-center justify-between text-xs">
                 <span class="font-medium text-amber-800">{{ t('my_events.registration_fee') }}</span>
                 <span class="font-black text-amber-900 font-mono text-sm">{{ formatMoney(event.payment_amount, event.currency || 'IDR') }}</span>
+              </div>
+              <!-- Cancelled Alert (When cancelled) -->
+              <div v-else-if="getMainStatusLabel(event) === 'Cancelled'"
+                class="bg-rose-50 border border-rose-200/80 rounded-xl p-3 flex items-center justify-between text-xs text-rose-700">
+                <span class="font-bold flex items-center gap-1.5">
+                  <Icon icon="ph:prohibit-bold" class="text-sm shrink-0" />
+                  <span>{{ t('my_events.tx_cancelled_notice', 'Pendaftaran telah dibatalkan') }}</span>
+                </span>
+                <NuxtLink to="/dashboard/archer/payments" class="font-bold underline hover:opacity-80 shrink-0">
+                  {{ t('my_events.view_payment', 'Lihat Tagihan') }}
+                </NuxtLink>
               </div>
             </div>
 
@@ -537,9 +568,15 @@ const activeFilterChips = computed(() => {
     })
   }
   if (statusFilter.value !== 'all') {
+    const statusLabels = {
+      paid: t('my_events.opt_registered'),
+      registered: t('my_events.opt_registered'),
+      pending: t('my_events.opt_pending'),
+      cancelled: t('payment_status.badge_cancelled', 'Dibatalkan')
+    }
     chips.push({
       key: 'status',
-      label: statusFilter.value === 'paid' ? t('my_events.opt_registered') : t('my_events.opt_pending')
+      label: statusLabels[statusFilter.value] || statusFilter.value
     })
   }
   if (timelineFilter.value !== 'all') {
@@ -584,11 +621,11 @@ const resetAllFilters = () => {
 }
 
 const registeredCount = computed(() => {
-  return events.value.filter(e => getMainStatusLabel(e) === 'Registered' || isPaidStatus(e)).length
+  return events.value.filter(e => getMainStatusLabel(e) === 'Registered').length
 })
 
 const pendingCount = computed(() => {
-  return events.value.filter(e => getMainStatusLabel(e) !== 'Registered' && !isPaidStatus(e)).length
+  return events.value.filter(e => getMainStatusLabel(e) === 'Pending' || getMainStatusLabel(e) === 'AwaitingVerification').length
 })
 
 const totalCategoriesCount = computed(() => {
@@ -687,9 +724,11 @@ const filteredEvents = computed(() => {
 
     // Status filter
     if (statusFilter.value === 'paid' || statusFilter.value === 'registered') {
-      if (!(getMainStatusLabel(e) === 'Registered' || isPaidStatus(e))) return false
+      if (getMainStatusLabel(e) !== 'Registered') return false
     } else if (statusFilter.value === 'pending') {
-      if (getMainStatusLabel(e) === 'Registered' || isPaidStatus(e)) return false
+      if (getMainStatusLabel(e) !== 'Pending' && getMainStatusLabel(e) !== 'AwaitingVerification') return false
+    } else if (statusFilter.value === 'cancelled') {
+      if (getMainStatusLabel(e) !== 'Cancelled') return false
     }
 
     // Timeline filter
@@ -805,39 +844,38 @@ const getStatusLabel = (status) => {
 }
 
 const getMainStatusLabel = (event) => {
-  const pStatus = (event.participant_status || '').toLowerCase()
-  const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return 'Rejected'
-  if (payStatus === 'lunas' || payStatus === 'paid') return 'Registered'
+  const pStatus = (event?.participant_status || '').toLowerCase()
+  const payStatus = (event?.payment_status || '').toLowerCase()
+  if (['lunas', 'paid'].includes(payStatus) || pStatus === 'registered') return 'Registered'
+  if (['cancelled', 'canceled'].includes(payStatus) || ['cancelled', 'canceled'].includes(pStatus)) return 'Cancelled'
+  if (pStatus === 'rejected' || payStatus === 'rejected') return 'Rejected'
+  if (pStatus === 'expired' || payStatus === 'expired') return 'Expired'
+  if (pStatus === 'awaiting_verification' || payStatus === 'awaiting_verification') return 'AwaitingVerification'
   return 'Pending'
 }
 
 const getMainStatusClass = (event) => {
-  const pStatus = (event.participant_status || '').toLowerCase()
-  const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return getStatusClass('rejected')
-  if (payStatus === 'lunas' || payStatus === 'paid') return getStatusClass('approved')
+  const status = getMainStatusLabel(event)
+  if (status === 'Registered') return getStatusClass('approved')
+  if (status === 'Cancelled' || status === 'Rejected') return getStatusClass('rejected')
   return getStatusClass('pending')
 }
 
 const getMainStatusTextClass = (event) => {
-  const pStatus = (event.participant_status || '').toLowerCase()
-  const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return 'text-red-600'
-  if (payStatus === 'lunas' || payStatus === 'paid') return 'text-green-600'
+  const status = getMainStatusLabel(event)
+  if (status === 'Registered') return 'text-green-600'
+  if (status === 'Cancelled' || status === 'Rejected') return 'text-red-600'
   return 'text-amber-600'
 }
 
 const getMainStatusDotClass = (event) => {
-  const pStatus = (event.participant_status || '').toLowerCase()
-  const payStatus = (event.payment_status || '').toLowerCase()
-  if (pStatus === 'rejected') return getStatusDotClass('rejected')
-  if (payStatus === 'lunas' || payStatus === 'paid') return getStatusDotClass('approved')
+  const status = getMainStatusLabel(event)
+  if (status === 'Registered') return getStatusDotClass('approved')
+  if (status === 'Cancelled' || status === 'Rejected') return getStatusDotClass('rejected')
   return getStatusDotClass('pending')
 }
 
 const isPaidStatus = (event) => {
-  const payStatus = (event?.payment_status || '').toLowerCase()
-  return payStatus === 'lunas' || payStatus === 'paid' || getMainStatusLabel(event) === 'Registered'
+  return getMainStatusLabel(event) === 'Registered'
 }
 </script>

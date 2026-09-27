@@ -10,14 +10,16 @@
                 <div class="px-6 py-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/70">
                     <div class="flex items-start gap-3.5">
                         <div class="size-11 rounded-2xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0 mt-0.5">
-                            <Icon icon="ph:user-plus-bold" class="text-xl" />
+                            <Icon :icon="isEdit ? 'ph:pencil-simple-bold' : 'ph:user-plus-bold'" class="text-xl" />
                         </div>
                         <div>
                             <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
-                                {{ isEn ? 'Add Archer' : 'Tambah Atlet' }}
+                                {{ isEdit ? (isEn ? 'Edit Archer Data' : 'Edit Data Atlet') : (isEn ? 'Add Archer' : 'Tambah Atlet') }}
                             </h3>
                             <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                                {{ isEn ? 'Search registered archers or create a new archer.' : 'Cari atlet terdaftar atau buat akun archer baru.' }}
+                                {{ isEdit 
+                                    ? (isEn ? 'Update details for this archer in your delegation.' : 'Perbarui data atlet di daftar kontingen ini.')
+                                    : (isEn ? 'Search registered archers or create a new archer.' : 'Cari atlet terdaftar atau buat akun archer baru.') }}
                             </div>
                         </div>
                     </div>
@@ -30,8 +32,8 @@
                     </button>
                 </div>
 
-                <!-- Segmented Tabs Navigation -->
-                <div class="p-3.5 bg-slate-50 border-b border-slate-100">
+                <!-- Segmented Tabs Navigation (Only in Create Mode) -->
+                <div v-if="!isEdit" class="p-3.5 bg-slate-50 border-b border-slate-100">
                     <div class="grid grid-cols-2 gap-1.5 bg-slate-200/70 p-1 rounded-2xl">
                         <button
                             type="button"
@@ -53,7 +55,7 @@
                 </div>
 
                 <!-- TAB 1: SEARCH & SELECT EXISTING ARCHER -->
-                <div v-if="activeTab === 'existing'" class="flex-1 overflow-y-auto p-5 space-y-4 max-h-[460px]">
+                <div v-if="!isEdit && activeTab === 'existing'" class="flex-1 overflow-y-auto p-5 space-y-4 max-h-[460px]">
                     <!-- Search Input -->
                     <div class="relative">
                         <input
@@ -121,9 +123,9 @@
                     </div>
                 </div>
 
-                <!-- TAB 2: CREATE NEW ARCHER ACCOUNT -->
-                <div v-else-if="activeTab === 'new'" class="p-6 overflow-y-auto max-h-[480px] space-y-4">
-                    <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl flex items-start gap-3">
+                <!-- TAB 2 / EDIT FORM: CREATE OR EDIT ARCHER ACCOUNT -->
+                <div v-else class="p-6 overflow-y-auto max-h-[480px] space-y-4">
+                    <div v-if="!isEdit" class="p-4 bg-primary/10 border border-primary/20 rounded-2xl flex items-start gap-3">
                         <Icon icon="ph:info-bold" class="text-navy text-xl shrink-0 mt-0.5" />
                         <div class="text-xs sm:text-sm text-navy leading-relaxed font-medium">
                             {{ isEn ? 'Enter archer credentials. If the email is already registered in Archeris, it will link automatically.' : 'Masukkan data atlet. Jika email sudah terdaftar di sistem Archeris, akun akan ditautkan secara otomatis.' }}
@@ -131,7 +133,7 @@
                     </div>
 
                     <!-- Auto-detected existing account notification -->
-                    <div v-if="isExistingUserInDb && matchedDbUser" class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 animate-fade-in">
+                    <div v-if="isExistingUserInDb && matchedDbUser && !isEdit" class="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 animate-fade-in">
                         <Icon icon="ph:user-check-bold" class="text-emerald-700 text-xl shrink-0 mt-0.5" />
                         <div class="text-xs sm:text-sm text-emerald-900 leading-snug">
                             <div class="font-bold">
@@ -157,7 +159,7 @@
                                 required
                                 icon="ph:envelope-bold" />
                             <Icon v-if="isCheckingEmail" icon="ph:spinner-gap-bold" class="absolute right-3 top-9 text-navy animate-spin text-base" />
-                            <div v-if="isExistingUserInDb && matchedDbUser" class="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mt-1.5 px-1 animate-in fade-in">
+                            <div v-if="isExistingUserInDb && matchedDbUser && !isEdit" class="flex items-center gap-1.5 text-xs text-emerald-600 font-bold mt-1.5 px-1 animate-in fade-in">
                                 <Icon icon="ph:check-circle-fill" class="text-sm shrink-0" />
                                 <span>{{ isEn ? `Found registered profile for ${matchedDbUser.full_name} (Linked)` : `Akun terdaftar atas nama ${matchedDbUser.full_name} ditemukan (Ditautkan)` }}</span>
                             </div>
@@ -181,8 +183,8 @@
                                 icon="ph:gender-intersex" />
                         </div>
 
-                        <!-- Password Field: only needed if new account -->
-                        <div v-if="!isExistingUserInDb" class="relative">
+                        <!-- Password Field: only needed if new account and creating -->
+                        <div v-if="!isExistingUserInDb && !isEdit" class="relative">
                             <BaseInput
                                 v-model="newForm.password"
                                 :label="isEn ? 'Account Password' : 'Kata Sandi Akun'"
@@ -209,6 +211,14 @@
                                 :placeholder="isEn ? 'Select or search club...' : 'Pilih atau cari klub...'" />
                         </div>
 
+                        <!-- Custom Registration Fields -->
+                        <div v-if="customFields && customFields.length > 0" class="pt-1">
+                            <DynamicCustomFieldsRenderer
+                                :fields="customFields"
+                                v-model="newForm.custom_fields"
+                            />
+                        </div>
+
                         <div class="pt-2">
                             <BaseButton
                                 type="button"
@@ -218,9 +228,11 @@
                                 size="md"
                                 class="w-full justify-center text-sm sm:text-base">
                                 <template #icon-left>
-                                    <Icon icon="ph:user-plus-bold" />
+                                    <Icon :icon="isEdit ? 'ph:check-bold' : 'ph:user-plus-bold'" />
                                 </template>
-                                {{ isEn ? 'Add Archer to Roster' : 'Tambahkan Atlet ke Daftar' }}
+                                {{ isEdit 
+                                    ? (isEn ? 'Save Changes' : 'Simpan Perubahan') 
+                                    : (isEn ? 'Add Archer to Roster' : 'Tambahkan Atlet ke Daftar') }}
                             </BaseButton>
                         </div>
                     </div>
@@ -249,6 +261,7 @@ import BaseInput from '~/components/common/BaseInput.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
 import ClubSelector from '~/components/common/ClubSelector.vue'
+import DynamicCustomFieldsRenderer from '~/components/tournaments/DynamicCustomFieldsRenderer.vue'
 
 const { locale } = useI18n()
 const isEn = computed(() => locale.value !== 'id')
@@ -263,6 +276,10 @@ const props = defineProps({
         required: true
     },
     individualCategories: {
+        type: Array,
+        default: () => []
+    },
+    customFields: {
         type: Array,
         default: () => []
     },
@@ -281,11 +298,16 @@ const props = defineProps({
     existingArcherIds: {
         type: Array,
         default: () => []
+    },
+    editAthlete: {
+        type: Object,
+        default: null
     }
 })
 
-const emit = defineEmits(['close', 'add-athlete'])
+const emit = defineEmits(['close', 'add-athlete', 'save-athlete'])
 
+const isEdit = computed(() => Boolean(props.editAthlete))
 const activeTab = ref('existing')
 const searchQuery = ref('')
 const searchResults = ref([])
@@ -305,9 +327,12 @@ const newForm = ref({
     full_name: '',
     gender: 'male',
     email: '',
+    phone: '',
+    date_of_birth: '',
     password: 'Archeris123!',
     club_id: '',
-    club_name: ''
+    club_name: '',
+    custom_fields: {}
 })
 
 const errors = ref({
@@ -343,11 +368,13 @@ const validateField = (field) => {
     if (field === 'email') {
         const val = newForm.value.email?.trim()?.toLowerCase()
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        const editingOriginalEmail = props.editAthlete?.email?.trim()?.toLowerCase()
+
         if (!val) {
             errors.value.email = isEn.value ? 'Email is required.' : 'Alamat email wajib diisi.'
         } else if (!emailRegex.test(val)) {
             errors.value.email = isEn.value ? 'Invalid email format.' : 'Format alamat email tidak valid.'
-        } else if (props.existingEmails.some(e => e?.toLowerCase()?.trim() === val)) {
+        } else if (val !== editingOriginalEmail && props.existingEmails.some(e => e?.toLowerCase()?.trim() === val)) {
             errors.value.email = isEn.value ? 'This archer is already added to the roster.' : 'Atlet dengan email ini sudah ada di daftar kontingen.'
         } else {
             errors.value.email = ''
@@ -355,7 +382,7 @@ const validateField = (field) => {
     }
 
     if (field === 'password') {
-        if (!isExistingUserInDb.value) {
+        if (!isExistingUserInDb.value && !isEdit.value) {
             const val = newForm.value.password
             if (!val) {
                 errors.value.password = isEn.value ? 'Password is required.' : 'Kata sandi wajib diisi.'
@@ -371,6 +398,7 @@ const validateField = (field) => {
 }
 
 const checkEmailInDb = async () => {
+    if (isEdit.value) return
     const email = newForm.value.email?.trim()?.toLowerCase()
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!email || !emailRegex.test(email)) {
@@ -416,6 +444,7 @@ const checkEmailInDb = async () => {
 }
 
 watch(() => newForm.value.email, () => {
+    if (isEdit.value) return
     clearTimeout(emailLookupTimer)
     emailLookupTimer = setTimeout(() => {
         validateField('email')
@@ -433,17 +462,32 @@ const generateEasyPassword = () => {
     errors.value.password = ''
 }
 
+const areRequiredCustomFieldsFilled = (answers, fields) => {
+    if (!fields || fields.length === 0) return true
+    for (const f of fields) {
+        const isDataField = !f.element_type || f.element_type === 'field'
+        if (f.is_active && f.is_required && isDataField) {
+            const val = answers?.[f.field_key] ?? answers?.[f.uuid]
+            if (val === undefined || val === null || val === '') return false
+            if (Array.isArray(val) && val.length === 0) return false
+        }
+    }
+    return true
+}
+
 const isNewFormValid = computed(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const email = newForm.value.email?.trim()?.toLowerCase()
-    const isEmailInRoster = email && props.existingEmails.some(e => e?.toLowerCase()?.trim() === email)
+    const editingOriginalEmail = props.editAthlete?.email?.trim()?.toLowerCase()
+    const isEmailInRoster = email && email !== editingOriginalEmail && props.existingEmails.some(e => e?.toLowerCase()?.trim() === email)
     
     const isNameOk = !!newForm.value.full_name && newForm.value.full_name.trim().length >= 3
     const isEmailOk = !!email && emailRegex.test(email) && !isEmailInRoster
     const isGenderOk = !!newForm.value.gender
-    const isPasswordOk = isExistingUserInDb.value || (!!newForm.value.password && newForm.value.password.length >= 6)
+    const isPasswordOk = isExistingUserInDb.value || isEdit.value || (!!newForm.value.password && newForm.value.password.length >= 6)
+    const isCustomFieldsOk = areRequiredCustomFieldsFilled(newForm.value.custom_fields, props.customFields)
 
-    return isNameOk && isEmailOk && isGenderOk && isPasswordOk
+    return isNameOk && isEmailOk && isGenderOk && isPasswordOk && isCustomFieldsOk
 })
 
 const close = () => {
@@ -460,6 +504,7 @@ const selectExistingArcher = (archer) => {
         category_id: '',
         category_ids: [],
         email: archer.email || '',
+        phone: archer.phone || '',
         club_id: archer.club_id || props.defaultClubId,
         club_name: archer.club_name || props.defaultClubName || 'Independent',
         avatar_url: archer.avatar_url || archer.photo_url || '',
@@ -469,38 +514,31 @@ const selectExistingArcher = (archer) => {
 }
 
 const submitNewArcher = () => {
-    ['full_name', 'email', 'password'].forEach(validateField)
+    ['full_name', 'email'].forEach(validateField)
+    if (!isExistingUserInDb.value && !isEdit.value) {
+        validateField('password')
+    }
     if (!isNewFormValid.value) return
 
-    emit('add-athlete', {
-        archer_id: isExistingUserInDb.value ? (matchedDbUser.value?.uuid || matchedDbUser.value?.id || '') : '',
+    const athletePayload = {
+        archer_id: isExistingUserInDb.value ? (matchedDbUser.value?.uuid || matchedDbUser.value?.id || props.editAthlete?.archer_id || '') : (props.editAthlete?.archer_id || ''),
         full_name: newForm.value.full_name.trim(),
         gender: newForm.value.gender || 'male',
-        category_id: '',
-        category_ids: [],
+        category_id: props.editAthlete?.category_id || '',
+        category_ids: props.editAthlete?.category_ids || [],
         email: newForm.value.email.trim(),
+        phone: newForm.value.phone?.trim() || '',
+        date_of_birth: newForm.value.date_of_birth || '',
         password: isExistingUserInDb.value ? '' : (newForm.value.password || 'Archeris123!'),
         club_id: newForm.value.club_id || props.defaultClubId,
         club_name: newForm.value.club_name || props.defaultClubName || 'Independent',
-        avatar_url: matchedDbUser.value?.avatar_url || '',
-        is_new_account: !isExistingUserInDb.value
-    })
-    
-    newForm.value = {
-        full_name: '',
-        gender: 'male',
-        email: '',
-        password: 'Archeris123!',
-        club_id: props.defaultClubId,
-        club_name: props.defaultClubName
+        avatar_url: matchedDbUser.value?.avatar_url || props.editAthlete?.avatar_url || '',
+        is_new_account: isEdit.value ? props.editAthlete.is_new_account : !isExistingUserInDb.value,
+        custom_fields: { ...(newForm.value.custom_fields || {}) }
     }
-    isExistingUserInDb.value = false
-    matchedDbUser.value = null
-    errors.value = {
-        full_name: '',
-        email: '',
-        password: ''
-    }
+
+    emit('save-athlete', athletePayload)
+    emit('add-athlete', athletePayload)
     close()
 }
 
@@ -531,11 +569,38 @@ watch(searchQuery, () => {
 
 watch(() => props.show, (val) => {
     if (val) {
-        if (!newForm.value.password) {
-            newForm.value.password = 'Archeris123!'
+        errors.value = { full_name: '', email: '', password: '' }
+        if (props.editAthlete) {
+            activeTab.value = 'new'
+            newForm.value = {
+                full_name: props.editAthlete.full_name || '',
+                gender: props.editAthlete.gender || 'male',
+                email: props.editAthlete.email || '',
+                phone: props.editAthlete.phone || '',
+                date_of_birth: props.editAthlete.date_of_birth || '',
+                password: props.editAthlete.password || 'Archeris123!',
+                club_id: props.editAthlete.club_id || props.defaultClubId || '',
+                club_name: props.editAthlete.club_name || props.defaultClubName || 'Independent',
+                custom_fields: { ...(props.editAthlete.custom_fields || {}) }
+            }
+            isExistingUserInDb.value = !props.editAthlete.is_new_account
+            matchedDbUser.value = null
+        } else {
+            activeTab.value = 'existing'
+            newForm.value = {
+                full_name: '',
+                gender: 'male',
+                email: '',
+                phone: '',
+                date_of_birth: '',
+                password: 'Archeris123!',
+                club_id: props.defaultClubId || '',
+                club_name: props.defaultClubName || '',
+                custom_fields: {}
+            }
+            isExistingUserInDb.value = false
+            matchedDbUser.value = null
         }
-        if (props.defaultClubId) newForm.value.club_id = props.defaultClubId
-        if (props.defaultClubName) newForm.value.club_name = props.defaultClubName
     }
 })
 </script>

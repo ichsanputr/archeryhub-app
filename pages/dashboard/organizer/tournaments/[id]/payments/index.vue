@@ -7,7 +7,8 @@
       icon="ph:credit-card-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('org_event_payments.title') }
       ]"
     />
@@ -119,27 +120,9 @@
           <div v-if="item.payer_email" class="text-xs text-slate-400 truncate mt-0.5" :title="item.payer_email">
             {{ item.payer_email }}
           </div>
-          <div v-if="item.status === 'rejected' && item.rejection_reason" class="mt-1 text-xs text-rose-600 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded border border-rose-100 dark:border-rose-900 line-clamp-1" :title="item.rejection_reason">
-            <strong>{{ t('org_event_payments.rejection_reason') }}</strong> {{ item.rejection_reason }}
-          </div>
         </div>
       </template>
 
-      <!-- Participants / Roster Column Slot -->
-      <template #item-participants="{ item }">
-        <div class="py-1 min-w-[140px]">
-          <div class="flex items-center gap-1.5">
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-navy/5 text-navy dark:bg-slate-700 dark:text-white border border-navy/10 dark:border-slate-600">
-              <Icon icon="ph:users-three-bold" class="size-3.5 text-primary" />
-              <span>{{ item.participant_count || (item.participants ? item.participants.length : 1) }} {{ t('org_event_payments.athletes_registered') }}</span>
-            </span>
-          </div>
-          <div v-if="item.participants && item.participants.length > 0" class="text-xs text-slate-500 dark:text-slate-400 mt-1 truncate max-w-[180px]" :title="item.participants.map((p: any) => p.archer_name).join(', ')">
-            {{ item.participants.map((p: any) => p.archer_name).slice(0, 2).join(', ') }}
-            <span v-if="item.participants.length > 2" class="text-slate-400 font-bold">+{{ item.participants.length - 2 }}</span>
-          </div>
-        </div>
-      </template>
 
       <!-- Payment Method Column Slot -->
       <template #item-method="{ item }">
@@ -288,6 +271,7 @@ import PaymentFilterModal from '~/components/dashboard/PaymentFilterModal.vue'
 const { t } = useDashboardI18n()
 const route = useRoute()
 const { get, post } = useApi()
+const { tournamentTitle } = useTournamentContext()
 const toast = useToast()
 
 const eventId = computed(() => route.params.id as string)
@@ -328,12 +312,11 @@ const activeRejectInvoice = ref<any>(null)
 const rejectReason = ref('')
 
 const tableColumns = computed(() => [
-  { key: 'invoice', label: t('org_event_payments.col_invoice'), sortable: true },
-  { key: 'payer', label: t('org_event_payments.col_payer'), sortable: true },
-  { key: 'participants', label: t('org_event_payments.col_athletes'), sortable: false },
-  { key: 'method', label: t('org_event_payments.col_method'), sortable: true },
-  { key: 'amount', label: t('org_event_payments.col_amount'), sortable: true },
-  { key: 'status', label: t('org_event_payments.col_status'), sortable: true, headerClass: 'text-center' }
+  { key: 'invoice', label: t('org_event_payments.col_invoice'), sortable: true, sortKey: 'created_at', class: 'min-w-[190px]' },
+  { key: 'payer', label: t('org_event_payments.col_payer'), sortable: true, sortKey: 'payer_name', class: 'min-w-[200px]' },
+  { key: 'method', label: t('org_event_payments.col_method'), sortable: true, sortKey: 'payment_method', class: 'min-w-[170px]' },
+  { key: 'amount', label: t('org_event_payments.col_amount'), sortable: true, sortKey: 'amount', align: 'right', class: 'min-w-[130px]' },
+  { key: 'status', label: t('org_event_payments.col_status'), sortable: true, sortKey: 'status', align: 'center', class: 'min-w-[150px]' }
 ])
 
 const totalRevenue = computed(() =>
@@ -351,7 +334,7 @@ const awaitingCount = computed(() =>
 )
 
 const pendingCount = computed(() =>
-  invoices.value.filter(inv => (inv.status || '').toLowerCase() === 'pending' || (inv.status || '').toLowerCase() === 'unpaid').length
+  invoices.value.filter(inv => (inv.status || '').toLowerCase() === 'pending').length
 )
 
 const rejectedCount = computed(() =>
@@ -396,8 +379,8 @@ const filteredInvoices = computed(() => {
     const targetStatus = currentFilters.value.status.toLowerCase()
     if (['paid', 'lunas', 'settlement'].includes(targetStatus)) {
       list = list.filter(inv => ['paid', 'settlement', 'lunas', 'success', 'completed'].includes((inv.status || '').toLowerCase()))
-    } else if (['pending', 'unpaid'].includes(targetStatus)) {
-      list = list.filter(inv => ['pending', 'unpaid'].includes((inv.status || '').toLowerCase()))
+    } else if (['pending'].includes(targetStatus)) {
+      list = list.filter(inv => ['pending'].includes((inv.status || '').toLowerCase()))
     } else {
       list = list.filter(inv => (inv.status || '').toLowerCase() === targetStatus)
     }
@@ -508,7 +491,6 @@ function getStatusLabel(status?: string) {
     case 'awaiting_verification':
       return t('org_event_payments.status_awaiting')
     case 'pending':
-    case 'unpaid':
       return t('org_event_payments.status_pending')
     case 'rejected':
       return t('org_event_payments.status_rejected')
@@ -567,24 +549,26 @@ function getStatusDotClass(status?: string) {
 }
 
 function getMethodIcon(method?: string) {
-  const m = (method || '').toLowerCase()
+  const m = (method || '').toLowerCase().trim()
+  if (m === 'free' || m === 'free_registration' || m === 'gratis') return 'ph:ticket-bold'
   if (m === 'manual' || m === 'bank_transfer' || m === 'manual_transfer') return 'ph:bank-bold'
   if (m === 'mayar') return 'ph:credit-card-bold'
   if (m === 'paypal') return 'ph:paypal-logo-bold'
   if (m === 'midtrans') return 'ph:wallet-bold'
-  if (m.includes('cash')) return 'ph:money-bold'
+  if (m.includes('cash') || m.includes('tunai')) return 'ph:money-bold'
   return 'ph:credit-card-bold'
 }
 
 function formatPaymentMethodName(method?: string) {
-  if (!method) return t('org_event_payments.method_manual') || 'Transfer Manual'
-  const m = method.toLowerCase()
-  if (m === 'manual' || m === 'bank_transfer' || m === 'manual_transfer') return t('org_event_payments.method_manual') || 'Transfer Manual'
+  if (!method) return t('org_event_payments.method_manual', 'Transfer Manual') || 'Transfer Manual'
+  const m = method.toLowerCase().trim()
+  if (m === 'free' || m === 'free_registration' || m === 'gratis') return t('payment_method.free', 'Gratis') || 'Gratis'
+  if (m === 'manual' || m === 'bank_transfer' || m === 'manual_transfer') return t('org_event_payments.method_manual', 'Transfer Manual') || 'Transfer Manual'
   if (m === 'mayar') return 'Mayar Gateway'
   if (m === 'paypal') return 'PayPal'
   if (m === 'midtrans') return 'Midtrans'
-  if (m.includes('cash')) return t('org_event_payments.method_cash') || 'Tunai di Tempat'
-  return method
+  if (m.includes('cash') || m.includes('tunai')) return t('org_event_payments.method_cash', 'Tunai di Tempat') || 'Tunai di Tempat'
+  return method.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
 function formatDate(dateStr?: string) {

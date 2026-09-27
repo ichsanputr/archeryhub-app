@@ -241,7 +241,8 @@
     "archers": "Archers",
     "management": "Management",
     "tournaments": "Tournaments",
-    "articles": "Articles"
+    "articles": "Articles",
+    "search_menu": "Search menu..."
   },
   "archer_certificates": {
     "breadcrumb": "Certificates",
@@ -5018,7 +5019,7 @@
     "share_button": "Share",
     "stats": {
       "total_archers": "Total Archers",
-      "total_teams": "Total Official Teams",
+      "total_teams": "Total Teams",
       "completion": "Completion",
       "time_left": "Time Left"
     },

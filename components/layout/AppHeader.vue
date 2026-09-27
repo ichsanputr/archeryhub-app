@@ -159,11 +159,11 @@
       </div>
 
       <!-- Search Button -->
-      <button @click="searchDialog?.open()" :class="[
+      <button @click="handleOpenSearch" :class="[
         isScrolled || !transparent
           ? 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-navy'
           : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-      ]" class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all"
+      ]" class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all cursor-pointer"
         :title="`${t('dashboard.header.search_pages')} (Ctrl+K)`">
         <Icon icon="ph:magnifying-glass-bold" class="text-base" />
         <span class="hidden md:inline text-xs font-medium">{{ t('dashboard.header.search_pages') }}</span>
@@ -172,9 +172,9 @@
           class="hidden lg:inline-flex items-center px-1.5 py-0.5 border rounded text-xs font-mono ml-1">Ctrl K</kbd>
       </button>
       <!-- Mobile search icon -->
-      <button @click="searchDialog?.open()"
+      <button @click="handleOpenSearch"
         :class="isScrolled || !transparent ? 'text-gray-500 hover:text-navy' : 'text-white/70 hover:text-white'"
-        class="sm:hidden p-2 rounded-xl transition-colors" :title="t('dashboard.header.search_pages')">
+        class="sm:hidden p-2 rounded-xl transition-colors cursor-pointer" :title="t('dashboard.header.search_pages')">
         <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
       </button>
     </div>
@@ -188,7 +188,7 @@
 import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import { useDashboardI18n } from '~/composables/useDashboardI18n'
 const NotificationList = defineAsyncComponent(() => import('./NotificationList.vue'))
-const DocSearchDialog = defineAsyncComponent(() => import('./DocSearchDialog.vue'))
+import DocSearchDialog from './DocSearchDialog.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useImageOrDefault } from '~/composables/useImageHelper'
@@ -281,6 +281,14 @@ const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const showNotifications = ref(false)
 const searchDialog = ref(null)
+
+const handleOpenSearch = () => {
+  if (searchDialog.value?.open) {
+    searchDialog.value.open()
+  } else if (searchDialog.value?.$?.exposed?.open) {
+    searchDialog.value.$.exposed.open()
+  }
+}
 
 const {
   notifications,

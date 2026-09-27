@@ -33,7 +33,7 @@ const isPaid = computed(() => {
 const isPending = computed(() => {
   if (isPaid.value) return false
   const s = (tx.value.status || tx.value.payment_status || '').toLowerCase()
-  return s === 'pending' || s === 'unpaid' || s === 'waiting' || s === 'awaiting_payment' || s === 'menunggu'
+  return s === 'pending' || s === 'waiting' || s === 'awaiting_payment' || s === 'menunggu'
 })
 
 const statusBadgeClasses = computed(() => {

@@ -8,7 +8,8 @@
       :back-to="`/dashboard/organizer/tournaments/${eventId}/printout`"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_printout.breadcrumb_printout'), to: `/dashboard/organizer/tournaments/${eventId}/printout` },
         { label: t('event_printout.statistics.title') }
       ]"
@@ -61,6 +62,7 @@ import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const eventId = route.params.id
+const { tournamentTitle } = useTournamentContext()
 const config = useRuntimeConfig()
 const { t } = useI18n()
 

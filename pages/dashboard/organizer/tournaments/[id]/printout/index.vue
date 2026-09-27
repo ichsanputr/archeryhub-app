@@ -7,7 +7,8 @@
       icon="ph:printer-bold"
       :breadcrumbs="[
         { label: 'Dashboard', to: '/dashboard/organizer' },
-        { label: t('events.list.title'), to: '/dashboard/organizer/tournaments' },
+        { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
+        { label: eventName || tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview'), to: `/dashboard/organizer/tournaments/${eventId}/overview` },
         { label: t('event_printout.breadcrumb_printout') }
       ]"
     />
@@ -166,6 +167,7 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const { get } = useApi()
 const { t } = useI18n()
+const { tournamentTitle } = useTournamentContext()
 const toast = useToast()
 
 const eventId = route.params.id

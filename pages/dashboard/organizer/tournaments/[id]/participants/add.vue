@@ -21,6 +21,17 @@
                             <Icon icon="ph:user-plus-bold" class="text-white text-2xl" />
                         </div>
                         <div>
+                            <nav class="flex text-xs font-bold text-white/50 tracking-wider items-center gap-1.5 flex-wrap mb-2">
+                                <NuxtLink to="/dashboard/organizer" class="hover:text-white transition-colors text-white/60">Dashboard</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${route.params.id}/overview`" class="hover:text-white transition-colors text-white/60">{{ tournamentTitle || event?.name || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <NuxtLink :to="`/dashboard/organizer/tournaments/${route.params.id}/participants`" class="hover:text-white transition-colors text-white/60">{{ t('dashboard.participants_list.title', 'Peserta') }}</NuxtLink>
+                                <Icon icon="ph:caret-right-bold" class="text-[10px] text-white/40" />
+                                <span class="text-white font-bold truncate max-w-[200px] sm:max-w-xs">{{ t('dashboard_events_participants_add.title') }}</span>
+                            </nav>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-1 text-white">
                                 {{ t('dashboard_events_participants_add.title') }}
                             </h1>
@@ -222,6 +233,14 @@
                                 <BaseSelect v-model="newArcherForm.club_id" :label="t('dashboard_events_participants_add.club')" :items="clubOptions" required
                                     searchable class="md:col-span-2" />
                             </div>
+
+                            <!-- Custom Archer Fields (Dynamic Configured Fields) -->
+                            <div v-if="customFields.length > 0" class="pt-2">
+                                <DynamicCustomFieldsRenderer
+                                    :fields="customFields"
+                                    v-model="newArcherForm.custom_fields"
+                                />
+                            </div>
                             
                             <div class="flex items-center justify-between pt-2">
                                 <div class="text-xs sm:text-sm text-gray-400">
@@ -383,7 +402,7 @@
     </div>
 
     <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleAvatarSelect" />
-    <ImportParticipantsModal v-model:show="showImportModal" :event-id="route.params.id" @parsed="handleCsvParsed" />
+    <ImportParticipantsModal v-model:show="showImportModal" :event-id="route.params.id" :custom-fields="customFields" @parsed="handleCsvParsed" />
 </template>
 
 <script setup>
@@ -391,6 +410,7 @@ import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import ImportParticipantsModal from '~/components/dashboard/ImportParticipantsModal.vue'
+import DynamicCustomFieldsRenderer from '~/components/tournaments/DynamicCustomFieldsRenderer.vue'
 import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -398,9 +418,9 @@ import { useEventContext } from '~/composables/useTournamentContext'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
-import { useI18n } from 'vue-i18n'
+import useDashboardI18n from '~/composables/useDashboardI18n'
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard',
@@ -416,7 +436,7 @@ const router = useRouter()
 const { get, post } = useApi()
 const toast = useToast()
 const { user } = useAuth()
-const { setEvent, clearEvent } = useEventContext()
+const { setEvent, clearEvent, tournamentTitle } = useEventContext()
 const { isSubscriptionActive } = useSubscription()
 
 const event = ref(null)
@@ -425,6 +445,7 @@ const categories = ref([])
 const clubs = ref([])
 const cityOptions = ref([])
 const archerMode = ref('existing')
+const customFields = ref([])
 
 watch(archerMode, (val) => {
     if (val === 'existing') {
@@ -448,7 +469,7 @@ const showImportModal = ref(false)
 
 const form = reactive({
     category_ids: [],
-    payment_status: 'unpaid',
+    payment_status: 'paid',
     payment_amount: 0,
     registration_source: 'invited',
     notes: ''
@@ -468,7 +489,8 @@ const newArcherForm = reactive({
     school: '',
     club_id: '',
     address: '',
-    avatar_url: ''
+    avatar_url: '',
+    custom_fields: {}
 })
 
 const genderOptions = computed(() => [
@@ -488,8 +510,7 @@ const bowOptions = computed(() => [
 
 const paymentStatusOptions = computed(() => [
     { title: t('dashboard_events_participants_add.payment_status_paid'), value: 'paid' },
-    { title: t('dashboard_events_participants_add.payment_status_pending'), value: 'pending' },
-    { title: t('dashboard_events_participants_add.payment_status_unpaid'), value: 'unpaid' }
+    { title: t('dashboard_events_participants_add.payment_status_pending'), value: 'pending' }
 ])
 
 const sourceOptions = computed(() => [
@@ -634,6 +655,28 @@ const fetchCities = async () => {
     }
 }
 
+const fetchCustomFields = async () => {
+    try {
+        const res = await get(`/tournaments/${route.params.id}/custom-fields`)
+        customFields.value = res?.fields || []
+    } catch (error) {
+        console.error('Failed to fetch custom fields:', error)
+        customFields.value = []
+    }
+}
+
+const areRequiredCustomFieldsFilled = (answers, fields) => {
+    if (!fields || fields.length === 0) return true
+    for (const f of fields) {
+        if (f.is_active && f.is_required) {
+            const val = answers?.[f.field_key] ?? answers?.[f.uuid]
+            if (val === undefined || val === null || val === '') return false
+            if (Array.isArray(val) && val.length === 0) return false
+        }
+    }
+    return true
+}
+
 const selectArcher = (archer) => {
     selectedArcher.value = archer
 }
@@ -671,7 +714,6 @@ const generateUsername = () => {
         newArcherForm.username = ''
         return
     }
-    // Generate username from full name: lowercase, replace spaces with hyphens, remove special chars
     let username = newArcherForm.full_name
         .toLowerCase()
         .trim()
@@ -702,10 +744,44 @@ const generateRandomPassword = () => {
 }
 
 const downloadCsvTemplate = () => {
-    const csvContent = 'full_name,email,phone,password,gender,bow_type,club_name,category_name,payment_status,payment_amount\n' +
-        'Budi Santoso,budi@example.com,081234567890,Archeris123!,M,recurve,Klub Panahan Sleman,Recurve 70m - Putra,paid,150000\n' +
-        'Siti Aminah,siti@example.com,081298765432,Archeris123!,F,barebow,Archery Club Jogja,Barebow 50m - Putri,unpaid,0'
+    // Core columns
+    const coreHeaders = ['full_name', 'email', 'phone', 'password', 'gender', 'club_name']
+    
+    // Filter active custom fields (exclude decorative types)
+    const validCustomFields = (customFields.value || []).filter(f => 
+        f.is_active && !['heading', 'divider', 'notice'].includes(f.element_type)
+    )
+    
+    const customHeaderKeys = validCustomFields.map(f => f.field_key || f.uuid)
+    const allHeaders = [...coreHeaders, ...customHeaderKeys]
 
+    const getSampleCustomVal = (field, idx) => {
+        if (field.field_type === 'number') return idx === 0 ? '123' : '456'
+        if (field.field_type === 'select' || field.field_type === 'radio') {
+            if (Array.isArray(field.options) && field.options.length > 0) return field.options[idx % field.options.length]
+            return 'Pilihan 1'
+        }
+        if (field.field_type === 'checkbox') {
+            if (Array.isArray(field.options) && field.options.length > 0) return field.options[0]
+            return 'Ya'
+        }
+        if (field.field_type === 'date') return idx === 0 ? '2000-01-15' : '1998-07-22'
+        return idx === 0 ? 'Contoh 1' : 'Contoh 2'
+    }
+
+    const row1Custom = validCustomFields.map(f => getSampleCustomVal(f, 0))
+    const row2Custom = validCustomFields.map(f => getSampleCustomVal(f, 1))
+
+    const row1 = ['Budi Santoso', 'budi@example.com', '081234567890', 'Archeris123!', 'M', 'Klub Panahan Sleman', ...row1Custom]
+    const row2 = ['Siti Aminah', 'siti@example.com', '081298765432', 'Archeris123!', 'F', 'Archery Club Jogja', ...row2Custom]
+
+    const csvLines = [
+        allHeaders.join(','),
+        row1.map(val => `"${String(val).replace(/"/g, '""')}"`).join(','),
+        row2.map(val => `"${String(val).replace(/"/g, '""')}"`).join(',')
+    ]
+
+    const csvContent = '\uFEFF' + csvLines.join('\r\n')
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -759,6 +835,11 @@ const addNewArcherToList = () => {
         return
     }
 
+    if (!areRequiredCustomFieldsFilled(newArcherForm.custom_fields, customFields.value)) {
+        toast.warning(t('event_archer_fields.toasts.required_fields_warning') || 'Mohon lengkapi semua data persyaratan tambahan yang wajib diisi.')
+        return
+    }
+
     const tempId = `new-${Date.now()}`
     const newArcher = {
         id: tempId,
@@ -770,6 +851,7 @@ const addNewArcherToList = () => {
         password: newArcherForm.password,
         club_id: newArcherForm.club_id,
         avatar_url: newArcherForm.avatar_url,
+        custom_fields: { ...newArcherForm.custom_fields },
         is_new_profile: true
     }
 
@@ -783,6 +865,7 @@ const addNewArcherToList = () => {
     newArcherForm.phone = ''
     newArcherForm.password = ''
     newArcherForm.avatar_url = ''
+    newArcherForm.custom_fields = {}
 }
 
 const validateNewArcherForm = () => {
@@ -841,6 +924,7 @@ const submit = async () => {
     try {
         const existingArcherIds = []
         const createdArcherIds = []
+        const archerCustomFieldsMap = {}
 
         // Process any newly created profiles first
         for (const archer of selectedArchers.value) {
@@ -868,9 +952,16 @@ const submit = async () => {
                 const newId = archerResponse.uuid || archerResponse.archer_id || archerResponse.id
                 if (newId) {
                     createdArcherIds.push(newId)
+                    if (archer.custom_fields && Object.keys(archer.custom_fields).length > 0) {
+                        archerCustomFieldsMap[newId] = archer.custom_fields
+                    }
                 }
             } else {
-                existingArcherIds.push(archer.uuid || archer.id)
+                const existingId = archer.uuid || archer.id
+                existingArcherIds.push(existingId)
+                if (archer.custom_fields && Object.keys(archer.custom_fields).length > 0) {
+                    archerCustomFieldsMap[existingId] = archer.custom_fields
+                }
             }
         }
 
@@ -882,7 +973,8 @@ const submit = async () => {
                 event_category_ids: form.category_ids,
                 payment_amount: 0,
                 payment_status: 'paid',
-                registration_source: 'invited'
+                registration_source: 'invited',
+                archer_custom_fields: archerCustomFieldsMap
             }
             const result = await post(`/tournaments/${route.params.id}/participants/batch`, payload)
             const count = result?.registered ?? allArcherIds.length
@@ -932,6 +1024,7 @@ onMounted(() => {
     fetchCategories()
     fetchClubs()
     fetchCities()
+    fetchCustomFields()
 })
 
 onBeforeUnmount(() => {

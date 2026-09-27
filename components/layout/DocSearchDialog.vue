@@ -209,6 +209,7 @@ const { data: docsData } = await useAsyncData<DocItem[]>(
 const allDocs = computed<DocItem[]>(() => docsData.value || [])
 
 const categoryLabels: Record<string, { en: string; id: string; icon: string }> = {
+  about: { en: 'About Archeris', id: 'Tentang Archeris', icon: 'ph:info-bold' },
   accounts: { en: 'Accounts', id: 'Akun', icon: 'ph:users-three-bold' },
   tournaments: { en: 'Tournament Setup', id: 'Turnamen', icon: 'ph:trophy-bold' },
   scorekeeper: { en: 'Scorekeeper', id: 'Petugas Skor', icon: 'ph:device-mobile-bold' },
@@ -218,6 +219,7 @@ const categoryLabels: Record<string, { en: string; id: string; icon: string }> =
 
 const categoryFilters = computed(() => [
   { id: 'all', label: locale.value === 'id' ? 'Semua Kategori' : 'All Categories', icon: 'ph:squares-four-bold' },
+  { id: 'about', label: locale.value === 'id' ? 'Tentang Archeris' : 'About Archeris', icon: 'ph:info-bold' },
   { id: 'accounts', label: locale.value === 'id' ? 'Akun' : 'Accounts', icon: 'ph:users-three-bold' },
   { id: 'tournaments', label: locale.value === 'id' ? 'Turnamen' : 'Tournaments', icon: 'ph:trophy-bold' },
   { id: 'scorekeeper', label: locale.value === 'id' ? 'Petugas Skor' : 'Scorekeeper', icon: 'ph:device-mobile-bold' },

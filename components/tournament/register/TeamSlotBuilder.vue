@@ -37,7 +37,7 @@
                         <Icon icon="ph:check-bold" />
                         Already Registered
                     </span>
-                    <span class="font-black text-sm">Rp 0</span>
+                    <span class="font-black text-sm text-emerald-600">Free</span>
                 </div>
             </div>
 
@@ -70,14 +70,15 @@
                         </div>
                     </div>
 
-                    <!-- Financial Status for this Partner -->
                     <div class="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs sm:text-sm font-bold"
                         :class="partners[index].is_already_registered_individual ? 'text-emerald-700' : 'text-navy'">
                         <span class="inline-flex items-center gap-1">
                             <Icon :icon="partners[index].is_already_registered_individual ? 'ph:check-circle-bold' : 'ph:info-bold'" class="text-xs" />
                             {{ partners[index].is_already_registered_individual ? 'Individual Fee Paid' : 'Included in Invoice' }}
                         </span>
-                        <span class="font-black text-sm">{{ partners[index].is_already_registered_individual ? formatPrice(0) : `+${formatPrice(partners[index].individual_fee || defaultSingleFee)}` }}</span>
+                        <span class="font-black text-sm" :class="partners[index].is_already_registered_individual ? 'text-emerald-600' : ''">
+                            {{ partners[index].is_already_registered_individual ? 'Free' : `+${formatPrice(partners[index].individual_fee || defaultSingleFee)}` }}
+                        </span>
                     </div>
                 </div>
 
@@ -174,7 +175,10 @@ const getRequiredGenderForSlot = (index) => {
     return props.captainGender === 'female' ? 'male' : 'female'
 }
 
-const formatPrice = (val) => {
+const formatPrice = (val, allowFree = true) => {
+    if (allowFree && (!val || Number(val) === 0)) {
+        return 'Free'
+    }
     return formatMoney(val, props.currency)
 }
 </script>

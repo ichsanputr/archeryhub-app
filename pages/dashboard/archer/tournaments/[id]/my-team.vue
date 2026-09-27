@@ -1,35 +1,16 @@
 <template>
-  <div class="flex flex-col gap-6 pb-16 font-body">
-    <!-- Header (Standard Dashboard Style) -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
-      </div>
-
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
-      <!-- Header Content -->
-      <div class="relative p-6 sm:p-8">
-        <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-          <NuxtLink to="/dashboard/archer/tournaments" class="hover:text-white transition-colors">{{ t('my_team.nav_event') }}</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-base" />
-          <span class="text-amber-300 font-medium">{{ t('my_team.nav_title') }}</span>
-        </div>
-        <div class="flex items-start gap-4">
-          <div
-            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-            <Icon icon="ph:users-three-bold" class="text-white text-2xl" />
-          </div>
-          <div class="flex-grow">
-            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight text-white">{{ t('my_team.title') }}</h1>
-            <div class="text-slate-300 text-sm mt-1">{{ t('my_team.subtitle') }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="flex flex-col gap-6 pb-12 font-body">
+    <!-- Header (Standard DashboardHeader) -->
+    <DashboardHeader
+      :title="t('my_team.title')"
+      :subtitle="t('my_team.subtitle')"
+      icon="ph:users-four-bold"
+      :breadcrumbs="[
+        { label: 'Dashboard', to: '/dashboard/archer' },
+        { label: t('sidebar.my_events', 'Turnamen Saya'), to: '/dashboard/archer/tournaments' },
+        { label: t('my_team.title') }
+      ]"
+    />
 
     <!-- Loading -->
     <div v-if="isLoading" class="h-64 bg-white rounded-3xl animate-pulse border border-slate-100" />
@@ -37,8 +18,8 @@
     <!-- Empty State: Not In Any Team -->
     <div v-else-if="teamsList.length === 0"
       class="bg-white rounded-3xl border border-slate-200/90 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
-      <div class="size-20 rounded-3xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-400 shadow-2xs">
-        <Icon icon="ph:users-three-bold" class="text-4xl text-slate-400" />
+      <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+        <Icon icon="ph:users-three-bold" class="text-3xl sm:text-4xl text-navy" />
       </div>
       <div class="space-y-2 max-w-lg mx-auto">
         <h3 class="text-xl font-black text-navy tracking-tight">
@@ -160,9 +141,11 @@
 import { ref, computed, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 
+import useDashboardI18n from '~/composables/useDashboardI18n'
+
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useI18n()
+const { t } = useDashboardI18n()
 const toast = useToast()
 const route = useRoute()
 const { get } = useApi()

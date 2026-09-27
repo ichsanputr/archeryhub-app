@@ -203,7 +203,7 @@
 </template>
 
 <script setup>
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, isRef, unref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useI18n } from 'vue-i18n'
 import { useDropdownPosition } from '~/composables/useDropdownPosition'
@@ -245,8 +245,33 @@ const { isFlippedTop, dropdownStyle, updatePosition } = useDropdownPosition(trig
 
 const allItems = computed(() => (Array.isArray(props.options) ? props.options : props.items) || [])
 
-const getItemTitle = (item) => (typeof item === 'object' && item !== null ? (item[props.itemTitle] ?? item.label ?? item.name ?? item.title ?? '') : item)
-const getItemValue = (item) => (typeof item === 'object' && item !== null ? (item[props.itemValue] ?? item.value ?? item.id ?? '') : item)
+const unwrapVal = (val) => {
+  if (isRef(val)) return unref(val)
+  if (typeof val === 'function') {
+    try { return val() } catch (e) { return '' }
+  }
+  if (val && typeof val === 'object' && 'value' in val) {
+    return val.value
+  }
+  return val
+}
+
+const getItemTitle = (item) => {
+  if (typeof item === 'object' && item !== null) {
+    const raw = item[props.itemTitle] ?? item.label ?? item.name ?? item.title ?? ''
+    const unwrapped = unwrapVal(raw)
+    return unwrapped !== undefined && unwrapped !== null ? String(unwrapped) : ''
+  }
+  return item !== undefined && item !== null ? String(item) : ''
+}
+
+const getItemValue = (item) => {
+  if (typeof item === 'object' && item !== null) {
+    const raw = item[props.itemValue] ?? item.value ?? item.id ?? ''
+    return unwrapVal(raw)
+  }
+  return item
+}
 
 const getLabelForValue = (val) => {
   const item = allItems.value.find(i => getItemValue(i) === val)

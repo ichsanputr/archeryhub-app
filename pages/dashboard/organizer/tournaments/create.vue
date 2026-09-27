@@ -264,8 +264,6 @@
                 @blur="validate('country', form.country, [rules.required()])" />
               <BaseSelect v-model="form.currency" :label="t('event_create.field_currency')" :items="currencyItems" required :error="errors.currency"
                 @blur="validate('currency', form.currency, [rules.required()])" />
-              <BaseSelect v-model="form.type" :label="t('event_create.field_location_type')" :items="disciplineItems" required :error="errors.type"
-                @blur="validate('type', form.type, [rules.required()])" />
 
               <div class="md:col-span-2 space-y-2">
                 <div class="flex items-center justify-between">
@@ -621,7 +619,6 @@ const form = reactive({
   startDate: '',
   endDate: '',
   description: '',
-  type: '', // Discipline
   registrationStart: '',
   registrationDeadline: '',
   status: 'draft',
@@ -859,7 +856,6 @@ const validateStep = () => {
     endDate: [rules.required()],
     registrationStart: [rules.required()],
     registrationDeadline: [rules.required()],
-    type: [rules.required()],
     country: [rules.required()],
     currency: [rules.required()]
   })
@@ -911,7 +907,6 @@ const handleSubmit = async () => {
       status: form.status,
       registration_start: formatToISO(form.registrationStart),
       registration_deadline: formatToISO(form.registrationDeadline),
-      location_type: form.type,
       quota_type: form.quotaType,
       visibility: form.visibility || 'external',
       technical_guidebook_url: form.guidebooks?.[0]?.url || '',

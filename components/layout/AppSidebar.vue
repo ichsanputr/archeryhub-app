@@ -98,11 +98,33 @@
             <span v-if="!isSidebarCollapsed">{{ t('sidebar.back_to_events') }}</span>
           </NuxtLink>
         </div>
+
+        <!-- Search Menu Input on Event Subpage (Organizer tournament mode only) -->
+        <div v-if="isOnEventSubPage && !isSidebarCollapsed && !isArcher" class="mb-2 px-1">
+          <div class="relative flex items-center">
+            <Icon icon="ph:magnifying-glass-bold" class="absolute left-2.5 text-slate-400 text-xs pointer-events-none" />
+            <input
+              v-model="menuSearchQuery"
+              type="text"
+              :placeholder="t('sidebar.search_menu', 'Search menu...')"
+              class="w-full bg-white/5 border border-white/10 rounded-xl pl-8 pr-7 py-1.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-medium"
+            />
+            <button
+              v-if="menuSearchQuery"
+              type="button"
+              @click="menuSearchQuery = ''"
+              class="absolute right-2 text-slate-400 hover:text-white text-xs p-0.5 cursor-pointer"
+            >
+              <Icon icon="ph:x-bold" />
+            </button>
+          </div>
+        </div>
+
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed && !isOnEventSubPage" class="px-3 mb-2">
           <div class="text-xs font-bold text-gray-500">{{ t('sidebar.event_management') }}</div>
         </div>
-        <template v-for="(item, idx) in eventLinks" :key="item.path || item.label || idx">
+        <template v-for="(item, idx) in filteredEventLinks" :key="item.path || item.label || idx">
           <div v-if="item.type === 'label'" class="px-3 mt-3 mb-1">
             <div v-if="!isSidebarCollapsed" class="text-[10px] font-bold tracking-wider text-gray-500">{{ item.label }}</div>
             <div v-else class="h-px bg-white/10 my-1"></div>
@@ -116,6 +138,9 @@
             <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
           </NuxtLink>
         </template>
+        <div v-if="filteredEventLinks.length === 0 && menuSearchQuery" class="px-3 py-4 text-center">
+          <div class="text-xs text-slate-400 font-medium">{{ t('sidebar.no_menu_found', 'Menu tidak ditemukan') }}</div>
+        </div>
       </div>
     </div>
 
@@ -156,6 +181,11 @@ const { t } = useDashboardI18n()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
+const menuSearchQuery = ref('')
+
+watch(() => route.path, () => {
+  menuSearchQuery.value = ''
+})
 
 // Groups that are expanded (open) - Expand all groups by default
 const openGroups = ref([])
@@ -225,17 +255,23 @@ const eventLinks = computed(() => {
       { label: t('sidebar.qualification'), icon: 'ph:chart-line-up-bold', path: `${prefix}/tournaments/${eventId.value}/my-qualification` },
       { label: t('sidebar.elimination'), icon: 'ph:git-merge-bold', path: `${prefix}/tournaments/${eventId.value}/my-elimination` },
       { label: t('sidebar.teams'), icon: 'ph:users-four-bold', path: `${prefix}/tournaments/${eventId.value}/my-team` },
-      { label: t('sidebar.certificates'), icon: 'ph:certificate-bold', path: `/dashboard/archer/certificates?event_id=${eventId.value}` },
     ]
   }
 
   const links = [
     { label: t('sidebar.summary'), icon: 'ph:squares-four', path: `${prefix}/tournaments/${eventId.value}/overview` },
-    { label: t('sidebar.event_page'), icon: 'ph:gear-six-bold', path: `${prefix}/tournaments/${eventId.value}/page` },
+    { label: t('sidebar.event_page'), icon: 'ph:gear-six-bold', path: `${prefix}/tournaments/${eventId.value}/settings` },
     { label: t('sidebar.participants'), icon: 'ph:users-three', path: `${prefix}/tournaments/${eventId.value}/participants` },
+  ]
+
+  if (isOrganization) {
+    links.push({ label: t('sidebar.registration_form', t('sidebar.archer_fields', 'Formulir Pendaftaran')), icon: 'ph:textbox-bold', path: `${prefix}/tournaments/${eventId.value}/registration-form` })
+  }
+
+  links.push(
     { label: t('sidebar.payments'), icon: 'ph:credit-card-bold', path: `${prefix}/tournaments/${eventId.value}/payments` },
     { label: t('sidebar.teams'), icon: 'ph:users-four', path: `${prefix}/tournaments/${eventId.value}/teams` },
-  ]
+  )
 
   if (isOrganization) {
     links.push({ label: t('sidebar.competition_categories'), icon: 'ph:tag', path: `${prefix}/tournaments/${eventId.value}/categories` })
@@ -247,11 +283,27 @@ const eventLinks = computed(() => {
     { label: t('sidebar.qualification'), icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/tournaments/${eventId.value}/qualification` },
     { label: t('sidebar.elimination'), icon: 'mdi:bracket', path: `${prefix}/tournaments/${eventId.value}/elimination` },
     { label: t('sidebar.printout'), icon: 'ph:printer-bold', path: `${prefix}/tournaments/${eventId.value}/printout` },
+  )
+
+  if (isOrganization) {
+    links.push({ label: t('sidebar.reports', 'Laporan'), icon: 'ph:chart-bar-bold', path: `${prefix}/tournaments/${eventId.value}/reports` })
+  }
+
+  links.push(
     { label: t('sidebar.certificates'), icon: 'ph:certificate-bold', path: `${prefix}/tournaments/${eventId.value}/certificate` },
     { label: t('sidebar.media_storage'), icon: 'ph:hard-drive-bold', path: `${prefix}/tournaments/${eventId.value}/media` },
   )
 
   return links
+})
+
+const filteredEventLinks = computed(() => {
+  const query = menuSearchQuery.value.trim().toLowerCase()
+  if (!query) return eventLinks.value
+  return eventLinks.value.filter(item => {
+    if (item.type === 'label') return false
+    return item.label?.toLowerCase().includes(query)
+  })
 })
 
 const isArcher = computed(() => {
@@ -307,7 +359,6 @@ const navSections = computed(() => {
         children: [
           { label: t('sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organizer/profile' },
           { label: t('sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organizer/scorekeepers' },
-          { label: t('sidebar.reports'), icon: 'ph:chart-bar', path: '/dashboard/organizer/reports' },
         ]
       },
       { type: 'label', label: t('sidebar.finance') },
