@@ -190,7 +190,8 @@ const isInvoiceOwner = computed(() => {
         }
     }
 
-    if (participant.value.registration_source === 'invited') {
+    const src = (participant.value.registration_source || '').toLowerCase()
+    if (src === 'invitation' || src === 'invited') {
         if (txUserId && currentUserId && txUserId !== currentUserId) {
             return false
         }
@@ -200,7 +201,8 @@ const isInvoiceOwner = computed(() => {
 })
 
 const isDelegatedByOther = computed(() => {
-    return !isInvoiceOwner.value || (participant.value?.registration_source === 'invited' && !isInvoiceOwner.value)
+    const src = (participant.value?.registration_source || '').toLowerCase()
+    return !isInvoiceOwner.value || ((src === 'invitation' || src === 'invited' || src === 'delegation') && !isInvoiceOwner.value)
 })
 
 const primaryCategory = computed(() => {
@@ -389,7 +391,7 @@ onMounted(() => {
             <template #actions>
                 <div class="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
                     <button
-                        v-if="participant && !isPaid(participant.payment_status) && !isCancelled && !isDelegatedByOther && participant.registration_source !== 'invited'"
+                        v-if="participant && !isPaid(participant.payment_status) && !isCancelled && !isDelegatedByOther && participant.registration_source !== 'invitation' && participant.registration_source !== 'invited'"
                         type="button"
                         @click="showCancelConfirm = true"
                         class="inline-flex items-center gap-1.5 h-10 sm:h-11 px-4 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-xs sm:text-sm font-bold text-rose-100 hover:text-white backdrop-blur-sm transition-colors shadow-xs"

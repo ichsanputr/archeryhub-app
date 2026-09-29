@@ -68,13 +68,6 @@
                 @blur="validateSlug"
               />
 
-              <!-- Registration Number / SK -->
-              <BaseInput 
-                v-model="form.registration_number" 
-                :label="t('organizer.profile.reg_number_label')" 
-                :placeholder="t('organizer.profile.reg_number_placeholder')" 
-              />
-
               <!-- Established Date (BaseDatePicker) -->
               <BaseDatePicker 
                 v-model="form.established_date" 
@@ -559,7 +552,6 @@ const form = reactive({
   bannerUrl: '',
   logoUrl: '',
   country: 'Indonesia',
-  registration_number: '',
   established_date: '',
   description: '',
   whatsapp_no: '',
@@ -714,7 +706,6 @@ const loadProfile = async () => {
     if (org && (org.id || org.uuid || org.name)) {
       form.name = org.name || ''
       form.slug = org.slug || ''
-      form.registration_number = org.registration_number || ''
       form.established_date = org.established_date ? org.established_date.split('T')[0] : ''
       form.bannerUrl = org.banner_url || ''
       form.logoUrl = org.avatar_url || org.logo_url || ''
@@ -782,7 +773,6 @@ const saveProfile = async () => {
       logo_url: form.logoUrl,
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
       country: form.country,
-      registration_number: form.registration_number,
       established_date: form.established_date,
       description: form.description,
       whatsapp_no: form.whatsapp_no,

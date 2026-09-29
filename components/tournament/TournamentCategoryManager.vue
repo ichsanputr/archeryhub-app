@@ -101,10 +101,6 @@
             </div>
 
             <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="flex-grow md:w-48">
-                    <BaseInput v-model="maxParticipants" type="number" label="Max Peserta / Kategori"
-                        placeholder="100" />
-                </div>
             </div>
         </div>
     </div>
@@ -127,7 +123,6 @@ const divisions = ref([])
 const ageGroups = ref([])
 const selectedDivisions = ref([])
 const selectedAgeGroups = ref([])
-const maxParticipants = ref(100)
 const isSubmitting = ref(false)
 
 const fetchData = async () => {
@@ -174,8 +169,7 @@ const saveCategories = async () => {
     try {
         await post(`/tournaments/${props.eventId}/categories`, {
             divisions: selectedDivisions.value,
-            categories: selectedAgeGroups.value,
-            max_participants: parseInt(maxParticipants.value)
+            categories: selectedAgeGroups.value
         })
 
         toast.success('Kategori berhasil ditambahkan!')

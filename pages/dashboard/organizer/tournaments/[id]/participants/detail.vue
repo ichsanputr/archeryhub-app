@@ -13,7 +13,8 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const isEn = computed(() => locale.value !== 'id')
 const route = useRoute()
 const router = useRouter()
 const { get, put, post } = useApi()
@@ -202,6 +203,18 @@ const formatDateTime = (d) => {
     })
 }
 
+const formatTrxReference = (trx, idx = 0) => {
+    if (!trx) return 'TRX-' + (idx + 1)
+    if (trx.reference && trx.reference.trim()) {
+        return trx.reference.trim()
+    }
+    const rawId = trx.id || trx.uuid || ''
+    if (rawId && rawId.length >= 8) {
+        return `PAY-${rawId.replace(/-/g, '').substring(0, 8).toUpperCase()}`
+    }
+    return 'TRX-' + ((trxCurrentPage.value - 1) * trxPerPage.value + idx + 1)
+}
+
 const getTrxMethodInfo = (trx) => {
     const method = (trx?.payment_method || trx?.method || '').toLowerCase()
     const channel = (trx?.payment_channel || trx?.channel || '').toUpperCase()
@@ -341,16 +354,13 @@ const participantStatusInfo = computed(() => {
 const displayRegistrationSource = computed(() => {
     if (!participant.value) return '-'
     const src = (participant.value.registration_source || '').toLowerCase()
-    if (src === 'invited') {
-        return t('participant.detail.source_invited')
+    if (src === 'invitation' || src === 'invited' || src === 'admin_created' || src === 'organizer_added') {
+        return t('participant.detail.source_invitation', 'Undangan Panitia')
     }
-    if (src === 'admin_created' || src === 'organizer_added') {
-        return t('participant.detail.source_organizer_added')
+    if (src === 'delegation' || src === 'club_delegation') {
+        return t('participant.detail.source_delegation', 'Delegasi Klub')
     }
-    if (src === 'self_register') {
-        return t('participant.detail.source_self_register')
-    }
-    return src ? src.replace(/_/g, ' ') : t('participant.detail.source_self_register')
+    return t('participant.detail.source_self_registration', 'Pendaftaran Mandiri')
 })
 
 const displayPaymentMethod = computed(() => {
@@ -630,11 +640,11 @@ const needsManualConfirmation = computed(() => {
                                                     :to="`/dashboard/organizer/tournaments/${eventId}/payments/${trx.reference || trx.id}`"
                                                     class="font-mono text-sm font-bold text-navy hover:text-primary transition-colors inline-flex items-center gap-1 group"
                                                 >
-                                                    <span>{{ trx.reference || trx.id }}</span>
+                                                    <span>{{ formatTrxReference(trx, idx) }}</span>
                                                     <Icon icon="ph:arrow-up-right-bold" class="text-xs text-slate-400 group-hover:text-primary transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                                                 </NuxtLink>
                                                 <span v-else class="font-mono text-sm font-bold text-slate-800">
-                                                    {{ 'TRX-' + ((trxCurrentPage - 1) * trxPerPage + idx + 1) }}
+                                                    {{ formatTrxReference(trx, idx) }}
                                                 </span>
                                             </div>
                                             
@@ -746,97 +756,9 @@ const needsManualConfirmation = computed(() => {
                         </div>
                     </div>
 
-                    <!-- Right Column: Payment Summary & Match Status (Seamless inside parent white card) -->
+                    <!-- Right Column: Match & Venue Status -->
                     <div class="lg:col-span-1 space-y-8 lg:border-l lg:border-slate-100 lg:pl-8 lg:pt-0">
-                        
-                        <!-- Section 1: Summary Payment -->
                         <div class="space-y-4">
-                            <div class="border-b border-slate-100 pb-3.5">
-                                <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
-                                    <Icon icon="ph:credit-card-bold" class="text-slate-500 text-xl" />
-                                    <span>{{ t('participant.detail.payment_title') }}</span>
-                                </h3>
-                            </div>
-
-                            <div class="space-y-3.5 text-xs sm:text-sm">
-                                <div class="flex items-center justify-between py-1">
-                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.payment_status_label') }}</span>
-                                    <span class="font-bold text-xs sm:text-sm px-2.5 py-1 rounded-md border"
-                                        :class="participantStatusInfo.badgeClass">
-                                        {{ participantStatusInfo.label }}
-                                    </span>
-                                </div>
-                                <div class="flex items-center justify-between py-1 border-t border-slate-50">
-                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.total_fee_label') }}</span>
-                                    <span class="text-lg sm:text-xl font-black text-slate-900">
-                                        Rp {{ formatCurrency(participant.payment_amount || participant.total_fee || 0) }}
-                                    </span>
-                                </div>
-
-                                <!-- Redesigned Invoice Ref Link Card -->
-                                <div v-if="participant.transaction?.reference || participant.payment_reference" class="pt-1.5">
-                                    <NuxtLink
-                                        :to="`/dashboard/organizer/tournaments/${eventId}/payments/${participant.transaction?.reference || participant.payment_reference}`"
-                                        class="group flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-navy/5 border border-slate-200/90 hover:border-slate-300 transition-all shadow-2xs hover:shadow-xs cursor-pointer"
-                                        :title="t('archer_payment_detail.header_title', 'Buka Detail Tagihan')"
-                                    >
-                                        <div class="flex items-center gap-3 min-w-0">
-                                            <div class="size-8 rounded-lg bg-navy text-primary flex items-center justify-center shrink-0 shadow-2xs">
-                                                <Icon icon="ph:receipt-bold" class="text-base" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <div class="text-[11px] text-slate-400 font-medium leading-none">{{ t('participant.detail.invoice_ref_label', 'Nomor Tagihan') }}</div>
-                                                <div class="text-xs sm:text-sm font-mono font-bold text-navy truncate mt-1 group-hover:text-primary transition-colors">
-                                                    {{ participant.transaction?.reference || participant.payment_reference }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-1 text-xs font-bold text-slate-500 group-hover:text-navy transition-colors shrink-0 ml-2">
-                                            <span>{{ t('common.detail', 'Detail') }}</span>
-                                            <Icon icon="ph:arrow-right-bold" class="size-3 group-hover:translate-x-0.5 transition-transform text-slate-400 group-hover:text-navy" />
-                                        </div>
-                                    </NuxtLink>
-                                </div>
-
-                                <div v-if="participant.transaction?.delegation_count && participant.transaction.delegation_count > 1" class="flex items-center justify-between pt-2 border-t border-slate-50">
-                                    <span class="text-slate-500 font-medium text-xs">{{ t('participant.detail.registration_source_label') }}</span>
-                                    <span class="inline-flex items-center gap-1 font-bold text-xs px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
-                                        <Icon icon="ph:users-three-bold" class="text-xs" />
-                                        <span>{{ t('participant.detail.delegation_invoice_badge', { count: participant.transaction.delegation_count }) }}</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Manual Payment Proof Thumbnail with Lightbox Zoom -->
-                            <div v-if="proofUrl" class="pt-3 border-t border-slate-100 space-y-2.5">
-                                <span class="text-xs sm:text-sm text-slate-500 font-medium block">{{ t('participant.detail.transfer_proof_label') }}</span>
-
-                                <div @click="openProofZoom(proofUrl)"
-                                    class="group relative rounded-xl overflow-hidden border border-slate-200 bg-slate-50 cursor-pointer shadow-2xs hover:border-slate-400 transition-all">
-                                    <img :src="proofUrl" :alt="t('participant.detail.transfer_proof_label')" class="h-44 w-full object-cover object-top group-hover:scale-105 transition-transform duration-300" />
-                                    <!-- Sleek Overlay on Image -->
-                                    <div class="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-xs sm:text-sm font-bold gap-1.5 backdrop-blur-[2px]">
-                                        <div class="size-10 rounded-full bg-white/20 flex items-center justify-center text-white shadow-md">
-                                            <Icon icon="ph:magnifying-glass-plus-bold" class="text-xl" />
-                                        </div>
-                                        <span>{{ t('participant.detail.view_fullscreen') }}</span>
-                                    </div>
-                                </div>
-                                <div v-if="participant.transaction?.sender_name" class="text-xs sm:text-sm text-slate-600 space-y-1 pt-1 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">{{ t('participant.detail.sender_account_name') }}:</span>
-                                        <span class="font-bold text-slate-900">{{ participant.transaction.sender_name }}</span>
-                                    </div>
-                                     <div v-if="participant.transaction?.amount" class="flex items-center justify-between">
-                                        <span class="text-slate-500 font-medium">{{ t('participant.detail.amount_label') }}:</span>
-                                        <span class="font-bold text-slate-900">Rp {{ formatCurrency(participant.transaction.amount) }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Section 2: Competition / Venue Status -->
-                        <div class="border-t border-slate-100 pt-6 space-y-4">
                             <div class="border-b border-slate-100 pb-3.5">
                                 <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2.5">
                                     <Icon icon="ph:seal-check-bold" class="text-slate-500 text-xl" />
@@ -845,6 +767,13 @@ const needsManualConfirmation = computed(() => {
                             </div>
 
                             <div class="divide-y divide-slate-100 text-xs sm:text-sm">
+                                <div class="py-3.5 flex items-center justify-between">
+                                    <span class="text-slate-500 font-medium">{{ t('participant.detail.registration_status_label', 'Status Pendaftaran') }}</span>
+                                    <span class="font-bold text-xs sm:text-sm px-2.5 py-1 rounded-md border"
+                                        :class="participantStatusInfo.badgeClass">
+                                        {{ participantStatusInfo.label }}
+                                    </span>
+                                </div>
                                 <div class="py-3.5 flex items-center justify-between">
                                     <span class="text-slate-500 font-medium">{{ t('participant.detail.registration_source_label') }}</span>
                                     <span class="font-bold text-slate-800">

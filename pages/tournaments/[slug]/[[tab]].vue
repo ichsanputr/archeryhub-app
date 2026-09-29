@@ -608,48 +608,27 @@
                                     <span class="text-xs sm:text-sm text-gray-500 ">{{ t('common.minutes', 'Minutes') }}</span>
                                 </div>
                             </div>
-                            <!-- New Per-Category Quota Section -->
-                            <!-- New Per-Category Quota Section (Always Scrollable) -->
+                            <!-- Category Participants Section (without header title/chip) -->
                             <div class="mb-6">
-                                <div class="flex items-center justify-between mb-3 px-1">
-                                    <span class="text-[10px] sm:text-xs font-black tracking-widest text-gray-400">{{ t('event_detail.slot_availability') }}</span>
-                                    <span class="text-xs sm:text-sm font-bold text-navy bg-gray-100 px-2.5 py-0.5 rounded-full">
-                                        {{ tournament.participant_count || 0 }} {{ t('event_detail.registered') }}</span>
-                                </div>
-
                                 <div v-if="categoriesList && categoriesList.length > 0"
-                                    class="space-y-4 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar border border-gray-50 rounded-xl p-3 bg-gray-50/30">
+                                    class="space-y-2.5 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar border border-gray-50 rounded-xl p-3 bg-gray-50/30">
                                     <div v-for="cat in categoriesList" :key="cat.id"
-                                        class="space-y-1.5 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
-                                        <div class="flex justify-between items-start gap-4">
-                                            <span
-                                                class="text-xs sm:text-sm font-black text-navy leading-tight line-clamp-2  tracking-tight">
-                                                {{ formatCategoryLabel(cat) }}
+                                        class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm gap-4">
+                                        <span
+                                            class="text-xs sm:text-sm font-black text-navy leading-tight line-clamp-2 tracking-tight">
+                                            {{ formatCategoryLabel(cat) }}
+                                        </span>
+                                        <div class="shrink-0">
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-xs font-bold text-navy">
+                                                <Icon icon="ph:users-bold" class="text-xs text-slate-400" />
+                                                <span>{{ cat.participant_count || 0 }} {{ t('event_detail.participants', 'Peserta') }}</span>
                                             </span>
-                                            <div class="text-right shrink-0">
-                                                <div class="text-xs sm:text-sm font-black text-navy">
-                                                    {{ cat.participant_count }} / {{ cat.max_participants > 0 ?
-                                                        cat.max_participants : t('common.unlimited') }}
-                                                </div>
-                                                <div class="text-[10px] sm:text-xs text-gray-400 font-bold  tracking-tighter">
-                                                    {{ t('event_detail.participants', 'Peserta') }}</div>
-                                            </div>
-                                        </div>
-
-                                        <div v-if="cat.max_participants > 0"
-                                            class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
-                                            <div class="bg-primary h-full transition-all duration-1000"
-                                                :style="{ width: `${Math.min(100, (cat.participant_count / cat.max_participants) * 100)}%` }">
-                                            </div>
-                                        </div>
-                                        <div v-else class="w-full bg-gray-100 rounded-full h-1.5 bg-primary/10">
-                                            <div class="bg-primary/30 h-full w-full rounded-full"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div v-else
                                     class="text-xs sm:text-sm text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                    {{ t('event_detail.quota_info_unavailable') }}
+                                    {{ t('event_detail.quota_info_unavailable', 'Informasi kategori belum tersedia.') }}
                                 </div>
                             </div>
                             <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
@@ -762,36 +741,34 @@
                             </div>
                         </div>
 
-                        <!-- Redesigned Share Tournament Card -->
-                        <div class="bg-navy rounded-3xl p-5 sm:p-6 shadow-md border border-slate-800 text-white relative overflow-hidden">
-                            <div class="absolute -right-6 -top-6 size-24 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
-
+                        <!-- Share Tournament Card (Light Theme) -->
+                        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 text-navy relative overflow-hidden">
                             <div class="relative z-10 space-y-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="size-10 rounded-2xl bg-primary/15 border border-primary/30 text-primary flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:share-network-bold" class="text-xl" />
+                                    <div class="size-10 rounded-2xl bg-primary/10 border border-primary/20 text-navy flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:share-network-bold" class="text-xl text-navy" />
                                     </div>
                                     <div>
-                                        <h3 class="text-sm sm:text-base font-black text-white leading-tight">
+                                        <h3 class="text-sm sm:text-base font-black text-navy leading-tight">
                                             {{ t('event_detail.share_event', 'Share This Tournament') }}
                                         </h3>
-                                        <p class="text-xs text-slate-300 font-medium mt-0.5">
+                                        <p class="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
                                             {{ t('event_detail.share_desc', 'Invite archers and clubs to join the competition') }}
                                         </p>
                                     </div>
                                 </div>
 
                                 <!-- Copy Link Bar -->
-                                <div class="flex items-center gap-1.5 p-1.5 rounded-xl bg-white/10 border border-white/15 backdrop-blur-xs">
-                                    <div class="flex-1 px-2.5 text-xs text-slate-300 font-mono truncate">
+                                <div class="flex items-center gap-1.5 p-1.5 rounded-xl bg-gray-50 border border-gray-200">
+                                    <div class="flex-1 px-2.5 text-xs sm:text-sm text-gray-600 font-mono truncate">
                                         {{ publicEventUrl }}
                                     </div>
                                     <button
                                         type="button"
                                         @click="copyPublicUrl"
-                                        class="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary/90 text-navy text-xs font-black transition-all flex items-center gap-1.5 shrink-0 shadow-sm active:scale-95 cursor-pointer"
+                                        class="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-hover text-navy text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 shrink-0 shadow-2xs active:scale-95 cursor-pointer"
                                     >
-                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm" />
+                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm text-navy" />
                                         <span>{{ copySuccess ? t('event_detail.copied', 'Copied!') : t('event_detail.copy_link', 'Copy Link') }}</span>
                                     </button>
                                 </div>
@@ -801,7 +778,7 @@
                                     <button
                                         type="button"
                                         @click="shareTo('whatsapp')"
-                                        class="h-10 rounded-xl bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#25D366]/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        class="h-10 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
                                         title="WhatsApp"
                                     >
                                         <Icon icon="ph:whatsapp-logo-fill" class="text-base" />
@@ -811,7 +788,7 @@
                                     <button
                                         type="button"
                                         @click="shareTo('facebook')"
-                                        class="h-10 rounded-xl bg-[#1877F2]/20 hover:bg-[#1877F2] text-[#1877F2] hover:text-white border border-[#1877F2]/40 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        class="h-10 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
                                         title="Facebook"
                                     >
                                         <Icon icon="ph:facebook-logo-fill" class="text-base" />
@@ -821,7 +798,7 @@
                                     <button
                                         type="button"
                                         @click="shareTo('twitter')"
-                                        class="h-10 rounded-xl bg-white/10 hover:bg-white text-white hover:text-navy border border-white/20 text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
+                                        class="h-10 rounded-xl bg-gray-50 hover:bg-navy text-navy hover:text-white border border-gray-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
                                         title="X / Twitter"
                                     >
                                         <Icon icon="ph:twitter-logo-fill" class="text-base" />
@@ -974,9 +951,7 @@ const handleOrganizerSubscribe = async () => {
     isSubscribing.value = true
     try {
         const res = await post(`/tournaments/${slug}/subscribe`, {
-            body: {
-                email: subscribeEmail.value.trim()
-            }
+            email: subscribeEmail.value.trim()
         })
         isOrganizerSubscribed.value = true
         showSubscribeModal.value = false
@@ -1166,7 +1141,6 @@ const transformEventData = (data, paymentMethodsData = null) => {
             }
             return []
         })(),
-        max_participants: data.max_participants ?? null,
         registration_deadline: data.registration_deadline || null,
         participant_count: data.participant_count || 0,
         page_settings: { ...pg, sections },

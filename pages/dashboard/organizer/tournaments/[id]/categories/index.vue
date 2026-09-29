@@ -70,12 +70,12 @@
                 </div>
             </template>
 
-            <!-- Quota Column Slot -->
-            <template #item-quota="{ item }">
+            <!-- Participants Column Slot -->
+            <template #item-participants="{ item }">
                 <div class="flex justify-center">
-                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-xs font-bold text-navy">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-xs font-bold text-navy">
                         <Icon icon="ph:users-bold" class="text-xs text-slate-400" />
-                        <span>{{ item.max_participants || t('event_categories.unlimited') }}</span>
+                        <span>{{ item.participant_count || 0 }} {{ t('common.participants', 'Atlet') }}</span>
                     </span>
                 </div>
             </template>
@@ -90,23 +90,11 @@
                 </div>
             </template>
 
-            <!-- Status Column Slot -->
-            <template #item-status="{ item }">
-                <div class="flex justify-center">
-                    <span :class="item.status === 'active' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-600 border-slate-200'"
-                        class="px-2.5 py-0.5 rounded-full text-[10px] font-black border tracking-wider">
-                        {{ item.status === 'active' ? t('event_categories.status_active') : t('event_categories.status_inactive') }}
-                    </span>
-                </div>
-            </template>
+
 
             <!-- Actions Column Slot -->
             <template #actions="{ item }">
                 <div class="flex items-center justify-end gap-1.5">
-                    <BaseButton variant="white" size="sm" icon="ph:eye" :title="t('event_categories.view_participants')"
-                        :to="`/dashboard/organizer/tournaments/${eventId}/categories/${item.id}`">
-                        {{ t('event_categories.view') }}
-                    </BaseButton>
                     <BaseButton variant="white" size="sm" icon="ph:pencil"
                         @click="isSubscriptionActive ? openEditDialog(item) : (showPremiumModal = true)">
                         {{ t('event_categories.edit') }}
@@ -158,22 +146,13 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.max_participants_label') }}</label>
-                            <input v-model.number="form.max_participants" type="number" min="0"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                :placeholder="t('event_categories.unlimited_placeholder')" />
-                            <div class="text-[10px] text-gray-400">{{ t('event_categories.max_participants_desc') }}</div>
+                    <div v-if="isTeamEvent" class="space-y-2">
+                        <label class="text-sm font-bold text-gray-700">{{ t('event_categories.members_per_team') }}</label>
+                        <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
+                            {{ t('event_categories.people_count', { count: form.team_size || (isMixedTeam ? 2 : 3) }) }}
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">{{ t('event_categories.members_per_team') }}</label>
-                            <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
-                                {{ t('event_categories.people_count', { count: form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }) }}
-                            </div>
-                            <div class="text-[10px] text-gray-400">
-                                {{ teamTypeDescription }}
-                            </div>
+                        <div class="text-[10px] text-gray-400">
+                            {{ teamTypeDescription }}
                         </div>
                     </div>
 
@@ -304,9 +283,8 @@ useHead({
 
 const tableColumns = computed(() => [
     { key: 'category', label: t('event_categories.category_list'), sortable: false, class: 'min-w-[260px]' },
-    { key: 'quota', label: 'Kuota', sortable: false, align: 'center', class: 'min-w-[130px]' },
-    { key: 'team', label: t('event_categories.team_type'), sortable: false, align: 'center', class: 'min-w-[130px]' },
-    { key: 'status', label: t('common.status'), sortable: false, align: 'center', class: 'min-w-[120px]' }
+    { key: 'participants', label: t('event_categories.participants_count', 'Pendaftar'), sortable: false, align: 'center', class: 'min-w-[130px]' },
+    { key: 'team', label: t('event_categories.team_type'), sortable: false, align: 'center', class: 'min-w-[130px]' }
 ])
 
 const route = useRoute()
@@ -414,9 +392,7 @@ const form = ref({
     category_name_custom: '',
     event_type_uuid: '',
     gender_division_uuid: '',
-    max_participants: null,
-    team_size: 3,
-    status: 'active'
+    team_size: 3
 })
 
 const allTournamentCategories = ref([])
@@ -541,11 +517,6 @@ watch(() => form.value.event_type_uuid, (newId) => {
     }
 })
 
-const activeCount = computed(() => categories.value.filter(c => c.status === 'active').length)
-const totalQuota = computed(() => {
-    return categories.value.reduce((sum, c) => sum + (c.max_participants || 0), 0)
-})
-
 const formatDate = (dateStr) => {
     if (!dateStr) return '-'
     try {
@@ -613,9 +584,7 @@ const openCreateDialog = () => {
         category_name_custom: '',
         event_type_uuid: '',
         gender_division_uuid: '',
-        max_participants: null,
-        team_size: 1,
-        status: 'active'
+        team_size: 1
     }
     showDialog.value = true
 }
@@ -628,9 +597,7 @@ const openEditDialog = (category) => {
         category_name_custom: category.category_name_custom || '',
         event_type_uuid: category.event_type_id || '',
         gender_division_uuid: category.gender_division_id || '',
-        max_participants: category.max_participants,
-        team_size: category.team_size || 0,
-        status: category.status || 'active'
+        team_size: category.team_size || 0
     }
     showDialog.value = true
 }
@@ -731,9 +698,7 @@ const saveCategory = async () => {
             category_uuid: form.value.category_uuid,
             category_name_custom: isCustomAgeGroup.value ? form.value.category_name_custom : null,
             event_type_uuid: form.value.event_type_uuid,
-            gender_division_uuid: isMixed ? (genderDivisions.value.find(g => g.code === 'mixed')?.id || form.value.gender_division_uuid) : form.value.gender_division_uuid,
-            max_participants: form.value.max_participants || null,
-            status: form.value.status
+            gender_division_uuid: isMixed ? (genderDivisions.value.find(g => g.code === 'mixed')?.id || form.value.gender_division_uuid) : form.value.gender_division_uuid
         }
 
         if (editingCategory.value) {

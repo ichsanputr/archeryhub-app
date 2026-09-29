@@ -95,7 +95,7 @@
 
       <template #item-participants="{ item }">
         <span class="text-navy-dark font-bold font-mono text-xs">
-          {{ item.total_participants }} / {{ item.total_capacity > 0 ? item.total_capacity : t('dashboard.reports.unlimited') }}
+          {{ item.total_participants || 0 }} {{ t('common.participants', 'Peserta') }}
         </span>
       </template>
 

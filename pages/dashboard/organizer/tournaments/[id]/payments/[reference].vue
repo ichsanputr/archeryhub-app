@@ -564,15 +564,7 @@ onMounted(() => {
                 <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('org_event_payments.proof_section_subtitle') }}</div>
               </div>
             </div>
-            <a
-              v-if="payment.proof_url"
-              :href="payment.proof_url"
-              target="_blank"
-              class="text-navy dark:text-slate-200 hover:underline font-bold text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer"
-            >
-              <span>{{ t('org_event_payments.open_original') }}</span>
-              <Icon icon="ph:arrow-square-out-bold" class="size-4 text-primary" />
-            </a>
+
           </div>
 
           <div v-if="payment.proof_url" class="flex flex-col sm:flex-row items-center gap-5 p-4 sm:p-5 bg-slate-50 dark:bg-slate-700/40 rounded-xl border border-slate-100 dark:border-slate-700">

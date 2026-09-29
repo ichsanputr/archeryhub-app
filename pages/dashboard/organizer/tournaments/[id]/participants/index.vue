@@ -367,9 +367,9 @@ const tableColumns = computed(() => {
     return cols
 })
 
-// Table sorting state
-const sortBy = ref('name')
-const sortOrder = ref('asc')
+// Table sorting state (default to newest participant registration date)
+const sortBy = ref('registration_date')
+const sortOrder = ref('desc')
 
 const handleTableSearch = (q) => {
     searchQuery.value = q

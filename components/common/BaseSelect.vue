@@ -130,7 +130,7 @@
             <!-- item list -->
             <div class="overflow-y-auto p-1.5 space-y-0.5 custom-scrollbar">
               <div v-if="filteredItems.length === 0" class="p-8 text-center">
-                <Icon icon="ph:magnifying-glass-slash" class="text-3xl text-gray-200 mx-auto mb-2" />
+                <Icon icon="ph:file-search-bold" class="text-3xl text-gray-300 mx-auto mb-2" />
                 <div class="text-gray-400 text-xs font-medium">{{ t('common.no_results') }}</div>
               </div>
 

@@ -456,7 +456,6 @@
 
                         <!-- Configured Bank Accounts List -->
                         <div v-if="orgBankAccounts.length > 0" class="pt-2">
-                            <h4 class="text-xs sm:text-sm font-bold text-gray-500 tracking-wider mb-3 text-left uppercase">{{ t('dashboard_events_page.manual_payment.list_title', 'Daftar Rekening Pembayaran Penyelenggara') }}</h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div v-for="bank in orgBankAccounts" :key="bank.uuid || bank.id"
                                     @click="togglePaymentMethod(bank.uuid || bank.id)"

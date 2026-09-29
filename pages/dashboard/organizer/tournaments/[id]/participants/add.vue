@@ -96,71 +96,214 @@
                             </button>
                         </div>
 
-                        <!-- Existing Archer Selection -->
+                        <!-- Existing Archer Selection (Redesigned with Full Filter Toolbar) -->
                         <div v-if="archerMode === 'existing'" class="space-y-4 flex flex-col flex-1">
-                            <!-- Search Input -->
-                            <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
-                                :placeholder="t('dashboard_events_participants_add.search_placeholder')" :label="t('dashboard_events_participants_add.search_label')" />
+                            <!-- Search & Filter Controls Panel -->
+                            <div class="p-4 bg-slate-50/80 border border-slate-200/80 rounded-2xl space-y-3.5 shadow-2xs">
+                                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                                    <!-- Search Query Input (Col 7) -->
+                                    <div class="sm:col-span-7 relative">
+                                        <Icon icon="ph:magnifying-glass-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                                        <input
+                                            v-model="searchArcherQuery"
+                                            type="text"
+                                            :placeholder="t('dashboard_events_participants_add.search_placeholder', 'Cari nama pemanah, email...')"
+                                            class="w-full pl-10 pr-9 h-11 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-navy placeholder:text-slate-400 focus:outline-none focus:border-navy focus:ring-1 focus:ring-navy transition-all shadow-2xs"
+                                        />
+                                        <button
+                                            v-if="searchArcherQuery"
+                                            type="button"
+                                            @click="searchArcherQuery = ''"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                                        >
+                                            <Icon icon="ph:x-circle-fill" class="text-base" />
+                                        </button>
+                                    </div>
 
-                            <!-- Search Results / Default List -->
-                            <div class="max-h-[520px] min-h-[220px] flex-1 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm custom-scrollbar">
-                                <template v-if="filteredArchers.length > 0">
-                                    <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
-                                        @click="toggleArcher(archer)"
-                                        :class="isArcherSelected(archer) ? 'bg-slate-50 border-slate-300' : 'hover:bg-gray-50/80'"
-                                        class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group cursor-pointer">
-                                        <div class="flex items-center gap-3">
-                                            <div class="flex-shrink-0">
-                                                <div v-if="isArcherSelected(archer)"
-                                                    class="h-5 w-5 rounded-md bg-navy text-white flex items-center justify-center shadow-xs">
-                                                    <Icon icon="ph:check-bold" class="text-xs" />
-                                                </div>
-                                                <div v-else class="h-5 w-5 rounded-md border-2 border-gray-300 group-hover:border-slate-400 transition-colors">
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="h-10 w-10 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xs sm:text-sm overflow-hidden border border-gray-200 group-hover:border-navy transition-colors shrink-0">
-                                                <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                                    class="w-full h-full object-cover" />
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div :class="isArcherSelected(archer) ? 'text-navy font-black' : 'text-navy font-bold'"
-                                                    class="text-sm truncate">
-                                                    {{ archer.full_name }}</div>
-                                                <div class="text-xs sm:text-sm text-gray-500 truncate">{{ archer.email ||
-                                                    archer.phone || '-' }}</div>
-                                                <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-400 mt-1">
-                                                    <span>{{ archer.club_name || 'Individual' }}</span>
-                                                    <span v-if="archer.city"
-                                                        class="w-1 h-1 rounded-full bg-gray-300"></span>
-                                                    <span v-if="archer.city">{{ archer.city }}</span>
-                                                </div>
-                                            </div>
+                                    <!-- Club Selector Filter (Col 5) with Custom BaseSelect -->
+                                    <div class="sm:col-span-5">
+                                        <BaseSelect
+                                            v-model="filterArcherClub"
+                                            :items="filterClubOptions"
+                                            :placeholder="t('dashboard_events_participants_add.all_clubs', 'Semua Klub / Kontingen')"
+                                            icon="ph:shield-bold"
+                                            searchable
+                                            clearable
+                                            class="w-full"
+                                        />
+                                    </div>
+                                </div>
+
+                                <!-- Row 2: Bulk Select on Left, Gender Filter Pills, Counters & Reset on Right -->
+                                <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-200/60">
+                                    <!-- Left Group: Select All Button & Gender Filter Pills -->
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <!-- Select All / Deselect All Button (Moved to Left) -->
+                                        <button
+                                            v-if="filteredArchers.length > 0"
+                                            type="button"
+                                            @click="toggleSelectAllFiltered"
+                                            class="text-xs font-extrabold text-navy bg-white border border-slate-200 px-3 py-2 rounded-xl shadow-2xs hover:bg-slate-50 hover:border-slate-300 transition-all cursor-pointer flex items-center gap-1.5"
+                                        >
+                                            <Icon :icon="areAllFilteredSelected ? 'ph:check-square-fill' : 'ph:square-bold'" class="text-sm text-navy" />
+                                            <span>{{ areAllFilteredSelected ? t('common.deselect_all_results', 'Batal Pilih Semua') : t('common.select_all_results', 'Pilih Semua Hasil') }} ({{ filteredArchers.length }})</span>
+                                        </button>
+
+                                        <!-- Gender Filter Pills -->
+                                        <div class="flex items-center gap-1.5 p-1 bg-white rounded-xl border border-slate-200/80 shadow-2xs">
+                                            <button
+                                                type="button"
+                                                @click="filterArcherGender = 'all'"
+                                                :class="[
+                                                    'px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
+                                                    filterArcherGender === 'all'
+                                                        ? 'bg-navy text-white shadow-xs font-black'
+                                                        : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                                                ]"
+                                            >
+                                                {{ t('common.all', 'Semua') }}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                @click="filterArcherGender = 'male'"
+                                                :class="[
+                                                    'px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
+                                                    filterArcherGender === 'male'
+                                                        ? 'bg-navy text-white shadow-xs font-black'
+                                                        : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                                                ]"
+                                            >
+                                                <Icon icon="ph:gender-male-bold" class="text-xs" />
+                                                <span>{{ t('participant.detail.gender_male', 'Laki-laki') }}</span>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                @click="filterArcherGender = 'female'"
+                                                :class="[
+                                                    'px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
+                                                    filterArcherGender === 'female'
+                                                        ? 'bg-navy text-white shadow-xs font-black'
+                                                        : 'text-slate-600 hover:text-navy hover:bg-slate-50'
+                                                ]"
+                                            >
+                                                <Icon icon="ph:gender-female-bold" class="text-xs" />
+                                                <span>{{ t('participant.detail.gender_female', 'Perempuan') }}</span>
+                                            </button>
                                         </div>
                                     </div>
-                                </template>
-                                <!-- Empty Result State -->
-                                <div v-else-if="!isSearchingArchers" class="p-8 text-center space-y-2">
-                                    <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto" />
-                                    <div v-if="archers.length > 0" class="text-xs sm:text-sm font-bold text-gray-500">
-                                        {{ t('dashboard_events_participants_add.all_already_registered') }}
-                                    </div>
-                                    <div v-else class="text-xs sm:text-sm font-bold text-gray-500">
-                                        {{ t('dashboard_events_participants_add.not_found') }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-gray-400 max-w-sm mx-auto">
-                                        {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc') : t('dashboard_events_participants_add.not_found_desc') }}
+
+                                    <!-- Right Group: Counters & Reset Button -->
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="text-xs text-slate-500 font-medium">
+                                            {{ filteredArchers.length }} {{ t('dashboard_events_participants_add.archers_unit', 'pemanah') }}
+                                        </span>
+
+                                        <button
+                                            v-if="hasActiveArcherFilters"
+                                            type="button"
+                                            @click="resetArcherFilters"
+                                            class="text-xs font-bold text-slate-500 hover:text-rose-600 px-2.5 py-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer flex items-center gap-1"
+                                        >
+                                            <Icon icon="ph:arrow-counter-clockwise-bold" class="text-xs" />
+                                            <span>{{ t('common.reset', 'Reset') }}</span>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div v-if="isSearchingArchers"
-                                class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
-                                <span
-                                    class="inline-block h-4 w-4 border-2 border-navy border-t-transparent rounded-full animate-spin"></span>
-                                {{ t('dashboard_events_participants_add.searching') }}
+                            <!-- Results List (Scrollable Cards Grid) -->
+                            <div class="max-h-[500px] min-h-[220px] flex-1 overflow-y-auto border border-slate-200 rounded-2xl bg-slate-50/40 p-2 space-y-2 shadow-2xs custom-scrollbar">
+                                <template v-if="filteredArchers.length > 0">
+                                    <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
+                                        @click="toggleArcher(archer)"
+                                        :class="[
+                                            'w-full p-3.5 rounded-xl border transition-all cursor-pointer flex items-center justify-between gap-3 select-none',
+                                            isArcherSelected(archer)
+                                                ? 'bg-white border-navy ring-1 ring-navy/20 shadow-xs'
+                                                : 'bg-white border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/50 shadow-2xs'
+                                        ]"
+                                    >
+                                        <div class="flex items-center gap-3.5 min-w-0 flex-1">
+                                            <!-- Checkbox Box -->
+                                            <div class="flex-shrink-0">
+                                                <div v-if="isArcherSelected(archer)"
+                                                    class="size-5 rounded-md bg-navy text-primary flex items-center justify-center shadow-2xs font-black">
+                                                    <Icon icon="ph:check-bold" class="text-xs" />
+                                                </div>
+                                                <div v-else class="size-5 rounded-md border-2 border-slate-300 hover:border-slate-400 bg-white transition-colors">
+                                                </div>
+                                            </div>
+
+                                            <!-- Avatar with fallback -->
+                                            <div
+                                                class="size-11 rounded-xl bg-slate-100 flex items-center justify-center text-navy font-bold text-xs sm:text-sm overflow-hidden border border-slate-200/90 shrink-0 shadow-2xs">
+                                                <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                                    class="size-full object-cover" />
+                                            </div>
+
+                                            <!-- Archer Info: Clean name, club, email, gender text (no chips beside name, no phone) -->
+                                            <div class="flex-1 min-w-0 space-y-0.5">
+                                                <div class="text-sm font-black text-navy truncate">{{ archer.full_name }}</div>
+                                                <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-slate-500">
+                                                    <span class="flex items-center gap-1 font-semibold text-slate-700">
+                                                        <Icon icon="ph:shield-bold" class="text-xs text-slate-400" />
+                                                        <span>{{ getArcherClubName(archer) }}</span>
+                                                    </span>
+                                                    <span v-if="archer.email" class="text-slate-400 truncate">{{ archer.email }}</span>
+                                                    <span v-if="getGenderLabel(archer.gender)" class="text-slate-500 font-medium">
+                                                        • {{ getGenderLabel(archer.gender) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Add / Selected Status Button Action -->
+                                        <div class="shrink-0">
+                                            <span
+                                                :class="[
+                                                    'px-2.5 py-1 rounded-lg text-xs font-black transition-colors',
+                                                    isArcherSelected(archer)
+                                                        ? 'bg-navy text-primary'
+                                                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                ]"
+                                            >
+                                                {{ isArcherSelected(archer) ? t('common.selected', 'Dipilih') : t('common.select', 'Pilih') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <!-- Empty Result State -->
+                                <div v-else-if="!isSearchingArchers" class="p-8 text-center space-y-3">
+                                    <div class="size-12 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto border border-slate-200">
+                                        <Icon icon="ph:user-minus-bold" class="text-2xl" />
+                                    </div>
+                                    <div class="space-y-1">
+                                        <div class="text-sm font-bold text-navy">
+                                            {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered', 'Semua pemanah yang cocok sudah terdaftar') : t('dashboard_events_participants_add.not_found', 'Pemanah Tidak Ditemukan') }}
+                                        </div>
+                                        <div class="text-xs text-slate-400 max-w-sm mx-auto">
+                                            {{ archers.length > 0 ? t('dashboard_events_participants_add.all_already_registered_desc', 'Semua pemanah hasil pencarian ini sudah terdaftar dalam turnamen ini.') : t('dashboard_events_participants_add.not_found_desc', 'Tidak ada data pemanah terdaftar yang cocok dengan kata kunci atau filter ini.') }}
+                                        </div>
+                                    </div>
+                                    <BaseButton
+                                        v-if="archers.length === 0"
+                                        @click="archerMode = 'new'"
+                                        variant="outline"
+                                        size="sm"
+                                        icon="ph:user-plus-bold"
+                                        class="font-bold text-xs mx-auto"
+                                    >
+                                        {{ t('dashboard_events_participants_add.create_new', 'Buat Profil Pemanah Baru') }}
+                                    </BaseButton>
+                                </div>
+
+                                <div v-if="isSearchingArchers" class="flex items-center justify-center py-12 gap-2 text-sm text-slate-500 font-medium">
+                                    <span class="size-4 border-2 border-navy border-t-transparent rounded-full animate-spin"></span>
+                                    <span>{{ t('dashboard_events_participants_add.searching', 'Mencari data pemanah...') }}</span>
+                                </div>
                             </div>
-                            </div>
+                        </div>
 
                         <!-- New Archer Form Info -->
                         <div v-if="archerMode === 'new'" class="space-y-4">
@@ -216,6 +359,8 @@
                                     :placeholder="t('dashboard_events_participants_add.full_name_placeholder')" required @input="generateUsername" />
                                 <BaseInput v-model="newArcherForm.email" :label="t('dashboard_events_participants_add.email')" type="email"
                                     :placeholder="t('dashboard_events_participants_add.email_placeholder')" required />
+                                <BaseSelect v-model="newArcherForm.gender" :label="t('dashboard_events_participants_add.gender', 'Jenis Kelamin')"
+                                    :items="genderOptions" required />
                                 <BaseInput v-model="newArcherForm.phone" :label="t('dashboard_events_participants_add.phone')" type="tel"
                                     :placeholder="t('dashboard_events_participants_add.phone_placeholder')" numberOnly
                                     :rules="[v => !v || String(v).length >= 8 || t('dashboard_events_participants_add.phone_error')]" />
@@ -231,7 +376,7 @@
                                 </div>
 
                                 <BaseSelect v-model="newArcherForm.club_id" :label="t('dashboard_events_participants_add.club')" :items="clubOptions" required
-                                    searchable class="md:col-span-2" />
+                                    searchable />
                             </div>
 
                             <!-- Custom Archer Fields (Dynamic Configured Fields) -->
@@ -292,9 +437,6 @@
                                                 <span v-if="archer.is_new_profile" class="px-2 py-0.5 bg-amber-50 border border-amber-200 text-amber-700 text-[10px] sm:text-xs font-extrabold rounded-md">
                                                     {{ t('dashboard_events_participants_add.create_new_short') }}
                                                 </span>
-                                                <span v-else class="px-2 py-0.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] sm:text-xs font-extrabold rounded-md">
-                                                    {{ t('dashboard_events_participants_add.registered_badge') }}
-                                                </span>
                                             </div>
 
                                             <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm text-slate-500">
@@ -304,14 +446,13 @@
                                                     <span class="truncate max-w-[200px]">{{ getArcherClubName(archer) }}</span>
                                                 </div>
 
-                                                <!-- Contact Info -->
+                                                <!-- Contact / Gender Info -->
                                                 <span v-if="archer.email" class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-medium truncate max-w-[220px]">
                                                     <Icon icon="ph:envelope-simple-bold" />
                                                     <span class="truncate">{{ archer.email }}</span>
                                                 </span>
-                                                <span v-if="archer.phone" class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-400 font-medium">
-                                                    <Icon icon="ph:phone-bold" />
-                                                    <span>{{ archer.phone }}</span>
+                                                <span v-if="getGenderLabel(archer.gender)" class="inline-flex items-center gap-1 text-[11px] sm:text-xs text-slate-500 font-medium">
+                                                    <span>• {{ getGenderLabel(archer.gender) }}</span>
                                                 </span>
                                             </div>
                                         </div>
@@ -447,12 +588,8 @@ const cityOptions = ref([])
 const archerMode = ref('existing')
 const customFields = ref([])
 
-watch(archerMode, (val) => {
-    if (val === 'existing') {
-        form.registration_source = 'invited'
-    } else {
-        form.registration_source = 'admin_created'
-    }
+watch(archerMode, () => {
+    form.registration_source = 'invitation'
 })
 
 const breadcrumbItems = computed(() => [
@@ -462,16 +599,51 @@ const breadcrumbItems = computed(() => [
 ])
 
 const searchArcherQuery = ref('')
+const filterArcherClub = ref('')
+const filterArcherGender = ref('all')
 const selectedArchers = ref([])
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 const showImportModal = ref(false)
 
+const hasActiveArcherFilters = computed(() => {
+    return Boolean(
+        (searchArcherQuery.value && searchArcherQuery.value.trim() !== '') ||
+        (filterArcherClub.value && filterArcherClub.value !== '') ||
+        (filterArcherGender.value && filterArcherGender.value !== 'all')
+    )
+})
+
+const areAllFilteredSelected = computed(() => {
+    if (filteredArchers.value.length === 0) return false
+    return filteredArchers.value.every(a => isArcherSelected(a))
+})
+
+const toggleSelectAllFiltered = () => {
+    if (areAllFilteredSelected.value) {
+        const filteredIds = new Set(filteredArchers.value.map(a => a.uuid || a.id))
+        selectedArchers.value = selectedArchers.value.filter(a => !filteredIds.has(a.uuid || a.id))
+    } else {
+        for (const archer of filteredArchers.value) {
+            if (!isArcherSelected(archer)) {
+                selectedArchers.value.push(archer)
+            }
+        }
+    }
+}
+
+const resetArcherFilters = () => {
+    searchArcherQuery.value = ''
+    filterArcherClub.value = ''
+    filterArcherGender.value = 'all'
+    searchArchers()
+}
+
 const form = reactive({
     category_ids: [],
     payment_status: 'paid',
     payment_amount: 0,
-    registration_source: 'invited',
+    registration_source: 'invitation',
     notes: ''
 })
 
@@ -494,9 +666,9 @@ const newArcherForm = reactive({
 })
 
 const genderOptions = computed(() => [
-    { title: t('dashboard_events_participants_add.gender_placeholder'), value: '' },
-    { title: t('dashboard_events_participants_add.gender_male'), value: 'M' },
-    { title: t('dashboard_events_participants_add.gender_female'), value: 'F' }
+    { title: t('dashboard_events_participants_add.gender_placeholder', '-- Pilih Jenis Kelamin --'), value: '' },
+    { title: t('dashboard_events_participants_add.gender_male', 'Laki-laki'), value: 'male' },
+    { title: t('dashboard_events_participants_add.gender_female', 'Perempuan'), value: 'female' }
 ])
 
 const bowOptions = computed(() => [
@@ -514,8 +686,9 @@ const paymentStatusOptions = computed(() => [
 ])
 
 const sourceOptions = computed(() => [
-    { title: t('dashboard_events_participants_add.source_options.admin_created'), value: 'admin_created' },
-    { title: t('dashboard_events_participants_add.source_options.invited'), value: 'invited' },
+    { title: t('dashboard_events_participants_add.source_options.self_registration', 'Pendaftaran Mandiri'), value: 'self_registration' },
+    { title: t('dashboard_events_participants_add.source_options.invitation', 'Undangan Panitia'), value: 'invitation' },
+    { title: t('dashboard_events_participants_add.source_options.delegation', 'Delegasi Klub'), value: 'delegation' }
 ])
 
 const isSearchingArchers = ref(false)
@@ -552,6 +725,19 @@ const filteredArchers = computed(() => {
         if (email && registered.has(email)) return false
         if (code && registered.has(code)) return false
         if (name && registered.has(name)) return false
+
+        if (filterArcherGender.value && filterArcherGender.value !== 'all') {
+            const g = (archer.gender || '').toLowerCase()
+            if (filterArcherGender.value === 'male' && g !== 'male' && g !== 'men') return false
+            if (filterArcherGender.value === 'female' && g !== 'female' && g !== 'women') return false
+        }
+
+        if (filterArcherClub.value && filterArcherClub.value !== 'all' && filterArcherClub.value !== '') {
+            const cId = String(archer.club_id || '').toLowerCase()
+            const cName = String(archer.club_name || '').toLowerCase()
+            const target = String(filterArcherClub.value).toLowerCase()
+            if (cId !== target && !cName.includes(target)) return false
+        }
 
         return true
     })
@@ -594,6 +780,16 @@ const clubOptions = computed(() => {
     ]
 })
 
+const filterClubOptions = computed(() => {
+    return [
+        { title: t('dashboard_events_participants_add.all_clubs', 'Semua Klub / Kontingen'), value: '' },
+        ...clubs.value.map(club => ({
+            title: club.name,
+            value: club.uuid || club.id
+        }))
+    ]
+})
+
 const fetchEventDetails = async () => {
     try {
         const eventRes = await get(`/tournaments/${route.params.id}`)
@@ -606,12 +802,19 @@ const fetchEventDetails = async () => {
     }
 }
 
-const searchArchers = async (query = '') => {
+const searchArchers = async () => {
     isSearchingArchers.value = true
     try {
-        const url = query && query.length >= 2 
-            ? `/archers?search=${encodeURIComponent(query)}&limit=15`
-            : `/archers?limit=15`
+        let url = `/archers?limit=500`
+        if (searchArcherQuery.value && searchArcherQuery.value.trim() !== '') {
+            url += `&search=${encodeURIComponent(searchArcherQuery.value.trim())}`
+        }
+        if (filterArcherClub.value && filterArcherClub.value !== '') {
+            url += `&club_id=${encodeURIComponent(filterArcherClub.value)}`
+        }
+        if (filterArcherGender.value && filterArcherGender.value !== 'all') {
+            url += `&gender=${encodeURIComponent(filterArcherGender.value)}`
+        }
         const response = await get(url)
         archers.value = response?.archers || response?.data || (Array.isArray(response) ? response : [])
     } catch (error) {
@@ -734,6 +937,18 @@ const getArcherClubName = (archer) => {
     return t('dashboard_events_participants_add.no_club')
 }
 
+const getGenderLabel = (gender) => {
+    if (!gender) return ''
+    const g = String(gender).toLowerCase().trim()
+    if (g === 'male' || g === 'men' || g === 'm' || g === 'putra' || g === 'laki-laki') {
+        return t('participant.detail.gender_male', 'Laki-laki')
+    }
+    if (g === 'female' || g === 'women' || g === 'f' || g === 'putri' || g === 'perempuan') {
+        return t('participant.detail.gender_female', 'Perempuan')
+    }
+    return gender
+}
+
 const generateRandomPassword = () => {
     const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$'
     let pass = ''
@@ -849,6 +1064,7 @@ const addNewArcherToList = () => {
         email: newArcherForm.email.trim(),
         phone: newArcherForm.phone,
         password: newArcherForm.password,
+        gender: newArcherForm.gender,
         club_id: newArcherForm.club_id,
         avatar_url: newArcherForm.avatar_url,
         custom_fields: { ...newArcherForm.custom_fields },
@@ -973,19 +1189,31 @@ const submit = async () => {
                 event_category_ids: form.category_ids,
                 payment_amount: 0,
                 payment_status: 'paid',
-                registration_source: 'invited',
+                registration_source: 'invitation',
                 archer_custom_fields: archerCustomFieldsMap
             }
             const result = await post(`/tournaments/${route.params.id}/participants/batch`, payload)
-            const count = result?.registered ?? allArcherIds.length
+            const count = result?.registered ?? 0
             const skipped = result?.skipped ?? 0
-            const msg = skipped > 0
-                ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped })
-                : t('dashboard_events_participants_add.toasts.batch_success', { count })
-            toast.success(msg)
-        }
+            const rejected = result?.rejected ?? []
 
-        router.push(`/dashboard/organizer/tournaments/${route.params.id}/participants`)
+            if (count > 0) {
+                const msg = skipped > 0
+                    ? t('dashboard_events_participants_add.toasts.batch_success_with_skipped', { count, skipped })
+                    : t('dashboard_events_participants_add.toasts.batch_success', { count })
+                toast.success(msg)
+                router.push(`/dashboard/organizer/tournaments/${route.params.id}/participants`)
+            } else if (rejected.length > 0) {
+                const reasons = rejected.map(r => r.reason).filter(Boolean).slice(0, 2).join('; ')
+                toast.error(reasons || t('dashboard_events_participants_add.toasts.save_failed'))
+            } else if (skipped > 0) {
+                toast.warning(t('dashboard_events_participants_add.all_already_registered', 'Semua pemanah yang dipilih sudah terdaftar'))
+                router.push(`/dashboard/organizer/tournaments/${route.params.id}/participants`)
+            } else {
+                toast.success(t('dashboard_events_participants_add.toasts.batch_success', { count }))
+                router.push(`/dashboard/organizer/tournaments/${route.params.id}/participants`)
+            }
+        }
     } catch (error) {
         console.error('Failed to add participant:', error)
         const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || t('dashboard_events_participants_add.toasts.save_failed')
@@ -1001,20 +1229,15 @@ const handleAvatarSelect = (media) => {
 
 let searchTimeout
 
-watch(searchArcherQuery, (newVal) => {
-    if (!newVal || newVal.trim() === '') {
-        searchArchers('')
-        return
-    }
-
+watch([searchArcherQuery, filterArcherClub, filterArcherGender], () => {
     if (searchTimeout) {
         clearTimeout(searchTimeout)
     }
 
-    // throttle/debounce: tunggu sebentar sebelum hit API
+    // throttle/debounce: wait briefly before querying API
     searchTimeout = setTimeout(() => {
-        searchArchers(newVal)
-    }, 400)
+        searchArchers()
+    }, 350)
 })
 
 onMounted(() => {

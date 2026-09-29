@@ -279,17 +279,25 @@ const fetchCategories = async () => {
     const response = await get(`/tournaments/${eventId}/categories`, { params: { limit: 1000 } })
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
     const individualCategories = fetchedCategories.filter(cat =>
-      cat.event_type_name?.toLowerCase() === 'individual' || !cat.event_type_name
+      !cat.event_type_name ||
+      ['individual', 'individu'].includes(cat.event_type_name.toLowerCase()) ||
+      cat.team_size <= 1
     )
 
+    const mappedCategories = (individualCategories.length > 0 ? individualCategories : fetchedCategories).map(cat => ({
+      ...cat,
+      id: cat.id || cat.uuid,
+      uuid: cat.uuid || cat.id
+    }))
+
     // Sort by participant_count descending
-    individualCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+    mappedCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
 
     // Filter to only categories linked to this session (from qualification_session_categories)
     const sessionCategoryIds = sessionData.value?.category_ids || []
     const filtered = sessionCategoryIds.length
-      ? individualCategories.filter(c => sessionCategoryIds.includes(c.id || c.uuid))
-      : individualCategories
+      ? mappedCategories.filter(c => sessionCategoryIds.includes(c.id || c.uuid))
+      : mappedCategories
     categories.value = filtered
   } catch (error) {
     console.error('Failed to fetch categories:', error)

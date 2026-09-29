@@ -496,14 +496,21 @@
 
             <!-- Section 3: Category Assignment -->
             <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5">
-              <div class="flex items-center justify-between">
+              <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2 text-xs font-bold text-slate-900">
                   <Icon icon="ph:trophy-bold" class="text-slate-600 text-base" />
                   <span>{{ t('event_qualification.event_category_label') }} <span class="text-red-500">*</span></span>
                 </div>
-                <span class="text-[11px] font-semibold text-slate-500">
-                  {{ selectedSessionCategoryIds.length }} {{ t('participant.edit.categories_selected') }}
-                </span>
+                <div class="flex items-center gap-3 shrink-0">
+                  <button v-if="filteredSessionCategories.length > 1" type="button"
+                    @click="toggleSelectAllCategories"
+                    class="text-[11px] font-bold text-navy hover:text-primary transition-colors cursor-pointer select-none underline">
+                    {{ filteredSessionCategories.every(c => selectedSessionCategoryIds.includes(c.id || c.uuid)) ? t('event_qualification.unselect_all', 'Batal Pilih Semua') : t('event_qualification.select_all', 'Pilih Semua') }}
+                  </button>
+                  <span class="text-[11px] font-semibold text-slate-500">
+                    {{ selectedSessionCategoryIds.length }} {{ t('participant.edit.categories_selected', 'kategori terpilih') }}
+                  </span>
+                </div>
               </div>
 
               <!-- Search Bar for Categories -->
@@ -516,18 +523,18 @@
               </div>
 
               <!-- Category List -->
-              <div class="bg-white rounded-xl border border-slate-200/80 p-2 max-h-48 overflow-y-auto space-y-1.5 custom-scrollbar">
-                <div v-for="category in filteredSessionCategories" :key="category.id"
+              <div class="bg-white rounded-xl border border-slate-200/80 p-2 max-h-56 overflow-y-auto space-y-1.5 custom-scrollbar">
+                <div v-for="category in filteredSessionCategories" :key="category.id || category.uuid"
                   class="flex items-center gap-3 p-2.5 rounded-lg border transition-all cursor-pointer select-none group"
-                  :class="selectedSessionCategoryIds.includes(category.id)
+                  :class="selectedSessionCategoryIds.includes(category.id || category.uuid)
                     ? 'bg-slate-50 border-slate-800 text-slate-900 shadow-2xs'
                     : 'bg-white border-transparent hover:border-slate-200 text-slate-700'"
-                  @click="toggleSessionCategory(category.id)">
+                  @click="toggleSessionCategory(category.id || category.uuid)">
                   <div class="size-4.5 rounded-md border flex items-center justify-center transition-all shrink-0"
-                    :class="selectedSessionCategoryIds.includes(category.id)
+                    :class="selectedSessionCategoryIds.includes(category.id || category.uuid)
                       ? 'bg-slate-900 border-slate-900 text-white'
                       : 'bg-white border-slate-300 group-hover:border-slate-400'">
-                    <Icon v-if="selectedSessionCategoryIds.includes(category.id)" icon="ph:check-bold" class="text-[10px]" />
+                    <Icon v-if="selectedSessionCategoryIds.includes(category.id || category.uuid)" icon="ph:check-bold" class="text-[10px]" />
                   </div>
                   <div class="flex-1 min-w-0 flex items-center justify-between gap-2">
                     <span class="text-xs font-bold truncate">{{ getCategoryName(category) }}</span>
@@ -710,9 +717,9 @@ const openCreateModal = () => {
 const editSession = (session) => {
   editingSessionId.value = session.uuid
   newSessionName.value = session.name
-  newSessionEnds.value = session.total_ends
-  newSessionArrows.value = session.arrows_per_end
-  selectedSessionCategoryIds.value = session.category_ids || []
+  newSessionEnds.value = session.total_ends || 6
+  newSessionArrows.value = session.arrows_per_end || 3
+  selectedSessionCategoryIds.value = Array.isArray(session.category_ids) ? [...session.category_ids] : []
   sessionCategorySearch.value = ''
   showSessionDialog.value = true
 }
@@ -824,15 +831,21 @@ const fetchCategories = async () => {
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
     // Filter only individual categories for qualification leaderboard
     const individualCategories = fetchedCategories.filter(cat =>
-      cat.event_type_name?.toLowerCase() === 'individual' ||
-      !cat.event_type_name
+      !cat.event_type_name ||
+      ['individual', 'individu'].includes(cat.event_type_name.toLowerCase()) ||
+      cat.team_size <= 1
     )
+    const mappedCategories = (individualCategories.length > 0 ? individualCategories : fetchedCategories).map(cat => ({
+      ...cat,
+      id: cat.id || cat.uuid,
+      uuid: cat.uuid || cat.id
+    }))
     // Sort categories by participant count (descending)
-    const sortedCategories = individualCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+    const sortedCategories = mappedCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
     categories.value = sortedCategories
 
     // Auto-select first category if available
-    if (categories.value.length > 0) {
+    if (categories.value.length > 0 && !selectedCategory.value) {
       await selectCategory(categories.value[0].id)
     }
   } catch (error) {
@@ -855,11 +868,23 @@ const getCategoryName = (category) => {
 }
 
 const toggleSessionCategory = (categoryId) => {
-  const index = selectedSessionCategoryIds.value.indexOf(categoryId)
+  if (!categoryId) return
+  const index = selectedSessionCategoryIds.value.findIndex(id => id === categoryId)
   if (index === -1) {
     selectedSessionCategoryIds.value.push(categoryId)
   } else {
     selectedSessionCategoryIds.value.splice(index, 1)
+  }
+}
+
+const toggleSelectAllCategories = () => {
+  const allFilteredIds = filteredSessionCategories.value.map(c => c.id || c.uuid).filter(Boolean)
+  const allSelected = allFilteredIds.every(id => selectedSessionCategoryIds.value.includes(id))
+  if (allSelected) {
+    selectedSessionCategoryIds.value = selectedSessionCategoryIds.value.filter(id => !allFilteredIds.includes(id))
+  } else {
+    const newSet = new Set([...selectedSessionCategoryIds.value, ...allFilteredIds])
+    selectedSessionCategoryIds.value = Array.from(newSet)
   }
 }
 

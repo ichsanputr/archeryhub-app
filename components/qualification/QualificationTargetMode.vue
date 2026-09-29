@@ -214,7 +214,7 @@
                             <!-- Left: Target Board Badge -->
                             <div class="bg-navy text-primary font-black text-xs px-3.5 py-1.5 rounded-xl shadow-2xs flex items-center gap-1.5 border border-navy">
                                 <Icon icon="ph:target-bold" class="text-sm" />
-                                <span>{{ t('event_qualification.target_butt', 'Bantalan') }} {{ target.name.replace(/\D/g, '') || target.name }}</span>
+                                <span>{{ t('event_qualification.target_butt', 'Target') }} {{ target.name.replace(/\D/g, '') || target.name }}</span>
                             </div>
 
                             <!-- Right: Board Code Pill (High-contrast dark on neutral) -->

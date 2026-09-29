@@ -6,7 +6,7 @@
             :subtitle="event ? `${event.venue || t('dashboard_event_overview.venue_fallback')} • ${event.location || t('dashboard_event_overview.address_fallback')}` : t('dashboard_event_overview.summary_title')"
             icon="ph:calendar-check"
             :breadcrumbs="[
-                { label: 'Dashboard', to: '/dashboard/organizer' },
+                { label: t('dashboard.breadcrumbs.dashboard', 'Dashboard'), to: '/dashboard/organizer' },
                 { label: t('dashboard.sidebar.my_events', 'My Tournaments'), to: '/dashboard/organizer/tournaments' },
                 { label: event?.name || t('dashboard_event_overview.summary_title') }
             ]"
@@ -217,8 +217,8 @@
                                     </div>
                                     <div>
                                         <span
-                                            class="block text-sm font-bold text-navy leading-tight">{{ t('dashboard_event_overview.payment_paid') }}</span>
-                                        <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_paid_desc') }}</span>
+                                            class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_paid', 'Terbayar (Lunas)') }}</span>
+                                        <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_paid_desc', 'Pembayaran telah terverifikasi') }}</span>
                                     </div>
                                 </div>
                                 <span class="text-2xl font-black text-emerald-600 font-mono">{{
@@ -233,8 +233,8 @@
                                     </div>
                                     <div>
                                         <span
-                                            class="block text-sm font-bold text-navy leading-tight">{{ t('dashboard_event_overview.payment_pending') }}</span>
-                                        <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_pending_desc') }}</span>
+                                            class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_pending', 'Menunggu Pembayaran') }}</span>
+                                        <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_pending_desc', 'Dalam proses transaksi') }}</span>
                                     </div>
                                 </div>
                                 <span class="text-2xl font-black text-amber-600 font-mono">{{
@@ -248,8 +248,8 @@
                                         <Icon icon="ph:clock-countdown-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <span class="block text-sm font-bold text-navy leading-tight">{{ t('dashboard_event_overview.payment_expired') }}</span>
-                                        <span class="text-[10px] text-gray-400 font-medium">{{ t('dashboard_event_overview.payment_expired_desc') }}</span>
+                                        <span class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_expired', 'Kedaluwarsa / Batal') }}</span>
+                                        <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_expired_desc', 'Transaksi kedaluwarsa atau dibatalkan') }}</span>
                                     </div>
                                 </div>
                                 <span class="text-2xl font-black text-slate-600 font-mono">{{
@@ -516,11 +516,11 @@
                                             'px-2 py-0.5 rounded-md text-[10px] font-black',
                                             (quotaData?.quota_standard || 0) > 0 ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-600'
                                         ]">
-                                            {{ (quotaData?.quota_standard || 0) > 0 ? `${quotaData.quota_standard} Sisa` : '0 Kuota' }}
+                                            {{ (quotaData?.quota_standard || 0) > 0 ? `${quotaData.quota_standard} ${$t('dashboard_event_overview.quota_modal.remaining', 'Sisa')}` : `0 ${$t('dashboard_event_overview.quota_modal.quota_unit', 'Kuota')}` }}
                                         </span>
                                     </div>
                                     <div class="text-[10px] font-black text-slate-400 tracking-widest">STANDARD</div>
-                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_standard || 0 }} <span class="text-xs font-normal text-slate-400">kuota</span></div>
+                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_standard || 0 }} <span class="text-xs font-normal text-slate-400">{{ $t('dashboard_event_overview.quota_modal.quota_unit', 'kuota') }}</span></div>
                                     <div class="text-xs text-slate-500 mt-2 leading-relaxed font-medium">{{ $t('dashboard_event_overview.quota_modal.standard_desc') }}</div>
                                 </div>
 
@@ -556,11 +556,11 @@
                                             'px-2 py-0.5 rounded-md text-[10px] font-black',
                                             (quotaData?.quota_elite || 0) > 0 ? 'bg-purple-100 text-purple-800' : 'bg-slate-200 text-slate-600'
                                         ]">
-                                            {{ (quotaData?.quota_elite || 0) > 0 ? `${quotaData.quota_elite} Sisa` : '0 Kuota' }}
+                                            {{ (quotaData?.quota_elite || 0) > 0 ? `${quotaData.quota_elite} ${$t('dashboard_event_overview.quota_modal.remaining', 'Sisa')}` : `0 ${$t('dashboard_event_overview.quota_modal.quota_unit', 'Kuota')}` }}
                                         </span>
                                     </div>
                                     <div class="text-[10px] font-black text-slate-400 tracking-widest">ELITE</div>
-                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_elite || 0 }} <span class="text-xs font-normal text-slate-400">kuota</span></div>
+                                    <div class="text-xl font-black text-navy">{{ quotaData?.quota_elite || 0 }} <span class="text-xs font-normal text-slate-400">{{ $t('dashboard_event_overview.quota_modal.quota_unit', 'kuota') }}</span></div>
                                     <div class="text-xs text-slate-500 mt-2 leading-relaxed font-medium">{{ $t('dashboard_event_overview.quota_modal.elite_desc') }}</div>
                                 </div>
 
@@ -669,8 +669,8 @@ const { user } = useAuth()
 const userRole = computed(() => user.value?.role || 'archer')
 
 const breadcrumbItems = computed(() => [
-    { label: t('dashboard.breadcrumbs.dashboard'), path: '/dashboard' },
-    { label: t('dashboard.sidebar.event'), path: userRole.value === 'archer' ? '/dashboard/archer/tournaments' : '/dashboard/organizer/tournaments' }
+    { label: t('dashboard.breadcrumbs.dashboard', 'Dashboard'), path: '/dashboard' },
+    { label: t('dashboard.sidebar.event', 'Tournaments'), path: userRole.value === 'archer' ? '/dashboard/archer/tournaments' : '/dashboard/organizer/tournaments' }
 ])
 
 const event = ref(null)
@@ -724,7 +724,7 @@ const filteredParticipants = computed(() => {
 })
 
 const tabs = [
-    { id: 'overview', label: 'Ringkasan', icon: 'ph:layout-bold' }
+    { id: 'overview', label: t('dashboard_event_overview.summary_title', 'Ringkasan'), icon: 'ph:layout-bold' }
 ]
 
 const groupedTargets = computed(() => {

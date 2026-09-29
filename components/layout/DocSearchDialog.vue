@@ -43,18 +43,18 @@
               @click="selectedCategory = cat.id"
               class="px-3 py-1 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer"
               :class="selectedCategory === cat.id
-                ? 'bg-primary text-navy font-black shadow-xs'
+                ? 'bg-navy text-primary font-bold shadow-xs'
                 : 'text-gray-500 dark:text-slate-400 hover:bg-gray-200/60 dark:hover:bg-slate-800'"
             >
-              <Icon :icon="cat.icon" class="text-xs" />
+              <Icon :icon="cat.icon" class="text-xs" :class="selectedCategory === cat.id ? 'text-primary' : ''" />
               <span>{{ cat.label }}</span>
             </button>
           </div>
 
           <!-- Results & Content Body -->
           <div class="flex-1 overflow-y-auto scrollbar-styled p-3 sm:p-4">
-            <!-- Search Results -->
-            <template v-if="query.trim()">
+            <!-- Search Results & Category Filter Results -->
+            <template v-if="isFiltering">
               <div v-if="filteredResults.length" class="space-y-1.5">
                 <NuxtLink
                   v-for="(doc, i) in filteredResults"
@@ -70,20 +70,20 @@
                     class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors mt-0.5"
                     :class="i === activeIndex
                       ? 'bg-primary text-navy font-black'
-                      : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:text-primary'"
+                      : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:bg-navy dark:group-hover:text-primary'"
                   >
                     <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-lg" />
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center gap-2 mb-1 flex-wrap">
-                      <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400">
+                      <span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400">
                         {{ getCategoryLabel(doc.category) }}
                       </span>
-                      <span v-if="doc.readTime" class="text-[10px] text-gray-400 dark:text-slate-500 font-medium">
+                      <span v-if="doc.readTime" class="text-[10px] sm:text-xs text-gray-400 dark:text-slate-500 font-medium">
                         {{ doc.readTime }}
                       </span>
                     </div>
-                    <div class="text-sm font-bold text-navy dark:text-slate-100 leading-snug group-hover:text-primary transition-colors" v-html="highlight(doc.title)" />
+                    <div class="text-sm font-bold text-navy dark:text-slate-100 leading-snug group-hover:text-navy dark:group-hover:text-white transition-colors" v-html="highlight(doc.title)" />
                     <div class="text-xs text-gray-500 dark:text-slate-400 line-clamp-2 mt-1 leading-relaxed" v-html="highlight(doc.excerpt)" />
                   </div>
                   <Icon
@@ -102,11 +102,11 @@
                 <h4 class="text-sm font-bold text-navy dark:text-slate-200 mb-1">
                   {{ locale === 'id' ? 'Dokumentasi tidak ditemukan' : 'No documentation found' }}
                 </h4>
-                <p class="text-xs text-gray-400 dark:text-slate-500 max-w-sm mx-auto">
+                <div class="text-xs text-gray-400 dark:text-slate-500 max-w-sm mx-auto">
                   {{ locale === 'id'
                     ? `Tidak ada artikel dokumentasi yang cocok dengan kata kunci "${query}". Coba kata kunci seperti: eliminasi, target, shoot-off, kualifikasi.`
                     : `No documentation articles matched "${query}". Try searching for: elimination, target, shoot-off, qualification.` }}
-                </p>
+                </div>
               </div>
             </template>
 
@@ -114,7 +114,7 @@
             <template v-else>
               <div class="py-2">
                 <div class="flex items-center justify-between px-2 mb-3">
-                  <span class="text-[11px] font-black tracking-wider text-gray-400 dark:text-slate-500 uppercase">
+                  <span class="text-xs font-bold tracking-normal text-gray-400 dark:text-slate-500">
                     {{ locale === 'id' ? 'Dokumentasi Populer & Panduan Cepat' : 'Popular Guides & Quick Start' }}
                   </span>
                   <span class="text-[10px] text-gray-400 dark:text-slate-500 font-medium">
@@ -131,18 +131,18 @@
                     class="flex items-center gap-3 p-3 rounded-2xl transition-all cursor-pointer border border-gray-100 dark:border-slate-800/80 hover:border-primary/40 bg-white dark:bg-slate-900/60 hover:bg-gray-50 dark:hover:bg-slate-800/50 group"
                     :class="i === activeIndex ? 'bg-primary/10 border-primary/40' : ''"
                   >
-                    <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:text-primary flex items-center justify-center shrink-0 transition-colors">
+                    <div class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 group-hover:bg-primary/20 group-hover:text-navy dark:group-hover:bg-navy dark:group-hover:text-primary flex items-center justify-center shrink-0 transition-colors">
                       <Icon :icon="doc.icon || 'ph:file-text-bold'" class="text-base" />
                     </div>
                     <div class="flex-1 min-w-0">
-                      <div class="text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase leading-none mb-1">
+                      <div class="text-[10px] font-bold text-gray-400 dark:text-slate-500 leading-none mb-1">
                         {{ getCategoryLabel(doc.category) }}
                       </div>
-                      <div class="text-xs font-bold text-navy dark:text-slate-100 truncate group-hover:text-primary transition-colors">
+                      <div class="text-xs font-bold text-navy dark:text-slate-100 truncate group-hover:text-navy dark:group-hover:text-white transition-colors">
                         {{ doc.title }}
                       </div>
                     </div>
-                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 dark:text-slate-600 shrink-0 group-hover:text-primary" />
+                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 dark:text-slate-600 shrink-0 group-hover:text-navy dark:group-hover:text-white" />
                   </NuxtLink>
                 </div>
               </div>
@@ -232,17 +232,22 @@ const getCategoryLabel = (catId: string) => {
   if (item) {
     return locale.value === 'id' ? item.id : item.en
   }
-  return catId ? catId.toUpperCase() : ''
+  return catId ? (catId.charAt(0).toUpperCase() + catId.slice(1).toLowerCase()) : ''
 }
 
+const isFiltering = computed(() => {
+  return query.value.trim().length > 0 || selectedCategory.value !== 'all'
+})
+
 const filteredResults = computed<DocItem[]>(() => {
-  if (!query.value.trim()) return []
   const q = query.value.toLowerCase().trim()
 
   return allDocs.value.filter((d: DocItem) => {
     if (selectedCategory.value !== 'all' && d.category !== selectedCategory.value) {
       return false
     }
+    if (!q) return true
+
     const matchTitle = d.title && d.title.toLowerCase().includes(q)
     const matchExcerpt = d.excerpt && d.excerpt.toLowerCase().includes(q)
     const matchSlug = d.slug && d.slug.toLowerCase().includes(q)

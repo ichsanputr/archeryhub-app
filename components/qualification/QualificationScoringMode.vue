@@ -76,7 +76,7 @@
 
             <!-- Target Board Filter Pills -->
             <div v-if="availableTargetNumbers.length > 1" class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar border-t border-slate-100 pt-3">
-                <button type="button" @click="selectedTargetFilter = null"
+                <button type="button" @click="selectTargetFilter(null)"
                     :class="[
                         'px-3.5 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs',
                         selectedTargetFilter === null
@@ -88,7 +88,7 @@
                 </button>
 
                 <button v-for="tNum in availableTargetNumbers" :key="tNum" type="button"
-                    @click="selectedTargetFilter = tNum"
+                    @click="selectTargetFilter(tNum)"
                     :class="[
                         'px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs',
                         selectedTargetFilter === tNum
@@ -485,6 +485,44 @@
             </div>
         </div>
 
+        <!-- Lock / Unlock Confirmation Modal -->
+        <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 scale-95"
+            enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+            <div v-if="showLockConfirmModal"
+                class="fixed inset-0 z-[9999] overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-4"
+                @click.self="showLockConfirmModal = false">
+                <div class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 sm:p-7 border border-slate-200 space-y-5">
+                    <div class="flex items-center gap-4">
+                        <div class="size-12 rounded-2xl flex items-center justify-center shrink-0"
+                            :class="isCategoryLocked ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-rose-50 text-rose-600 border border-rose-200'">
+                            <Icon :icon="isCategoryLocked ? 'ph:lock-key-open-bold' : 'ph:lock-key-fill'" class="text-2xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-black text-navy leading-tight">
+                                {{ isCategoryLocked ? t('event_qualification.unlock_category_dialog_title', 'Buka Kunci Penilaian Kategori?') : t('event_qualification.lock_category_dialog_title', 'Kunci Penilaian Kategori?') }}
+                            </h3>
+                            <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">
+                                {{ isCategoryLocked ? t('event_qualification.unlock_category_dialog_desc', 'Membuka kunci penilaian akan mengizinkan kembali perubahan skor pada kategori ini oleh juri dan scorekeeper.') : t('event_qualification.lock_category_dialog_desc', 'Mengunci penilaian akan menonaktifkan input dan perubahan nilai untuk kategori ini demi menjaga integritas data nilai.') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end gap-3 pt-2">
+                        <BaseButton variant="white" class="h-10 px-5 text-xs font-bold border-slate-200"
+                            @click="showLockConfirmModal = false">
+                            {{ t('event_qualification.cancel', 'Batal') }}
+                        </BaseButton>
+                        <BaseButton :variant="isCategoryLocked ? 'primary' : 'danger'"
+                            :loading="isTogglingLock"
+                            class="h-10 px-6 text-xs font-black"
+                            @click="confirmToggleLock">
+                            {{ isCategoryLocked ? t('event_qualification.unlock_confirm', 'Buka Kunci') : t('event_qualification.lock_confirm', 'Kunci Penilaian') }}
+                        </BaseButton>
+                    </div>
+                </div>
+            </div>
+        </Transition>
     </div>
 </template>
 
@@ -517,14 +555,6 @@ const route = useRoute()
 const saving = ref(false)
 const localAssignments = ref([])
 const currentScoringArcherUuid = ref(null)
-const currentScoringAssignment = computed(() => {
-    if (!localAssignments.value.length) return null
-    if (currentScoringArcherUuid.value) {
-        const found = localAssignments.value.find(a => a.uuid === currentScoringArcherUuid.value)
-        if (found) return found
-    }
-    return localAssignments.value[0] || null
-})
 const selectedArrowIndex = ref(0)
 const showMobileInputBoard = ref(false)
 const searchArcherQuery = ref('')
@@ -532,6 +562,7 @@ const selectedTargetFilter = ref(null)
 
 const localCategoryLocks = ref({})
 const isTogglingLock = ref(false)
+const showLockConfirmModal = ref(false)
 
 // Keep localCategoryLocks in sync whenever props.sessionData changes
 watch(
@@ -557,13 +588,16 @@ const isCategoryLocked = computed(() => {
     return Boolean(props.sessionData?.is_locked)
 })
 
-const handleToggleLock = async () => {
-    if (isTogglingLock.value) return
+const handleToggleLock = () => {
     if (!isSubscriptionActive.value) {
         showPremiumModal.value = true
         return
     }
+    showLockConfirmModal.value = true
+}
 
+const confirmToggleLock = async () => {
+    if (isTogglingLock.value) return
     const catId = props.selectedCategory
     const sessionId = props.sessionData?.uuid || props.sessionData?.id
     const eventId = route.params.id
@@ -572,7 +606,6 @@ const handleToggleLock = async () => {
     const previousState = isCategoryLocked.value
     const nextState = !previousState
 
-    // Optimistically update local state so the switcher moves immediately!
     localCategoryLocks.value[catId] = nextState
     if (props.sessionData) {
         if (!props.sessionData.category_locks) {
@@ -600,7 +633,6 @@ const handleToggleLock = async () => {
             emit('updated')
         }
     } catch (err) {
-        // Revert on error
         localCategoryLocks.value[catId] = previousState
         if (props.sessionData?.category_locks) {
             props.sessionData.category_locks[catId] = previousState
@@ -609,6 +641,7 @@ const handleToggleLock = async () => {
         toast.error(getApiErrorMessage(err, t('event_qualification.session_lock_failed', 'Gagal mengubah status kunci penilaian')))
     } finally {
         isTogglingLock.value = false
+        showLockConfirmModal.value = false
     }
 }
 
@@ -767,15 +800,51 @@ const filteredGroupedAssignments = computed(() => {
         .filter(group => group.assignments.length > 0)
 })
 
+const currentScoringAssignment = computed(() => {
+    const visibleArchers = filteredGroupedAssignments.value.flatMap(g => g.assignments)
+    if (visibleArchers.length > 0) {
+        if (currentScoringArcherUuid.value) {
+            const found = visibleArchers.find(a => a.uuid === currentScoringArcherUuid.value)
+            if (found) return found
+        }
+        return visibleArchers[0]
+    }
+    if (!localAssignments.value.length) return null
+    if (currentScoringArcherUuid.value) {
+        const found = localAssignments.value.find(a => a.uuid === currentScoringArcherUuid.value)
+        if (found) return found
+    }
+    return localAssignments.value[0] || null
+})
+
+const selectTargetFilter = (tNum) => {
+    selectedTargetFilter.value = tNum
+    if (tNum !== null) {
+        const targetArchers = localAssignments.value.filter(a => {
+            const match = (a.target_name || '').match(/\d+/)
+            return match && parseInt(match[0]) === tNum
+        })
+        if (targetArchers.length > 0) {
+            currentScoringArcherUuid.value = targetArchers[0].uuid
+            initEndScores(targetArchers[0])
+        }
+    } else if (localAssignments.value.length > 0) {
+        currentScoringArcherUuid.value = localAssignments.value[0].uuid
+        initEndScores(localAssignments.value[0])
+    }
+}
+
 const selectArcherForScoring = (assignment) => {
+    if (!assignment) return
     currentScoringArcherUuid.value = assignment.uuid
     initEndScores(assignment)
     showMobileInputBoard.value = true
 }
 
 const selectArrowBox = (assignment, index) => {
+    if (!assignment) return
     currentScoringArcherUuid.value = assignment.uuid
-    ensureEndScoresArray(assignment)
+    initEndScores(assignment)
     selectedArrowIndex.value = index
     showMobileInputBoard.value = true
 }
@@ -951,28 +1020,29 @@ const isAssignmentEndComplete = (assignment) => {
 }
 
 const switchArcherEnd = (assignment, endNumber) => {
-    selectArcherForScoring(assignment)
-    goToEnd(endNumber)
+    currentScoringArcherUuid.value = assignment.uuid
+    goToEnd(endNumber, assignment)
 }
 
-const goToEnd = (endNumber) => {
-    if (!currentScoringAssignment.value) return
-    const prevEnd = currentScoringAssignment.value.currentEnd || 1
-    if (!currentScoringAssignment.value.allEndScores) {
-        currentScoringAssignment.value.allEndScores = {}
+const goToEnd = (endNumber, targetAssignment = null) => {
+    const assignment = targetAssignment || currentScoringAssignment.value
+    if (!assignment) return
+    const prevEnd = assignment.currentEnd || 1
+    if (!assignment.allEndScores) {
+        assignment.allEndScores = {}
     }
-    if (currentScoringAssignment.value.currentEndScores) {
-        currentScoringAssignment.value.allEndScores[prevEnd] = [...currentScoringAssignment.value.currentEndScores]
+    if (assignment.currentEndScores) {
+        assignment.allEndScores[prevEnd] = [...assignment.currentEndScores]
     }
-    currentScoringAssignment.value.currentEnd = endNumber
-    const saved = currentScoringAssignment.value.allEndScores[endNumber]
+    assignment.currentEnd = endNumber
+    const saved = assignment.allEndScores[endNumber]
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
     if (saved && Array.isArray(saved) && saved.length > 0) {
-        currentScoringAssignment.value.currentEndScores = Array.from({ length: arrowsPerEnd }, (_, i) => saved[i] !== undefined ? saved[i] : undefined)
+        assignment.currentEndScores = Array.from({ length: arrowsPerEnd }, (_, i) => saved[i] !== undefined ? saved[i] : undefined)
     } else {
-        currentScoringAssignment.value.currentEndScores = Array.from({ length: arrowsPerEnd }, () => undefined)
+        assignment.currentEndScores = Array.from({ length: arrowsPerEnd }, () => undefined)
     }
-    initEndScores(currentScoringAssignment.value)
+    initEndScores(assignment)
 }
 
 const goPrevEnd = () => {

@@ -91,11 +91,31 @@
                             {{ tab.label }}
                         </button>
                     </div>
-                    <button @click="isShareOpen = true"
-                        class="flex items-center gap-2 py-2 px-3.5 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shrink-0 shadow-2xs">
-                        <Icon icon="ph:share-network-bold" class="text-sm text-primary" />
-                        <span>{{ t('organizer.public.share') }}</span>
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button
+                            v-if="isSubscribed || org.is_subscribed || org.is_organizer_subscribed"
+                            type="button"
+                            class="flex items-center gap-2 py-2 px-3.5 bg-primary/10 border border-primary/30 rounded-xl text-xs sm:text-sm font-bold text-navy transition-all shrink-0 cursor-default"
+                        >
+                            <Icon icon="ph:check-circle-fill" class="text-sm sm:text-base text-primary" />
+                            <span>{{ t('organizer.public.subscribed', 'Subscribed') }}</span>
+                        </button>
+                        <button
+                            v-else
+                            type="button"
+                            @click="openSubscribeModal"
+                            class="flex items-center gap-2 py-2 px-3.5 bg-primary hover:bg-primary-hover border border-primary rounded-xl text-xs sm:text-sm font-bold text-navy transition-all shrink-0 shadow-2xs active:scale-95 cursor-pointer"
+                        >
+                            <Icon icon="ph:bell-simple-ringing-bold" class="text-sm sm:text-base text-navy" />
+                            <span>{{ t('organizer.public.subscribe', 'Subscribe') }}</span>
+                        </button>
+
+                        <button @click="isShareOpen = true"
+                            class="flex items-center gap-2 py-2 px-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shrink-0 shadow-2xs cursor-pointer">
+                            <Icon icon="ph:share-network-bold" class="text-sm sm:text-base text-primary" />
+                            <span>{{ t('organizer.public.share', 'Share') }}</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- active tab panels -->
@@ -114,15 +134,7 @@
                                     </div>
                                     <div v-else class="p-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex items-center gap-4 text-slate-500">
                                         <Icon icon="ph:info-bold" class="text-2xl text-slate-400 shrink-0" />
-                                        <span class="text-xs font-medium">{{ t('organizer.public.no_description') }}</span>
-                                    </div>
-                                    <div v-if="org.registration_number"
-                                        class="inline-flex items-center gap-3 px-4 py-2.5 bg-gray-50 border border-gray-100 rounded-2xl mt-4">
-                                        <Icon icon="ph:fingerprint-bold" class="text-slate-400 text-lg shrink-0" />
-                                        <div>
-                                            <div class="text-xs font-medium text-slate-500 block mb-0.5">{{ t('organizer.public.official_reg_num') }}</div>
-                                            <div class="text-sm sm:text-base font-bold text-slate-900">{{ org.registration_number }}</div>
-                                        </div>
+                                        <span class="text-xs sm:text-sm font-medium">{{ t('organizer.public.no_description') }}</span>
                                     </div>
                                 </div>
 
@@ -197,7 +209,7 @@
                                         <Icon icon="ph:info-bold" class="text-primary text-base" />
                                         {{ t('organizer.public.org_info') }}
                                     </h4>
-                                    <div class="space-y-3 text-xs">
+                                    <div class="space-y-3 text-xs sm:text-sm">
                                         <div class="flex justify-between items-center py-2 border-b border-gray-200/50">
                                             <span class="text-slate-500 font-medium">{{ t('organizer.public.region') }}</span>
                                             <span class="font-bold text-slate-900">{{ org.city || '-' }}</span>
@@ -299,7 +311,7 @@
                             <div class="flex items-center justify-between pb-4 border-b border-gray-100">
                                 <div>
                                     <h3 class="text-base font-bold text-slate-900">{{ t('organizer.public.event_list') }}</h3>
-                                    <div class="text-xs text-slate-500 font-medium mt-0.5">{{ t('organizer.public.events_subtitle') }}</div>
+                                    <div class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">{{ t('organizer.public.events_subtitle') }}</div>
                                 </div>
                             </div>
 
@@ -309,7 +321,7 @@
                                     <Icon icon="ph:calendar-blank-bold" class="text-3xl text-slate-400" />
                                 </div>
                                 <h4 class="text-base font-bold text-slate-900 leading-tight">{{ t('organizer.public.no_events') }}</h4>
-                                <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">{{ t('organizer.public.no_events_desc') }}</div>
+                                <div class="text-xs sm:text-sm text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">{{ t('organizer.public.no_events_desc') }}</div>
                             </div>
 
                             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -361,7 +373,7 @@
                                             </div>
                                         </div>
                                         <h4 class="text-sm font-bold text-slate-900 leading-tight">{{ item.title }}</h4>
-                                        <div class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal" v-html="item.excerpt"></div>
+                                        <div class="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed font-normal" v-html="item.excerpt"></div>
                                     </div>
                                 </div>
                             </div>
@@ -380,7 +392,7 @@
                                         <div class="p-5 flex flex-col gap-2 flex-1">
                                             <span class="text-xs font-medium text-slate-400">{{ formatDate(item.published_at) }}</span>
                                             <h4 class="text-sm font-bold text-slate-900 leading-tight">{{ item.title }}</h4>
-                                            <div class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-normal" v-html="item.excerpt"></div>
+                                            <div class="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed font-normal" v-html="item.excerpt"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -393,7 +405,7 @@
                                     <Icon icon="ph:trophy-bold" class="text-3xl text-slate-400" />
                                 </div>
                                 <h4 class="text-base font-bold text-slate-900 leading-tight">{{ t('organizer.public.no_news_achievements') }}</h4>
-                                <div class="text-xs text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">{{ t('organizer.public.no_news_achievements_desc') }}</div>
+                                <div class="text-xs sm:text-sm text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">{{ t('organizer.public.no_news_achievements_desc') }}</div>
                             </div>
                         </div>
 
@@ -416,29 +428,19 @@
                                         </div>
                                         <div class="min-w-0 flex-1">
                                             <span class="text-xs font-medium text-slate-500 block mb-1">{{ t('organizer.public.office_address') }}</span>
-                                            <div class="font-bold text-slate-900 text-sm leading-relaxed">{{ org.address || 'Sekretariat Utama' }}</div>
-                                            <div class="text-xs text-slate-600 font-medium mt-1">
+                                            <div class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">{{ org.address || 'Sekretariat Utama' }}</div>
+                                            <div class="text-xs sm:text-sm text-slate-600 font-medium mt-1">
                                                 {{ [org.city, org.province, org.country].filter(Boolean).join(', ') || 'Indonesia' }}
                                             </div>
                                         </div>
                                     </div>
                                     <div v-else class="p-6 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 flex items-center gap-3.5 text-slate-500">
                                         <Icon icon="ph:map-pin-line" class="text-2xl text-slate-400 shrink-0" />
-                                        <span class="text-xs font-medium">Alamat kantor atau sekretariat resmi belum dicantumkan.</span>
+                                        <span class="text-xs sm:text-sm font-medium">Alamat kantor atau sekretariat resmi belum dicantumkan.</span>
                                     </div>
 
                                     <!-- Quick Details Grid -->
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200 flex items-center gap-3.5">
-                                            <div class="size-10 rounded-xl bg-white shadow-2xs border border-slate-200 flex items-center justify-center shrink-0 text-slate-700">
-                                                <Icon icon="ph:fingerprint-bold" class="text-xl" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <span class="text-xs font-medium text-slate-500 block mb-0.5">{{ t('organizer.public.official_reg_num') }}</span>
-                                                <div class="text-slate-900 text-xs sm:text-sm font-bold truncate">{{ org.registration_number || '-' }}</div>
-                                            </div>
-                                        </div>
-
                                         <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200 flex items-center gap-3.5">
                                             <div class="size-10 rounded-xl bg-white shadow-2xs border border-slate-200 flex items-center justify-center shrink-0 text-slate-700">
                                                 <Icon icon="ph:calendar-blank-bold" class="text-xl" />
@@ -446,6 +448,16 @@
                                             <div class="min-w-0">
                                                 <span class="text-xs font-medium text-slate-500 block mb-0.5">{{ t('organizer.public.established_year') }}</span>
                                                 <div class="font-bold text-slate-900 text-xs sm:text-sm">{{ org.established_date ? new Date(org.established_date).getFullYear() : '-' }}</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-4 bg-slate-50/70 rounded-2xl border border-slate-200 flex items-center gap-3.5">
+                                            <div class="size-10 rounded-xl bg-white shadow-2xs border border-slate-200 flex items-center justify-center shrink-0 text-slate-700">
+                                                <Icon icon="ph:map-pin-bold" class="text-xl" />
+                                            </div>
+                                            <div class="min-w-0">
+                                                <span class="text-xs font-medium text-slate-500 block mb-0.5">{{ t('organizer.public.region') }}</span>
+                                                <div class="font-bold text-slate-900 text-xs sm:text-sm">{{ org.city || '-' }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -470,7 +482,7 @@
                                                 <Icon icon="ph:map-pin-bold" class="text-2xl" />
                                             </div>
                                             <div class="text-sm font-bold text-slate-800">{{ t('organizer.public.map_unavailable') }}</div>
-                                            <div class="text-xs text-slate-500 max-w-xs">Peta lokasi kantor belum ditautkan oleh penyelenggara.</div>
+                                            <div class="text-xs sm:text-sm text-slate-500 max-w-xs">Peta lokasi kantor belum ditautkan oleh penyelenggara.</div>
                                         </div>
                                     </div>
                                 </div>
@@ -482,7 +494,7 @@
                                 <div class="bg-navy p-6 rounded-2xl text-white shadow-xs relative overflow-hidden space-y-5 border border-white/10">
                                     <div class="border-b border-white/10 pb-3">
                                         <h4 class="text-sm font-bold text-primary">{{ t('organizer.public.official_contacts') }}</h4>
-                                        <div class="text-xs text-white/70 font-medium mt-1 leading-relaxed">{{ t('organizer.public.contact_desc') }}</div>
+                                        <div class="text-xs sm:text-sm text-white/70 font-medium mt-1 leading-relaxed">{{ t('organizer.public.contact_desc') }}</div>
                                     </div>
 
                                     <div v-if="org.whatsapp_no || org.email" class="space-y-3">
@@ -510,7 +522,7 @@
                                     </div>
                                     <div v-else class="p-4 rounded-xl border border-dashed border-white/20 bg-white/5 text-center space-y-1">
                                         <Icon icon="ph:phone-slash" class="text-xl text-white/40 mx-auto" />
-                                        <div class="text-xs text-white/70 font-medium">{{ t('organizer.public.no_contacts') }}</div>
+                                        <div class="text-xs sm:text-sm text-white/70 font-medium">{{ t('organizer.public.no_contacts') }}</div>
                                     </div>
                                 </div>
 
@@ -521,14 +533,14 @@
                                     <div v-if="hasSocialMedia" class="grid grid-cols-1 gap-2.5">
                                         <a v-for="social in allSocialChannels" :key="social.id"
                                             :href="social.url" target="_blank"
-                                            class="flex items-center gap-3 p-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl group transition-all text-xs font-bold text-slate-800 shadow-2xs">
+                                            class="flex items-center gap-3 p-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl group transition-all text-xs sm:text-sm font-bold text-slate-800 shadow-2xs">
                                             <Icon :icon="social.icon" class="text-base shrink-0 text-slate-400 transition-colors" :class="social.hoverColor" />
                                             <span class="truncate">{{ social.name }}</span>
                                         </a>
                                     </div>
                                     <div v-else class="p-4 rounded-xl border border-dashed border-slate-200 bg-white text-center space-y-1">
                                         <Icon icon="ph:share-network" class="text-xl text-slate-400 mx-auto" />
-                                        <div class="text-xs text-slate-500 font-medium">{{ t('organizer.public.no_socials') }}</div>
+                                        <div class="text-xs sm:text-sm text-slate-500 font-medium">{{ t('organizer.public.no_socials') }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -537,6 +549,57 @@
                 </div>
             </div>
         </div>
+
+        <!-- subscribe organizer dialog -->
+        <Transition name="modal">
+            <div v-if="showSubscribeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div @click="closeSubscribeModal" class="absolute inset-0 bg-navy/80 backdrop-blur-sm"></div>
+                <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 z-10">
+                    <button @click="closeSubscribeModal" class="absolute top-5 right-5 size-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:text-navy hover:bg-gray-200 transition-colors cursor-pointer">
+                        <Icon icon="ph:x-bold" class="text-sm" />
+                    </button>
+
+                    <div class="flex flex-col items-center text-center">
+                        <div class="size-14 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
+                            <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
+                        </div>
+
+                        <h3 class="text-xl font-black text-navy mb-2">
+                            {{ t('organizer.public.subscribe_modal_title', 'Langganan Info Turnamen') }}
+                        </h3>
+                        <p class="text-xs sm:text-sm text-gray-500 mb-6 leading-relaxed">
+                            {{ t('organizer.public.subscribe_modal_desc', 'Dapatkan notifikasi email setiap kali') }} <strong class="text-navy">{{ displayName }}</strong> {{ t('organizer.public.subscribe_modal_desc_end', 'merilis atau membuka pendaftaran turnamen baru.') }}
+                        </p>
+
+                        <form @submit.prevent="handleSubscribe" class="w-full space-y-4">
+                            <div class="text-left">
+                                <label class="block text-xs font-black text-gray-400 uppercase tracking-wider mb-1.5">
+                                    {{ t('organizer.public.email_label', 'Alamat Email') }}
+                                </label>
+                                <div class="relative">
+                                    <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                                    <input v-model="subscribeEmail" type="email" required
+                                        :placeholder="t('organizer.public.email_placeholder', 'nama@email.com')"
+                                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all" />
+                                </div>
+                            </div>
+
+                            <div class="flex gap-3 pt-2">
+                                <button type="button" @click="closeSubscribeModal"
+                                    class="flex-1 py-3 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">
+                                    {{ t('common.cancel', 'Batal') }}
+                                </button>
+                                <button type="submit" :disabled="isSubscribing"
+                                    class="flex-1 py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-black rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                                    <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-lg" />
+                                    <span>{{ isSubscribing ? t('common.submitting', 'Memproses...') : t('organizer.public.subscribe_action', 'Ya, Berlangganan') }}</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </Transition>
 
         <!-- share dialog -->
         <Transition name="modal">
@@ -614,8 +677,14 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useI18n } from 'vue-i18n'
+import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 
 const { t } = useI18n()
+const { user } = useAuth()
+const { post } = useApi()
+const toast = useToast()
 
 definePageMeta({ layout: 'landing' })
 
@@ -633,6 +702,45 @@ const page = ref(1)
 const isShareOpen = ref(false)
 const copied = ref(false)
 const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
+
+// Subscribe state
+const showSubscribeModal = ref(false)
+const subscribeEmail = ref('')
+const isSubscribing = ref(false)
+const isSubscribed = ref(false)
+
+const openSubscribeModal = () => {
+    if (user.value?.email) {
+        subscribeEmail.value = user.value.email
+    }
+    showSubscribeModal.value = true
+}
+
+const closeSubscribeModal = () => {
+    showSubscribeModal.value = false
+}
+
+const handleSubscribe = async () => {
+    if (!subscribeEmail.value || !subscribeEmail.value.includes('@')) {
+        toast.error(t('organizer.public.invalid_email', 'Format email tidak valid'))
+        return
+    }
+
+    isSubscribing.value = true
+    try {
+        const slug = route.params.slug
+        const res = await post(`/tournaments/${slug}/subscribe`, {
+            email: subscribeEmail.value.trim()
+        })
+        isSubscribed.value = true
+        showSubscribeModal.value = false
+        toast.success(res?.message || t('organizer.public.subscribe_success', `Berhasil berlangganan notifikasi turnamen dari ${displayName.value}`))
+    } catch (err) {
+        toast.error(err?.data?.error || err?.message || t('organizer.public.subscribe_error', 'Gagal berlangganan info turnamen'))
+    } finally {
+        isSubscribing.value = false
+    }
+}
 
 // active tab ('overview', 'events', 'news', 'contact')
 const activeTab = ref('overview')

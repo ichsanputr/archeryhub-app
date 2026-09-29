@@ -176,6 +176,17 @@
 
                 <!-- Desktop Auth & Cart Buttons -->
                 <div class="hidden md:flex items-center gap-3">
+                    <!-- Search Discovery Trigger -->
+                    <button
+                        @click="openSearchDialog"
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all cursor-pointer border text-xs font-semibold"
+                        :class="showSolid ? 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700' : 'bg-white/10 hover:bg-white/20 border-white/20 text-white/80'"
+                        :title="locale === 'id' ? 'Cari turnamen, klub, artikel (Ctrl+K)' : 'Search tournaments, clubs, articles (Ctrl+K)'"
+                    >
+                        <Icon icon="ph:magnifying-glass-bold" class="text-sm" />
+                        <span class="hidden lg:inline">{{ locale === 'id' ? 'Cari...' : 'Search...' }}</span>
+                        <kbd class="hidden xl:inline-flex px-1.5 py-0.2 rounded text-[10px] font-mono" :class="showSolid ? 'bg-white border border-slate-200 text-slate-400' : 'bg-white/10 text-white/50'">Ctrl K</kbd>
+                    </button>
 
                     <!-- Logged In User Avatar -->
                     <div v-if="isLoggedIn" class="relative" @mouseenter="showUserMenu = true"
@@ -236,8 +247,13 @@
                     </template>
                 </div>
 
-                <!-- Mobile Menu Toggle -->
+                <!-- Mobile Menu and Search Toggle -->
                 <div class="flex items-center gap-1 md:gap-2 md:hidden">
+                    <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
+                        aria-label="Cari turnamen"
+                        @click="openSearchDialog">
+                        <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
+                    </button>
                     <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
                         :aria-label="mobileMenuOpen ? 'Tutup navigasi menu' : 'Buka navigasi menu'"
                         @click="mobileMenuOpen = !mobileMenuOpen">
@@ -382,10 +398,27 @@
                 </div>
             </div>
         </Transition>
+
+        <!-- Public Search Dialog -->
+        <PublicSearchDialog ref="publicSearchDialog" />
     </nav>
 </template>
 
 <script setup>
+import PublicSearchDialog from '~/components/layout/PublicSearchDialog.vue'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+const publicSearchDialog = ref(null)
+
+const openSearchDialog = () => {
+    if (publicSearchDialog.value?.open) {
+        publicSearchDialog.value.open()
+    } else if (publicSearchDialog.value?.$?.exposed?.open) {
+        publicSearchDialog.value.$.exposed.open()
+    }
+}
+
 const props = defineProps({
     transparent: {
         type: Boolean,

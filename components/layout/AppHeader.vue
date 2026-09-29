@@ -179,8 +179,9 @@
       </button>
     </div>
 
-    <!-- Docs Search Dialog -->
-    <DocSearchDialog ref="searchDialog" />
+    <!-- Contextual Search Dialogs -->
+    <DashboardCommandPalette v-if="isDashboard" ref="dashboardCommandPalette" />
+    <PublicSearchDialog v-else ref="publicSearchDialog" />
   </header>
 </template>
 
@@ -188,7 +189,8 @@
 import { ref, computed, onMounted, onUnmounted, watch, defineAsyncComponent } from 'vue'
 import { useDashboardI18n } from '~/composables/useDashboardI18n'
 const NotificationList = defineAsyncComponent(() => import('./NotificationList.vue'))
-import DocSearchDialog from './DocSearchDialog.vue'
+import DashboardCommandPalette from '~/components/dashboard/DashboardCommandPalette.vue'
+import PublicSearchDialog from '~/components/layout/PublicSearchDialog.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useImageOrDefault } from '~/composables/useImageHelper'
@@ -280,13 +282,22 @@ const backToDashboardPath = computed(() => {
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const showNotifications = ref(false)
-const searchDialog = ref(null)
+const dashboardCommandPalette = ref(null)
+const publicSearchDialog = ref(null)
 
 const handleOpenSearch = () => {
-  if (searchDialog.value?.open) {
-    searchDialog.value.open()
-  } else if (searchDialog.value?.$?.exposed?.open) {
-    searchDialog.value.$.exposed.open()
+  if (isDashboard.value) {
+    if (dashboardCommandPalette.value?.open) {
+      dashboardCommandPalette.value.open()
+    } else if (dashboardCommandPalette.value?.$?.exposed?.open) {
+      dashboardCommandPalette.value.$.exposed.open()
+    }
+  } else {
+    if (publicSearchDialog.value?.open) {
+      publicSearchDialog.value.open()
+    } else if (publicSearchDialog.value?.$?.exposed?.open) {
+      publicSearchDialog.value.$.exposed.open()
+    }
   }
 }
 

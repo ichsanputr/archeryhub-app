@@ -152,7 +152,7 @@
             <!-- Empty Search State -->
             <div v-else class="bg-white rounded-3xl p-12 text-center my-8 shadow-xs">
                 <div class="size-16 bg-slate-100 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Icon icon="ph:magnifying-glass-slash-bold" class="text-3xl" />
+                    <Icon icon="ph:file-search-bold" class="text-3xl" />
                 </div>
                 <h3 class="text-lg sm:text-xl font-black text-navy mb-2">
                     {{ $t('faq_page.no_results_title', 'No questions matched your search') }}
