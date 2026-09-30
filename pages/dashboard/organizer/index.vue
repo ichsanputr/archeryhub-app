@@ -68,7 +68,7 @@
             <!-- Total Tournaments -->
             <StatCard
                 :title="t('dashboard.sidebar.my_events', 'Total Turnamen')"
-                :value="orgEvents.length || dashboardStats.totalEvents || 0"
+                :value="orgEvents?.length || dashboardStats.totalEvents || 0"
                 icon="ph:trophy-bold"
                 color="primary"
                 :description="t('dashboard.org.events_info', 'Total turnamen yang dikelola')"
@@ -101,7 +101,7 @@
                     <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-200/60">
                         <div>
                             <span class="text-xs font-bold text-slate-500 block">{{ isEn ? 'Total Tournaments' : 'Total Turnamen' }}</span>
-                            <span class="text-2xl font-black text-navy tabular-nums">{{ orgEvents.length || dashboardStats.totalEvents || 0 }}</span>
+                            <span class="text-2xl font-black text-navy tabular-nums">{{ orgEvents?.length || dashboardStats.totalEvents || 0 }}</span>
                         </div>
                         <div>
                             <span class="text-xs font-bold text-slate-500 block">{{ isEn ? 'Total Registered Archers' : 'Total Peserta Terdaftar' }}</span>
@@ -115,7 +115,7 @@
                             <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.visualization_title') }}</span>
                             <span class="text-[10px] font-semibold text-slate-400">{{ t('dashboard.org.hover_chart_hint') }}</span>
                         </div>
-                        <div v-if="trendBars && trendBars.length" class="flex items-end gap-2 h-40 pt-8 px-2">
+                        <div v-if="trendBars && trendBars?.length" class="flex items-end gap-2 h-40 pt-8 px-2">
                             <div v-for="(bar, idx) in trendBars" :key="idx" class="relative group/bar flex-1 flex flex-col items-center gap-2 h-full justify-end">
                                 <!-- Floating Hover Value Tooltip -->
                                 <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none z-30 bg-navy text-white text-[10px] font-black px-2.5 py-1 rounded-lg shadow-lg border border-white/10 whitespace-nowrap flex flex-col items-center">
@@ -229,7 +229,7 @@
                 </div>
 
                 <!-- Event Recap List -->
-                <div v-if="orgCompletedEvents && orgCompletedEvents.length" class="p-5 space-y-3 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar">
+                <div v-if="orgCompletedEvents && orgCompletedEvents?.length" class="p-5 space-y-3 flex-1 overflow-y-auto max-h-[300px] custom-scrollbar">
                     <div v-for="event in orgCompletedEvents" :key="event.id"
                         class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-primary/40 transition-all cursor-pointer group"
                         @click="router.push(`/dashboard/organizer/tournaments/${event.id}/overview`)">
@@ -246,7 +246,7 @@
                                     <div class="flex items-center gap-3 text-xs text-slate-500">
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:users-bold" class="text-[10px]" />
-                                            {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta') }}
+                                             {{ event.participantCount || 0 }} {{ t('dashboard.org.peserta') }}
                                         </span>
                                         <span class="flex items-center gap-1">
                                             <Icon icon="ph:trophy-bold" class="text-[10px]" />
@@ -293,7 +293,7 @@
                 </div>
 
                 <!-- Leaderboard Table -->
-                <div v-if="leaderboard && leaderboard.length" class="flex-1 overflow-x-auto overflow-y-auto max-h-[300px] custom-scrollbar">
+                <div v-if="leaderboard && leaderboard?.length" class="flex-1 overflow-x-auto overflow-y-auto max-h-[300px] custom-scrollbar">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-slate-50 text-slate-500 font-semibold border-b border-slate-100 sticky top-0 z-10">
                             <tr>
@@ -357,7 +357,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 import useDashboardI18n from '~/composables/useDashboardI18n'
 
-const { t } = useDashboardI18n()
+const { t, isEn } = useDashboardI18n()
 
 definePageMeta({
     layout: 'dashboard'
@@ -371,8 +371,10 @@ const router = useRouter()
 const api = useApi()
 const { user } = useAuth()
 
+const orgEvents = ref([])
 const orgCompletedEventsData = ref([])
 const dashboardStats = reactive({
+    totalEvents: 0,
     totalArchers: 0,
     activeTargets: 0,
     activeTotalTargets: 0,
@@ -398,16 +400,18 @@ const trendBars = ref([])
 const fetchDashboardStats = async () => {
     try {
         const res = await api.get('/organizers/stats')
-        Object.assign(dashboardStats, res)
-        if (res?.leaderboard) {
-            leaderboard.value = res.leaderboard
-        } else {
-            leaderboard.value = []
-        }
-        if (res?.trendBars) {
-            trendBars.value = res.trendBars
-        } else {
-            trendBars.value = []
+        if (res && typeof res === 'object') {
+            Object.assign(dashboardStats, res)
+            if (Array.isArray(res?.leaderboard)) {
+                leaderboard.value = res.leaderboard
+            } else {
+                leaderboard.value = []
+            }
+            if (Array.isArray(res?.trendBars)) {
+                trendBars.value = res.trendBars
+            } else {
+                trendBars.value = []
+            }
         }
     } catch (error) {
         console.error('Failed to fetch dashboard stats:', error)
@@ -420,39 +424,43 @@ const fetchOrgCompletedEvents = async () => {
     try {
         const res = await api.get('/tournaments')
         const list = res?.data ?? res ?? []
+        const validList = Array.isArray(list) ? list : []
+        orgEvents.value = validList
         const now = new Date().toISOString()
-        const completed = (Array.isArray(list) ? list : [])
+        const completed = validList
             .filter((e) => {
-                const status = (e.status || '').toLowerCase()
-                const endDate = e.end_date || e.end_at || e.date
+                const status = (e?.status || '').toLowerCase()
+                const endDate = e?.end_date || e?.end_at || e?.date
                 return status === 'completed' || (endDate && new Date(endDate) < new Date(now))
             })
             .sort((a, b) => {
-                const dateA = a.end_date || a.end_at || a.date || ''
-                const dateB = b.end_date || b.end_at || b.date || ''
+                const dateA = a?.end_date || a?.end_at || a?.date || ''
+                const dateB = b?.end_date || b?.end_at || b?.date || ''
                 return dateB.localeCompare(dateA)
             })
             .slice(0, 5)
         orgCompletedEventsData.value = completed
     } catch (error) {
         console.error('Failed to fetch org completed events:', error)
+        orgEvents.value = []
+        orgCompletedEventsData.value = []
     }
 }
 
 const orgCompletedEvents = computed(() => {
     const list = orgCompletedEventsData.value || []
-    return list.map((e) => {
-        const endDate = e.end_date || e.end_at || e.date
+    return (Array.isArray(list) ? list : []).map((e) => {
+        const endDate = e?.end_date || e?.end_at || e?.date
         const d = endDate ? new Date(endDate) : new Date()
         const statusMap = { draft: 'Draft', active: t('dashboard.org.active') }
         return {
-            id: e.id || e.uuid,
-            name: e.name || e.title || 'Event',
+            id: e?.id || e?.uuid,
+            name: e?.name || e?.title || 'Event',
             dateLabel: d.toLocaleDateString('id-ID', { month: 'short' }),
             dayLabel: String(d.getDate()),
-            statusLabel: statusMap[e.status] || e.status || t('dashboard.org.completed'),
-            participantCount: e.participant_count || 0,
-            categoryCount: e.category_count || 0
+            statusLabel: statusMap[e?.status] || e?.status || t('dashboard.org.completed'),
+            participantCount: e?.participant_count || 0,
+            categoryCount: e?.category_count || 0
         }
     })
 })
