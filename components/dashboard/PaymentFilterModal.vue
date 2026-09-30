@@ -34,9 +34,9 @@
                   <Icon icon="ph:sliders-horizontal-bold" class="text-xl" />
                 </div>
                 <div>
-                  <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight">
+                  <div class="text-lg sm:text-xl font-black text-navy tracking-tight">
                     {{ t('archer_payments_list.filter_modal_title') }}
-                  </h2>
+                  </div>
                   <div class="text-xs text-slate-500 font-medium">
                     {{ t('archer_payments_list.filter_modal_subtitle') }}
                   </div>

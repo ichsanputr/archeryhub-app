@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-5">
-        <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.plans.title') }} {{ packageTitle }}</h2>
+        <div class="text-lg font-extrabold text-navy">{{ t('subscription.plans.title') }} {{ packageTitle }}</div>
         <div
             class="flex flex-col lg:flex-row overflow-hidden rounded-[32px] border border-gray-100 shadow-sm bg-white min-h-[500px]">
             <!-- Banner Highlight (Paket Elite) -->
@@ -10,7 +10,7 @@
                     <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
                         {{ t('subscription.plans.recommended_for') }} {{ recommendationBadge }}
                     </span>
-                    <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title') }}</h3>
+                    <div class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title') }}</div>
                     <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
                     <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                         {{ eliteDescription }}
@@ -50,8 +50,8 @@
                                     :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:sparkle-bold'"
                                     class="text-xl text-navy" />
                             </div>
-                            <h4 class=" text-xs font-black text-gray-400 tracking-[0.2em] mb-2">{{
-                                plan.name }}</h4>
+                            <div class=" text-xs font-black text-gray-400 tracking-[0.2em] mb-2">{{
+                                plan.name }}</div>
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>
                                 <span class="text-[10px] font-bold text-gray-400 tracking-widest ml-1">/ {{

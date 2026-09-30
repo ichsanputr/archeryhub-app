@@ -7,12 +7,12 @@ export const getCategoryIcon = (name) => {
     const lower = (name || '').toLowerCase();
 
     // Determine team type first
-    if (lower.includes('mix') || lower.includes('mixed')) {
+    if (lower.includes('mix') || lower.includes('mixed') || lower.includes('campuran')) {
         return 'category-icon/mix-team.svg';
     }
 
-    if (lower.includes('beregu') || lower.includes('team')) {
-        if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female')) {
+    if (lower.includes('beregu') || lower.includes('team') || lower.includes('tim')) {
+        if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female') || lower.includes('wanita')) {
             return 'category-icon/woman-team.svg';
         }
         return 'category-icon/men-team.svg';
@@ -20,7 +20,7 @@ export const getCategoryIcon = (name) => {
 
     // Determine gender for single
     let gender = 'men';
-    if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female')) {
+    if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female') || lower.includes('wanita')) {
         gender = 'woman';
     }
 
@@ -28,8 +28,8 @@ export const getCategoryIcon = (name) => {
     let bow = 'recurve';
     if (lower.includes('compound')) bow = 'compound';
     else if (lower.includes('barebow')) bow = 'barebow';
-    else if (lower.includes('standard') || lower.includes('nasional')) bow = 'standard';
-    else if (lower.includes('traditional')) bow = 'traditional';
+    else if (lower.includes('standard') || lower.includes('nasional') || lower.includes('national')) bow = 'standard';
+    else if (lower.includes('traditional') || lower.includes('tradisional') || lower.includes('horsebow') || lower.includes('jemparingan')) bow = 'traditional';
 
     return `category-icon/${gender}-single-${bow}.svg`;
 };
@@ -45,8 +45,9 @@ export const getCategoryColorClass = (name) => {
     if (lower.includes('recurve')) return 'bg-blue-100 text-blue-600 border-blue-200';
     if (lower.includes('compound')) return 'bg-orange-100 text-orange-600 border-orange-200';
     if (lower.includes('barebow')) return 'bg-gray-100 text-gray-600 border-gray-200';
-    if (lower.includes('nasional') || lower.includes('standard')) return 'bg-red-100 text-red-600 border-red-200';
-    if (lower.includes('traditional')) return 'bg-amber-100 text-amber-600 border-amber-200';
+    if (lower.includes('nasional') || lower.includes('national') || lower.includes('standard')) return 'bg-red-100 text-red-600 border-red-200';
+    if (lower.includes('traditional') || lower.includes('tradisional') || lower.includes('horsebow') || lower.includes('jemparingan')) return 'bg-amber-100 text-amber-600 border-amber-200';
 
     return 'bg-navy/5 text-navy border-navy/10';
 };
+

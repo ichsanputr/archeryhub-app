@@ -9,8 +9,8 @@
       </div>
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div>
-          <div class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
-            <Icon icon="ph:shield-check" class="text-base sm:text-lg" />
+          <div class="flex items-center gap-2 text-slate-300 text-[10px] sm:text-sm font-bold tracking-wider mb-3">
+            <Icon icon="ph:shield-check" class="text-base sm:text-lg text-emerald-400" />
             Legal
           </div>
           <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
@@ -27,9 +27,9 @@
     </div>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
+    <main class="flex-grow max-w-4xl mx-auto w-full px-0 sm:px-6 lg:px-8 py-6 sm:py-12 mb-10 sm:mb-20 relative z-20">
       <div
-        class="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-14">
+        class="bg-white dark:bg-gray-800 rounded-none sm:rounded-3xl shadow-none sm:shadow-sm border-y sm:border border-gray-100 dark:border-gray-700 p-5 sm:p-8 md:p-14">
         <div class="space-y-8 text-slate-700 dark:text-slate-200 text-base sm:text-lg leading-relaxed">
           <p class="text-base sm:text-lg leading-relaxed text-slate-700 dark:text-slate-300">
             This Privacy Policy explains how Archeris ("we", "us", or "our") collects, uses, and protects your information when you use our platform, including our website, mobile scoring apps, and tournament services.

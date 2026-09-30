@@ -62,9 +62,9 @@
                 <Icon icon="ph:image-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Profile Photo & Banner' : 'Foto Profil & Sampul Banner' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Upload your official avatar and profile banner.' : 'Unggah foto profil resmi dan gambar banner profil Anda.' }}
                 </div>
@@ -146,9 +146,9 @@
                 <Icon icon="ph:user-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Identity & Personal Data' : 'Identitas & Data Pribadi' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Official information used for tournament registration and verification.' : 'Data resmi yang digunakan untuk verifikasi dan pendaftaran turnamen.' }}
                 </div>
@@ -198,9 +198,9 @@
                 <Icon icon="ph:target-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Archery Specifications & Club' : 'Klub & Spesifikasi Memanah' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Your primary archery category and club origin.' : 'Kategori divisi panahan utama dan klub asal Anda.' }}
                 </div>
@@ -236,9 +236,9 @@
                 <Icon icon="ph:map-pin-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Contact & Residential Address' : 'Kontak & Alamat Domisili' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Contact information and address for official communication.' : 'Informasi kontak darurat dan alamat domisili untuk surat-menyurat resmi.' }}
                 </div>
@@ -306,9 +306,9 @@
                 <Icon icon="ph:share-network-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Social Media & Public Links' : 'Media Sosial & Tautan Publik' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Connect your social media profiles to showcase on your public page.' : 'Hubungkan akun media sosial Anda untuk ditampilkan di profil publik.' }}
                 </div>
@@ -388,9 +388,9 @@
               <Icon icon="ph:share-network-bold" class="text-2xl text-navy" />
             </div>
             <div class="space-y-1">
-              <h4 class="text-base font-black text-navy">
+              <div class="text-base font-black text-navy">
                 {{ isEn ? 'No social media accounts connected' : 'Belum Ada Akun Media Sosial' }}
-              </h4>
+              </div>
               <div class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
                 {{ isEn ? 'Add your social media links so fellow archers and tournament organizers can connect with you.' : 'Tambahkan tautan media sosial agar pemanah lain dan panitia turnamen dapat terhubung dengan Anda.' }}
               </div>
@@ -422,9 +422,9 @@
                 <Icon icon="ph:identification-card-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Archer Biography' : 'Biografi & Tentang Saya' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Write a short story or bio about your archery journey.' : 'Tuliskan biografi singkat perjalanan memanah dan profil Anda.' }}
                 </div>
@@ -453,9 +453,9 @@
                 <Icon icon="ph:medal-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Achievements & Accolades' : 'Daftar Prestasi & Penghargaan' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Highlight up to 3 major achievements to appear on top of your public profile.' : 'Beri tanda bintang pada maksimal 3 prestasi utama untuk disorot di profil publik.' }}
                 </div>
@@ -509,9 +509,9 @@
                 <Icon icon="ph:trophy-bold" class="text-2xl text-navy" />
               </div>
               <div class="space-y-1">
-                <h4 class="text-base font-black text-navy">
+                <div class="text-base font-black text-navy">
                   {{ isEn ? 'No achievements added yet' : 'Belum Ada Prestasi yang Ditambahkan' }}
-                </h4>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
                   {{ isEn ? 'Add medals, podium finishes, or official titles to build your archer portfolio.' : 'Tambahkan perolehan medali, juara turnamen, atau penghargaan resmi untuk melengkapi portofolio Anda.' }}
                 </div>
@@ -535,9 +535,9 @@
                 <Icon icon="ph:calendar-check-bold" class="text-xl" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
+                <div class="text-base sm:text-lg font-black text-navy leading-snug">
                   {{ isEn ? 'Tournament Participation & Certificates' : 'Riwayat Kejuaraan & E-Sertifikat' }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
                   {{ isEn ? 'Track your tournament history and download official event certificates.' : 'Pantau riwayat keikutsertaan turnamen dan unduh e-sertifikat resmi Anda.' }}
                 </div>

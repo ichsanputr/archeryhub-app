@@ -24,10 +24,10 @@
 
                     <div class="max-w-3xl space-y-4">
                         <!-- Category Badge Pill -->
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white/10 text-primary border border-white/15 backdrop-blur-md">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white/10 text-white border border-white/15 backdrop-blur-md">
                             <Icon :icon="categoryInfo?.icon || 'ph:folder-bold'" class="text-sm" />
                             <span>Category Archive</span>
-                            <span class="w-1 h-1 rounded-full bg-primary/60"></span>
+                            <span class="w-1 h-1 rounded-full bg-white/50"></span>
                             <span>{{ filteredArticles.length }} {{ filteredArticles.length === 1 ? 'Article' : 'Articles' }}</span>
                         </div>
 
@@ -65,7 +65,7 @@
                                 :class="[
                                     'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shrink-0',
                                     isCurrentCategory(cat.slug)
-                                        ? 'bg-navy text-primary shadow-xs'
+                                        ? 'bg-navy text-white shadow-xs'
                                         : 'text-slate-600 hover:text-navy hover:bg-slate-100'
                                 ]"
                             >
@@ -118,7 +118,7 @@
                                     />
                                     <!-- Category Pill -->
                                     <div class="absolute top-3.5 left-3.5">
-                                        <span class="bg-navy/90 backdrop-blur-xs text-primary text-[11px] sm:text-xs font-bold px-3 py-1 rounded-xl shadow-xs border border-white/10">
+                                        <span class="bg-navy/90 backdrop-blur-xs text-white text-[11px] sm:text-xs font-bold px-3 py-1 rounded-xl shadow-xs border border-white/10">
                                             {{ article.category }}
                                         </span>
                                     </div>
@@ -212,7 +212,7 @@
                                 :class="[
                                     'w-9 h-9 rounded-xl text-xs sm:text-sm font-bold transition-all',
                                     currentPage === page 
-                                        ? 'bg-navy text-primary shadow-xs font-black' 
+                                        ? 'bg-navy text-white shadow-xs font-black' 
                                         : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300'
                                 ]"
                             >
@@ -233,7 +233,7 @@
 
                 <!-- Empty State -->
                 <div v-else class="bg-white rounded-3xl border border-slate-200/80 p-10 sm:p-14 text-center max-w-xl mx-auto space-y-4">
-                    <div class="w-16 h-16 rounded-2xl bg-amber-50 text-primary border border-amber-200/80 flex items-center justify-center mx-auto">
+                    <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 border border-slate-200 flex items-center justify-center mx-auto">
                         <Icon icon="ph:target-bold" class="text-3xl" />
                     </div>
                     <div class="space-y-1">

@@ -71,14 +71,14 @@
 
       <!-- Empty State -->
       <div v-else-if="targets.length === 0"
-        class="bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-sm">
+        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center shadow-xs">
         <div class="flex flex-col items-center gap-4 max-w-sm mx-auto">
-          <div class="size-20 bg-gray-50 rounded-3xl flex items-center justify-center text-gray-300">
+          <div class="size-20 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-slate-400">
             <Icon icon="ph:target-bold" class="text-5xl" />
           </div>
           <div class="space-y-1">
-            <h3 class="text-lg font-black text-navy">{{ t('event_targets.no_targets') }}</h3>
-            <div class="text-xs text-gray-500 font-medium leading-relaxed">
+            <div class="text-lg font-black text-navy dark:text-white">{{ t('event_targets.no_targets') }}</div>
+            <div class="text-xs text-slate-500 font-medium leading-relaxed">
               {{ t('event_targets.no_targets_desc') }}
             </div>
           </div>
@@ -88,9 +88,9 @@
       <!-- Grid Data -->
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="target in targets" :key="target.target_number"
-          class="group relative bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+          class="group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs hover:border-primary/40 transition-all duration-300 overflow-hidden flex flex-col">
           <!-- Board Header -->
-          <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
+          <div class="px-6 py-4 bg-slate-50/50 dark:bg-slate-700/30 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
             <div class="flex items-center gap-2">
               <span
                 class="size-8 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm font-mono shadow-sm">
@@ -101,11 +101,11 @@
             <!-- Actions Hover Menu -->
             <div class="flex gap-1">
               <button @click="isSubscriptionActive ? editTarget(target) : (showPremiumModal = true)"
-                class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-blue-600 hover:bg-blue-50 transition-colors shadow-sm">
+                class="size-8 flex items-center justify-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-blue-600 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors shadow-2xs">
                 <Icon icon="ph:pencil-simple-bold" />
               </button>
               <button @click="isSubscriptionActive ? confirmDelete(target) : (showPremiumModal = true)"
-                class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-red-500 hover:bg-red-50 transition-colors shadow-sm">
+                class="size-8 flex items-center justify-center rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-red-500 hover:bg-red-50 dark:hover:bg-slate-700 transition-colors shadow-2xs">
                 <Icon icon="ph:trash-bold" />
               </button>
             </div>
@@ -126,14 +126,14 @@
                 <div class="relative w-full aspect-square">
                   <img src="/target.svg" class="w-full h-full" alt="Archery Target" />
                 </div>
-                <span class="text-xs font-black text-navy/40 tracking-widest">{{ target.target_number }}{{ letter }}</span>
+                <span class="text-xs font-black text-navy/40 dark:text-white/40 tracking-widest">{{ target.target_number }}{{ letter }}</span>
               </div>
             </div>
           </div>
 
           <!-- Quick Footer Info -->
-          <div class="px-6 py-3 bg-gray-50/30 text-center">
-            <div class="text-[10px] font-bold text-gray-400 tracking-widest">
+          <div class="px-6 py-3 bg-slate-50/30 dark:bg-slate-700/20 text-center">
+            <div class="text-[10px] font-bold text-slate-400 tracking-widest">
               {{ t('event_targets.targets_count', { count: target.letters.split(',').length }) }}
             </div>
           </div>
@@ -141,7 +141,7 @@
       </div>
 
       <!-- Grid Pagination -->
-      <div v-if="targets.length > 0" class="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+      <div v-if="targets.length > 0" class="p-6 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xs">
         <BasePagination :current-page="page" :total-items="total" :items-per-page="limit"
           :page-size-options="[9, 18, 27, 45, 90]" @change-page="handlePageChange"
           @update:items-per-page="handleLimitChange" no-margin />
@@ -188,7 +188,7 @@
       <template #empty>
         <div class="p-12 text-center">
           <Icon icon="ph:target-bold" class="text-6xl text-gray-200 mx-auto mb-4" />
-          <h3 class="text-xl font-bold text-navy mb-1">{{ t('event_targets.no_targets') }}</h3>
+          <div class="text-xl font-bold text-navy dark:text-white mb-1">{{ t('event_targets.no_targets') }}</div>
           <div class="text-gray-400 text-sm">{{ t('event_targets.no_targets_desc') }}</div>
         </div>
       </template>
@@ -210,9 +210,9 @@
                   <div class="size-10 bg-primary/20 rounded-lg flex items-center justify-center">
                     <Icon icon="ph:target" class="text-xl text-navy" />
                   </div>
-                  <h3 class="text-xl font-black text-navy">
+                  <div class="text-xl font-black text-navy">
                     {{ showEditDialog ? t('event_targets.edit_target') : t('event_targets.add_target') }}
-                  </h3>
+                  </div>
                 </div>
                 <button @click="closeDialog" class="text-gray-400 hover:text-navy transition-colors">
                   <Icon icon="ph:x" class="text-2xl" />
@@ -295,7 +295,7 @@
                   <Icon icon="ph:warning" class="text-2xl text-red-600" />
                 </div>
                 <div>
-                  <h3 class="text-xl font-black text-navy mb-2">{{ t('event_targets.confirm_delete') }}</h3>
+                  <div class="text-xl font-black text-navy mb-2">{{ t('event_targets.confirm_delete') }}</div>
                   <div class="text-gray-600" v-html="t('event_targets.confirm_delete_desc', { target: targetToDelete?.target_name })"></div>
                 </div>
               </div>

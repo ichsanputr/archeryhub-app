@@ -75,9 +75,9 @@
 
                             <!-- Info Area & Actions -->
                             <div class="p-5 flex flex-col gap-4">
-                                <h4 class="font-bold text-navy text-sm sm:text-base line-clamp-2" :title="file.title || file.name">
+                                <div class="font-bold text-navy text-sm sm:text-base line-clamp-2" :title="file.title || file.name">
                                     {{ file.title || file.name || t('event_results.result_doc', 'Dokumen Hasil') }}
-                                </h4>
+                                </div>
                                 <div class="flex gap-3">
                                     <a :href="file.url" target="_blank"
                                         class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-xs sm:text-sm rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
@@ -102,10 +102,10 @@
                     <div class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
                         <Icon icon="ph:file-dashed" class="text-5xl text-gray-300" />
                     </div>
-                    <h3 class="text-xl font-black text-navy mb-3">{{ t('event_results.no_manual_results_title', 'Belum Ada Dokumen Hasil') }}</h3>
-                    <p class="text-gray-500 leading-relaxed text-sm sm:text-base">
+                    <div class="text-xl font-black text-navy mb-3">{{ t('event_results.no_manual_results_title', 'Belum Ada Dokumen Hasil') }}</div>
+                    <div class="text-gray-500 leading-relaxed text-sm sm:text-base">
                         {{ t('event_results.no_manual_results_desc', 'Dokumen hasil lomba belum diunggah oleh penyelenggara.') }}
-                    </p>
+                    </div>
                 </div>
             </template>
 
@@ -114,7 +114,7 @@
                 <!-- Category Selector -->
                 <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                        <h2 class="text-base sm:text-lg font-bold text-navy">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</h2>
+                        <div class="text-base sm:text-lg font-bold text-navy">{{ t('event_results.select_category', 'Pilih Kategori Lomba') }}</div>
 
                         <!-- Event Type Selector Row (Individual / Team / Mixed) -->
                         <div v-if="eventTypeOptions.length > 1" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
@@ -125,14 +125,14 @@
                                 @click="selectedEventType = opt.value"
                                 class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-1.5"
                                 :class="selectedEventType === opt.value
-                                    ? 'bg-navy text-primary shadow-sm'
+                                    ? 'bg-navy text-white shadow-sm'
                                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-navy'"
                             >
                                 <Icon :icon="opt.icon" class="text-sm sm:text-base" />
                                 <span>{{ opt.label }}</span>
                                 <span
                                     class="text-xs px-2 py-0.5 rounded-full font-medium"
-                                    :class="selectedEventType === opt.value ? 'bg-primary/20 text-primary' : 'bg-gray-200 text-gray-700'"
+                                    :class="selectedEventType === opt.value ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'"
                                 >
                                     {{ opt.count }}
                                 </span>
@@ -143,7 +143,7 @@
                     <div v-if="filteredCategories.length === 0" class="text-center py-8 text-gray-400">
                         <div class="flex flex-col items-center">
                             <Icon icon="ph:folder-notch-open" class="text-4xl mb-2" />
-                            <p>{{ t('event_results.category_not_found', 'Kategori tidak ditemukan') }}</p>
+                            <div>{{ t('event_results.category_not_found', 'Kategori tidak ditemukan') }}</div>
                         </div>
                     </div>
 
@@ -152,23 +152,24 @@
                             @click="selectCategory(category.uuid)" :class="[
                                 'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
                                 selectedCategory === category.uuid
-                                    ? 'border-primary bg-primary/5 shadow-sm'
+                                    ? 'border-navy bg-navy/5 shadow-sm'
                                     : 'border-gray-200 bg-white hover:border-gray-300'
                             ]">
                             <div class="absolute top-0 left-0 w-1.5 h-full rounded-l-xl transition-colors"
-                                :class="selectedCategory === category.uuid ? 'bg-primary' : 'bg-transparent'"></div>
+                                :class="selectedCategory === category.uuid ? 'bg-navy' : 'bg-transparent'"></div>
                             <div class="flex items-start gap-3 pl-2">
                                 <div
-                                    class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-2xs overflow-hidden p-2 transition-colors"
-                                    :class="selectedCategory === category.uuid ? 'bg-primary text-btn-text' : 'bg-primary/10 text-navy group-hover:bg-primary group-hover:text-btn-text'">
+                                    class="size-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-2xs overflow-hidden p-2 transition-colors border"
+                                    :class="selectedCategory === category.uuid ? 'bg-primary/20 border-primary/30 text-primary' : 'bg-slate-100 border-slate-200 text-navy group-hover:bg-primary/10 group-hover:border-primary/20'">
                                     <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
                                         :alt="category.division_name"
-                                        class="w-full h-full object-contain" />
+                                        class="w-full h-full object-contain"
+                                        @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-team.svg' }" />
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p
-                                        class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
-                                        {{ category.category_name }}</p>
+                                    <div
+                                        class="font-bold text-navy group-hover:text-navy transition-colors leading-tight mb-1.5 line-clamp-2">
+                                        {{ category.category_name }}</div>
                                     <div class="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
                                         <Icon icon="ph:users-three" class="text-base" />
                                         <span class="font-semibold">{{ t('event_results.archers_count', { count: category.participant_count || 0 }) }}</span>
@@ -196,16 +197,24 @@
                         class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <!-- Bracket Header -->
                         <div class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-6">
-                            <h3 class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
-                                <Icon icon="ph:trophy" class="text-primary" />
+                            <div class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
+                                <Icon icon="ph:trophy" class="text-white" />
                                 {{ t('event_results.elimination_bracket', 'Eliminasi Bracket') }} - {{ currentCategoryName }}
-                            </h3>
+                            </div>
                         </div>
                         <PublicEliminationBracket :bracket="currentElimBracket" :rounds="sortedElimRounds" />
                     </div>
 
-                    <!-- Qualification Results Below -->
-                    <div v-if="selectedCategory"
+                    <div v-else-if="isTeamCategory"
+                        class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+                        <div class="flex flex-col items-center">
+                            <Icon icon="ph:trophy" class="text-6xl text-gray-300 mb-4" />
+                            <div class="text-gray-500 font-medium text-sm sm:text-base">{{ t('event_results.elimination_not_available', 'Bagan eliminasi beregu belum tersedia') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Qualification Results Below (Individual Only) -->
+                    <div v-if="selectedCategory && !isTeamCategory"
                         class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div v-if="qualificationLoading" class="p-6 animate-pulse space-y-4">
                             <div class="h-6 w-64 bg-gray-200 rounded"></div>
@@ -222,7 +231,7 @@
                             class="p-12 text-center">
                             <div class="flex flex-col items-center">
                                 <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
-                                <p class="text-gray-500 font-medium text-sm sm:text-base">{{ t('event_results.qualification_not_available', 'Hasil kualifikasi belum tersedia') }}</p>
+                                <div class="text-gray-500 font-medium text-sm sm:text-base">{{ t('event_results.qualification_not_available', 'Hasil kualifikasi belum tersedia') }}</div>
                             </div>
                         </div>
 
@@ -230,10 +239,10 @@
                             <!-- Category Header -->
                             <div
                                 class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <h3 class="!text-sm !md:text-base font-black text-white flex items-center gap-2">
-                                    <Icon icon="ph:target" class="text-primary text-xl" />
+                                <div class="!text-sm !md:text-base font-black text-white flex items-center gap-2">
+                                    <Icon icon="ph:target" class="text-white text-xl" />
                                     {{ t('event_results.qualification_ranking', 'Peringkat Kualifikasi') }} - {{ currentCategoryName }}
-                                </h3>
+                                </div>
 
                                 <!-- Session Selector -->
                                 <div class="flex items-center gap-3">
@@ -498,8 +507,16 @@ const currentCategoryName = computed(() => {
     return cat?.category_name || ''
 })
 
+const isTeamCategory = computed(() => {
+    if (!selectedCategory.value) return false
+    const cat = categories.value.find(c => c.uuid === selectedCategory.value)
+    if (!cat) return false
+    const type = (cat.event_type_name || '').toLowerCase()
+    return type.includes('team') || type.includes('mixed') || type.includes('beregu') || type.includes('campuran')
+})
+
 const currentQualResults = computed(() => {
-    if (!selectedCategory.value) return []
+    if (!selectedCategory.value || isTeamCategory.value) return []
     return qualificationData.value[selectedCategory.value] || []
 })
 
@@ -724,10 +741,15 @@ const fetchCategories = async () => {
 const selectCategory = async (categoryUuid) => {
     selectedCategory.value = categoryUuid
 
-    await Promise.all([
-        loadQualificationResults(categoryUuid),
-        loadEliminationBracket(categoryUuid)
-    ])
+    const cat = categories.value.find(c => c.uuid === categoryUuid)
+    const isTeam = cat ? ((cat.event_type_name || '').toLowerCase().includes('team') || (cat.event_type_name || '').toLowerCase().includes('mixed') || (cat.event_type_name || '').toLowerCase().includes('beregu') || (cat.event_type_name || '').toLowerCase().includes('campuran')) : false
+
+    const fetchTasks = [loadEliminationBracket(categoryUuid)]
+    if (!isTeam) {
+        fetchTasks.push(loadQualificationResults(categoryUuid))
+    }
+
+    await Promise.all(fetchTasks)
 
     // Auto-select session if only one exists
     if (availableSessions.value.length === 1) {

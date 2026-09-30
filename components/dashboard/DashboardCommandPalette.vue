@@ -120,9 +120,9 @@
               <div class="size-12 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 mx-auto mb-3">
                 <Icon icon="ph:file-search-bold" class="text-2xl" />
               </div>
-              <h4 class="text-sm font-bold text-navy dark:text-slate-200 mb-1">
+              <div class="text-sm font-bold text-navy dark:text-slate-200 mb-1">
                 {{ locale === 'id' ? 'Tidak ada aksi atau menu yang cocok' : 'No matching commands or pages' }}
-              </h4>
+              </div>
               <div class="text-xs text-slate-400 dark:text-slate-500 max-w-sm mx-auto">
                 {{ locale === 'id'
                   ? `Tidak ada hasil untuk kata kunci "${query}". Coba cari "turnamen", "atlet", "pengaturan", atau "profil".`

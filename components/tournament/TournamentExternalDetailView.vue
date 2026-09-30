@@ -30,15 +30,15 @@
           <!-- Meta Information Row (3 Items) -->
           <div class="flex flex-wrap items-center gap-y-2 gap-x-5 sm:gap-x-6 text-xs sm:text-sm text-slate-200 pt-1 font-medium">
             <div class="flex items-center gap-2">
-              <Icon icon="ph:calendar-blank-bold" class="text-primary text-base shrink-0" />
+              <Icon icon="ph:calendar-blank-bold" class="text-white/80 text-base shrink-0" />
               <span>{{ formatDateRange(activeTournament?.start_date, activeTournament?.end_date) }}</span>
             </div>
             <div class="flex items-center gap-2">
-              <Icon icon="ph:map-pin-bold" class="text-primary text-base shrink-0" />
+              <Icon icon="ph:map-pin-bold" class="text-white/80 text-base shrink-0" />
               <span>{{ toTitleCase(activeTournament?.location || activeTournament?.venue || 'Indonesia') }}</span>
             </div>
             <div class="flex items-center gap-2">
-              <Icon icon="ph:buildings-bold" class="text-primary text-base shrink-0" />
+              <Icon icon="ph:buildings-bold" class="text-white/80 text-base shrink-0" />
               <span>{{ toTitleCase(activeTournamentData?.organizer_name || 'Host Organization') }}</span>
             </div>
           </div>

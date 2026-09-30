@@ -16,12 +16,12 @@
                 <div class="flex items-center gap-2 text-xs text-slate-300 font-medium mb-4">
                     <NuxtLink to="/" class="hover:text-white transition-colors">Home</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px] text-slate-400" />
-                    <span class="text-primary font-semibold">FAQ</span>
+                    <span class="text-white font-semibold">FAQ</span>
                 </div>
 
                 <div class="max-w-3xl text-center md:text-left">
                     <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-white/10 border border-white/15 text-slate-200 text-xs font-bold rounded-full mb-4">
-                        <Icon icon="ph:question-bold" class="text-sm text-primary" />
+                        <Icon icon="ph:question-bold" class="text-sm text-slate-300" />
                         {{ $t('faq_page.badge', 'Help & Support') }}
                     </span>
                     <h1 class="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mb-4">

@@ -175,7 +175,7 @@
       <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
         <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h4 class="font-black text-sm text-navy dark:text-white">{{ t('org_event_payments.proof_modal_title') }}</h4>
+            <div class="font-black text-sm text-navy dark:text-white">{{ t('org_event_payments.proof_modal_title') }}</div>
             <div class="text-xs text-slate-400">{{ activeProofInvoice?.reference }} &bull; {{ activeProofInvoice?.payer_name }}</div>
           </div>
           <button
@@ -222,7 +222,7 @@
             <Icon icon="ph:warning-circle-bold" class="size-5" />
           </div>
           <div>
-            <h4 class="font-black text-navy dark:text-white text-base">{{ t('org_event_payments.reject_modal_title') }}</h4>
+            <div class="font-black text-navy dark:text-white text-base">{{ t('org_event_payments.reject_modal_title') }}</div>
             <div class="text-xs text-slate-400">{{ activeRejectInvoice?.reference }}</div>
           </div>
         </div>

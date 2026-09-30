@@ -13,13 +13,13 @@
             </div>
         </div>
 
-        <div class="container mx-auto px-4 max-w-7xl pt-8 pb-20 flex flex-col lg:flex-row gap-0">
+        <div class="container mx-auto px-0 sm:px-4 max-w-7xl pt-4 sm:pt-8 pb-16 sm:pb-20 flex flex-col lg:flex-row gap-0">
             <!-- Left Sidebar (Navigation) -->
             <aside
-                class="flex flex-col w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-4 lg:scrollbar-styled self-start mb-8 lg:mb-0">
+                class="flex flex-col w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-4 lg:scrollbar-styled self-start mb-6 lg:mb-0 px-4 sm:px-0">
                 <!-- Mobile Toggle Button -->
                 <button @click="toggleMobileMenu"
-                    class="lg:hidden flex items-center justify-between w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl px-4 py-3 mb-2 text-sm font-bold text-navy dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+                    class="lg:hidden flex items-center justify-between w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl px-4 py-3 mb-2 text-sm font-bold text-navy dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors shadow-2xs">
                     <span class="flex items-center gap-2">
                         <Icon icon="ph:list-dashes-bold" class="text-lg text-primary" />
                         {{ $t('docs.sidebar_title') }}
@@ -30,7 +30,7 @@
 
                 <!-- Sidebar content (collapsible on mobile, always visible on desktop) -->
                 <div :class="isMobileMenuOpen ? 'block' : 'hidden lg:block'"
-                    class="bg-gray-50 dark:bg-slate-900 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 dark:border-slate-800 lg:border-0 rounded-none lg:rounded-none">
+                    class="bg-white dark:bg-slate-900 lg:bg-transparent p-4 lg:p-0 border border-gray-100 dark:border-slate-800 lg:border-0 rounded-2xl lg:rounded-none shadow-sm lg:shadow-none mb-4 lg:mb-0">
 
                     <!-- If categories exist -->
                     <template v-if="hasCategories">
@@ -79,10 +79,10 @@
             </aside>
 
             <!-- Main content -->
-            <main class="flex-1 min-w-0 w-full lg:pl-8 lg:pr-6">
-                <div v-if="currentDoc" class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors duration-200">
+            <main class="flex-1 min-w-0 w-full px-0 lg:pl-8 lg:pr-6">
+                <div v-if="currentDoc" class="bg-white dark:bg-slate-900 rounded-none sm:rounded-3xl border-y sm:border border-gray-100 dark:border-slate-800 shadow-none sm:shadow-sm overflow-hidden transition-colors duration-200">
                     <!-- Doc header -->
-                    <div class="relative bg-gradient-to-br from-navy via-slate-900 to-navy dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white px-6 sm:px-10 pt-10 pb-10 overflow-hidden border-b border-white/10">
+                    <div class="relative bg-gradient-to-br from-navy via-slate-900 to-navy dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 text-white px-4 sm:px-10 pt-8 sm:pt-10 pb-8 sm:pb-10 overflow-hidden border-b border-white/10">
                         <!-- Decorative background glow and archery ring watermark -->
                         <div class="absolute -top-24 -right-24 w-80 h-80 bg-primary/15 rounded-full blur-3xl pointer-events-none"></div>
                         <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -105,7 +105,7 @@
                             <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-5 border-t border-white/10 text-slate-400 text-xs font-medium">
                                 <div class="flex items-center gap-4 flex-wrap">
                                     <div class="flex items-center gap-1.5 text-slate-300">
-                                        <Icon icon="ph:shield-check-bold" class="text-primary text-sm" />
+                                        <Icon icon="ph:shield-check-bold" class="text-emerald-400 text-sm" />
                                         <span>{{ isIdRoute ? 'Dokumentasi Resmi' : 'Official Documentation' }}</span>
                                     </div>
                                     <span class="text-white/20">•</span>
@@ -135,16 +135,16 @@
                     </div>
 
                     <!-- Doc body -->
-                    <div class="px-6 md:px-10 py-8 doc-content" v-html="formattedDocContent"></div>
+                    <div class="px-4 sm:px-6 md:px-10 py-6 sm:py-8 doc-content" v-html="formattedDocContent"></div>
 
                     <!-- Last Updated Info -->
-                    <div class="px-6 md:px-10 pb-6 text-xs text-gray-400 dark:text-slate-500 font-medium flex items-center gap-1.5">
+                    <div class="px-4 sm:px-6 md:px-10 pb-6 text-xs text-gray-400 dark:text-slate-500 font-medium flex items-center gap-1.5">
                         <Icon icon="ph:clock-clockwise-bold" class="text-xs" />
                         <span>{{ lastUpdatedText }}</span>
                     </div>
 
                     <!-- Share Social Media -->
-                    <div class="px-6 md:px-10 pb-8 pt-4 border-t border-gray-100 dark:border-slate-800">
+                    <div class="px-4 sm:px-6 md:px-10 pb-8 pt-4 border-t border-gray-100 dark:border-slate-800">
                         <h4 class="text-[10px] font-black tracking-widest text-gray-400 dark:text-slate-500 mb-3">{{ isIdRoute ? 'Bagikan dokumen ini' : ($t('docs.share_title') || 'Share this document') }}</h4>
                         <div class="flex flex-wrap gap-2">
                             <button @click="shareTo('twitter')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 dark:bg-slate-800 hover:bg-primary/10 dark:hover:bg-primary/20 text-navy dark:text-slate-200 text-xs font-bold transition-all border border-gray-100 dark:border-slate-700 hover:border-primary/30">
@@ -168,7 +168,7 @@
 
                     <!-- Navigation buttons -->
                     <div
-                        class="px-6 md:px-10 pt-6 pb-8 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        class="px-4 sm:px-6 md:px-10 pt-6 pb-8 border-t border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <NuxtLink v-if="prevDoc" :to="docPath(prevDoc.slug)"
                             class="flex items-center gap-3.5 group p-4 sm:px-5 sm:py-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 hover:border-primary/40 transition-all w-full sm:max-w-sm justify-start shadow-2xs">
                             <Icon icon="ph:arrow-left-bold"
@@ -195,12 +195,12 @@
                     </div>
                 </div>
 
-                <div v-else class="bg-white dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800 shadow-sm p-16 text-center">
+                <div v-else class="bg-white dark:bg-slate-900 rounded-none sm:rounded-3xl border-y sm:border border-gray-100 dark:border-slate-800 shadow-none sm:shadow-sm p-8 sm:p-16 text-center">
                     <Icon icon="ph:file-x-bold" class="text-5xl text-gray-300 dark:text-slate-600 mb-4" />
                     <h2 class="text-xl font-black text-navy dark:text-slate-100 mb-2">{{ $t('docs.not_found_title') }}</h2>
                     <p class="text-gray-500 dark:text-slate-400 mb-6 text-sm">{{ $t('docs.not_found_desc') }}</p>
                     <NuxtLink to="/docs"
-                        class="inline-flex items-center gap-2 bg-navy dark:bg-primary text-primary dark:text-navy font-bold px-6 py-2.5 rounded-xl hover:bg-navy/90 dark:hover:bg-primary/90 transition-all text-sm">
+                        class="inline-flex items-center gap-2 bg-navy hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-xl transition-all text-sm">
                         <Icon icon="ph:arrow-left-bold" />
                         {{ $t('docs.back_to_docs') }}
                     </NuxtLink>
@@ -228,17 +228,17 @@
                     <div class="mt-4 pt-3 border-t border-gray-100 dark:border-slate-800 space-y-0.5">
                         <NuxtLink to="/docs"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
-                            <Icon icon="ph:arrow-left-bold" class="text-sm shrink-0 text-gray-400 dark:text-slate-500 group-hover:text-primary transition-colors" />
+                            <Icon icon="ph:arrow-left-bold" class="text-sm shrink-0 text-gray-400 dark:text-slate-500 group-hover:text-navy transition-colors" />
                             <span>{{ $t('docs.all_docs') || 'Semua Dokumentasi' }}</span>
                         </NuxtLink>
                         <NuxtLink to="/contact"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
-                            <Icon icon="ph:paper-plane-tilt-bold" class="text-sm shrink-0 text-primary group-hover:scale-110 transition-transform" />
+                            <Icon icon="ph:paper-plane-tilt-bold" class="text-sm shrink-0 text-slate-400 group-hover:text-navy group-hover:scale-110 transition-transform" />
                             <span>{{ locale === 'id' ? 'Formulir Kontak' : 'Contact Form' }}</span>
                         </NuxtLink>
                         <a href="mailto:admin@archeris.net"
                             class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm font-medium transition-all text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800/80 hover:text-navy dark:hover:text-slate-100 group">
-                            <Icon icon="ph:envelope-simple-bold" class="text-sm shrink-0 text-primary group-hover:scale-110 transition-transform" />
+                            <Icon icon="ph:envelope-simple-bold" class="text-sm shrink-0 text-slate-400 group-hover:text-navy group-hover:scale-110 transition-transform" />
                             <span class="truncate">admin@archeris.net</span>
                         </a>
                     </div>

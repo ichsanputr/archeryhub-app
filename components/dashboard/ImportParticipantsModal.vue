@@ -11,7 +11,7 @@
               <Icon icon="ph:file-csv-bold" class="text-2xl text-primary" />
             </div>
             <div>
-              <h3 class="text-lg font-black tracking-tight">{{ t('csv_import.import_title') }}</h3>
+              <div class="text-lg font-black tracking-tight">{{ t('csv_import.import_title') }}</div>
               <div class="text-xs sm:text-sm text-slate-300">{{ t('csv_import.import_subtitle') }}</div>
             </div>
           </div>

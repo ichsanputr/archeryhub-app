@@ -40,9 +40,9 @@
                 <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
                   <Icon icon="ph:crosshair-bold" class="text-base" />
                 </div>
-                <h2 class="text-base font-bold text-slate-900 dark:text-white">
+                <div class="text-base font-bold text-slate-900 dark:text-white">
                   {{ t('my_target.assigned_title') }}
-                </h2>
+                </div>
               </div>
               <span v-if="targets.length > 0" class="text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 px-2.5 py-0.5 rounded-md">
                 {{ t('my_target.sessions_count', { count: targets.length }, `${targets.length} Sesi`) }}
@@ -51,14 +51,14 @@
 
             <!-- Empty State: No Target Assigned Yet -->
             <div v-if="targets.length === 0"
-              class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-700/30 p-8 text-center space-y-3">
-              <div class="size-14 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-800 flex items-center justify-center mx-auto shadow-2xs">
-                <Icon icon="ph:crosshair-bold" class="text-2xl" />
+              class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
+              <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+                <Icon icon="ph:crosshair-bold" class="text-3xl sm:text-4xl text-navy" />
               </div>
-              <div class="space-y-1 max-w-md mx-auto">
-                <h3 class="text-sm sm:text-base font-bold text-slate-800 dark:text-white">
+              <div class="space-y-2 max-w-lg mx-auto">
+                <div class="text-xl font-black text-navy dark:text-white tracking-tight">
                   {{ t('my_target.not_assigned_title') }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                   {{ t('my_target.not_assigned_desc') }}
                 </div>
@@ -151,9 +151,9 @@
                 <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
                   <Icon icon="ph:calendar-check-bold" class="text-base" />
                 </div>
-                <h2 class="text-base font-bold text-slate-900 dark:text-white">
+                <div class="text-base font-bold text-slate-900 dark:text-white">
                   {{ t('my_target.schedule_title') }}
-                </h2>
+                </div>
               </div>
 
               <!-- Day Tabs if multi-day -->
@@ -181,14 +181,14 @@
 
             <!-- Empty Schedule State -->
             <div v-if="scheduleDays.length === 0 || activeDayItems.length === 0"
-              class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-700/30 p-8 text-center space-y-3">
-              <div class="size-14 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-2xl border border-amber-200 dark:border-amber-800 flex items-center justify-center mx-auto shadow-2xs">
-                <Icon icon="ph:calendar-x-bold" class="text-2xl" />
+              class="bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
+              <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+                <Icon icon="ph:calendar-x-bold" class="text-3xl sm:text-4xl text-navy" />
               </div>
-              <div class="space-y-1 max-w-md mx-auto">
-                <h3 class="text-sm sm:text-base font-bold text-slate-800 dark:text-white">
+              <div class="space-y-2 max-w-lg mx-auto">
+                <div class="text-xl font-black text-navy dark:text-white tracking-tight">
                   {{ t('my_target.empty_schedule') }}
-                </h3>
+                </div>
                 <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
                   {{ t('my_target.empty_schedule_desc') }}
                 </div>
@@ -296,10 +296,10 @@
           <!-- Whistle & Shooting Line Protocol Card -->
           <div class="bg-gradient-to-br from-navy to-navy/95 text-white rounded-2xl p-5 shadow-sm space-y-4 border border-white/10">
             <div class="flex items-center justify-between border-b border-white/10 pb-3">
-              <h4 class="text-xs sm:text-sm font-black flex items-center gap-2">
+              <div class="text-xs sm:text-sm font-black flex items-center gap-2">
                 <Icon icon="ph:megaphone-simple-bold" class="text-amber-400 text-base" />
                 <span>{{ t('my_target.rules_title') }}</span>
-              </h4>
+              </div>
               <span class="text-[10px] font-black text-amber-300 px-2 py-0.5 rounded-md bg-white/10">WA Rules</span>
             </div>
 
@@ -351,32 +351,78 @@
           </div>
 
           <!-- Venue & Event Card -->
-          <div class="p-4 bg-slate-50/80 dark:bg-slate-700/40 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-3">
-            <h4 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200/60 dark:border-slate-700 pb-2">
+          <div class="p-4 bg-slate-50/80 dark:bg-slate-700/40 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-3.5">
+            <div class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-200/60 dark:border-slate-700 pb-2.5">
               <div class="size-6 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center">
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <span>{{ t('my_target.venue_title') }}</span>
-            </h4>
+            </div>
 
-            <div class="space-y-2.5 text-xs">
+            <div class="space-y-3 text-xs">
+              <!-- Venue Name & Type -->
               <div>
-                <span class="text-slate-400 font-medium block mb-0.5 text-xs">{{ t('my_target.venue_label') }}</span>
+                <div class="flex items-center justify-between gap-2 mb-0.5">
+                  <span class="text-slate-400 font-medium text-xs">{{ t('my_target.venue_label') }}</span>
+                  <span v-if="event?.venue_type" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200/80 dark:bg-slate-600 text-slate-700 dark:text-slate-200 capitalize">
+                    {{ event.venue_type }}
+                  </span>
+                </div>
                 <span class="font-bold text-slate-900 dark:text-white leading-snug block">{{ event?.venue || '-' }}</span>
-                <span v-if="event?.location" class="text-slate-500 block mt-0.5 font-medium">{{ event.location }}</span>
+                <span v-if="event?.address || event?.location" class="text-slate-500 dark:text-slate-400 block mt-1 leading-relaxed">
+                  {{ event?.address || event?.location }}
+                </span>
               </div>
 
-              <div>
+              <!-- Event Dates -->
+              <div class="pt-2 border-t border-slate-200/50 dark:border-slate-700/50">
                 <span class="text-slate-400 font-medium block mb-0.5 text-xs">{{ t('my_target.event_dates_label') }}</span>
                 <span class="font-bold text-slate-900 dark:text-white">{{ formatDateRange(event?.start_date, event?.end_date) }}</span>
               </div>
 
-              <div v-if="event?.technical_guidebook_url" class="pt-1.5">
-                <a :href="event.technical_guidebook_url" target="_blank"
-                  class="w-full inline-flex items-center justify-center gap-2 py-2 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 text-slate-900 dark:text-white font-bold text-xs rounded-xl transition-colors border border-slate-200 dark:border-slate-600 shadow-2xs">
-                  <Icon icon="ph:file-pdf-bold" class="text-base text-red-500" />
+              <!-- Action Links / Buttons -->
+              <div class="pt-1.5 space-y-2">
+                <!-- Google Maps Link -->
+                <a
+                  v-if="googleMapsUrl"
+                  :href="googleMapsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full inline-flex items-center justify-center gap-2 py-2 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs rounded-xl transition-colors border border-slate-200 dark:border-slate-600 shadow-2xs cursor-pointer"
+                >
+                  <Icon icon="ph:map-trifold-bold" class="text-sm text-navy dark:text-emerald-400" />
+                  <span>{{ t('my_target.open_maps') }}</span>
+                </a>
+
+                <!-- WhatsApp Contact -->
+                <a
+                  v-if="whatsappUrl"
+                  :href="whatsappUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full inline-flex items-center justify-center gap-2 py-2 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs rounded-xl transition-colors border border-slate-200 dark:border-slate-600 shadow-2xs cursor-pointer"
+                >
+                  <Icon icon="ph:whatsapp-logo-bold" class="text-sm text-emerald-600 dark:text-emerald-400" />
+                  <span>{{ t('my_target.contact_wa') }}</span>
+                </a>
+
+                <!-- Technical Guidebook Download -->
+                <a
+                  v-if="event?.technical_guidebook_url"
+                  :href="event.technical_guidebook_url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full inline-flex items-center justify-center gap-2 py-2 px-3 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold text-xs rounded-xl transition-colors border border-slate-200 dark:border-slate-600 shadow-2xs cursor-pointer"
+                >
+                  <Icon icon="ph:file-pdf-bold" class="text-sm text-rose-500" />
                   <span>{{ t('my_target.download_thb') }}</span>
                 </a>
+              </div>
+
+              <!-- Arrival reminder note -->
+              <div class="pt-2 border-t border-slate-200/50 dark:border-slate-700/50 text-[11px] text-slate-500 dark:text-slate-400 flex items-start gap-1.5 leading-relaxed">
+                <Icon icon="ph:info-bold" class="text-xs text-navy shrink-0 mt-0.5" />
+                <span>{{ t('my_target.info_note') }}</span>
               </div>
             </div>
           </div>
@@ -396,7 +442,7 @@ import { useApi } from '~/composables/useApi'
 
 definePageMeta({ layout: 'dashboard' })
 
-const { t } = useDashboardI18n()
+const { t, locale } = useDashboardI18n()
 const route = useRoute()
 const { get } = useApi()
 
@@ -410,6 +456,20 @@ const isLoading = ref(true)
 const event = ref<any>(null)
 const participant = ref<any>(null)
 const targets = ref<any[]>([])
+
+const googleMapsUrl = computed(() => {
+  if (event.value?.gmaps_link) return event.value.gmaps_link
+  const query = [event.value?.venue, event.value?.address, event.value?.location || event.value?.city].filter(Boolean).join(', ')
+  if (!query) return null
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`
+})
+
+const whatsappUrl = computed(() => {
+  if (!event.value?.whatsapp_number) return null
+  let phone = String(event.value.whatsapp_number).replace(/[^0-9]/g, '')
+  if (phone.startsWith('0')) phone = '62' + phone.slice(1)
+  return `https://wa.me/${phone}`
+})
 
 // Schedule timeline state
 const scheduleDays = ref<any[]>([])
@@ -489,7 +549,7 @@ function formatDayDate(dateStr: string | null | undefined): string {
   try {
     const d = new Date(dateStr)
     if (isNaN(d.getTime())) return dateStr
-    const loc = locale.value === 'id' ? 'id-ID' : 'en-US'
+    const loc = locale?.value === 'id' ? 'id-ID' : 'en-US'
     return d.toLocaleDateString(loc, {
       weekday: 'long',
       day: 'numeric',
@@ -615,8 +675,19 @@ async function fetchInitialData() {
       }
     }
 
-    // Fallback ONLY when participant actually has real assigned target_name
-    if (targets.value.length === 0 && participant.value?.categories?.length > 0) {
+    // Fallback if target endpoint was empty but participant has target assignments or categories
+    if (targets.value.length === 0 && participant.value?.targets && participant.value.targets.length > 0) {
+      targets.value = participant.value.targets.map((t: any, idx: number) => ({
+        session_id: t.id || `session-${idx}`,
+        session_name: t.session_name || t.stage_label || 'Sesi Kualifikasi',
+        session_order: `S${idx + 1}`,
+        start_time: t.start_time,
+        end_time: t.end_time,
+        target_name: t.target_name,
+        target_board: t.target_position || (t.target_name ? t.target_name.slice(-1) : ''),
+        category_name: t.category_name || (t.division_name ? `${t.division_name} - ${t.category_name || ''}` : '')
+      }))
+    } else if (targets.value.length === 0 && participant.value?.categories?.length > 0) {
       const catsWithTarget = participant.value.categories.filter((c: any) => c.target_name && String(c.target_name).trim() !== '')
       if (catsWithTarget.length > 0) {
         targets.value = catsWithTarget.map((c: any, idx: number) => ({

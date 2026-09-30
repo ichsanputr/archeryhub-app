@@ -52,9 +52,9 @@
                                 class="w-full h-full rounded-xl object-cover" />
                         </div>
                         <div class="min-w-0">
-                            <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white truncate">
+                            <div class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white truncate">
                                 {{ userProfile?.full_name || t('qualification.archer') }}
-                            </h2>
+                            </div>
                             <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 mt-2 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
                                 <span class="font-bold text-slate-900 dark:text-white">{{ currentCategoryName || categoryName || '-' }}</span>
                                 <span>•</span>
@@ -79,60 +79,45 @@
             <!-- Stats Row (3-Grid Cards Consistent with Dashboard Standards) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Total Score -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-between group hover:border-slate-300 transition-colors">
-                    <div>
-                        <span class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold block mb-1">
-                            {{ t('qualification.total_score') }}
-                        </span>
-                        <span class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tight tabular-nums">
-                            {{ qualTotalScore || 0 }}
-                        </span>
-                    </div>
-                    <div class="size-12 sm:size-14 rounded-2xl bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shadow-2xs">
-                        <Icon icon="ph:chart-bar-bold" class="text-2xl" />
-                    </div>
-                </div>
+                <StatCard
+                    :title="t('qualification.total_score')"
+                    :value="qualTotalScore || 0"
+                    icon="ph:chart-bar-bold"
+                    color="primary"
+                    :description="activeSession?.session_name || t('qualification.session_score', 'Akumulasi Skor Kualifikasi')"
+                    description-icon="ph:trophy-bold"
+                />
 
                 <!-- Total 10 + X -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-between group hover:border-slate-300 transition-colors">
-                    <div>
-                        <span class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold block mb-1">
-                            {{ t('qualification.total_ten_x') }}
-                        </span>
-                        <span class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tight tabular-nums">
-                            {{ qualTotalTenX || 0 }}
-                        </span>
-                    </div>
-                    <div class="size-12 sm:size-14 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center shadow-2xs">
-                        <Icon icon="ph:target-bold" class="text-2xl" />
-                    </div>
-                </div>
+                <StatCard
+                    :title="t('qualification.total_ten_x')"
+                    :value="qualTotalTenX || 0"
+                    icon="ph:target-bold"
+                    color="primary"
+                    :description="t('qualification.ten_x_desc', 'Akurasi Tembakan 10 & X')"
+                    description-icon="ph:seal-check-bold"
+                />
 
                 <!-- Total X -->
-                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs flex items-center justify-between group hover:border-slate-300 transition-colors">
-                    <div>
-                        <span class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-semibold block mb-1">
-                            {{ t('qualification.total_x') }}
-                        </span>
-                        <span class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tight tabular-nums">
-                            {{ qualTotalX || 0 }}
-                        </span>
-                    </div>
-                    <div class="size-12 sm:size-14 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center shadow-2xs">
-                        <Icon icon="ph:star-bold" class="text-2xl" />
-                    </div>
-                </div>
+                <StatCard
+                    :title="t('qualification.total_x')"
+                    :value="qualTotalX || 0"
+                    icon="ph:star-bold"
+                    color="primary"
+                    :description="t('qualification.inner_ten_desc', 'Tembakan Titik Pusat (Inner 10)')"
+                    description-icon="ph:sparkle-bold"
+                />
             </div>
 
             <!-- Score Table Card -->
             <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs overflow-hidden">
                 <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <h3 class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2.5">
+                    <div class="font-black text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-2.5">
                         <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shrink-0">
                             <Icon icon="ph:pencil-line-bold" class="text-base" />
                         </div>
                         <span>{{ t('qualification.history_title') }}</span>
-                    </h3>
+                    </div>
 
                     <!-- Session Tabs -->
                     <div v-if="qualSessions.length > 1"
@@ -219,15 +204,19 @@
                             </template>
 
                             <tr v-else>
-                                <td colspan="5" class="py-16 text-center p-6">
-                                    <div class="size-14 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto text-slate-400 mb-3">
-                                        <Icon icon="ph:target-bold" class="text-2xl" />
-                                    </div>
-                                    <div class="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
-                                        {{ t('qualification.no_scores_recorded_title') }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
-                                        {{ t('qualification.no_scores_recorded_desc') }}
+                                <td colspan="5" class="p-8 sm:p-14 text-center">
+                                    <div class="w-full flex flex-col items-center justify-center space-y-4">
+                                        <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+                                            <Icon icon="ph:target-bold" class="text-3xl sm:text-4xl text-navy" />
+                                        </div>
+                                        <div class="space-y-2 max-w-lg mx-auto">
+                                            <div class="text-xl font-black text-navy dark:text-white tracking-tight">
+                                                {{ t('qualification.no_scores_recorded_title') }}
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                                                {{ t('qualification.no_scores_recorded_desc') }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="article" class="min-h-screen bg-slate-50 relative font-body text-navy">
+    <div v-if="article" class="min-h-screen bg-white sm:bg-slate-50 relative font-body text-navy">
         <LayoutLandingHeader :transparent="true" />
 
         <!-- ── HERO HEADER BANNER (Lightened Gradient Overlay) ── -->
@@ -32,12 +32,12 @@
                     <!-- Meta Row -->
                     <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 pt-1 font-medium">
                         <div class="flex items-center gap-1.5">
-                            <Icon icon="ph:calendar-blank" class="text-primary text-sm shrink-0" />
+                            <Icon icon="ph:calendar-blank" class="text-white/80 text-sm shrink-0" />
                             <span>{{ formatDate(article.date) }}</span>
                         </div>
                         <span class="text-white/20">•</span>
                         <div class="flex items-center gap-1.5">
-                            <Icon icon="ph:clock" class="text-primary text-sm shrink-0" />
+                            <Icon icon="ph:clock" class="text-white/80 text-sm shrink-0" />
                             <span>{{ readTime }} min read</span>
                         </div>
                         <span class="text-white/20">•</span>
@@ -63,7 +63,7 @@
                 <!-- LEFT COLUMN: ARTICLE CONTENT (INSIDE WHITE PARENT CARD) -->
                 <div class="lg:col-span-8 space-y-8">
                     <!-- Parent Card for Article Body -->
-                    <article class="bg-white rounded-3xl p-6 sm:p-10 md:p-12 border border-slate-200/80 shadow-xs space-y-8">
+                    <article class="bg-transparent sm:bg-white rounded-none sm:rounded-3xl p-0 sm:p-10 md:p-12 border-0 sm:border border-slate-200/80 shadow-none sm:shadow-xs space-y-8">
                         
                         <!-- Table of Contents (Hierarchical Tree Structure) -->
                         <div v-if="headings && headings.length > 0" 
@@ -72,7 +72,7 @@
                             <!-- Header & Collapse Toggle -->
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2.5">
-                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm shadow-2xs">
+                                    <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-navy text-white flex items-center justify-center text-xs sm:text-sm shadow-2xs">
                                         <Icon icon="ph:list-bullets-bold" />
                                     </div>
                                     <h3 class="text-xs sm:text-sm font-bold text-navy tracking-tight">Table of Contents</h3>
@@ -186,7 +186,7 @@
                                 <div class="relative shrink-0">
                                     <img src="/profile-author.png" :alt="(article.author?.name || 'Archeris Editorial Team') + ' Official Avatar'"
                                         class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-slate-100 border border-slate-200 shadow-2xs p-0.5 sm:p-1 object-cover" />
-                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-navy rounded-full flex items-center justify-center text-primary text-[10px] sm:text-xs border-2 border-white shadow-2xs">
+                                    <div class="absolute -bottom-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-navy rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs border-2 border-white shadow-2xs">
                                         <Icon icon="ph:seal-check-fill" />
                                     </div>
                                 </div>
@@ -206,7 +206,7 @@
                     </article>
 
                     <!-- Comments Section (Simplified Minimalist Discussion UI) -->
-                    <section class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs space-y-6">
+                    <section class="bg-transparent sm:bg-white rounded-none sm:rounded-3xl p-0 sm:p-10 border-0 sm:border border-slate-200/80 shadow-none sm:shadow-xs space-y-6">
                         
                         <!-- ── CLEAN COMMUNITY DISCUSSION HEADER ── -->
                         <div class="pb-5 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -227,7 +227,7 @@
                         <div class="bg-slate-50/90 rounded-2xl p-5 sm:p-7 border border-slate-200/90 shadow-2xs space-y-4">
                             <div class="flex items-center justify-between">
                                 <h4 class="font-bold text-navy text-sm sm:text-base flex items-center gap-2">
-                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm">
+                                    <div class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-navy text-white flex items-center justify-center text-xs sm:text-sm">
                                         <Icon icon="ph:chat-teardrop-dots-bold" />
                                     </div>
                                     <span>Join the Conversation</span>
@@ -265,7 +265,7 @@
                                         class="px-6 py-2.5 bg-navy hover:bg-slate-800 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow cursor-pointer">
                                         <span v-if="submittingComment">Publishing...</span>
                                         <span v-else>Post Comment</span>
-                                        <Icon v-if="!submittingComment" icon="ph:paper-plane-right-bold" class="text-primary text-xs sm:text-sm" />
+                                        <Icon v-if="!submittingComment" icon="ph:paper-plane-right-bold" class="text-white text-xs sm:text-sm" />
                                     </button>
                                 </div>
                             </form>
@@ -294,7 +294,7 @@
                                     <!-- Reply Action Button -->
                                     <button @click="toggleReplyForm(comm.id)"
                                         class="px-3 py-1.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-navy text-xs sm:text-sm font-semibold flex items-center gap-1.5 border border-slate-200 transition-colors cursor-pointer">
-                                        <Icon icon="ph:arrow-bend-down-left-bold" class="text-xs sm:text-sm text-primary" />
+                                        <Icon icon="ph:arrow-bend-down-left-bold" class="text-xs sm:text-sm text-slate-500" />
                                         <span>{{ replyingToId === comm.id ? 'Cancel' : 'Reply' }}</span>
                                     </button>
                                 </div>
@@ -305,7 +305,7 @@
                                 <!-- Nested Reply Form (when toggled for this comment) -->
                                 <div v-if="replyingToId === comm.id" class="ml-12 sm:ml-13 p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
                                     <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
-                                        <Icon icon="ph:arrow-bend-down-left" class="text-primary" />
+                                        <Icon icon="ph:arrow-bend-down-left" class="text-slate-500" />
                                         <span>Reply to {{ comm.author_name || comm.user_name || 'Archer' }}</span>
                                     </div>
                                     <form @submit.prevent="submitReply(comm)" class="space-y-3">
@@ -406,7 +406,7 @@
                     <!-- Sidebar Newsletter / CTA Widget -->
                     <div class="bg-navy rounded-3xl p-6 text-white border border-slate-800 shadow-xs space-y-4">
                         <div class="space-y-1.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 rounded-full text-primary text-[11px] sm:text-xs font-semibold">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/10 rounded-full text-slate-200 text-[11px] sm:text-xs font-semibold">
                                 <Icon icon="ph:trophy" />
                                 <span>Archery Scoring</span>
                             </div>
@@ -468,7 +468,7 @@
                             
                             <!-- Category Badge (Single Category) -->
                             <div class="absolute top-3 left-3">
-                                <span class="bg-navy text-primary text-[11px] sm:text-xs font-bold px-2.5 py-1 rounded-xl shadow-xs border border-white/10">
+                                <span class="bg-navy/90 backdrop-blur-xs text-white text-[11px] sm:text-xs font-bold px-2.5 py-1 rounded-xl shadow-xs border border-white/10">
                                     {{ item.category }}
                                 </span>
                             </div>

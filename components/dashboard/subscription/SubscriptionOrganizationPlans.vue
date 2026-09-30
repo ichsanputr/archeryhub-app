@@ -7,7 +7,7 @@
                     class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                     <Icon icon="ph:trophy-bold" class="text-lg" />
                 </div>
-                <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.org_plans.title') }}</h2>
+                <div class="text-lg font-extrabold text-navy">{{ t('subscription.org_plans.title') }}</div>
             </div>
             <div
                 class="flex flex-col lg:flex-row overflow-hidden rounded-[32px] border border-gray-100 shadow-sm bg-white min-h-[500px]">
@@ -18,7 +18,7 @@
                         <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
                             {{ t('subscription.org_plans.recommended_for') }}
                         </span>
-                        <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title') }}</h3>
+                        <div class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">{{ t('subscription.plans.elite_title') }}</div>
                         <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
                         <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                             Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analitik lanjutan.
@@ -57,8 +57,8 @@
                                         :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:lightning-bold'"
                                         class="text-xl text-navy" />
                                 </div>
-                                <h4 class=" text-xs font-black text-gray-400 tracking-[0.2em] mb-2">{{
-                                    plan.name }}</h4>
+                                <div class="text-xs font-black text-gray-400 tracking-[0.2em] mb-2">{{
+                                    plan.name }}</div>
                                 <div class="flex items-baseline gap-1">
                                     <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>
                                     <span class="text-[10px] font-bold text-gray-400 tracking-widest ml-1">/
@@ -97,7 +97,7 @@
                     class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                     <Icon icon="ph:scales-bold" class="text-lg" />
                 </div>
-                <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title') }}</h2>
+                <div class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title') }}</div>
             </div>
             <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden overflow-x-auto">
                 <table class="w-full text-left min-w-[700px]">

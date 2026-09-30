@@ -10,6 +10,7 @@
     >
       <div
         v-if="show"
+        @click="closeModal"
         class="fixed inset-0 z-[200] overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
       >
         <Transition
@@ -33,9 +34,9 @@
                   <Icon icon="ph:sliders-horizontal-bold" class="text-xl" />
                 </div>
                 <div>
-                  <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight">
+                  <div class="text-lg sm:text-xl font-black text-navy tracking-tight">
                     {{ t('dashboard.participants_list.filter_modal.title') }}
-                  </h2>
+                  </div>
                   <div class="text-xs text-slate-500 font-medium">
                     {{ t('dashboard.participants_list.filter_modal.subtitle') }}
                   </div>
@@ -355,27 +356,70 @@
                 </div>
               </div>
 
-              <!-- Section 7: Filter Berdasarkan Klub / Kontingen -->
+              <!-- Section 7: Filter Berdasarkan Klub / Kontingen (Select Autocomplete) -->
               <div class="pt-5 space-y-3">
-                <label class="block text-xs font-bold text-navy">
-                  {{ t('dashboard.participants_list.filter_modal.club_filter') }}
-                </label>
-                <div class="relative">
-                  <Icon icon="ph:shield-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                  <input
-                    v-model="draftFilters.club"
-                    type="text"
-                    :placeholder="t('dashboard.participants_list.filter_modal.club_placeholder')"
-                    class="w-full pl-9 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy focus:outline-none focus:border-navy focus:bg-white transition-all"
-                  />
+                <div class="flex items-center justify-between">
+                  <label class="block text-xs font-bold text-navy">
+                    {{ t('dashboard.participants_list.filter_modal.club_filter') }}
+                  </label>
                   <button
                     v-if="draftFilters.club"
                     type="button"
-                    @click="draftFilters.club = ''"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                    @click="clearClubSelection"
+                    class="text-[11px] font-bold text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
                   >
-                    <Icon icon="ph:x-circle-fill" class="text-sm" />
+                    {{ t('common.clear') }}
                   </button>
+                </div>
+
+                <div class="relative">
+                  <Icon icon="ph:shield-bold" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none" />
+                  <input
+                    v-model="clubSearchQuery"
+                    type="text"
+                    @focus="isClubDropdownOpen = true"
+                    @input="handleClubInput"
+                    :placeholder="t('dashboard.participants_list.filter_modal.club_placeholder', isEn ? 'Select or search club / contingent...' : 'Pilih atau cari klub / kontingen...')"
+                    class="w-full pl-9 pr-14 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-navy focus:outline-none focus:border-navy focus:bg-white transition-all cursor-pointer"
+                  />
+                  <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+                    <button
+                      v-if="draftFilters.club || clubSearchQuery"
+                      type="button"
+                      @click="clearClubSelection"
+                      class="text-slate-400 hover:text-slate-600 p-0.5 cursor-pointer"
+                    >
+                      <Icon icon="ph:x-circle-fill" class="text-sm" />
+                    </button>
+                    <button
+                      type="button"
+                      @click="isClubDropdownOpen = !isClubDropdownOpen"
+                      class="text-slate-400 hover:text-navy cursor-pointer p-0.5"
+                    >
+                      <Icon icon="ph:caret-down-bold" class="text-xs transition-transform" :class="isClubDropdownOpen ? 'rotate-180' : ''" />
+                    </button>
+                  </div>
+
+                  <!-- Autocomplete Options Dropdown -->
+                  <div
+                    v-if="isClubDropdownOpen && filteredClubOptions.length > 0"
+                    class="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white border border-slate-200 rounded-2xl shadow-xl max-h-48 overflow-y-auto custom-scrollbar p-1.5 space-y-0.5"
+                  >
+                    <button
+                      v-for="club in filteredClubOptions"
+                      :key="club"
+                      type="button"
+                      @click="selectClub(club)"
+                      class="w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-between cursor-pointer"
+                      :class="draftFilters.club === club ? 'bg-primary/20 text-navy font-black' : 'text-slate-700 hover:bg-slate-100 hover:text-navy'"
+                    >
+                      <div class="flex items-center gap-2 truncate">
+                        <Icon icon="ph:shield-star-bold" class="text-sm text-slate-400 shrink-0" />
+                        <span class="truncate">{{ club }}</span>
+                      </div>
+                      <Icon v-if="draftFilters.club === club" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -439,6 +483,10 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  clubs: {
+    type: Array,
+    default: () => []
+  },
   currentFilters: {
     type: Object,
     default: () => ({
@@ -467,6 +515,40 @@ const draftFilters = ref({
 })
 
 const categorySearchText = ref('')
+const isClubDropdownOpen = ref(false)
+const clubSearchQuery = ref('')
+
+const uniqueClubList = computed(() => {
+  const set = new Set()
+  for (const c of props.clubs || []) {
+    if (typeof c === 'string' && c.trim()) set.add(c.trim())
+    else if (c && typeof c === 'object' && (c.name || c.club_name)) set.add((c.name || c.club_name).trim())
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b))
+})
+
+const filteredClubOptions = computed(() => {
+  const q = clubSearchQuery.value.toLowerCase().trim()
+  if (!q) return uniqueClubList.value
+  return uniqueClubList.value.filter(c => c.toLowerCase().includes(q))
+})
+
+const selectClub = (club) => {
+  draftFilters.value.club = club
+  clubSearchQuery.value = club
+  isClubDropdownOpen.value = false
+}
+
+const clearClubSelection = () => {
+  draftFilters.value.club = ''
+  clubSearchQuery.value = ''
+  isClubDropdownOpen.value = false
+}
+
+const handleClubInput = () => {
+  draftFilters.value.club = clubSearchQuery.value
+  isClubDropdownOpen.value = true
+}
 
 // Initialize draft state whenever modal opens
 watch(
@@ -483,6 +565,8 @@ watch(
         club: props.currentFilters.club || ''
       }
       categorySearchText.value = ''
+      clubSearchQuery.value = props.currentFilters.club || ''
+      isClubDropdownOpen.value = false
     }
   },
   { immediate: true }

@@ -21,7 +21,7 @@
                         </span>
                         <div class="size-1.5 rounded-full bg-primary/40"></div>
                     </div>
-                    <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ t('subscription.header.inactive_title') }}</h1>
+                    <div class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ t('subscription.header.inactive_title') }}</div>
                     <div class="text-slate-400 text-xs sm:text-sm font-medium mt-1">{{ t('subscription.header.inactive_subtext') }}</div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     <Icon icon="ph:crown-bold" class="text-primary text-2xl sm:text-3xl" />
                 </div>
                 <div>
-                    <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ t('subscription.header.my_subscription') }}</h1>
+                    <div class="text-xl sm:text-3xl font-black tracking-tight">{{ t('subscription.header.my_subscription') }}</div>
                     <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1 tracking-widest opacity-70">{{ t('subscription.header.subtitle', subTitle || 'Kelola paket, pemakaian, dan riwayat tagihan Anda.') }}</div>
                 </div>
             </div>

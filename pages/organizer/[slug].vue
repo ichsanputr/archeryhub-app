@@ -36,7 +36,7 @@
                             </span>
                             <div v-if="org.status === 'active'"
                                 class="flex items-center gap-1.5 px-3 py-1 bg-white/8 backdrop-blur-sm border border-white/10 rounded-lg">
-                                <Icon icon="ph:seal-check-fill" class="text-primary text-xs" />
+                                <Icon icon="ph:seal-check-fill" class="text-white text-xs" />
                                 <span class="text-xs font-bold text-white/90">{{ t('organizer.public.verified') }}</span>
                             </div>
                         </div>
@@ -49,20 +49,20 @@
                         <!-- meta row -->
                         <div class="flex flex-wrap items-center gap-4 text-sm text-white/80 font-semibold">
                             <span v-if="org.city" class="flex items-center gap-1.5">
-                                <Icon icon="ph:map-pin-bold" class="text-primary text-sm" />
+                                <Icon icon="ph:map-pin-bold" class="text-white/80 text-sm" />
                                 {{ org.city }}
                             </span>
                             <span v-if="org.established_date" class="flex items-center gap-1.5">
-                                <Icon icon="ph:calendar-blank-bold" class="text-primary text-sm" />
+                                <Icon icon="ph:calendar-blank-bold" class="text-white/80 text-sm" />
                                 {{ t('organizer.public.established') }} {{ new Date(org.established_date).getFullYear() }}
                             </span>
                             <span v-if="org.country" class="flex items-center gap-1.5">
-                                <Icon icon="ph:globe-bold" class="text-primary text-sm" />
+                                <Icon icon="ph:globe-bold" class="text-white/80 text-sm" />
                                 {{ org.country }}
                             </span>
                             <a v-if="org.website" :href="org.website.startsWith('http') ? org.website : `https://${org.website}`"
-                                target="_blank" class="flex items-center gap-1.5 hover:text-primary transition-colors">
-                                <Icon icon="ph:link-bold" class="text-primary text-sm" />
+                                target="_blank" class="flex items-center gap-1.5 hover:text-white transition-colors">
+                                <Icon icon="ph:link-bold" class="text-white/80 text-sm" />
                                 <span>{{ org.website.replace(/^https?:\/\//, '') }}</span>
                             </a>
                         </div>
@@ -95,9 +95,9 @@
                         <button
                             v-if="isSubscribed || org.is_subscribed || org.is_organizer_subscribed"
                             type="button"
-                            class="flex items-center gap-2 py-2 px-3.5 bg-primary/10 border border-primary/30 rounded-xl text-xs sm:text-sm font-bold text-navy transition-all shrink-0 cursor-default"
+                            class="flex items-center gap-2 py-2 px-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs sm:text-sm font-bold text-emerald-800 transition-all shrink-0 cursor-default"
                         >
-                            <Icon icon="ph:check-circle-fill" class="text-sm sm:text-base text-primary" />
+                            <Icon icon="ph:check-circle-fill" class="text-sm sm:text-base text-emerald-600" />
                             <span>{{ t('organizer.public.subscribed', 'Subscribed') }}</span>
                         </button>
                         <button
@@ -112,7 +112,7 @@
 
                         <button @click="isShareOpen = true"
                             class="flex items-center gap-2 py-2 px-3.5 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 transition-all shrink-0 shadow-2xs cursor-pointer">
-                            <Icon icon="ph:share-network-bold" class="text-sm sm:text-base text-primary" />
+                            <Icon icon="ph:share-network-bold" class="text-sm sm:text-base text-slate-500" />
                             <span>{{ t('organizer.public.share', 'Share') }}</span>
                         </button>
                     </div>
@@ -146,8 +146,8 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                         <div v-if="org.vision" class="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
                                             <div class="flex items-center gap-2">
-                                                <div class="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                                                    <Icon icon="ph:eye-fill" class="text-base text-primary" />
+                                                <div class="size-8 rounded-xl bg-slate-200/80 flex items-center justify-center shrink-0">
+                                                    <Icon icon="ph:eye-fill" class="text-base text-navy" />
                                                 </div>
                                                 <span class="text-xs font-medium text-slate-500 block mb-0.5">{{ t('organizer.public.org_vision') }}</span>
                                             </div>
@@ -158,7 +158,7 @@
                                         <div v-if="org.mission" class="p-6 bg-navy rounded-2xl text-white space-y-3 shadow-md">
                                             <div class="flex items-center gap-2">
                                                 <div class="size-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                                                    <Icon icon="ph:target-fill" class="text-base text-primary" />
+                                                    <Icon icon="ph:target-fill" class="text-base text-white" />
                                                 </div>
                                                 <span class="text-xs font-medium text-white/50">{{ t('organizer.public.strategic_mission') }}</span>
                                             </div>
@@ -185,8 +185,8 @@
                                     <div class="grid grid-cols-1 gap-4">
                                         <div v-for="(item, idx) in org.faq" :key="idx"
                                             class="p-5 bg-white border border-gray-100 rounded-2xl shadow-sm flex items-start gap-4">
-                                            <div class="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                                                <Icon icon="ph:question-bold" class="text-sm text-primary" />
+                                            <div class="size-8 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 mt-0.5">
+                                                <Icon icon="ph:question-bold" class="text-sm text-navy" />
                                             </div>
                                             <div class="space-y-2 flex-1 min-w-0">
                                                 <h4 class="text-sm sm:text-base font-bold text-slate-900 leading-tight tracking-tight">
@@ -206,7 +206,7 @@
                                 <!-- info box -->
                                 <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
                                     <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                        <Icon icon="ph:info-bold" class="text-primary text-base" />
+                                        <Icon icon="ph:info-bold" class="text-navy text-base" />
                                         {{ t('organizer.public.org_info') }}
                                     </h4>
                                     <div class="space-y-3 text-xs sm:text-sm">
@@ -228,7 +228,7 @@
                                 <!-- maps embed -->
                                 <div v-if="org.address || org.gmaps_link" class="space-y-3">
                                     <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                        <Icon icon="ph:map-trifold-bold" class="text-primary text-base" />
+                                        <Icon icon="ph:map-trifold-bold" class="text-navy text-base" />
                                         {{ t('organizer.public.office_location') }}
                                     </h4>
                                     <div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
@@ -258,7 +258,7 @@
                                 <!-- contact channels -->
                                 <div class="space-y-3">
                                     <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                        <Icon icon="ph:phone-bold" class="text-primary text-base" />
+                                        <Icon icon="ph:phone-bold" class="text-navy text-base" />
                                         {{ t('organizer.public.official_contacts') }}
                                     </h4>
                                     <div class="grid grid-cols-1 gap-2">
@@ -274,7 +274,7 @@
                                         </a>
                                         <a v-if="org.website" :href="org.website.startsWith('http') ? org.website : `https://${org.website}`"
                                             target="_blank" class="flex items-center gap-3 p-3 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl group transition-all shadow-2xs">
-                                            <Icon icon="ph:globe-bold" class="text-lg text-slate-400 group-hover:text-primary transition-colors" />
+                                            <Icon icon="ph:globe-bold" class="text-lg text-slate-400 group-hover:text-navy transition-colors" />
                                             <span class="text-xs font-bold text-slate-900 tracking-normal truncate">{{ org.website.replace(/^https?:\/\//, '') }}</span>
                                         </a>
                                         <div v-if="!org.whatsapp_no && !org.email && !org.website" class="p-4 rounded-xl border border-dashed border-slate-200 bg-slate-50/50 text-center space-y-1">
@@ -287,7 +287,7 @@
                                 <!-- social channels -->
                                 <div class="space-y-3">
                                     <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
-                                        <Icon icon="ph:share-network-bold" class="text-primary text-base" />
+                                        <Icon icon="ph:share-network-bold" class="text-navy text-base" />
                                         {{ t('organizer.public.social_media') }}
                                     </h4>
                                     <div v-if="hasSocialMedia" class="flex flex-wrap gap-2">
@@ -326,7 +326,7 @@
 
                             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <NuxtLink v-for="event in events" :key="event.id" :to="`/tournaments/${event.slug || event.id}`"
-                                    class="bg-white p-5 rounded-2xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all group flex gap-5">
+                                    class="bg-white p-5 rounded-2xl border border-gray-200 hover:border-navy hover:shadow-lg transition-all group flex gap-5">
                                     <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
                                         <img :src="useImageOrDefault(event.logo_url, event.name)" :alt="event.name"
                                             class="w-full h-full object-cover" />
@@ -337,17 +337,17 @@
                                                 class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold tracking-normal">
                                                 {{ statusLabel(event) }}
                                             </span>
-                                            <h4 class="text-sm sm:text-base font-bold text-slate-900 leading-tight truncate group-hover:text-primary transition-colors">
+                                            <h4 class="text-sm sm:text-base font-bold text-slate-900 leading-tight truncate group-hover:text-navy transition-colors">
                                                 {{ event.name }}
                                             </h4>
                                         </div>
                                         <div class="flex flex-wrap gap-3 pt-2 border-t border-gray-50 text-xs text-slate-500 font-bold">
                                             <div class="flex items-center gap-1">
-                                                <Icon icon="ph:calendar-blank-fill" class="text-xs text-primary" />
+                                                <Icon icon="ph:calendar-blank-fill" class="text-xs text-slate-400" />
                                                 {{ formatDate(event.start_date) }}
                                             </div>
                                             <div v-if="event.venue" class="flex items-center gap-1 min-w-0">
-                                                <Icon icon="ph:map-pin-fill" class="text-xs text-primary" />
+                                                <Icon icon="ph:map-pin-fill" class="text-xs text-slate-400" />
                                                 <span class="truncate">{{ event.venue }}</span>
                                             </div>
                                         </div>
@@ -368,8 +368,8 @@
                                         class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm flex flex-col gap-3">
                                         <div class="flex items-center justify-between">
                                             <span class="text-xs font-medium text-slate-400">{{ formatDate(item.published_at) }}</span>
-                                            <div class="size-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                                                <Icon icon="ph:trophy-fill" class="text-primary text-base" />
+                                            <div class="size-8 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center">
+                                                <Icon icon="ph:trophy-fill" class="text-amber-500 text-base" />
                                             </div>
                                         </div>
                                         <h4 class="text-sm font-bold text-slate-900 leading-tight">{{ item.title }}</h4>
@@ -424,7 +424,7 @@
 
                                     <div v-if="org.address || org.city" class="p-6 bg-slate-50/70 rounded-2xl border border-slate-200 flex items-start gap-4">
                                         <div class="size-11 rounded-xl bg-white shadow-2xs border border-slate-200 flex items-center justify-center shrink-0 text-slate-800">
-                                            <Icon icon="ph:map-pin-bold" class="text-xl text-primary" />
+                                            <Icon icon="ph:map-pin-bold" class="text-xl text-navy" />
                                         </div>
                                         <div class="min-w-0 flex-1">
                                             <span class="text-xs font-medium text-slate-500 block mb-1">{{ t('organizer.public.office_address') }}</span>
@@ -493,13 +493,13 @@
                                 <!-- Official Contacts Card -->
                                 <div class="bg-navy p-6 rounded-2xl text-white shadow-xs relative overflow-hidden space-y-5 border border-white/10">
                                     <div class="border-b border-white/10 pb-3">
-                                        <h4 class="text-sm font-bold text-primary">{{ t('organizer.public.official_contacts') }}</h4>
+                                        <h4 class="text-sm font-bold text-white">{{ t('organizer.public.official_contacts') }}</h4>
                                         <div class="text-xs sm:text-sm text-white/70 font-medium mt-1 leading-relaxed">{{ t('organizer.public.contact_desc') }}</div>
                                     </div>
 
                                     <div v-if="org.whatsapp_no || org.email" class="space-y-3">
                                         <a v-if="org.whatsapp_no" :href="`https://wa.me/${org.whatsapp_no.replace(/\D/g, '')}`"
-                                            target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-primary transition-all group">
+                                            target="_blank" class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-white/90 transition-all group">
                                             <div class="size-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0">
                                                 <Icon icon="ph:whatsapp-logo-fill" class="text-lg" />
                                             </div>
@@ -510,7 +510,7 @@
                                         </a>
 
                                         <a v-if="org.email" :href="`mailto:${org.email}`"
-                                            class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-primary transition-all group">
+                                            class="flex items-center gap-3 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white hover:text-white/90 transition-all group">
                                             <div class="size-9 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
                                                 <Icon icon="ph:envelope-bold" class="text-lg" />
                                             </div>

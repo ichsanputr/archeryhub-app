@@ -50,9 +50,9 @@
                             <Icon icon="ph:question-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                            <div class="text-base sm:text-lg font-bold text-navy">
                                 {{ t('dashboard_events_page.faq.title', 'Pertanyaan Sering Diajukan (FAQ)') }}
-                            </h2>
+                            </div>
                         </div>
                     </div>
                     <BaseButton variant="outline" size="sm" class="text-sm font-bold" @click="addFAQField">
@@ -104,9 +104,9 @@
                             <Icon icon="ph:info-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                            <div class="text-base sm:text-lg font-bold text-navy">
                                 {{ t('dashboard_events_page.information.basic_title', 'Informasi Dasar') }}
-                            </h2>
+                            </div>
                             <div class="text-xs sm:text-sm text-gray-500">
                                 {{ t('dashboard_events_page.subtitle', 'Atur informasi utama turnamen seperti nama, deskripsi, dan jadwal.') }}
                             </div>
@@ -157,9 +157,9 @@
                                 <Icon icon="ph:calendar-check-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                      {{ t('dashboard_events_page.registration.timeline_title', 'Waktu Pendaftaran') }}
-                                 </h2>
+                                 </div>
                                  <div class="text-xs sm:text-sm text-gray-500">
                                      {{ t('dashboard_events_page.registration.timeline_subtitle', 'Tentukan periode pembukaan dan penutupan pendaftaran peserta.') }}
                                  </div>
@@ -196,9 +196,9 @@
                                 <Icon icon="ph:globe-hemisphere-west-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.currency_config.title', 'Negara & Mata Uang Turnamen') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.currency_config.subtitle', 'Tentukan negara penyelenggaraan dan mata uang untuk seluruh biaya pendaftaran & hadiah turnamen ini.') }}
                                 </div>
@@ -269,9 +269,9 @@
                                 <Icon icon="ph:ticket-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.registration.fee_title', 'Biaya Pendaftaran') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.registration.fee_subtitle', 'Pilih skema biaya pendaftaran turnamen.') }}
                                 </div>
@@ -460,9 +460,9 @@
                                 <Icon icon="ph:credit-card-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.manual_payment.title', 'Metode Pembayaran Manual') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.manual_payment.description', 'Aktifkan rekening bank atau e-wallet penyelenggara Anda yang dapat digunakan peserta untuk transfer manual.') }}
                                 </div>
@@ -523,9 +523,9 @@
                                 <Icon icon="ph:trophy-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.prizes.title_prizes', 'Hadiah Turnamen') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.prizes.subtitle_prizes', 'Atur total hadiah turnamen dan rincian hadiah untuk para juara.') }}
                                 </div>
@@ -604,9 +604,9 @@
                                 <Icon icon="ph:file-pdf-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('event_create.section_guidebook', 'Buku Panduan Teknis (THB)') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('event_create.guidebook_subtitle', 'Unggah dokumen peraturan pertandingan atau petunjuk teknis pelaksanaan turnamen.') }}
                                 </div>
@@ -707,9 +707,9 @@
                         <Icon icon="ph:map-pin-bold" class="text-xl" />
                     </div>
                     <div>
-                        <h2 class="text-base sm:text-lg font-bold text-navy">
+                        <div class="text-base sm:text-lg font-bold text-navy">
                             {{ t('dashboard_events_page.location.title', 'Lokasi & Peta') }}
-                        </h2>
+                        </div>
                         <div class="text-xs sm:text-sm text-gray-500">
                             {{ t('dashboard_events_page.location.subtitle', 'Atur alamat venue dan peta navigasi untuk memudahkan peserta.') }}
                         </div>
@@ -793,9 +793,9 @@
                                 <Icon icon="ph:image-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.media.title', 'Banner & Logo') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.media.subtitle', 'Unggah banner utama dan poster resmi event Anda.') }}
                                 </div>
@@ -855,9 +855,9 @@
                                 <Icon icon="ph:images-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.media.gallery_title', 'Galeri Turnamen') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500">
                                     {{ t('dashboard_events_page.media.gallery_subtitle', 'Foto dokumentasi atau fasilitas venue turnamen.') }}
                                 </div>
@@ -895,9 +895,9 @@
                             <Icon icon="iconoir:leaderboard" class="text-xl" />
                         </div>
                         <div>
-                            <h2 class="text-base sm:text-lg font-bold text-navy">
+                            <div class="text-base sm:text-lg font-bold text-navy">
                                 {{ t('dashboard_events_page.results.source_title', 'Sumber Hasil Lomba') }}
-                            </h2>
+                            </div>
                             <div class="text-xs sm:text-sm text-gray-500">
                                 {{ t('dashboard_events_page.results.source_desc', 'Pilih bagaimana hasil lomba ditampilkan di halaman publik turnamen.') }}
                             </div>
@@ -919,7 +919,7 @@
                                         class="w-2.5 h-2.5 rounded-full bg-primary"></div>
                                 </div>
                             </div>
-                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.from_system', 'Dari Sistem') }}</h4>
+                            <div class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.from_system', 'Dari Sistem') }}</div>
                             <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.from_system_desc', 'Hasil kualifikasi & eliminasi dari scoring system.') }}</div>
                         </button>
                         <button @click="form.page_settings.results_type = 'manual'" type="button"
@@ -936,7 +936,7 @@
                                         class="w-2.5 h-2.5 rounded-full bg-primary"></div>
                                 </div>
                             </div>
-                            <h4 class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.manual_upload', 'Upload Manual') }}</h4>
+                            <div class="font-bold text-sm text-navy">{{ t('dashboard_events_page.results.manual_upload', 'Upload Manual') }}</div>
                             <div class="text-xs sm:text-sm text-gray-500 mt-0.5 leading-relaxed">{{ t('dashboard_events_page.results.manual_upload_desc', 'Upload file PDF/gambar hasil lomba secara manual.') }}</div>
                         </button>
                     </div>
@@ -950,14 +950,14 @@
                                 <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                <div class="text-base sm:text-lg font-bold text-navy">
                                     {{ t('dashboard_events_page.results.upload_doc_title', 'Upload Dokumen Hasil') }}
-                                </h2>
+                                </div>
                                 <div class="text-xs sm:text-sm text-gray-500 mt-0.5 font-medium">{{ t('dashboard_events_page.results.upload_doc_desc', 'Upload file PDF, gambar, atau dokumen hasil lomba.') }}</div>
                             </div>
                         </div>
                         <BaseButton variant="primary" size="sm" icon="ph:plus-bold" class="text-sm font-bold shrink-0"
-                            @click="$refs.resultsFileInput?.click()">
+                            @click="openMediaLibrary('results')">
                             {{ t('dashboard_events_page.results.add_file', 'Tambah File') }}
                         </BaseButton>
                     </div>
@@ -965,7 +965,7 @@
                     <!-- Upload Area (Compact when files exist) -->
                     <div v-if="!form.results || form.results.length === 0"
                         class="border-2 border-dashed border-gray-200 rounded-3xl p-10 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
-                        @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
+                        @click="openMediaLibrary('results')" @dragover.prevent="isDragging = true"
                         @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
                         :class="isDragging ? 'border-primary bg-primary/5' : ''">
                         <div class="flex flex-col items-center gap-4">
@@ -1050,7 +1050,7 @@
                             </div>
 
                             <!-- Add More Area -->
-                            <div @click="$refs.resultsFileInput?.click()"
+                            <div @click="openMediaLibrary('results')"
                                 class="border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center p-6 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer">
                                 <div
                                     class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
@@ -1074,7 +1074,7 @@
                             <Icon icon="ph:info-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h4 class="font-bold text-navy text-sm">{{ t('dashboard_events_page.results.system_scoring_title', 'Hasil Dari Sistem Scoring') }}</h4>
+                            <div class="font-bold text-navy text-sm">{{ t('dashboard_events_page.results.system_scoring_title', 'Hasil Dari Sistem Scoring') }}</div>
                             <div class="text-xs sm:text-sm text-gray-600 mt-1 leading-relaxed">
                                 {{ t('dashboard_events_page.results.system_scoring_desc', 'Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring yang telah diinput melalui menu Scoring. Pastikan skor sudah diinput dengan benar.') }}
                             </div>
@@ -1087,7 +1087,7 @@
         <!-- Media Library Modal -->
         <MediaLibrary
             :show="showMediaLibrary"
-            :filter-type="mediaTarget === 'guidebook' ? 'pdf' : (['banner', 'logo', 'gallery'].includes(mediaTarget) ? 'image' : 'all')"
+            :filter-type="mediaTarget === 'guidebook' ? 'pdf' : (mediaTarget === 'results' ? 'all' : (['banner', 'logo', 'gallery'].includes(mediaTarget) ? 'image' : 'all'))"
             @close="showMediaLibrary = false"
             @select="handleMediaSelect"
         />
@@ -1271,6 +1271,16 @@ const handleMediaSelect = (media) => {
             display_order: form.value.event_images.length,
             is_primary: false
         })
+    } else if (mediaTarget.value === 'results') {
+        if (!form.value.results) form.value.results = []
+        const defaultName = media.caption || media.filename?.replace(/\.[^/.]+$/, '') || 'Dokumen Hasil'
+        form.value.results.push({
+            url: media.url,
+            title: media.caption || defaultName,
+            name: defaultName,
+            size: media.size || 0,
+            type: media.mime_type || (media.url?.toLowerCase().endsWith('.pdf') ? 'pdf' : 'image')
+        })
     }
     showMediaLibrary.value = false
 }
@@ -1283,7 +1293,6 @@ const eventData = ref({
 const locationAccessibilityOptions = [
     'Terjangkau Mobil/Motor',
     'Akses Transportasi Umum',
-    'Parkir Luas',
     'Fasilitas Toilet',
     'Area Makan',
     'Tempat Duduk',
@@ -1295,7 +1304,6 @@ const locationAccessibilityOptions = [
 const locationAccessibilityOptionKeys = {
     'Terjangkau Mobil/Motor': 'car_motorcycle',
     'Akses Transportasi Umum': 'public_transport',
-    'Parkir Luas': 'spacious_parking',
     'Fasilitas Toilet': 'toilet',
     'Area Makan': 'food_area',
     'Tempat Duduk': 'seating',
@@ -1308,7 +1316,6 @@ const getLocationAccessibilityIcon = (option) => {
     const icons = {
         'Terjangkau Mobil/Motor': 'ph:car',
         'Akses Transportasi Umum': 'ph:bus',
-        'Parkir Luas': 'ph:parking',
         'Fasilitas Toilet': 'ph:toilet',
         'Area Makan': 'ph:fork-knife',
         'Tempat Duduk': 'ph:chair',

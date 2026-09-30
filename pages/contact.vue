@@ -13,10 +13,10 @@
           <div class="flex items-center gap-2 text-xs text-slate-300 font-medium mb-2">
             <NuxtLink to="/" class="hover:text-white transition-colors">Home</NuxtLink>
             <Icon icon="ph:caret-right-bold" class="text-[10px] text-slate-400" />
-            <span class="text-primary font-semibold">Contact Us</span>
+            <span class="text-white font-semibold">Contact Us</span>
           </div>
           <h1 class="text-white text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight">
-            Contact <span class="text-primary">Us</span>
+            Contact Us
           </h1>
           <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
             Have questions or need help with your tournament? We are here to help.
@@ -26,10 +26,10 @@
     </section>
 
     <!-- Main Form & Information Section (Clean spacious padding without negative overlap) -->
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-16 relative z-20">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-0 sm:px-6 lg:px-8 py-6 sm:py-10 md:py-16 relative z-20">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         <div class="lg:col-span-8">
-          <div class="bg-white p-6 md:p-10 rounded-3xl shadow-xs border border-slate-200/90 h-full">
+          <div class="bg-white p-5 sm:p-6 md:p-10 rounded-none sm:rounded-3xl shadow-none sm:shadow-xs border-y sm:border border-slate-200/90 h-full">
             <h2 class="text-lg md:text-2xl font-black text-navy mb-6">Send us a message</h2>
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -99,8 +99,8 @@
           </div>
         </div>
 
-        <div class="lg:col-span-4 space-y-6">
-          <div class="bg-navy rounded-3xl shadow-sm p-8 relative overflow-hidden text-white border border-navy">
+        <div class="lg:col-span-4 space-y-6 px-4 sm:px-0">
+          <div class="bg-navy rounded-2xl sm:rounded-3xl shadow-sm p-6 sm:p-8 relative overflow-hidden text-white border border-navy">
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
               <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />
             </div>
@@ -108,7 +108,7 @@
             <div class="space-y-6 relative z-10">
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                  <Icon icon="ph:map-pin-fill" class="text-primary text-lg" />
+                  <Icon icon="ph:map-pin-fill" class="text-white text-lg" />
                 </div>
                 <div>
                   <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Headquarters</h4>
@@ -121,21 +121,21 @@
               </div>
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                  <Icon icon="ph:envelope-simple-fill" class="text-primary text-lg" />
+                  <Icon icon="ph:envelope-simple-fill" class="text-white text-lg" />
                 </div>
                 <div>
                   <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Email Support</h4>
-                  <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
+                  <a class="text-white hover:text-white/80 transition-colors text-xs md:text-sm font-medium"
                     href="mailto:admin@archeris.net">admin@archeris.net</a>
                 </div>
               </div>
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-                  <Icon icon="ph:phone-fill" class="text-primary text-lg" />
+                  <Icon icon="ph:phone-fill" class="text-white text-lg" />
                 </div>
                 <div>
                   <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Phone</h4>
-                  <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
+                  <a class="text-white hover:text-white/80 transition-colors text-xs md:text-sm font-medium"
                     href="tel:+62215758888">+62 21 575 8888</a>
                   <div class="text-xs text-slate-400 mt-1">Monday-Friday, 09:00 - 17:00 WIB</div>
                 </div>
@@ -145,17 +145,17 @@
               <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-4">Follow Us</h4>
               <div class="flex gap-4">
                 <a href="https://www.instagram.com/archerisnet/" target="_blank" rel="noopener noreferrer"
-                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group"
+                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 hover:text-white transition-all flex items-center justify-center group"
                   aria-label="Instagram">
                   <Icon icon="ph:instagram-logo-bold" class="text-xl" />
                 </a>
                 <a href="https://www.threads.com/@archerisnet" target="_blank" rel="noopener noreferrer"
-                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group"
+                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 hover:text-white transition-all flex items-center justify-center group"
                   aria-label="Threads">
                   <Icon icon="ph:threads-logo-bold" class="text-xl" />
                 </a>
                 <a href="https://www.facebook.com/archerisnet/" target="_blank" rel="noopener noreferrer"
-                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group"
+                  class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 hover:text-white transition-all flex items-center justify-center group"
                   aria-label="Facebook">
                   <Icon icon="ph:facebook-logo-bold" class="text-xl" />
                 </a>
@@ -164,7 +164,7 @@
           </div>
           <div class="bg-white p-6 rounded-3xl shadow-xs border border-slate-200/90">
             <h3 class="font-black text-lg text-navy mb-2 flex items-center gap-2">
-              <Icon icon="ph:question-bold" class="text-primary text-xl" />
+              <Icon icon="ph:question-bold" class="text-navy text-xl" />
               Quick Help
             </h3>
             <p class="text-xs text-slate-500 mb-3 leading-relaxed">Looking for frequently asked questions or technical guides? Visit our Documentation for instant answers.</p>

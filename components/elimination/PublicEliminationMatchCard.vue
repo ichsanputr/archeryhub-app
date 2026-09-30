@@ -66,11 +66,17 @@ const props = defineProps({
 })
 
 const router = useRouter()
+const route = useRoute()
 
 const handleCardClick = () => {
     const targetId = props.match?.id || props.match?.uuid
     if (targetId) {
-        router.push(`/match/${targetId}`)
+        const slug = route.params.slug || props.match?.event_slug || props.match?.tournament_slug
+        if (slug) {
+            router.push(`/tournaments/${slug}/match/${targetId}`)
+        } else {
+            router.push(`/match/${targetId}`)
+        }
     }
 }
 

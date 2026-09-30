@@ -97,7 +97,7 @@
           <!-- Date on Image (Bottom Left) -->
           <div class="absolute bottom-2.5 left-3 right-3 flex items-center text-white text-xs font-semibold">
             <div class="flex items-center gap-1.5 drop-shadow-sm">
-              <Icon icon="ph:calendar-blank-bold" class="text-primary text-xs shrink-0" />
+              <Icon icon="ph:calendar-blank-bold" class="text-white/80 text-xs shrink-0" />
               <span class="truncate">{{ item.date }}</span>
             </div>
           </div>
@@ -106,7 +106,7 @@
         <!-- Card Body -->
         <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
           <div>
-            <h4 class="text-sm sm:text-base font-bold text-navy line-clamp-2 leading-snug font-display group-hover:text-primary transition-colors">
+            <h4 class="text-sm sm:text-base font-bold text-navy line-clamp-2 leading-snug font-display group-hover:text-navy transition-colors">
               {{ toTitleCase(item.name) }}
             </h4>
             <div class="flex items-center gap-1.5 text-xs text-slate-500 mt-2">

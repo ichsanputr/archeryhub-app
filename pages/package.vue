@@ -98,7 +98,7 @@
                                     <ul class="space-y-3.5">
                                         <li v-for="feat in eoBasicFeatures" :key="feat"
                                             class="flex items-start gap-3 text-sm sm:text-base font-semibold text-white/95">
-                                            <Icon icon="ph:check-circle-fill" class="text-primary text-xl shrink-0 mt-0.5" />
+                                            <Icon icon="ph:check-circle-fill" class="text-emerald-400 text-xl shrink-0 mt-0.5" />
                                             <span>{{ feat }}</span>
                                         </li>
                                     </ul>
@@ -400,7 +400,7 @@
                                     {{ faq.question }}
                                 </span>
                                 <div
-                                    :class="['size-9 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0', activeFaq === index ? 'bg-navy text-primary rotate-180 shadow-xs' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200/70 group-hover:text-navy']">
+                                    :class="['size-9 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0', activeFaq === index ? 'bg-navy text-white rotate-180 shadow-xs' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200/70 group-hover:text-navy']">
                                     <Icon icon="ph:caret-down-bold" class="text-base" />
                                 </div>
                             </button>

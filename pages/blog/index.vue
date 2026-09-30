@@ -167,12 +167,12 @@
                             <!-- Meta on Image -->
                             <div class="absolute bottom-3.5 left-3.5 right-3.5 flex items-center text-white text-xs sm:text-sm font-medium">
                                 <div class="flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-blank" class="text-primary text-sm shrink-0" />
+                                    <Icon icon="ph:calendar-blank" class="text-white/80 text-sm shrink-0" />
                                     <span>{{ formatDate(article.date) }}</span>
                                 </div>
                                 <span class="mx-2 opacity-60">•</span>
                                 <div class="flex items-center gap-1.5">
-                                    <Icon icon="ph:clock" class="text-primary text-sm shrink-0" />
+                                    <Icon icon="ph:clock" class="text-white/80 text-sm shrink-0" />
                                     <span>{{ article.read_time || 5 }} min read</span>
                                 </div>
                             </div>

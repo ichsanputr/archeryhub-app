@@ -5,7 +5,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <!-- Left: Title & Live Summary -->
                 <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-2xs shrink-0 font-black">
+                    <div class="size-10 rounded-xl bg-navy text-white flex items-center justify-center shadow-2xs shrink-0 font-black">
                         <Icon icon="ph:pencil-circle-bold" class="text-xl" />
                     </div>
                     <div>
@@ -87,7 +87,7 @@
                     <!-- Finished / BYE Check Icon -->
                     <Icon v-if="match.winner_entry_id || match.status === 'finished' || isByeMatch(match)"
                         icon="ph:check-circle-fill"
-                        :class="selectedScoringMatch?.id === match.id ? 'text-primary' : (isByeMatch(match) ? 'text-amber-600' : 'text-emerald-600')"
+                        :class="selectedScoringMatch?.id === match.id ? 'text-white' : (isByeMatch(match) ? 'text-amber-600' : 'text-emerald-600')"
                         class="text-sm shrink-0" />
                 </button>
             </div>
@@ -234,12 +234,6 @@
                                         <Icon icon="ph:seal-check-fill" class="text-emerald-400 text-sm" />
                                         <span>{{ t('event_elimination.done') }}</span>
                                     </span>
-                                    <button type="button" @click="$emit('reset-match')" :disabled="isResetting"
-                                        class="px-2.5 py-1 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-400/30 text-xs font-bold transition-all flex items-center gap-1 active:scale-95 cursor-pointer"
-                                        :title="t('event_elimination.confirm_reset_match')">
-                                        <Icon :icon="isResetting ? 'ph:circle-notch-bold' : 'ph:lock-open-bold'" :class="{ 'animate-spin': isResetting }" />
-                                        <span>{{ t('event_elimination.reset') }}</span>
-                                    </button>
                                 </div>
 
                                 <button v-else-if="canEndMatch" type="button" @click="$emit('end-match')" :disabled="isEndingMatch"
@@ -247,92 +241,183 @@
                                     <Icon :icon="isEndingMatch ? 'ph:circle-notch-bold' : 'ph:flag-checkered-fill'" :class="{ 'animate-spin': isEndingMatch }" />
                                     <span>{{ isEndingMatch ? t('event_elimination.processing') : t('event_elimination.end_match') }}</span>
                                 </button>
-                                <span v-else class="px-3 py-1 rounded-lg bg-white/10 text-slate-300 text-xs font-bold flex items-center gap-1.5">
-                                    <span class="size-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                                    <span>{{ t('event_elimination.live_match') }}</span>
-                                </span>
                             </div>
                         </div>
 
-                        <!-- Duel Display: Archer A vs Archer B -->
-                        <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
-                            <!-- Side A Archer Profile -->
+                        <!-- Duel Display: Archer A vs Archer B (Symmetrical Modern Grid) -->
+                        <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-stretch gap-3 sm:gap-4">
+                            
+                            <!-- Side A Card -->
                             <div @click="$emit('update:activeSide', 'A')"
-                                class="flex items-center gap-3 min-w-0 p-2 sm:p-0 rounded-2xl transition-all cursor-pointer"
-                                :class="activeSide === 'A' ? 'bg-white/10 sm:bg-transparent ring-1 ring-primary/40 sm:ring-0' : 'opacity-80 sm:opacity-85 hover:opacity-100'">
-                                <div class="relative shrink-0">
-                                    <img :src="useImageOrDefault(selectedScoringMatch?.entry_a_avatar || selectedScoringMatch?.entry_a_photo, selectedScoringMatch?.entry_a_name)"
-                                        class="size-12 sm:size-14 rounded-2xl border-2 object-cover"
-                                        :class="isWinner(selectedScoringMatch, selectedScoringMatch?.entry_a_id) ? 'border-primary ring-2 ring-primary/30' : (activeSide === 'A' ? 'border-primary ring-2 ring-primary/30' : 'border-white/20')" />
-                                    <div v-if="selectedScoringMatch?.entry_a_seed"
-                                        class="absolute -left-1.5 -bottom-1 min-w-[16px] h-4 px-1 bg-navy text-primary text-[8px] font-black rounded flex items-center justify-center border border-white shadow-xs">
-                                        {{ selectedScoringMatch?.entry_a_seed }}
+                                class="p-3.5 sm:p-4 rounded-2xl transition-all duration-200 cursor-pointer border flex flex-col justify-between select-none relative overflow-hidden"
+                                :class="[
+                                    activeSide === 'A'
+                                        ? 'bg-white/15 border-primary ring-2 ring-primary/40 shadow-md backdrop-blur-xs'
+                                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 opacity-85 hover:opacity-100'
+                                ]">
+                                
+                                <!-- Card Header (Side Badge, Seed, Winner Crown) -->
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider shadow-2xs"
+                                            :class="activeSide === 'A' ? 'bg-primary text-navy' : 'bg-white/15 text-primary'">
+                                            {{ t('event_elimination.side_a') }}
+                                        </span>
+                                        <span v-if="selectedScoringMatch?.entry_a_seed"
+                                            class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] font-black shrink-0 border border-white/15">
+                                            #{{ selectedScoringMatch?.entry_a_seed }}
+                                        </span>
                                     </div>
+                                    
                                     <div v-if="isWinner(selectedScoringMatch, selectedScoringMatch?.entry_a_id)"
-                                        class="absolute -top-1.5 -right-1.5 size-5 bg-primary text-navy rounded-full flex items-center justify-center text-[10px] shadow-xs border border-white">
+                                        class="size-6 bg-primary text-navy rounded-full flex items-center justify-center text-xs shadow-xs shrink-0 ring-2 ring-primary/30"
+                                        title="Winner">
                                         <Icon icon="ph:crown-simple-fill" />
                                     </div>
                                 </div>
-                                <div class="min-w-0 flex-1">
-                                    <div class="flex items-center gap-1.5">
-                                        <span class="text-[10px] font-black tracking-wider text-primary">{{ t('event_elimination.side_a') }}</span>
-                                        <span v-if="activeSide === 'A'" class="size-1.5 rounded-full bg-primary animate-pulse"></span>
+
+                                <!-- Team Mode -->
+                                <div v-if="isTeamMatch && getTeamMembers('A').length > 0" class="space-y-2.5 flex-1 flex flex-col justify-between">
+                                    <div class="min-w-0">
+                                        <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
+                                            {{ selectedScoringMatch?.entry_a_name || 'TBD' }}
+                                        </h4>
+                                        <div v-if="selectedScoringMatch?.entry_a_club" class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
+                                            {{ selectedScoringMatch?.entry_a_club }}
+                                        </div>
                                     </div>
-                                    <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
-                                        {{ selectedScoringMatch?.entry_a_name || 'TBD' }}
-                                    </h4>
-                                    <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
-                                        {{ selectedScoringMatch?.entry_a_club || t('event_elimination.independent') }}
+
+                                    <!-- Archers Grid (3 members for Men/Women Team, 2 for Mixed Team) -->
+                                    <div class="grid gap-1.5 pt-2 border-t border-white/10"
+                                        :class="getTeamMembers('A').length >= 3 ? 'grid-cols-1 sm:grid-cols-3' : (getTeamMembers('A').length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1')">
+                                        <div v-for="(member, idx) in getTeamMembers('A')" :key="idx"
+                                            class="flex items-center gap-2 px-2 py-1.5 rounded-xl bg-black/25 border border-white/10 shadow-2xs hover:bg-black/35 transition-colors min-w-0">
+                                            <div class="size-7 rounded-lg overflow-hidden bg-white/10 shrink-0 border border-white/20">
+                                                <img :src="useImageOrDefault(member.avatar_url || member.avatar, member.full_name || member.name)" class="size-full object-cover" />
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <div class="text-[11px] font-bold text-slate-100 truncate leading-tight">
+                                                    {{ member.full_name || member.name }}
+                                                </div>
+                                                <div class="text-[9px] text-slate-400 font-medium">
+                                                    #{{ idx + 1 }} {{ member.gender ? (member.gender === 'female' ? 'W' : 'M') : '' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Individual Mode -->
+                                <div v-else class="flex items-center gap-3 my-auto pt-1">
+                                    <div class="relative shrink-0">
+                                        <img :src="useImageOrDefault(selectedScoringMatch?.entry_a_avatar || selectedScoringMatch?.entry_a_photo, selectedScoringMatch?.entry_a_name)"
+                                            class="size-12 sm:size-14 rounded-2xl border-2 object-cover"
+                                            :class="activeSide === 'A' ? 'border-primary ring-2 ring-primary/30' : 'border-white/20'" />
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
+                                            {{ selectedScoringMatch?.entry_a_name || 'TBD' }}
+                                        </h4>
+                                        <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
+                                            {{ selectedScoringMatch?.entry_a_club || t('event_elimination.independent') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Live Center Score Display -->
-                            <div class="flex sm:flex-col items-center justify-between sm:justify-center px-4 py-2.5 rounded-2xl bg-white/10 border border-white/15 text-center min-w-[100px] sm:min-w-[120px]">
+                            <div class="flex flex-row lg:flex-col items-center justify-between lg:justify-center px-4 py-3 sm:py-3.5 rounded-2xl bg-black/30 backdrop-blur-md border border-white/15 text-center min-w-[120px] sm:min-w-[140px] shadow-md my-1 lg:my-0">
                                 <div class="text-[10px] font-black tracking-wider text-slate-300">
                                     {{ bracket?.format === 'recurve_set' ? t('event_elimination.set_points_label') : t('event_elimination.total_score_label') }}
                                 </div>
-                                <div class="flex items-center gap-2 text-2xl sm:text-3xl font-black font-mono tabular-nums leading-none">
+                                <div class="flex items-center gap-3 text-2xl sm:text-3xl font-black tabular-nums leading-none my-1">
                                     <span :class="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || isWinner(selectedScoringMatch, selectedScoringMatch?.entry_a_id) ? 'text-primary font-black' : 'text-white'">
                                         {{ getMatchScore(selectedScoringMatch, 'A') }}
                                     </span>
-                                    <span class="text-white/40">-</span>
+                                    <span class="text-white/30 font-light">-</span>
                                     <span :class="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || isWinner(selectedScoringMatch, selectedScoringMatch?.entry_b_id) ? 'text-primary font-black' : 'text-white'">
                                         {{ getMatchScore(selectedScoringMatch, 'B') }}
                                     </span>
                                 </div>
-                                <div v-if="getShootOffSummary(selectedScoringMatch)" class="mt-1 text-[9px] font-black px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30 inline-flex items-center gap-1">
+                                <div v-if="getShootOffSummary(selectedScoringMatch)" class="text-[9px] font-black px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30 inline-flex items-center gap-1">
                                     <span>S.O. {{ getShootOffSummary(selectedScoringMatch) }}</span>
                                 </div>
                             </div>
 
-                            <!-- Side B Archer Profile -->
+                            <!-- Side B Card -->
                             <div @click="$emit('update:activeSide', 'B')"
-                                class="flex items-center justify-between sm:justify-end gap-3 min-w-0 p-2 sm:p-0 rounded-2xl transition-all cursor-pointer text-left sm:text-right"
-                                :class="activeSide === 'B' ? 'bg-white/10 sm:bg-transparent ring-1 ring-primary/40 sm:ring-0' : 'opacity-80 sm:opacity-85 hover:opacity-100'">
-                                <div class="min-w-0 flex-1 order-2 sm:order-1">
-                                    <div class="flex items-center justify-start sm:justify-end gap-1.5">
-                                        <span v-if="activeSide === 'B'" class="size-1.5 rounded-full bg-primary animate-pulse"></span>
-                                        <span class="text-[10px] font-black tracking-wider text-primary">{{ t('event_elimination.side_b') }}</span>
+                                class="p-3.5 sm:p-4 rounded-2xl transition-all duration-200 cursor-pointer border flex flex-col justify-between select-none relative overflow-hidden"
+                                :class="[
+                                    activeSide === 'B'
+                                        ? 'bg-white/15 border-primary ring-2 ring-primary/40 shadow-md backdrop-blur-xs'
+                                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 opacity-85 hover:opacity-100'
+                                ]">
+                                
+                                <!-- Card Header (Side Badge, Seed, Winner Crown) -->
+                                <div class="flex items-center justify-between gap-2 mb-2">
+                                    <div class="flex items-center gap-1.5 flex-wrap min-w-0">
+                                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black tracking-wider shadow-2xs"
+                                            :class="activeSide === 'B' ? 'bg-primary text-navy' : 'bg-white/15 text-primary'">
+                                            {{ t('event_elimination.side_b') }}
+                                        </span>
+                                        <span v-if="selectedScoringMatch?.entry_b_seed"
+                                            class="px-1.5 py-0.5 rounded bg-white/10 text-white font-mono text-[9px] font-black shrink-0 border border-white/15">
+                                            #{{ selectedScoringMatch?.entry_b_seed }}
+                                        </span>
                                     </div>
-                                    <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
-                                        {{ selectedScoringMatch?.entry_b_name || (selectedScoringMatch?.is_bye ? 'BYE' : 'TBD') }}
-                                    </h4>
-                                    <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
-                                        {{ selectedScoringMatch?.entry_b_club || t('event_elimination.independent') }}
+                                    
+                                    <div v-if="isWinner(selectedScoringMatch, selectedScoringMatch?.entry_b_id)"
+                                        class="size-6 bg-primary text-navy rounded-full flex items-center justify-center text-xs shadow-xs shrink-0 ring-2 ring-primary/30"
+                                        title="Winner">
+                                        <Icon icon="ph:crown-simple-fill" />
                                     </div>
                                 </div>
-                                <div class="relative shrink-0 order-1 sm:order-2">
-                                    <img :src="useImageOrDefault(selectedScoringMatch?.entry_b_avatar || selectedScoringMatch?.entry_b_photo, selectedScoringMatch?.entry_b_name)"
-                                        class="size-12 sm:size-14 rounded-2xl border-2 object-cover"
-                                        :class="isWinner(selectedScoringMatch, selectedScoringMatch?.entry_b_id) ? 'border-primary ring-2 ring-primary/30' : (activeSide === 'B' ? 'border-primary ring-2 ring-primary/30' : 'border-white/20')" />
-                                    <div v-if="selectedScoringMatch?.entry_b_seed"
-                                        class="absolute -left-1.5 -bottom-1 min-w-[16px] h-4 px-1 bg-navy text-primary text-[8px] font-black rounded flex items-center justify-center border border-white shadow-xs">
-                                        {{ selectedScoringMatch?.entry_b_seed }}
+
+                                <!-- Team Mode -->
+                                <div v-if="isTeamMatch && getTeamMembers('B').length > 0" class="space-y-2.5 flex-1 flex flex-col justify-between">
+                                    <div class="min-w-0">
+                                        <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
+                                            {{ selectedScoringMatch?.entry_b_name || (selectedScoringMatch?.is_bye ? 'BYE' : 'TBD') }}
+                                        </h4>
+                                        <div v-if="selectedScoringMatch?.entry_b_club" class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
+                                            {{ selectedScoringMatch?.entry_b_club }}
+                                        </div>
                                     </div>
-                                    <div v-if="isWinner(selectedScoringMatch, selectedScoringMatch?.entry_b_id)"
-                                        class="absolute -top-1.5 -right-1.5 size-5 bg-primary text-navy rounded-full flex items-center justify-center text-[10px] shadow-xs border border-white">
-                                        <Icon icon="ph:crown-simple-fill" />
+
+                                    <!-- Archers Grid (3 members for Men/Women Team, 2 for Mixed Team) -->
+                                    <div class="grid gap-1.5 pt-2 border-t border-white/10"
+                                        :class="getTeamMembers('B').length >= 3 ? 'grid-cols-1 sm:grid-cols-3' : (getTeamMembers('B').length === 2 ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1')">
+                                        <div v-for="(member, idx) in getTeamMembers('B')" :key="idx"
+                                            class="flex items-center gap-2 px-2 py-1.5 rounded-xl bg-black/25 border border-white/10 shadow-2xs hover:bg-black/35 transition-colors min-w-0">
+                                            <div class="size-7 rounded-lg overflow-hidden bg-white/10 shrink-0 border border-white/20">
+                                                <img :src="useImageOrDefault(member.avatar_url || member.avatar, member.full_name || member.name)" class="size-full object-cover" />
+                                            </div>
+                                            <div class="min-w-0 flex-1">
+                                                <div class="text-[11px] font-bold text-slate-100 truncate leading-tight">
+                                                    {{ member.full_name || member.name }}
+                                                </div>
+                                                <div class="text-[9px] text-slate-400 font-medium">
+                                                    #{{ idx + 1 }} {{ member.gender ? (member.gender === 'female' ? 'W' : 'M') : '' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Individual Mode -->
+                                <div v-else class="flex items-center gap-3 my-auto pt-1">
+                                    <div class="relative shrink-0">
+                                        <img :src="useImageOrDefault(selectedScoringMatch?.entry_b_avatar || selectedScoringMatch?.entry_b_photo, selectedScoringMatch?.entry_b_name)"
+                                            class="size-12 sm:size-14 rounded-2xl border-2 object-cover"
+                                            :class="activeSide === 'B' ? 'border-primary ring-2 ring-primary/30' : 'border-white/20'" />
+                                    </div>
+                                    <div class="min-w-0 flex-1">
+                                        <h4 class="text-sm sm:text-base font-black text-white truncate leading-tight">
+                                            {{ selectedScoringMatch?.entry_b_name || (selectedScoringMatch?.is_bye ? 'BYE' : 'TBD') }}
+                                        </h4>
+                                        <div class="text-[11px] text-slate-300 font-medium truncate mt-0.5">
+                                            {{ selectedScoringMatch?.entry_b_club || t('event_elimination.independent') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -415,8 +500,8 @@
                             </div>
 
                             <!-- Target Face Colored Arrow Rings -->
-                            <div class="flex items-center gap-2 sm:gap-2.5">
-                                <div v-for="i in (currentEnd === 99 ? 1 : (bracket?.arrows_per_end || 3))" :key="i"
+                            <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+                                <div v-for="i in (currentEnd === 99 ? (isTeamMatch ? (getTeamMembers('A').length || 3) : 1) : (bracket?.arrows_per_end || 3))" :key="i"
                                     @click.stop="!isMatchFinished && onSelectArrow('A', i - 1)"
                                     :class="[
                                         'size-11 sm:size-12 rounded-xl flex items-center justify-center text-sm sm:text-base font-black cursor-pointer transition-all duration-150 relative select-none font-mono',
@@ -461,8 +546,8 @@
                             </div>
 
                             <!-- Target Face Colored Arrow Rings -->
-                            <div class="flex items-center gap-2 sm:gap-2.5">
-                                <div v-for="i in (currentEnd === 99 ? 1 : (bracket?.arrows_per_end || 3))" :key="i"
+                            <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+                                <div v-for="i in (currentEnd === 99 ? (isTeamMatch ? (getTeamMembers('B').length || 3) : 1) : (bracket?.arrows_per_end || 3))" :key="i"
                                     @click.stop="!isMatchFinished && onSelectArrow('B', i - 1)"
                                     :class="[
                                         'size-11 sm:size-12 rounded-xl flex items-center justify-center text-sm sm:text-base font-black cursor-pointer transition-all duration-150 relative select-none font-mono',
@@ -612,7 +697,7 @@
                     <div class="bg-navy text-white p-4 sm:p-5 space-y-3">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <Icon icon="ph:keypad-bold" class="text-primary text-base" />
+                                <Icon icon="ph:keypad-bold" class="text-slate-300 text-base" />
                                 <span class="text-xs font-black tracking-wider">{{ t('event_elimination.scorecard_keypad') }}</span>
                             </div>
                             <span class="px-2 py-0.5 rounded-md bg-primary text-navy font-mono text-[10px] font-black">
@@ -623,12 +708,16 @@
                         <!-- Active Archer Badge -->
                         <div class="flex items-center gap-3 p-2.5 rounded-xl bg-white/10 border border-white/10">
                             <div class="size-9 rounded-lg border border-white/20 overflow-hidden bg-white/10 shrink-0">
-                                <img :src="useImageOrDefault(activeSide === 'A' ? selectedScoringMatch?.entry_a_avatar : selectedScoringMatch?.entry_b_avatar, activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name)"
+                                <img :src="useImageOrDefault(isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.avatar_url || getActiveMember(activeSide)?.avatar) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_avatar : selectedScoringMatch?.entry_b_avatar), isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.full_name || getActiveMember(activeSide)?.name) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name))"
                                     class="size-full object-cover" />
                             </div>
                             <div class="min-w-0 flex-1">
+                                <div v-if="isTeamMatch && getActiveMember(activeSide)" class="flex items-center gap-1.5 mb-0.5">
+                                    <span class="px-1.5 py-0.2 rounded bg-amber-400 text-navy text-[9px] font-black">Pemanah #{{ getActiveMemberIndex(activeSide) + 1 }}</span>
+                                    <span class="text-[10px] text-slate-300 font-bold truncate">{{ (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name) }}</span>
+                                </div>
                                 <h4 class="text-xs font-black text-white truncate">
-                                    {{ (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name) || 'TBD' }}
+                                    {{ (isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.full_name || getActiveMember(activeSide)?.name) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name)) || 'TBD' }}
                                 </h4>
                                 <div class="text-[10px] text-slate-300 font-medium">
                                     End {{ currentEnd }} • {{ t('event_elimination.arrow_n', { n: selectedArrowIndex + 1 }) }}
@@ -686,7 +775,7 @@
                 <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2 min-w-0 flex-1">
                         <div class="size-8 rounded-lg border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
-                            <img :src="useImageOrDefault(activeSide === 'A' ? selectedScoringMatch?.entry_a_avatar : selectedScoringMatch?.entry_b_avatar, activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name)"
+                            <img :src="useImageOrDefault(isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.avatar_url || getActiveMember(activeSide)?.avatar) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_avatar : selectedScoringMatch?.entry_b_avatar), isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.full_name || getActiveMember(activeSide)?.name) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name))"
                                 class="size-full object-cover" />
                         </div>
                         <div class="min-w-0">
@@ -694,8 +783,11 @@
                                 <span class="px-1.5 py-0.2 rounded bg-navy text-primary text-[9px] font-black uppercase">
                                     {{ activeSide === 'A' ? 'Side A' : 'Side B' }}
                                 </span>
+                                <span v-if="isTeamMatch && getActiveMember(activeSide)" class="px-1 py-0.2 rounded bg-amber-100 text-amber-900 text-[9px] font-black">
+                                    #{{ getActiveMemberIndex(activeSide) + 1 }}
+                                </span>
                                 <span class="text-[11px] font-black text-navy truncate">
-                                    {{ (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name) || 'TBD' }}
+                                    {{ (isTeamMatch && getActiveMember(activeSide) ? (getActiveMember(activeSide)?.full_name || getActiveMember(activeSide)?.name) : (activeSide === 'A' ? selectedScoringMatch?.entry_a_name : selectedScoringMatch?.entry_b_name)) || 'TBD' }}
                                 </span>
                             </div>
                             <div class="text-[10px] text-slate-500 font-semibold mt-0.5">
@@ -794,7 +886,6 @@ const props = defineProps({
     canEndMatch: { type: Boolean, default: false },
     manualWinnerId: { type: String, default: null },
     isMatchFinished: { type: Boolean, default: false },
-    isResetting: { type: Boolean, default: false },
     teamMembersMap: { type: Object, default: () => ({}) }
 })
 
@@ -806,12 +897,59 @@ const emit = defineEmits([
     'end-match',
     'select-arrow-box',
     'update:currentEnd',
-    'update:activeSide',
-    'reset-match'
+    'update:activeSide'
 ])
 
 const searchQuery = ref('')
 const isMobileKeypadOpen = ref(false)
+
+const isTeamMatch = computed(() => {
+    const bType = String(props.bracket?.bracket_type || '').toLowerCase()
+    return bType.includes('team') || bType.includes('mixed')
+})
+
+const getTeamMembers = (side) => {
+    if (!props.selectedScoringMatch) return []
+    const match = props.selectedScoringMatch
+    const entryId = side === 'A' 
+        ? (match.entry_a_id || match.entry_a_uuid)
+        : (match.entry_b_id || match.entry_b_uuid)
+    
+    if (entryId && props.teamMembersMap?.[entryId]) {
+        return props.teamMembersMap[entryId]
+    }
+    for (const key in props.teamMembersMap) {
+        if (key && entryId && String(key).toLowerCase() === String(entryId).toLowerCase()) {
+            return props.teamMembersMap[key]
+        }
+    }
+    return []
+}
+
+const getActiveMember = (side) => {
+    if (!isTeamMatch.value) return null
+    const members = getTeamMembers(side)
+    if (!members || members.length === 0) return null
+    if (props.currentEnd === 99) {
+        return members[props.selectedArrowIndex] || members[0]
+    }
+    const arrowsPerEnd = props.bracket?.arrows_per_end || (members.length * 2)
+    const arrowsPerArcher = Math.max(1, Math.floor(arrowsPerEnd / members.length))
+    const memberIdx = Math.min(members.length - 1, Math.floor(props.selectedArrowIndex / arrowsPerArcher))
+    return members[memberIdx]
+}
+
+const getActiveMemberIndex = (side) => {
+    if (!isTeamMatch.value) return 0
+    const members = getTeamMembers(side)
+    if (!members || members.length === 0) return 0
+    if (props.currentEnd === 99) {
+        return Math.min(members.length - 1, props.selectedArrowIndex)
+    }
+    const arrowsPerEnd = props.bracket?.arrows_per_end || (members.length * 2)
+    const arrowsPerArcher = Math.max(1, Math.floor(arrowsPerEnd / members.length))
+    return Math.min(members.length - 1, Math.floor(props.selectedArrowIndex / arrowsPerArcher))
+}
 
 const onSelectMatch = (match) => {
     emit('select-match', match)

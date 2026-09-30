@@ -61,9 +61,9 @@
                                 {{ mediaData.total_files }} {{ t('tournament_media.files_count') }}
                             </span>
                         </div>
-                        <h2 class="text-xl sm:text-2xl font-black text-navy">
+                        <div class="text-xl sm:text-2xl font-black text-navy">
                             {{ t('tournament_media.usage_title') }}
-                        </h2>
+                        </div>
                     </div>
 
                     <!-- Usage Metrics -->
@@ -149,23 +149,12 @@
                     <div class="size-16 rounded-2xl bg-slate-50 text-slate-300 flex items-center justify-center mx-auto mb-4 border border-slate-100">
                         <Icon icon="ph:images-square" class="text-3xl" />
                     </div>
-                    <h3 class="text-base font-bold text-navy mb-1">
+                    <div class="text-base font-bold text-navy mb-1">
                         {{ t('tournament_media.empty_title') }}
-                    </h3>
-                    <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">
+                    </div>
+                    <div class="text-xs text-slate-400 max-w-sm mx-auto">
                         {{ t('tournament_media.empty_desc') }}
                     </div>
-                    <BaseButton
-                        variant="primary"
-                        icon="ph:cloud-arrow-up-bold"
-                        size="sm"
-                        class="font-black"
-                        :loading="isUploading"
-                        :disabled="isUploading"
-                        @click="triggerFileInput"
-                    >
-                        {{ isUploading ? t('tournament_media.uploading') : t('tournament_media.upload_btn') }}
-                    </BaseButton>
                 </div>
 
                 <!-- Files Grid -->
@@ -176,24 +165,54 @@
                         class="bg-white rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all flex flex-col justify-between overflow-hidden group"
                     >
                         <!-- Thumbnail / Preview Area -->
-                        <div class="h-36 bg-slate-50 relative flex items-center justify-center overflow-hidden cursor-pointer"
+                        <div class="h-40 bg-slate-100 relative flex items-center justify-center overflow-hidden cursor-pointer group/thumb select-none"
                             @click="previewFile(file)">
+                            <!-- Image Thumbnail -->
                             <img
-                                v-if="isImage(file)"
+                                v-if="isImage(file) && !brokenImages.has(file.id)"
                                 :src="file.url"
                                 :alt="file.filename"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 loading="lazy"
+                                @error="handleImageError(file.id)"
                             />
+
+                            <!-- PDF Visual Preview -->
+                            <div v-else-if="isPdf(file)" class="w-full h-full relative overflow-hidden bg-slate-50 flex items-center justify-center">
+                                <iframe
+                                    :src="`${file.url}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`"
+                                    class="w-full h-full pointer-events-none border-0 overflow-hidden"
+                                    loading="lazy"
+                                />
+                                <!-- Hover Overlay for PDF -->
+                                <div class="absolute inset-0 bg-navy/0 group-hover:bg-navy/40 transition-colors flex items-center justify-center">
+                                    <div class="opacity-0 group-hover:opacity-100 transition-opacity transform translate-y-1 group-hover:translate-y-0 px-3 py-1.5 rounded-xl bg-navy/90 text-white text-[11px] font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-xs">
+                                        <Icon icon="ph:eye-bold" class="text-sm text-primary" />
+                                        <span>Preview PDF</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Video Thumbnail Preview -->
+                            <div v-else-if="isVideo(file)" class="w-full h-full relative bg-black flex items-center justify-center">
+                                <video :src="file.url" class="w-full h-full object-cover pointer-events-none opacity-80" preload="metadata" />
+                                <div class="absolute size-10 rounded-full bg-navy/80 text-white flex items-center justify-center shadow-md">
+                                    <Icon icon="ph:play-fill" class="text-lg text-primary ml-0.5" />
+                                </div>
+                            </div>
+
+                            <!-- Fallback Document Icon -->
                             <div v-else class="flex flex-col items-center gap-2 text-slate-400">
-                                <Icon :icon="getFileIcon(file)" class="text-4xl text-navy/70" />
-                                <span class="text-[10px] font-bold text-slate-500 tracking-wider">
+                                <div class="size-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-navy shadow-2xs">
+                                    <Icon :icon="getFileIcon(file)" class="text-2xl text-navy" />
+                                </div>
+                                <span class="text-[10px] font-bold text-slate-500 tracking-wider font-mono">
                                     {{ getFileExtension(file.filename) }}
                                 </span>
                             </div>
 
                             <!-- Extension Badge Overlay -->
-                            <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-bold tracking-wider bg-black/60 text-white backdrop-blur-xs">
+                            <div class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[9px] font-black tracking-wider bg-navy/80 text-white backdrop-blur-xs border border-white/10 shadow-2xs">
                                 {{ getFileExtension(file.filename) }}
                             </div>
                         </div>
@@ -223,7 +242,7 @@
                                 </a>
                                 <button
                                     type="button"
-                                    class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                    class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                                     :title="t('tournament_media.delete')"
                                     @click="confirmDeleteFile(file)"
                                 >
@@ -248,7 +267,7 @@
             @confirm="handleDeleteConfirmed"
         />
 
-        <!-- ── Image Preview Modal ── -->
+        <!-- ── Rich Media Preview Modal Dialog (Image & PDF Embedded Viewer) ── -->
         <AppDialog
             v-model:show="showPreviewModal"
             :title="previewItem?.filename || t('tournament_media.preview')"
@@ -256,23 +275,61 @@
             :cancel-text="''"
             @confirm="showPreviewModal = false"
         >
-            <div class="flex items-center justify-center p-2">
+            <div class="flex flex-col items-center justify-center p-1 w-full">
+                <!-- Image Full Preview -->
                 <img
                     v-if="previewItem && isImage(previewItem)"
                     :src="previewItem.url"
                     :alt="previewItem.filename"
-                    class="max-h-[60vh] max-w-full rounded-xl object-contain shadow-sm"
+                    class="max-h-[65vh] max-w-full rounded-xl object-contain shadow-sm"
                 />
-                <div v-else class="py-8 text-center text-slate-500">
-                    <Icon icon="ph:file-pdf-bold" class="text-5xl text-red-500 mx-auto mb-3" />
-                    <div class="text-xs font-bold mb-4">{{ previewItem?.filename }}</div>
+
+                <!-- PDF Embedded Live Preview -->
+                <div v-else-if="previewItem && isPdf(previewItem)" class="w-full space-y-3">
+                    <div class="w-full h-[65vh] rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-2xs">
+                        <iframe
+                            :src="`${previewItem.url}#toolbar=1&navpanes=0`"
+                            class="w-full h-full border-0"
+                        />
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
+                        <span class="truncate max-w-[240px]">{{ previewItem.filename }}</span>
+                        <a
+                            :href="previewItem.url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-navy text-white text-xs font-bold rounded-xl hover:bg-navy/90 transition-colors shadow-2xs"
+                        >
+                            <Icon icon="ph:arrow-square-out-bold" class="text-sm text-primary" />
+                            <span>{{ t('tournament_media.open_new_tab') }}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Video Player Preview -->
+                <div v-else-if="previewItem && isVideo(previewItem)" class="w-full space-y-3">
+                    <video
+                        :src="previewItem.url"
+                        controls
+                        autoplay
+                        class="w-full max-h-[60vh] rounded-xl bg-black"
+                    ></video>
+                </div>
+
+                <!-- Generic Document Preview / Download -->
+                <div v-else class="py-8 text-center text-slate-500 w-full space-y-3">
+                    <div class="size-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-navy border border-slate-200">
+                        <Icon :icon="getFileIcon(previewItem)" class="text-3xl text-navy" />
+                    </div>
+                    <div class="text-xs font-bold text-navy">{{ previewItem?.filename }}</div>
                     <a
                         :href="previewItem?.url"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="px-4 py-2 bg-primary text-navy text-xs font-black rounded-xl"
+                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-navy text-xs font-black rounded-xl shadow-xs"
                     >
-                        {{ t('tournament_media.open_new_tab') }}
+                        <Icon icon="ph:download-simple-bold" class="text-sm" />
+                        <span>{{ t('tournament_media.open_new_tab') }}</span>
                     </a>
                 </div>
             </div>
@@ -429,6 +486,19 @@ function getCategoryCount(catKey) {
 
 function isImage(file) {
     return getFileGroup(file) === 'image'
+}
+
+function isPdf(file) {
+    return getFileGroup(file) === 'pdf'
+}
+
+function isVideo(file) {
+    return getFileGroup(file) === 'video'
+}
+
+const brokenImages = ref(new Set())
+function handleImageError(id) {
+    brokenImages.value.add(id)
 }
 
 function getFileIcon(file) {

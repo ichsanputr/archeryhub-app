@@ -88,7 +88,7 @@
                                 <ul class="space-y-3.5">
                                     <li v-for="feat in standardFeatures" :key="feat"
                                         class="flex items-start gap-3 text-sm sm:text-base font-semibold text-white/95">
-                                        <Icon icon="ph:check-circle-fill" class="text-primary text-xl shrink-0 mt-0.5" />
+                                        <Icon icon="ph:check-circle-fill" class="text-emerald-400 text-xl shrink-0 mt-0.5" />
                                         <span>{{ feat }}</span>
                                     </li>
                                 </ul>
@@ -242,7 +242,7 @@
             <!-- Bottom trust note -->
             <div class="mt-12 text-center reveal-note">
                 <p class="text-navy/35 text-sm flex items-center justify-center gap-2">
-                    <Icon icon="ph:shield-check-bold" class="text-base text-primary/60" />
+                    <Icon icon="ph:shield-check-bold" class="text-base text-slate-400" />
                     {{ $t('home.pricing.trust_note', 'No hidden fees. Cancel anytime.') }}
                 </p>
             </div>

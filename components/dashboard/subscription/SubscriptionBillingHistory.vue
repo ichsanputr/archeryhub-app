@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-4 font-body text-navy antialiased">
-        <h2 class="text-base sm:text-lg font-extrabold text-navy">{{ t('subscription.billing.title') }}</h2>
+        <div class="text-base sm:text-lg font-extrabold text-navy">{{ t('subscription.billing.title') }}</div>
         
         <DashboardDataTable
             :items="invoices || []"

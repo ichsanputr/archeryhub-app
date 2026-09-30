@@ -67,7 +67,7 @@
       <div class="flex items-center gap-3">
         <Icon icon="ph:bell-ringing-bold" class="text-amber-500 text-xl" />
         <div>
-          <h3 class="font-bold text-navy text-sm">{{ t('my_events.new_notification') }}</h3>
+          <div class="font-bold text-navy text-sm">{{ t('my_events.new_notification') }}</div>
           <div class="text-amber-700 text-xs mt-0.5">{{ t('my_events.invitation_desc', { count: invitations.length }) }}</div>
         </div>
       </div>
@@ -229,21 +229,24 @@
       </div>
     </div>
 
-    <div v-else-if="filteredEvents.length === 0" class="bg-white border border-slate-100 rounded-3xl p-12 text-center">
-      <div class="max-w-xs mx-auto space-y-6">
-        <div class="size-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-300 mx-auto">
-          <Icon icon="ph:calendar-x-bold" class="text-4xl" />
+    <div v-else-if="filteredEvents.length === 0"
+      class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
+      <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+        <Icon icon="ph:calendar-x-bold" class="text-3xl sm:text-4xl text-navy" />
+      </div>
+      <div class="space-y-2 max-w-lg mx-auto">
+        <div class="text-xl font-black text-navy dark:text-white tracking-tight">
+          {{ t('my_events.no_events') }}
         </div>
-        <div class="space-y-2">
-          <div class="text-lg font-black text-navy">{{ t('my_events.no_events') }}</div>
-          <div class="text-sm text-slate-500 font-medium leading-relaxed">
-            {{ emptyStateMessage }}
-          </div>
+        <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+          {{ emptyStateMessage }}
         </div>
-        <BaseButton v-if="searchQuery" variant="outline" size="md" @click="resetFilters" class="w-full min-h-[44px]">
+      </div>
+      <div class="pt-2">
+        <BaseButton v-if="searchQuery" variant="outline" size="md" @click="resetFilters" class="min-h-[44px] px-6">
           {{ t('my_events.clear_filter') }}
         </BaseButton>
-        <BaseButton v-else to="/tournaments" variant="primary" size="md" icon="ph:magnifying-glass-bold" class="w-full min-h-[44px]">
+        <BaseButton v-else to="/tournaments" variant="primary" size="md" icon="ph:magnifying-glass-bold" class="min-h-[44px] px-6">
           {{ t('my_events.search_event') }}
         </BaseButton>
       </div>
@@ -278,9 +281,9 @@
                 <div class="flex items-center justify-between gap-2">
                   <!-- Event Title -->
                   <NuxtLink :to="`/dashboard/archer/tournaments/${event.slug || event.id}/overview`" class="block flex-1 min-w-0">
-                    <h3 class="text-base font-black text-white line-clamp-2 leading-snug">
+                    <div class="text-base font-black text-white line-clamp-2 leading-snug">
                       {{ event.name }}
-                    </h3>
+                    </div>
                   </NuxtLink>
 
                   <!-- Clean Status (Vertically Centered) -->
@@ -455,9 +458,9 @@
 
               <!-- Header Info -->
               <div class="space-y-1 pt-1 pr-6 pl-6">
-                <h3 class="text-base font-black text-navy leading-tight">
+                <div class="text-base font-black text-navy leading-tight">
                   {{ t('my_events.qr_modal_title') }}
-                </h3>
+                </div>
                 <div class="text-xs text-slate-500 font-medium truncate max-w-[240px]">
                   {{ selectedEvent?.name }}
                 </div>
@@ -474,23 +477,8 @@
               </div>
 
               <!-- Concise Subtitle Redaksi -->
-              <div class="text-xs text-slate-500 leading-relaxed max-w-[260px]">
+              <div class="text-xs text-slate-500 leading-relaxed max-w-[260px] pb-2">
                 {{ t('my_events.qr_modal_subtitle') }}
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="w-full space-y-2 pt-1">
-                <NuxtLink :to="`/dashboard/archer/tournaments/${selectedEvent?.slug || selectedEvent?.id}/my-registration`" class="block w-full">
-                  <BaseButton variant="primary" block class="h-10 text-xs font-bold justify-center shadow-xs">
-                    <span>{{ t('my_events.qr_modal_view_ticket') }}</span>
-                    <Icon icon="ph:arrow-right-bold" class="ml-1 text-xs" />
-                  </BaseButton>
-                </NuxtLink>
-
-                <button type="button" @click="showQR = false"
-                  class="text-xs text-slate-400 hover:text-slate-600 font-semibold transition-colors py-1">
-                  {{ t('my_events.qr_modal_close') }}
-                </button>
               </div>
 
             </div>

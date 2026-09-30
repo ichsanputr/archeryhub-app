@@ -433,7 +433,7 @@ onMounted(() => {
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <div class="flex flex-wrap items-center gap-2.5">
-                                        <h2 class="text-xl sm:text-2xl font-black text-slate-900 truncate">{{ participant.full_name }}</h2>
+                                        <div class="text-xl sm:text-2xl font-black text-slate-900 truncate">{{ participant.full_name }}</div>
                                     </div>
                                     <div class="flex flex-wrap items-center gap-2.5 mt-1.5 text-sm sm:text-base text-slate-600 font-medium">
                                         <span>{{ participant.club_name || t('my_registration.independent') }}</span>
@@ -473,7 +473,7 @@ onMounted(() => {
                                 <div class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80 text-center">
                                     <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.registration_status_label', 'Status Registrasi') }}</span>
                                     <span v-if="isPaid(participant.payment_status)" class="font-black text-sm sm:text-base block text-slate-900 truncate">
-                                        {{ t('my_registration.paid', 'Terdaftar (Lunas)') }}
+                                        {{ t('my_registration.paid', 'Terdaftar') }}
                                     </span>
                                     <span v-else-if="isCancelled" class="font-black text-sm sm:text-base block text-slate-900 truncate">
                                         {{ t('payment_status.badge_cancelled', 'Dibatalkan') }}
@@ -494,12 +494,12 @@ onMounted(() => {
                         <!-- Section 2: Registered Categories -->
                         <div class="border-t border-slate-100 pt-6 space-y-3.5">
                             <div class="flex items-center justify-between pb-2.5 border-b border-slate-100">
-                                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2.5">
+                                <div class="text-base font-bold text-slate-900 flex items-center gap-2.5">
                                     <div class="size-8 rounded-lg bg-primary/15 text-navy border border-primary/20 flex items-center justify-center font-bold shrink-0 shadow-2xs">
                                         <Icon icon="ph:stack-bold" class="text-base" />
                                     </div>
                                     <span>{{ t('my_registration.registered_categories') }}</span>
-                                </h3>
+                                </div>
                                 <span class="text-xs sm:text-sm font-bold text-slate-700 bg-slate-100 px-2.5 py-0.5 rounded-md">
                                     {{ activeCategories.length || 1 }} {{ (activeCategories.length || 1) === 1 ? t('my_registration.category_unit_single') : t('my_registration.categories_unit') }}
                                 </span>
@@ -552,7 +552,8 @@ onMounted(() => {
                                 <div v-if="participant.transaction?.reference" class="p-3.5 bg-slate-50/80 rounded-xl border border-slate-200/80">
                                     <span class="text-slate-500 block mb-1 font-medium text-xs sm:text-sm">{{ t('my_registration.invoice_no') }}</span>
                                     <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                        class="font-mono font-bold text-slate-900 hover:text-slate-700 transition-colors flex items-center gap-1 text-xs sm:text-sm truncate">
+                                        class="font-mono font-bold text-navy hover:text-navy/80 underline decoration-slate-400 underline-offset-4 hover:decoration-navy transition-all inline-flex items-center gap-1 text-xs sm:text-sm truncate"
+                                        :title="isEn ? 'View Payment & Invoice Details' : 'Lihat Detail Pembayaran & Invoice'">
                                         <span>{{ participant.transaction.reference }}</span>
                                         <Icon icon="ph:arrow-square-out-bold" class="text-xs text-slate-400 shrink-0" />
                                     </NuxtLink>
@@ -591,17 +592,8 @@ onMounted(() => {
                             </div>
 
                             <!-- Payment Actions depending on status -->
-                            <!-- Case 1: Lunas (Paid) -->
-                            <div v-if="isPaid(participant.payment_status) && participant.transaction?.reference">
-                                <NuxtLink :to="`/dashboard/archer/payments/${participant.transaction.reference}`"
-                                    class="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-900 text-xs sm:text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-2xs">
-                                    <Icon icon="ph:receipt-bold" class="text-base text-slate-700" />
-                                    <span>{{ t('my_registration.view_payment_detail', 'Lihat Detail Pembayaran') }}</span>
-                                </NuxtLink>
-                            </div>
-
                             <!-- Case 2: Cancelled (Dibatalkan) -->
-                            <div v-else-if="isCancelled" class="space-y-3 pt-1">
+                            <div v-if="isCancelled" class="space-y-3 pt-1">
                                 <div class="p-4 bg-rose-50 border border-rose-200 rounded-xl space-y-2 text-left">
                                     <div class="text-xs sm:text-sm font-bold text-rose-800 flex items-center gap-1.5">
                                         <Icon icon="ph:prohibit-bold" class="text-base shrink-0 text-rose-600" />
@@ -800,16 +792,21 @@ onMounted(() => {
             </div>
         </template>
 
-        <div v-else class="py-16 text-center bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-            <div class="size-16 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400 mx-auto">
-                <Icon icon="ph:ticket-light" class="text-3xl" />
+        <div v-else
+            class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
+            <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+                <Icon icon="ph:ticket-bold" class="text-3xl sm:text-4xl text-navy" />
             </div>
-            <div>
-                <h3 class="text-lg font-bold text-slate-900">{{ t('my_registration.registration_not_found') }}</h3>
-                <div class="text-slate-400 text-xs sm:text-sm mt-1">{{ t('my_registration.session_expired_desc') }}</div>
+            <div class="space-y-2 max-w-lg mx-auto">
+                <div class="text-xl font-black text-navy dark:text-white tracking-tight">
+                    {{ t('my_registration.registration_not_found') }}
+                </div>
+                <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                    {{ t('my_registration.session_expired_desc') }}
+                </div>
             </div>
-            <div>
-                <NuxtLink to="/dashboard/archer/tournaments" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-bold hover:bg-slate-800 transition-colors">
+            <div class="pt-2">
+                <NuxtLink to="/dashboard/archer/tournaments" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-navy text-xs sm:text-sm font-black transition-all shadow-md">
                     {{ t('my_registration.back_to_dashboard') }}
                 </NuxtLink>
             </div>

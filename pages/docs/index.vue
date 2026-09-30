@@ -111,7 +111,7 @@
                         </p>
                     </div>
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-xs font-bold text-navy dark:text-slate-200 shadow-xs self-start sm:self-auto">
-                        <Icon icon="ph:files-bold" class="text-primary text-sm" />
+                        <Icon icon="ph:files-bold" class="text-navy dark:text-slate-300 text-sm" />
                         <span>{{ allFilteredDocs.length }} {{ locale === 'id' ? 'Artikel Tersedia' : 'Articles Available' }}</span>
                     </div>
                 </div>

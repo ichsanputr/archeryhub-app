@@ -34,9 +34,9 @@
                   <Icon icon="ph:sliders-horizontal-bold" class="text-xl" />
                 </div>
                 <div>
-                  <h2 class="text-base sm:text-lg font-bold text-navy">
+                  <div class="text-base sm:text-lg font-bold text-navy">
                     {{ isEn ? 'Filter Tournament Earnings' : 'Filter Pendapatan Turnamen' }}
-                  </h2>
+                  </div>
                   <div class="text-xs text-slate-500 font-medium">
                     {{ isEn ? 'Refine earnings list by date, amount, and participants' : 'Saring daftar pendapatan berdasarkan tanggal, nominal, dan peserta' }}
                   </div>

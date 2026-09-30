@@ -41,17 +41,17 @@
     <template v-else>
       <!-- Profile Card -->
       <div
-        class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 p-6 sm:p-8 relative overflow-hidden group">
+        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-6 sm:p-8 relative overflow-hidden group">
         <div class="flex flex-col sm:flex-row gap-6 items-center sm:items-start relative z-10">
           <div
-            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border-2 border-slate-200 dark:border-slate-600 p-1 bg-white dark:bg-slate-800 shadow-md shrink-0">
+            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-slate-200 dark:border-slate-600 p-1 bg-white dark:bg-slate-800 shadow-xs shrink-0">
             <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
               class="w-full h-full rounded-xl object-cover" />
           </div>
           <div class="flex-1 text-center sm:text-left">
-            <h2 class="text-2xl sm:text-3xl font-black text-navy dark:text-white tracking-tight">
+            <div class="text-2xl sm:text-3xl font-black text-navy dark:text-white tracking-tight">
               {{ userProfile?.full_name || t('elimination.archer') }}
-            </h2>
+            </div>
             <div
               class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-2 text-slate-500 dark:text-slate-400 text-xs font-medium">
               <span class="font-bold text-navy dark:text-white">{{ currentCategoryName || categoryName || '-' }}</span>
@@ -73,14 +73,14 @@
 
       <!-- Elimination Path Section -->
       <div
-        class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/80 dark:border-slate-700 shadow-sm overflow-hidden w-full">
+        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs overflow-hidden w-full">
         <div
           class="px-6 sm:px-8 py-5 border-b border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 flex items-center justify-between">
           <div class="flex items-center gap-3">
             <div class="size-9 rounded-xl bg-primary/15 text-navy border border-primary/20 flex items-center justify-center shrink-0">
               <Icon icon="ph:git-merge-bold" class="text-lg" />
             </div>
-            <h4 class="font-black text-lg text-navy dark:text-white">{{ t('elimination.path_title') }}</h4>
+            <div class="font-black text-lg text-navy dark:text-white">{{ t('elimination.path_title') }}</div>
           </div>
           <span class="text-xs font-bold text-slate-400">
             {{ elimMatches.length }} {{ t('elimination.rounds_completed') }}
@@ -89,15 +89,17 @@
 
         <!-- No matches -->
         <div v-if="elimMatches.length === 0"
-          class="py-16 text-center border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 m-6 rounded-3xl">
-          <div class="h-16 w-16 rounded-2xl bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto mb-3 text-slate-400">
-            <Icon icon="ph:git-merge" class="text-3xl" />
+          class="p-8 sm:p-14 text-center flex flex-col items-center justify-center space-y-4">
+          <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
+            <Icon icon="ph:git-merge-bold" class="text-3xl sm:text-4xl text-navy" />
           </div>
-          <div class="text-base font-black text-navy dark:text-white mb-1">
-            {{ t('elimination.not_reached') }}
-          </div>
-          <div class="text-xs text-slate-400 max-w-sm mx-auto">
-            {{ t('elimination.not_reached_desc') }}
+          <div class="space-y-2 max-w-lg mx-auto">
+            <div class="text-xl font-black text-navy dark:text-white tracking-tight">
+              {{ t('elimination.not_reached') }}
+            </div>
+            <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+              {{ t('elimination.not_reached_desc') }}
+            </div>
           </div>
         </div>
 

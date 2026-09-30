@@ -70,18 +70,11 @@
       </StatCard>
     </div>
 
-    <CertificateFilterModal
-      v-model:show="showFilterModal"
-      :categories="uniqueCategories"
-      :current-filters="filters"
-      @apply="handleApplyModalFilters"
-      @reset="resetAllFilters"
-    />
-
     <!-- Certificate Filter Modal -->
     <CertificateFilterModal
       v-model:show="showFilterModal"
       :categories="uniqueCategories"
+      :clubs="uniqueClubs"
       :current-filters="filters"
       @apply="handleApplyModalFilters"
       @reset="resetAllFilters"
@@ -849,6 +842,14 @@ const uniqueCategories = computed(() => {
     .map(p => p.category_name)
     .filter(Boolean)
   return [...new Set(cats)]
+})
+
+const uniqueClubs = computed(() => {
+  if (!Array.isArray(participants.value)) return []
+  const clubs = participants.value
+    .map(p => p.club_name || p.club)
+    .filter(Boolean)
+  return [...new Set(clubs)]
 })
 
 // Build enriched list grouped by unique archer (1 Archer = 1 Row)

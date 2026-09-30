@@ -90,9 +90,9 @@
 
             <!-- Title -->
             <slot name="title">
-              <h1 class="text-xl sm:text-2xl md:text-3xl font-black leading-tight tracking-tight text-white truncate">
+              <div class="text-xl sm:text-2xl md:text-3xl font-black leading-tight tracking-tight text-white truncate">
                 {{ title }}
-              </h1>
+              </div>
             </slot>
 
             <!-- Subtitle -->

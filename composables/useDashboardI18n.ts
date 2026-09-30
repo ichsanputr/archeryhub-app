@@ -95,14 +95,24 @@ export function useDashboardI18n(defaultLocale = 'en') {
     } catch (e) {}
   }
 
-  function t(path: string, paramsOrDefault?: any, fallback = ''): string {
+  function t(path: string, paramsOrDefault?: any, fallbackOrParams?: any): string {
     let params: Record<string, any> | undefined = undefined
-    let defaultVal = fallback
+    let defaultVal = ''
 
     if (typeof paramsOrDefault === 'object' && paramsOrDefault !== null) {
       params = paramsOrDefault
+      if (typeof fallbackOrParams === 'string') {
+        defaultVal = fallbackOrParams
+      }
     } else if (typeof paramsOrDefault === 'string') {
       defaultVal = paramsOrDefault
+      if (typeof fallbackOrParams === 'object' && fallbackOrParams !== null) {
+        params = fallbackOrParams
+      } else if (typeof fallbackOrParams === 'string') {
+        defaultVal = fallbackOrParams
+      }
+    } else if (typeof fallbackOrParams === 'string') {
+      defaultVal = fallbackOrParams
     }
 
     const resolveInMap = (msg: any, pth: string): string | undefined => {

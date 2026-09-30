@@ -10,6 +10,7 @@
     >
       <div
         v-if="show"
+        @click="closeModal"
         class="fixed inset-0 z-[200] overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
       >
         <Transition
@@ -33,9 +34,9 @@
                   <Icon icon="ph:sliders-horizontal-bold" class="text-xl" />
                 </div>
                 <div>
-                  <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight">
+                  <div class="text-lg sm:text-xl font-black text-navy tracking-tight">
                     {{ t('my_events.filter_modal_title') }}
-                  </h2>
+                  </div>
                   <div class="text-xs text-slate-500 font-medium">
                     {{ t('my_events.filter_modal_subtitle') }}
                   </div>

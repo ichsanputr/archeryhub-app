@@ -5,7 +5,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <!-- Left: Title & Subtitle -->
                 <div class="flex items-center gap-3">
-                    <div class="size-10 rounded-xl bg-navy text-primary flex items-center justify-center shadow-sm shrink-0 font-black">
+                    <div class="size-10 rounded-xl bg-navy text-white flex items-center justify-center shadow-sm shrink-0 font-black">
                         <Icon icon="ph:target-bold" class="text-xl" />
                     </div>
                     <div>
@@ -109,18 +109,11 @@
             <div v-for="match in filteredMatches" :key="match.id"
                 class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-5 space-y-4 hover:border-slate-300 hover:shadow-md transition-all flex flex-col justify-between group">
                 
-                <!-- Card Header: Clean (No Done chip, No Target chip) -->
+                <!-- Card Header: Clean Match Number -->
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex items-center gap-1.5 flex-wrap">
-                        <div class="px-2.5 py-1 rounded-lg bg-navy text-primary text-xs font-black tracking-wider flex items-center gap-1.5 shadow-sm">
-                            <Icon icon="ph:trophy-bold" class="text-xs" />
-                            <span>{{ t('event_elimination.match_label', { no: match.match_no }, `Match ${match.match_no}`) }}</span>
-                        </div>
-                        <!-- Match Stage Badge -->
-                        <span class="px-2 py-0.5 rounded-lg border text-[10px] font-black tracking-wide"
-                            :class="getStageBadge(match).colorClass">
-                            {{ getStageBadge(match).shortLabel }}
-                        </span>
+                    <div class="px-2.5 py-1 rounded-lg bg-navy text-white text-xs font-black tracking-wider flex items-center gap-1.5 shadow-sm">
+                        <Icon icon="ph:trophy-bold" class="text-xs text-amber-400" />
+                        <span>{{ t('event_elimination.match_label', { no: match.match_no }, `Match ${match.match_no}`) }}</span>
                     </div>
                 </div>
 
@@ -133,7 +126,7 @@
                                 <img :src="getAvatarUrl(match.entry_a_name)"
                                     class="size-8 rounded-lg border border-slate-200 object-cover" />
                                 <div v-if="match.entry_a_seed"
-                                    class="absolute -left-1 -bottom-1 min-w-[14px] h-3.5 px-0.5 bg-navy text-primary text-[8px] font-black rounded flex items-center justify-center border border-white shadow-sm">
+                                    class="absolute -left-1 -bottom-1 min-w-[14px] h-3.5 px-0.5 bg-navy text-white text-[8px] font-black rounded flex items-center justify-center border border-white shadow-sm">
                                     {{ match.entry_a_seed }}
                                 </div>
                             </div>
@@ -145,7 +138,7 @@
                             </div>
                         </div>
                         <div v-if="match.winner_entry_id && match.winner_entry_id === match.entry_a_id"
-                            class="px-1.5 py-0.5 rounded bg-primary text-navy text-[9px] font-black flex items-center gap-1 shrink-0">
+                            class="px-1.5 py-0.5 rounded bg-amber-400 text-navy text-[9px] font-black flex items-center gap-1 shrink-0 shadow-2xs">
                             <Icon icon="ph:crown-simple-fill" />
                             <span>{{ t('event_elimination.win_badge', 'Win') }}</span>
                         </div>
@@ -163,7 +156,7 @@
                                 <img :src="getAvatarUrl(match.entry_b_name)"
                                     class="size-8 rounded-lg border border-slate-200 object-cover" />
                                 <div v-if="match.entry_b_seed"
-                                    class="absolute -left-1 -bottom-1 min-w-[14px] h-3.5 px-0.5 bg-navy text-primary text-[8px] font-black rounded flex items-center justify-center border border-white shadow-sm">
+                                    class="absolute -left-1 -bottom-1 min-w-[14px] h-3.5 px-0.5 bg-navy text-white text-[8px] font-black rounded flex items-center justify-center border border-white shadow-sm">
                                     {{ match.entry_b_seed }}
                                 </div>
                             </div>
@@ -175,23 +168,36 @@
                             </div>
                         </div>
                         <div v-if="match.winner_entry_id && match.winner_entry_id === match.entry_b_id"
-                            class="px-1.5 py-0.5 rounded bg-primary text-navy text-[9px] font-black flex items-center gap-1 shrink-0">
+                            class="px-1.5 py-0.5 rounded bg-amber-400 text-navy text-[9px] font-black flex items-center gap-1 shrink-0 shadow-2xs">
                             <Icon icon="ph:crown-simple-fill" />
                             <span>{{ t('event_elimination.win_badge', 'Win') }}</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card Footer: Target Selection Dropdown or BYE Info -->
+                <!-- Card Footer: Target Selection Dropdown, Finished State, or BYE Info -->
                 <div class="space-y-1 pt-1">
                     <label class="text-[10px] font-black tracking-wider text-slate-500 flex items-center gap-1">
-                        <Icon icon="ph:target-bold" class="text-xs text-primary" />
+                        <Icon icon="ph:target-bold" class="text-xs text-slate-400" />
                         <span>{{ t('event_elimination.select_target_board', 'Pilih Bantalan Target') }}</span>
                     </label>
+                    
+                    <!-- 1. BYE Match -->
                     <div v-if="isByeMatch(match)" class="h-9 px-3 rounded-xl bg-slate-100 border border-slate-200/80 text-slate-500 text-xs font-bold flex items-center gap-2">
                         <Icon icon="ph:info-bold" class="text-sm text-slate-400 shrink-0" />
                         <span class="truncate">{{ t('event_elimination.bye_no_target', 'BYE Match - Otomatis lolos tanpa bantalan target') }}</span>
                     </div>
+
+                    <!-- 2. Finished Match (Locked) -->
+                    <div v-else-if="match.status === 'finished' || match.winner_entry_id" class="h-9 px-3 rounded-xl bg-slate-100 border border-slate-200/80 text-slate-600 text-xs font-bold flex items-center justify-between">
+                        <span class="truncate">{{ getAssignedTargetName(match) || t('event_elimination.target_unassigned', 'Tanpa Bantalan') }}</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-700 text-[10px] font-black flex items-center gap-1 shrink-0 border border-emerald-500/20">
+                            <Icon icon="ph:lock-simple-fill" class="text-xs" />
+                            <span>{{ t('event_elimination.done', 'Selesai') }}</span>
+                        </span>
+                    </div>
+
+                    <!-- 3. Active / Pending Match (Can Select Target) -->
                     <BaseSelect v-else :model-value="match.target_id" :options="getTargetOptions(match.id)" class="w-full text-xs"
                         @update:model-value="val => { match.target_id = val; $emit('update-target', match) }" />
                 </div>
@@ -368,6 +374,17 @@ const getTargetOptions = (matchId) => {
             value: opt.id
         }))
     ]
+}
+
+const getAssignedTargetName = (match) => {
+    if (!match) return ''
+    if (match.target_name) return match.target_name
+    if (match.board_code) return `Target ${match.board_code}`
+    if (match.target_id && props.targetOptions) {
+        const opt = props.targetOptions.find(o => o.id === match.target_id || o.uuid === match.target_id)
+        if (opt) return opt.displayName || opt.name || (opt.board_code ? `Target ${opt.board_code}` : 'Target')
+    }
+    return ''
 }
 
 const getAvatarUrl = (name) => {

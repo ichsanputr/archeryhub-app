@@ -80,7 +80,7 @@
         <!-- Footer -->
         <div class="px-5 py-2.5 border-t border-gray-100 dark:border-slate-800 bg-gray-50/60 dark:bg-slate-900/60 text-center">
             <NuxtLink :to="`/dashboard/${userPersona}/notifications`" @click="$emit('close')"
-                class="text-xs font-black text-navy dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 py-1 px-3 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5">
+                class="text-xs font-black text-navy dark:text-slate-300 hover:text-navy dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 py-1 px-3 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5">
                 <span>{{ t('notifications.view_all') }}</span>
                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
             </NuxtLink>

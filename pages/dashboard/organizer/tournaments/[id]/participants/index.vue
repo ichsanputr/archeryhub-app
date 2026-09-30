@@ -46,7 +46,7 @@
                   <Icon icon="ph:check-square-offset-bold" class="text-2xl text-primary" />
                 </div>
                 <div>
-                  <h3 class="text-lg font-black tracking-tight text-white">{{ t('dashboard.participants_list.batch_checkin_modal.title') }}</h3>
+                  <div class="text-lg font-black tracking-tight text-white">{{ t('dashboard.participants_list.batch_checkin_modal.title') }}</div>
                   <div class="text-xs sm:text-sm text-slate-300">{{ t('dashboard.participants_list.batch_checkin_modal.subtitle') }}</div>
                 </div>
               </div>
@@ -107,10 +107,54 @@
         <ParticipantFilterModal
             v-model:show="showFilterModal"
             :categories="categories"
+            :clubs="availableClubs"
             :current-filters="filters"
             @apply="handleApplyModalFilters"
             @reset="resetAllFilters"
         />
+
+    <!-- Quick Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+      <!-- Total Participants -->
+      <StatCard
+        :title="t('dashboard.participants_list.stats_total', 'Total Peserta')"
+        :value="totalParticipantsCount"
+        icon="ph:users-three-bold"
+        color="primary"
+        :description="t('dashboard.participants_list.stats_total_desc', 'Semua pendaftar turnamen')"
+        description-icon="ph:calendar-blank-bold"
+      />
+
+      <!-- Paid Participants -->
+      <StatCard
+        :title="t('dashboard.participants_list.stats_paid', 'Lunas / Terverifikasi')"
+        :value="paidParticipantsCount"
+        icon="ph:check-circle-bold"
+        color="primary"
+        :description="t('dashboard.participants_list.stats_paid_desc', 'Peserta status siap tanding')"
+        description-icon="ph:seal-check-bold"
+      />
+
+      <!-- Pending Payments -->
+      <StatCard
+        :title="t('dashboard.participants_list.stats_pending', 'Menunggu Bayar/ACC')"
+        :value="pendingParticipantsCount"
+        icon="ph:hourglass-medium-bold"
+        color="primary"
+        :description="t('dashboard.participants_list.stats_pending_desc', 'Perlu verifikasi pembayaran')"
+        description-icon="ph:warning-circle-bold"
+      />
+
+      <!-- Checked-in Attendance -->
+      <StatCard
+        :title="t('dashboard.participants_list.stats_checkedin', 'Kehadiran / Check-in')"
+        :value="checkedInCount"
+        icon="ph:qr-code-bold"
+        color="primary"
+        :description="t('dashboard.participants_list.stats_checkedin_desc', 'Sudah hadir di venue')"
+        description-icon="ph:user-check-bold"
+      />
+    </div>
 
     <!-- Unified DashboardDataTable (Category A: Modal Filter) -->
     <DashboardDataTable
@@ -260,15 +304,6 @@ const showBatchCheckinModal = ref(false)
 const selectedBatchClub = ref('')
 const isBatchProcessing = ref(false)
 
-const availableClubs = computed(() => {
-    const clubs = new Set()
-    for (const p of participants.value) {
-        const c = p.club_name || p.club
-        if (c && typeof c === 'string' && c.trim()) clubs.add(c.trim())
-    }
-    return Array.from(clubs).sort()
-})
-
 const executeBatchCheckin = async () => {
     if (!selectedBatchClub.value) return
     isBatchProcessing.value = true
@@ -349,6 +384,13 @@ const page = ref(1)
 const limit = ref(10)
 const totalPages = computed(() => Math.ceil(total.value / limit.value))
 
+const totalParticipantsCount = computed(() => total.value || 0)
+const paidParticipantsCount = computed(() => verifiedCount.value || 0)
+const pendingParticipantsCount = computed(() => pendingCount.value || 0)
+const checkedInCount = computed(() => {
+    return participants.value.filter(p => !!p.last_reregistration_at).length
+})
+
 // Table columns configuration
 const isEn = computed(() => locale.value !== 'id')
 
@@ -419,6 +461,17 @@ const filters = ref({
     ageGroups: [],
     gender: 'Semua',
     club: ''
+})
+
+const availableClubs = computed(() => {
+    const set = new Set()
+    for (const p of participants.value || []) {
+        const c = p.club_name || p.club
+        if (c && typeof c === 'string' && c.trim()) {
+            set.add(c.trim())
+        }
+    }
+    return Array.from(set).sort((a, b) => a.localeCompare(b))
 })
 
 const activeFilterCount = computed(() => {

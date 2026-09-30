@@ -399,7 +399,7 @@ onMounted(() => {
         <Icon icon="ph:receipt-x-bold" class="size-8" />
       </div>
       <div class="space-y-1">
-        <h3 class="text-lg font-black text-navy dark:text-white">{{ t('archer_payment_detail.not_found_title') }}</h3>
+        <div class="text-lg font-black text-navy dark:text-white">{{ t('archer_payment_detail.not_found_title') }}</div>
         <div class="text-xs sm:text-sm text-slate-400">{{ t('archer_payment_detail.not_found_desc') }}</div>
       </div>
       <NuxtLink
@@ -570,9 +570,9 @@ onMounted(() => {
               <Icon icon="ph:receipt-bold" class="text-xl" />
             </div>
             <div>
-              <h3 class="font-bold text-base sm:text-lg text-navy dark:text-white">
+              <div class="font-bold text-base sm:text-lg text-navy dark:text-white">
                 {{ t('archer_payment_detail.participants_count', { count: (payment.participants?.length || 0) + (payment.teams?.length || 0) }, `Rincian Tagihan & Peserta Terdaftar (${(payment.participants?.length || 0) + (payment.teams?.length || 0)})`) }}
-              </h3>
+              </div>
               <div class="text-xs sm:text-sm text-slate-400 mt-0.5">{{ t('archer_payment_detail.roster_title', 'Roster Atlet & Rincian Tagihan') }}</div>
             </div>
           </div>
@@ -657,9 +657,11 @@ onMounted(() => {
                 </td>
                 <td class="py-3.5 px-4">
                   <div class="flex items-center gap-2.5">
-                    <div class="size-8 rounded-xl bg-navy/5 dark:bg-slate-700 flex items-center justify-center font-black text-navy dark:text-primary text-xs shrink-0">
-                      {{ (p.athlete_name || p.archer_name || 'P').charAt(0).toUpperCase() }}
-                    </div>
+                    <img
+                      :src="useImageOrDefault(p.avatar || p.photo_url || p.athlete_avatar, p.athlete_name || p.archer_name)"
+                      :alt="p.athlete_name || p.archer_name"
+                      class="size-8 rounded-full object-cover border border-slate-200 dark:border-slate-700 shrink-0 bg-slate-100 dark:bg-slate-700"
+                    />
                     <div>
                       <div class="font-bold text-navy dark:text-white">{{ p.athlete_name || p.archer_name }}</div>
                       <span v-if="p.gender" class="text-xs text-slate-400 font-normal capitalize">
@@ -984,7 +986,7 @@ onMounted(() => {
             <Icon icon="ph:warning-circle-bold" class="size-5" />
           </div>
           <div>
-            <h4 class="font-bold text-navy dark:text-white text-base sm:text-lg">{{ t('archer_payment_detail.cancel_modal_title') }}</h4>
+            <div class="font-bold text-navy dark:text-white text-base sm:text-lg">{{ t('archer_payment_detail.cancel_modal_title') }}</div>
             <div class="text-xs text-slate-400">{{ reference }}</div>
           </div>
         </div>
@@ -1021,7 +1023,7 @@ onMounted(() => {
       <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
         <div class="p-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
           <div>
-            <h4 class="font-bold text-sm sm:text-base text-navy dark:text-white">{{ t('archer_payments_list.proof_of_payment') }}</h4>
+            <div class="font-bold text-sm sm:text-base text-navy dark:text-white">{{ t('archer_payments_list.proof_of_payment') }}</div>
             <div class="text-xs text-slate-400">{{ reference }} &bull; {{ payment?.sender_name || payment?.payer_name }}</div>
           </div>
           <button

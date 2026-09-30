@@ -2,18 +2,6 @@
     <div class="flex flex-col gap-6 pb-12">
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="active_subscription" />
 
-        <!-- Reset Match Confirmation Dialog -->
-        <AppDialog
-            v-model:show="showResetConfirmDialog"
-            :title="t('event_elimination.reset_match_title')"
-            :message="t('event_elimination.confirm_reset_match')"
-            :confirmText="t('event_elimination.confirm_reset_btn')"
-            :cancelText="t('common.cancel')"
-            icon="ph:arrow-counter-clockwise-bold"
-            type="danger"
-            @confirm="executeResetMatch"
-        />
-
         <!-- Loading Skeleton -->
         <div v-if="isLoading" class="animate-pulse space-y-6">
             <!-- Header Skeleton -->
@@ -133,7 +121,7 @@
                                 <!-- Format Chip -->
                                 <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-white/10 border border-white/15 text-slate-200 text-[11px] sm:text-xs font-bold">
                                     <Icon icon="ph:crosshair-bold" class="text-xs text-white/70" />
-                                    <span>{{ bracket.format === 'recurve_set' ? t('event_elimination.set_system') : t('event_elimination.total_score_format') }} • {{ t('event_elimination.arrows_ends_format', '{arrows} Panah / {ends} End', { arrows: bracket.arrows_per_end, ends: bracket.ends_per_match }) }}</span>
+                                    <span>{{ bracket.format === 'recurve_set' ? (t('event_elimination.set_system', 'Set System')) : (t('event_elimination.total_score_format', 'Total Score')) }} • {{ bracket.arrows_per_end || 3 }} {{ t('event_elimination.arrows', 'Arrows') }} / {{ bracket.ends_per_match || 5 }} {{ t('event_elimination.ends', 'Ends') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -195,8 +183,7 @@
                     :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId" :team-members-map="teamMembersMap"
                     @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
-                    @select-arrow-box="selectArrowBox" @reset-match="resetMatch" :is-match-finished="isMatchFinished"
-                    :is-resetting="isResetting" />
+                    @select-arrow-box="selectArrowBox" :is-match-finished="isMatchFinished" />
             </div>
 
             <!-- BRACKET VIEW MODE -->
@@ -224,29 +211,29 @@
                     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm"
                     @click.self="showEndMatchDialog = false">
                     <div
-                        class="relative w-full max-w-lg bg-navy rounded-3xl shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto"
+                        class="relative w-full max-w-lg bg-navy rounded-3xl shadow-2xl border border-white/10 max-h-[95vh] overflow-y-auto no-scrollbar"
                         @click.stop>
                         <!-- Decorative Elements -->
-                        <div class="absolute inset-0 opacity-10 pointer-events-none">
+                        <div class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden rounded-3xl">
                             <Icon icon="ph:target"
                                 class="text-[200px] sm:text-[300px] absolute -right-16 -bottom-16 rotate-12 text-white/20" />
                         </div>
 
-                        <div class="relative p-6 sm:p-8 text-center">
-                            <div class="mb-4 sm:mb-6">
+                        <div class="relative p-5 sm:p-7 text-center">
+                            <div class="mb-3 sm:mb-5">
                                 <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ t('event_elimination.end_match_confirm') }}</h2>
-                                <div class="text-white/60 text-[10px] sm:text-sm mt-1">{{ t('event_elimination.end_match_confirm_desc') }}</div>
+                                <div class="text-white/60 text-xs sm:text-sm mt-0.5">{{ t('event_elimination.end_match_confirm_desc') }}</div>
                             </div>
 
                             <!-- Battle Display -->
                             <div v-if="selectedScoringMatch"
-                                class="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/10 mb-4 sm:mb-6">
-                                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                                class="bg-white/5 rounded-2xl p-3.5 sm:p-5 border border-white/10 mb-4 sm:mb-5">
+                                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6">
                                     <!-- Side A -->
                                     <div
-                                        class="flex-1 w-full sm:w-auto text-center flex flex-row sm:flex-col items-center sm:justify-center gap-4">
+                                        class="flex-1 w-full sm:w-auto text-center flex flex-row sm:flex-col items-center sm:justify-center gap-3 sm:gap-2">
                                         <img :src="useImageOrDefault(null, selectedScoringMatch.entry_a_name)"
-                                            class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
+                                            class="size-12 sm:size-14 rounded-xl sm:rounded-2xl border-2 shrink-0 object-cover"
                                             :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                         <div class="flex-1 sm:flex-none text-left sm:text-center min-w-0">
                                             <div class="font-bold text-white text-xs sm:text-sm truncate mb-0.5">
@@ -258,16 +245,16 @@
                                             </div>
                                         </div>
                                         <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
-                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-1">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
                                             <span class="hidden sm:inline">{{ t('event_elimination.winner') }}</span>
                                         </div>
                                     </div>
 
                                     <!-- VS -->
-                                    <div class="hidden sm:flex flex-col items-center gap-2">
+                                    <div class="hidden sm:flex flex-col items-center gap-2 shrink-0">
                                         <div
-                                            class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                            class="size-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
                                             <span class="text-[10px] font-black text-white/40 tracking-widest">VS</span>
                                         </div>
                                     </div>
@@ -275,9 +262,9 @@
 
                                     <!-- Side B -->
                                     <div
-                                        class="flex-1 w-full sm:w-auto text-center flex flex-row-reverse sm:flex-col items-center sm:justify-center gap-4">
+                                        class="flex-1 w-full sm:w-auto text-center flex flex-row-reverse sm:flex-col items-center sm:justify-center gap-3 sm:gap-2">
                                         <img :src="useImageOrDefault(null, selectedScoringMatch.entry_b_name)"
-                                            class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
+                                            class="size-12 sm:size-14 rounded-xl sm:rounded-2xl border-2 shrink-0 object-cover"
                                             :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                         <div class="flex-1 sm:flex-none text-right sm:text-center min-w-0">
                                             <div class="font-bold text-white text-xs sm:text-sm truncate mb-0.5">
@@ -289,7 +276,7 @@
                                             </div>
                                         </div>
                                         <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
-                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-1">
                                             <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
                                             <span class="hidden sm:inline">{{ t('event_elimination.winner') }}</span>
                                         </div>
@@ -299,34 +286,34 @@
 
                             <!-- Pilih Pemenang Manual (untuk Shoot-off Seri) -->
                             <div v-if="isShootOffTie"
-                                class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
-                                <div class="flex items-center gap-2 mb-3">
+                                class="mb-4 sm:mb-5 p-3.5 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
+                                <div class="flex items-center gap-2 mb-2">
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
                                     <span class="text-xs font-black text-yellow-500 tracking-widest">{{ t('event_elimination.manual_winner_desc') }}</span>
                                 </div>
-                                <div class="text-[10px] text-white/40 mb-4 leading-relaxed">
+                                <div class="text-[10px] text-white/40 mb-3 leading-relaxed">
                                     {{ t('event_elimination.shoot_off_tie_desc') }}
                                 </div>
 
                                 <div class="space-y-2">
                                     <button v-if="selectedScoringMatch.entry_a_id"
                                         @click="manualWinnerId = selectedScoringMatch.entry_a_id"
-                                        class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                        class="w-full flex items-center justify-between p-2.5 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
-                                        <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
+                                        <span class="text-xs font-bold text-white">{{ selectedScoringMatch.entry_a_name
                                             }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
-                                            icon="ph:check-circle-fill" class="text-primary" />
+                                            icon="ph:check-circle-fill" class="text-amber-400" />
                                     </button>
 
                                     <button v-if="selectedScoringMatch.entry_b_id"
                                         @click="manualWinnerId = selectedScoringMatch.entry_b_id"
-                                        class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                        class="w-full flex items-center justify-between p-2.5 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
-                                        <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
+                                        <span class="text-xs font-bold text-white">{{ selectedScoringMatch.entry_b_name
                                             }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
-                                            icon="ph:check-circle-fill" class="text-primary" />
+                                            icon="ph:check-circle-fill" class="text-amber-400" />
                                     </button>
                                 </div>
                             </div>
@@ -334,13 +321,13 @@
                             <!-- Actions -->
                             <div class="flex gap-3">
                                 <button @click="showEndMatchDialog = false"
-                                    class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
+                                    class="flex-1 px-4 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all text-xs sm:text-sm cursor-pointer">
                                     {{ t('event_elimination.cancel') }}
                                 </button>
                                 <BaseButton @click="confirmEndMatch"
                                     :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
                                     variant="primary" :loading="isEndingMatch" icon="ph:check-bold"
-                                    class="flex-1 px-6 py-3 rounded-xl font-black tracking-wide">
+                                    class="flex-1 px-4 py-2.5 rounded-xl font-black tracking-wide text-xs sm:text-sm cursor-pointer">
                                     {{ isEndingMatch ? t('event_elimination.processing') : t('event_elimination.confirm') }}
                                 </BaseButton>
                             </div>
@@ -376,7 +363,6 @@ const toast = useToast()
 
 const { isSubscriptionActive } = useSubscription()
 const showPremiumModal = ref(false)
-const showResetConfirmDialog = ref(false)
 
 const isLoading = ref(true)
 const isSaving = ref(false)
@@ -394,7 +380,6 @@ const selectedScoringMatch = ref(null)
 const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: { ... } } }
 const manualWinnerId = ref(null)
 const teamMembersMap = ref({})
-const isResetting = ref(false)
 
 const isByeMatch = (match) => {
     if (!match) return false
@@ -740,7 +725,8 @@ const navigateToRound = (roundNo) => {
 
 const selectMatch = (match) => {
     if (match && match.id) {
-        navigateTo(`/match/${match.id}`, {
+        const targetSlug = eventId.value || match.event_slug || match.tournament_slug || 'tournament'
+        navigateTo(`/tournaments/${targetSlug}/match/${match.id}`, {
             open: {
                 target: '_blank'
             }
@@ -1113,43 +1099,6 @@ const saveAndNext = async () => {
         toast.error(getApiErrorMessage(e, t('event_elimination.toast_save_score_failed')))
     } finally {
         isSaving.value = false
-    }
-}
-
-const resetMatch = () => {
-    if (!isSubscriptionActive.value) {
-        showPremiumModal.value = true
-        return
-    }
-    if (!selectedScoringMatch.value) return
-    if (isByeMatch(selectedScoringMatch.value)) {
-        toast.info(t('event_elimination.bye_no_scoring_needed'))
-        return
-    }
-    showResetConfirmDialog.value = true
-}
-
-const executeResetMatch = async () => {
-    if (!selectedScoringMatch.value) return
-    isResetting.value = true
-    try {
-        const matchId = selectedScoringMatch.value.id
-        await post(`/tournaments/${eventId.value}/elimination/brackets/${bracketId.value}/matches/${matchId}/reset`)
-        toast.success(t('event_elimination.toast_match_reset_live'))
-
-        // Refresh data
-        await fetchBracket()
-
-        // Re-select the match to update UI state
-        const updatedMatch = matches.value.find(m => m.id === matchId)
-        if (updatedMatch) {
-            selectedScoringMatch.value = updatedMatch
-        }
-    } catch (error) {
-        console.error('Failed to reset match:', error)
-        toast.error(getApiErrorMessage(error, t('event_elimination.toast_reset_match_failed')))
-    } finally {
-        isResetting.value = false
     }
 }
 

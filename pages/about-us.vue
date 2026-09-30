@@ -12,7 +12,7 @@
         <div class="flex items-center justify-center gap-2 text-xs text-slate-300 font-medium mb-2">
           <NuxtLink to="/" class="hover:text-white transition-colors">Home</NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-[10px] text-slate-400" />
-          <span class="text-primary font-semibold">About Us</span>
+          <span class="text-white font-semibold">About Us</span>
         </div>
 
         <h1 class="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white font-display leading-tight">
@@ -25,13 +25,13 @@
     </section>
 
     <!-- Main Editorial Content Area -->
-    <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-      <article class="bg-white rounded-3xl p-6 sm:p-12 border border-slate-200/90 shadow-xs space-y-10">
+    <main class="max-w-3xl mx-auto px-0 sm:px-6 py-6 sm:py-16">
+      <article class="bg-white rounded-none sm:rounded-3xl p-5 sm:p-12 border-y sm:border border-slate-200/90 shadow-none sm:shadow-xs space-y-8 sm:space-y-10">
 
         <!-- Background & Origin -->
         <section class="space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
-            <Icon icon="ph:compass-bold" class="text-primary text-sm" />
+            <Icon icon="ph:compass-bold" class="text-navy text-sm" />
             <span>Our Story</span>
           </div>
 
@@ -59,7 +59,7 @@
         <!-- Mission -->
         <section class="space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
-            <Icon icon="ph:target-bold" class="text-primary text-sm" />
+            <Icon icon="ph:target-bold" class="text-navy text-sm" />
             <span>Our Mission</span>
           </div>
 
@@ -80,7 +80,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <!-- Vision -->
           <div class="p-6 rounded-2xl bg-navy text-white space-y-3 shadow-xs">
-            <div class="w-9 h-9 rounded-xl bg-white/10 text-primary flex items-center justify-center text-lg">
+            <div class="w-9 h-9 rounded-xl bg-white/10 text-white flex items-center justify-center text-lg">
               <Icon icon="ph:eye-bold" />
             </div>
             <h3 class="text-base font-bold text-white">Our Vision</h3>
@@ -91,7 +91,7 @@
 
           <!-- What We Deliver -->
           <div class="p-6 rounded-2xl bg-slate-100 text-navy space-y-3 border border-slate-200/80">
-            <div class="w-9 h-9 rounded-xl bg-navy text-primary flex items-center justify-center text-lg">
+            <div class="w-9 h-9 rounded-xl bg-navy text-white flex items-center justify-center text-lg">
               <Icon icon="ph:rocket-launch-bold" />
             </div>
             <h3 class="text-base font-bold text-navy">What We Deliver</h3>
@@ -115,7 +115,7 @@
         <!-- Principles in Practice -->
         <section class="space-y-4 pt-2">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
-            <Icon icon="ph:heart-bold" class="text-primary text-sm" />
+            <Icon icon="ph:heart-bold" class="text-rose-500 text-sm" />
             <span>Our Values</span>
           </div>
 

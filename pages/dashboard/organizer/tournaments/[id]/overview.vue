@@ -100,62 +100,60 @@
             <!-- OVERVIEW TAB -->
             <div v-if="activeTab === 'overview'" class="space-y-8">
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
                     <!-- Total Pemanah -->
                     <StatCard
                         :title="$t('dashboard_event_overview.stats.total_archers')"
                         :value="event?.participant_count || 0"
-                        icon="ph:users"
+                        icon="ph:users-bold"
                         color="primary"
+                        :description="t('dashboard_event_overview.stats.total_archers_desc', 'Total atlet terdaftar')"
+                        description-icon="ph:users-three-bold"
                     />
 
                     <!-- Total Tim Resmi -->
                     <StatCard
                         :title="$t('dashboard_event_overview.stats.total_teams')"
                         :value="totalTeams"
-                        icon="ph:users-three"
+                        icon="ph:users-three-bold"
                         color="primary"
+                        :description="t('dashboard_event_overview.stats.total_teams_desc', 'Klub & tim beregu')"
+                        description-icon="ph:shield-bold"
                     />
 
                     <!-- Penyelesaian -->
                     <StatCard
                         :title="$t('dashboard_event_overview.stats.completion')"
                         :value="completionPercentage + '%'"
-                        icon="ph:check-square-offset"
+                        icon="ph:check-square-offset-bold"
                         color="primary"
-                    >
-                        <template #footer>
-                            <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
-                                <div class="bg-primary h-1.5 rounded-full" :style="`width: ${completionPercentage}%`"></div>
-                            </div>
-                        </template>
-                    </StatCard>
+                        :description="t('dashboard_event_overview.stats.completion_desc', 'Progres turnamen')"
+                        description-icon="ph:chart-line-up-bold"
+                    />
 
                     <!-- Sisa Waktu -->
                     <StatCard
                         :title="$t('dashboard_event_overview.stats.time_left')"
                         :value="timeLeft"
-                        icon="ph:timer"
+                        icon="ph:timer-bold"
                         color="primary"
-                    >
-                        <template #footer>
-                            <div class="text-text-secondary text-xs font-medium">{{ t('dashboard_event_overview.estimated_end') }}: {{ estimatedEnd }}</div>
-                        </template>
-                    </StatCard>
+                        :description="`${t('dashboard_event_overview.estimated_end')}: ${estimatedEnd}`"
+                        description-icon="ph:calendar-blank-bold"
+                    />
                 </div>
                 <!-- Row 2: 2 Columns for Registration Analytics & Payment Status -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Column 1: Category Distribution Bar List -->
-                    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between space-y-6">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-xs flex flex-col justify-between space-y-6">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
                                     <Icon icon="ph:chart-bar-bold" class="text-xl" />
                                 </div>
                                 <div>
-                                    <h3 class="text-navy font-bold text-base">
+                                    <div class="text-navy font-bold text-base">
                                         {{ $t('dashboard_event_overview.registration_analysis') }}
-                                    </h3>
+                                    </div>
                                     <div class="text-xs text-slate-400 font-medium mt-0.5">{{ $t('dashboard_event_overview.category_registration_desc') }}</div>
                                 </div>
                             </div>
@@ -198,18 +196,18 @@
                     </div>
 
                     <!-- Column 2: Payment Status Breakdown -->
-                    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-xs flex flex-col justify-between">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
                                 <Icon icon="ph:wallet-bold" class="text-xl" />
                             </div>
-                            <h4 class="text-base font-bold text-navy">
+                            <div class="text-base font-bold text-navy">
                                 {{ t('dashboard_event_overview.payment_status_heading') }}
-                            </h4>
+                            </div>
                         </div>
                         <div class="space-y-3 flex-1 flex flex-col justify-center">
                             <div
-                                class="flex items-center justify-between p-4 bg-slate-50/70 rounded-xl border border-slate-100 transition-transform hover:-translate-y-0.5">
+                                class="flex items-center justify-between p-4 bg-slate-50/70 dark:bg-slate-700/40 rounded-xl border border-slate-100 dark:border-slate-600 transition-transform hover:-translate-y-0.5">
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
@@ -217,7 +215,7 @@
                                     </div>
                                     <div>
                                         <span
-                                            class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_paid', 'Terbayar (Lunas)') }}</span>
+                                            class="block text-sm font-bold text-navy dark:text-white leading-tight">{{ $t('dashboard_event_overview.payment_paid', 'Terbayar (Lunas)') }}</span>
                                         <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_paid_desc', 'Pembayaran telah terverifikasi') }}</span>
                                     </div>
                                 </div>
@@ -225,7 +223,7 @@
                                     registrationStats.payment.lunas }}</span>
                             </div>
                             <div
-                                class="flex items-center justify-between p-4 bg-slate-50/70 rounded-xl border border-slate-100 transition-transform hover:-translate-y-0.5">
+                                class="flex items-center justify-between p-4 bg-slate-50/70 dark:bg-slate-700/40 rounded-xl border border-slate-100 dark:border-slate-600 transition-transform hover:-translate-y-0.5">
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
@@ -233,7 +231,7 @@
                                     </div>
                                     <div>
                                         <span
-                                            class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_pending', 'Menunggu Pembayaran') }}</span>
+                                            class="block text-sm font-bold text-navy dark:text-white leading-tight">{{ $t('dashboard_event_overview.payment_pending', 'Menunggu Pembayaran') }}</span>
                                         <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_pending_desc', 'Dalam proses transaksi') }}</span>
                                     </div>
                                 </div>
@@ -241,14 +239,14 @@
                                     registrationStats.payment.menunggu_acc }}</span>
                             </div>
                             <div
-                                class="flex items-center justify-between p-4 bg-slate-50/70 rounded-xl border border-slate-100 transition-transform hover:-translate-y-0.5">
+                                class="flex items-center justify-between p-4 bg-slate-50/70 dark:bg-slate-700/40 rounded-xl border border-slate-100 dark:border-slate-600 transition-transform hover:-translate-y-0.5">
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-xl bg-slate-500/10 text-slate-600 flex items-center justify-center">
                                         <Icon icon="ph:clock-countdown-bold" class="text-xl" />
                                     </div>
                                     <div>
-                                        <span class="block text-sm font-bold text-navy leading-tight">{{ $t('dashboard_event_overview.payment_expired', 'Kedaluwarsa / Batal') }}</span>
+                                        <span class="block text-sm font-bold text-navy dark:text-white leading-tight">{{ $t('dashboard_event_overview.payment_expired', 'Kedaluwarsa / Batal') }}</span>
                                         <span class="text-[10px] text-gray-400 font-medium">{{ $t('dashboard_event_overview.payment_expired_desc', 'Transaksi kedaluwarsa atau dibatalkan') }}</span>
                                     </div>
                                 </div>
@@ -262,23 +260,23 @@
                 <!-- Row 3: 2 Equal Columns (col 6 & col 6) for Leaderboard & Category Pie Chart -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Col 6 (Left): Leaderboard -->
-                    <div class="bg-white rounded-2xl border border-gray-100 flex flex-col overflow-hidden shadow-sm">
-                        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 flex flex-col overflow-hidden shadow-xs">
+                        <div class="p-4 px-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-white dark:bg-slate-800">
                             <div class="flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
                                     <Icon icon="ph:trophy-bold" class="text-xl" />
                                 </div>
-                                <h3 class="text-navy font-bold text-base">
+                                <div class="text-navy dark:text-white font-bold text-base">
                                     {{ $t('dashboard_event_overview.leaderboard.title') }}
-                                </h3>
+                                </div>
                             </div>
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{{ $t('dashboard_event_overview.top_archers_badge') }}</span>
+                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-full">{{ $t('dashboard_event_overview.top_archers_badge') }}</span>
                         </div>
                         <div class="flex-1 overflow-y-auto max-h-[460px] p-4 custom-scrollbar">
                             <div class="space-y-3">
                                 <div v-for="(participant, idx) in topParticipants" :key="participant.id"
                                     @click="navigateTo(`/dashboard/organizer/tournaments/${route.params.id}/participants/${participant.athlete_code || participant.id}`)"
-                                    class="group relative bg-white border border-gray-100 rounded-xl p-3 hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer flex items-center gap-3">
+                                    class="group relative bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-xl p-3 hover:border-primary/50 hover:shadow-sm transition-all cursor-pointer flex items-center gap-3">
 
                                     <!-- Rank Badge -->
                                     <div class="size-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
@@ -287,14 +285,14 @@
                                     </div>
 
                                     <!-- Avatar -->
-                                    <div class="size-10 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
+                                    <div class="size-10 rounded-xl overflow-hidden bg-gray-50 border border-slate-100 dark:border-slate-700 shrink-0">
                                         <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                             class="w-full h-full object-cover" />
                                     </div>
 
                                     <!-- Info -->
                                     <div class="flex-1 min-w-0">
-                                        <div class="text-navy font-bold text-xs truncate group-hover:text-primary transition-colors">
+                                        <div class="text-navy dark:text-white font-bold text-xs truncate group-hover:text-primary transition-colors">
                                             {{ participant.full_name }}
                                         </div>
                                         <div class="flex items-center gap-2 mt-0.5">
@@ -310,7 +308,7 @@
 
                                     <!-- Score -->
                                     <div class="text-right shrink-0">
-                                        <div class="text-base font-black text-navy tabular-nums">
+                                        <div class="text-base font-black text-navy dark:text-white tabular-nums">
                                             {{ participant.total_score || 0 }}
                                         </div>
                                         <div class="text-[9px] font-bold text-gray-400">{{ t('dashboard_event_overview.total_score_label') }}</div>
@@ -319,11 +317,11 @@
 
                                 <div v-if="topParticipants.length === 0"
                                     class="py-14 flex flex-col items-center justify-center text-center space-y-3">
-                                    <div class="size-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
+                                    <div class="size-16 rounded-2xl bg-slate-100 dark:bg-slate-700 text-slate-400 flex items-center justify-center">
                                         <Icon icon="ph:trophy-bold" class="text-3xl text-slate-400" />
                                     </div>
                                     <div class="max-w-xs space-y-1">
-                                        <div class="text-xs font-bold text-navy">{{ $t('dashboard_event_overview.leaderboard.empty_title') }}</div>
+                                        <div class="text-xs font-bold text-navy dark:text-white">{{ $t('dashboard_event_overview.leaderboard.empty_title') }}</div>
                                         <div class="text-[11px] text-slate-400 font-medium">{{ $t('dashboard_event_overview.leaderboard.no_scores') }}</div>
                                     </div>
                                 </div>
@@ -332,17 +330,17 @@
                     </div>
 
                     <!-- Col 6 (Right): Pie Chart Visualization Card -->
-                    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col justify-between space-y-6">
-                        <div class="flex items-center justify-between border-b border-gray-100 pb-4">
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-xs flex flex-col justify-between space-y-6">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-4">
                             <div class="flex items-center gap-3">
                                 <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
                                     <Icon icon="ph:chart-pie-bold" class="text-xl" />
                                 </div>
-                                <h3 class="text-navy font-bold text-base">
+                                <div class="text-navy dark:text-white font-bold text-base">
                                     {{ $t('dashboard_event_overview.pie_chart_title') }}
-                                </h3>
+                                </div>
                             </div>
-                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{{ $t('dashboard_event_overview.percentage_overall') }}</span>
+                            <span class="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-full">{{ $t('dashboard_event_overview.percentage_overall') }}</span>
                         </div>
 
                         <!-- Pie Chart & Legend Container -->
@@ -423,7 +421,7 @@
                                     <Icon icon="ph:share-network-bold" class="text-2xl" />
                                 </div>
                                 <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ $t('dashboard_event_overview.share_dialog.title') }}</h3>
+                                    <div class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ $t('dashboard_event_overview.share_dialog.title') }}</div>
                                     <div class="text-text-secondary text-sm font-medium leading-relaxed">
                                         {{ $t('dashboard_event_overview.share_dialog.desc') }}
                                     </div>
@@ -490,7 +488,7 @@
                                     <Icon icon="ph:rocket-launch-bold" class="text-navy text-xl" />
                                 </div>
                                 <div>
-                                    <h3 class="font-black text-navy text-lg leading-tight">{{ $t('dashboard_event_overview.quota_modal.title') }}</h3>
+                                    <div class="font-black text-navy text-lg leading-tight">{{ $t('dashboard_event_overview.quota_modal.title') }}</div>
                                     <div class="text-xs text-slate-500 font-medium">{{ $t('dashboard_event_overview.quota_modal.desc') }}</div>
                                 </div>
                             </div>
@@ -596,9 +594,9 @@
                         </div>
                         
                         <div class="space-y-2">
-                            <h3 class="text-xl font-black text-navy tracking-tight">
+                            <div class="text-xl font-black text-navy tracking-tight">
                                 {{ $t('dashboard_event_overview.quota_modal.insufficient_title') }}
-                            </h3>
+                            </div>
                             <div class="text-xs sm:text-sm text-slate-500 font-medium leading-relaxed">
                                 {{ $t('dashboard_event_overview.quota_modal.insufficient_desc') }}
                             </div>

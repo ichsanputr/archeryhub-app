@@ -49,7 +49,7 @@
                                                     : 'text-slate-500 hover:text-navy hover:bg-slate-100/60'
                                             ]"
                                         >
-                                            <Icon icon="ph:lightning-fill" class="text-primary text-sm" />
+                                            <Icon icon="ph:lightning-fill" class="text-amber-500 text-sm" />
                                             <span>Archeris Tournaments</span>
                                             <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100 text-slate-600">
                                                 {{ platformEvents.length }}
@@ -65,7 +65,7 @@
                                                     : 'text-slate-500 hover:text-navy hover:bg-slate-100/60'
                                             ]"
                                         >
-                                            <Icon icon="ph:trophy-fill" class="text-primary text-sm" />
+                                            <Icon icon="ph:trophy-fill" class="text-amber-500 text-sm" />
                                             <span>Ianseo Tournaments</span>
                                             <span class="px-1.5 py-0.5 rounded-full text-[10px] font-mono bg-slate-100 text-slate-600">
                                                 {{ externalEvents.length }}

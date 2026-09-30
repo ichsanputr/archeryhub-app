@@ -75,7 +75,7 @@
         <div
           v-if="showFilterModal"
           class="fixed inset-0 z-[200] overflow-y-auto bg-navy/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
-          @click.self="showFilterModal = false"
+          @click="showFilterModal = false"
         >
           <div
             class="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-lg mx-auto relative flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150"
@@ -88,9 +88,9 @@
                   <Icon icon="ph:sliders-horizontal-bold" class="text-lg text-slate-700" />
                 </div>
                 <div>
-                  <h2 class="text-base sm:text-lg font-black text-navy leading-tight">
+                  <div class="text-base sm:text-lg font-black text-navy leading-tight">
                     {{ isEn ? 'Filter Data' : 'Filter Data' }}
-                  </h2>
+                  </div>
                   <div class="text-xs text-slate-500 font-medium mt-0.5">
                     {{ isEn ? 'Filter records by date range, category, and status' : 'Saring data berdasarkan rentang tanggal, kategori, dan status' }}
                   </div>

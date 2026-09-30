@@ -9,11 +9,11 @@
             <!-- Undo / Redo -->
             <div class="flex gap-0.5">
                 <TBtn @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()"
-                    title="Undo (Ctrl+Z)">
+                    :title="t('editor.undo', 'Undo (Ctrl+Z)')">
                     <Icon icon="ph:arrow-counter-clockwise-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()"
-                    title="Redo (Ctrl+Y)">
+                    :title="t('editor.redo', 'Redo (Ctrl+Y)')">
                     <Icon icon="ph:arrow-clockwise-bold" />
                 </TBtn>
             </div>
@@ -22,7 +22,7 @@
 
             <!-- Heading dropdown -->
             <div class="relative" ref="headingMenuRef">
-                <TBtn @click="headingMenuOpen = !headingMenuOpen" title="Heading" :active="editor.isActive('heading')"
+                <TBtn @click="headingMenuOpen = !headingMenuOpen" :title="t('editor.heading', 'Heading')" :active="editor.isActive('heading')"
                     class="gap-1 !px-2 min-w-[72px] justify-between">
                     <span class="text-xs font-black">{{ currentHeading }}</span>
                     <Icon icon="ph:caret-down-bold" class="text-[10px]" />
@@ -43,15 +43,15 @@
             <!-- Text styling -->
             <div class="flex gap-0.5">
                 <TBtn @click="editor.chain().focus().toggleBold().run()" :active="editor.isActive('bold')"
-                    title="Bold (Ctrl+B)">
+                    :title="t('editor.bold', 'Bold (Ctrl+B)')">
                     <Icon icon="ph:text-b-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().toggleItalic().run()" :active="editor.isActive('italic')"
-                    title="Italic (Ctrl+I)">
+                    :title="t('editor.italic', 'Italic (Ctrl+I)')">
                     <Icon icon="ph:text-italic-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().toggleUnderline().run()" :active="editor.isActive('underline')"
-                    title="Underline (Ctrl+U)">
+                    :title="t('editor.underline', 'Underline (Ctrl+U)')">
                     <Icon icon="ph:text-underline-bold" />
                 </TBtn>
             </div>
@@ -61,19 +61,19 @@
             <!-- Alignment -->
             <div class="flex gap-0.5">
                 <TBtn @click="editor.chain().focus().setTextAlign('left').run()"
-                    :active="editor.isActive({ textAlign: 'left' })" title="Kiri">
+                    :active="editor.isActive({ textAlign: 'left' })" :title="t('editor.align_left', 'Kiri')">
                     <Icon icon="ph:text-align-left-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().setTextAlign('center').run()"
-                    :active="editor.isActive({ textAlign: 'center' })" title="Tengah">
+                    :active="editor.isActive({ textAlign: 'center' })" :title="t('editor.align_center', 'Tengah')">
                     <Icon icon="ph:text-align-center-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().setTextAlign('right').run()"
-                    :active="editor.isActive({ textAlign: 'right' })" title="Kanan">
+                    :active="editor.isActive({ textAlign: 'right' })" :title="t('editor.align_right', 'Kanan')">
                     <Icon icon="ph:text-align-right-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().setTextAlign('justify').run()"
-                    :active="editor.isActive({ textAlign: 'justify' })" title="Rata kanan-kiri">
+                    :active="editor.isActive({ textAlign: 'justify' })" :title="t('editor.align_justify', 'Rata kanan-kiri')">
                     <Icon icon="ph:text-align-justify-bold" />
                 </TBtn>
             </div>
@@ -83,11 +83,11 @@
             <!-- Lists -->
             <div class="flex gap-0.5">
                 <TBtn @click="editor.chain().focus().toggleBulletList().run()" :active="editor.isActive('bulletList')"
-                    title="Daftar poin">
+                    :title="t('editor.bullet_list', 'Daftar poin')">
                     <Icon icon="ph:list-bullets-bold" />
                 </TBtn>
                 <TBtn @click="editor.chain().focus().toggleOrderedList().run()" :active="editor.isActive('orderedList')"
-                    title="Daftar bernomor">
+                    :title="t('editor.ordered_list', 'Daftar bernomor')">
                     <Icon icon="ph:list-numbers-bold" />
                 </TBtn>
             </div>
@@ -97,7 +97,7 @@
             <!-- Block elements -->
             <div class="flex gap-0.5">
                 <TBtn @click="editor.chain().focus().toggleBlockquote().run()" :active="editor.isActive('blockquote')"
-                    title="Kutipan">
+                    :title="t('editor.blockquote', 'Kutipan')">
                     <Icon icon="ph:quotes-bold" />
                 </TBtn>
             </div>
@@ -105,27 +105,27 @@
             <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
 
             <!-- Link -->
-            <TBtn @click="openLinkDialog" :active="editor.isActive('link')" title="Sisipkan tautan (Ctrl+K)">
+            <TBtn @click="openLinkDialog" :active="editor.isActive('link')" :title="t('editor.insert_link', 'Sisipkan tautan (Ctrl+K)')">
                 <Icon icon="ph:link-bold" />
             </TBtn>
 
             <!-- Image menu -->
             <div class="relative" ref="imageMenuRef">
-                <TBtn @click="imageMenuOpen = !imageMenuOpen" title="Sisipkan gambar">
+                <TBtn @click="imageMenuOpen = !imageMenuOpen" :title="t('editor.insert_image', 'Sisipkan gambar')">
                     <Icon icon="ph:image-bold" />
                 </TBtn>
                 <div v-if="imageMenuOpen" class="dropdown-menu min-w-[160px]">
                     <button type="button" @click="showMediaLibrary = true; imageMenuOpen = false"
                         class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 rounded-t-lg">
-                        <Icon icon="ph:images-bold" class="text-primary" /> Media Library
+                        <Icon icon="ph:images-bold" class="text-primary" /> {{ t('editor.media_library', 'Media Library') }}
                     </button>
                     <button type="button" @click="imageFileInput?.click(); imageMenuOpen = false"
                         class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2">
-                        <Icon icon="ph:upload-bold" class="text-primary" /> Upload File
+                        <Icon icon="ph:upload-bold" class="text-primary" /> {{ t('editor.upload_file', 'Upload File') }}
                     </button>
                     <button type="button" @click="imageUrlMode = true; imageMenuOpen = false"
                         class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 rounded-b-lg">
-                        <Icon icon="ph:link-simple-bold" class="text-primary" /> Paste URL
+                        <Icon icon="ph:link-simple-bold" class="text-primary" /> {{ t('editor.paste_url', 'Paste URL') }}
                     </button>
                 </div>
             </div>
@@ -134,7 +134,7 @@
 
             <!-- Table menu -->
             <div class="relative" ref="tableMenuRef">
-                <TBtn @click="tableMenuOpen = !tableMenuOpen" :active="editor.isActive('table')" title="Tabel"
+                <TBtn @click="tableMenuOpen = !tableMenuOpen" :active="editor.isActive('table')" :title="t('editor.table.title', 'Tabel')"
                     class="gap-1">
                     <Icon icon="ph:table-bold" />
                     <Icon icon="ph:caret-down-bold" class="text-[10px]" />
@@ -212,7 +212,7 @@
                 @mousedown.self="linkDialogOpen = false">
                 <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-full max-w-md mx-4">
                     <h3 class="text-base font-black text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:link-bold" class="text-primary" /> Tautkan URL
+                        <Icon icon="ph:link-bold" class="text-primary" /> {{ t('editor.link_modal_title', 'Tautkan URL') }}
                     </h3>
                     <div class="space-y-3">
                         <div>
@@ -224,21 +224,21 @@
                         </div>
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input id="link-blank" type="checkbox" v-model="linkOpenNewTab" class="rounded" />
-                            <span class="text-sm font-bold text-gray-600">Buka di tab baru</span>
+                            <span class="text-sm font-bold text-gray-600">{{ t('editor.open_new_tab', 'Buka di tab baru') }}</span>
                         </label>
                     </div>
                     <div class="flex gap-2 mt-5">
                         <button type="button" @click="applyLink"
                             class="flex-1 px-4 py-2.5 bg-primary text-btn-text rounded-xl font-black text-sm hover:opacity-90 transition-opacity">
-                            Terapkan
+                            {{ t('editor.apply', 'Terapkan') }}
                         </button>
                         <button v-if="editor?.isActive('link')" type="button" @click="removeLink"
                             class="px-4 py-2.5 bg-red-50 text-red-600 rounded-xl font-black text-sm hover:bg-red-100 transition-colors">
-                            Hapus
+                            {{ t('editor.remove', 'Hapus') }}
                         </button>
                         <button type="button" @click="linkDialogOpen = false"
                             class="px-4 py-2.5 bg-gray-50 text-gray-600 rounded-xl font-black text-sm hover:bg-gray-100 transition-colors">
-                            Batal
+                            {{ t('common.cancel', 'Batal') }}
                         </button>
                     </div>
                 </div>
@@ -252,11 +252,11 @@
                 @mousedown.self="imageUrlMode = false">
                 <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 w-full max-w-md mx-4">
                     <h3 class="text-base font-black text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:image-bold" class="text-primary" /> Sisipkan Gambar dari URL
+                        <Icon icon="ph:image-bold" class="text-primary" /> {{ t('editor.insert_image_url_title', 'Sisipkan Gambar dari URL') }}
                     </h3>
                     <div class="space-y-3">
                         <div>
-                            <label class="text-xs font-bold text-gray-500 mb-1 block">URL Gambar</label>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">{{ t('editor.image_url_label', 'URL Gambar') }}</label>
                             <input v-model="imageUrl" type="url" placeholder="https://example.com/image.jpg"
                                 class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm font-medium"
                                 @keydown.enter="insertImageUrl" @keydown.escape="imageUrlMode = false" />
@@ -266,16 +266,16 @@
                             <img :src="imageUrl" class="max-h-40 w-auto object-contain" @error="imageUrlError = true"
                                 @load="imageUrlError = false" />
                         </div>
-                        <div v-if="imageUrlError" class="text-xs text-red-500 font-bold">URL gambar tidak valid.</div>
+                        <div v-if="imageUrlError" class="text-xs text-red-500 font-bold">{{ t('editor.image_url_invalid', 'URL gambar tidak valid.') }}</div>
                     </div>
                     <div class="flex gap-2 mt-5">
                         <button type="button" @click="insertImageUrl" :disabled="!imageUrl || imageUrlError"
                             class="flex-1 px-4 py-2.5 bg-primary text-btn-text rounded-xl font-black text-sm hover:opacity-90 transition-opacity disabled:opacity-40">
-                            Sisipkan
+                            {{ t('editor.insert', 'Sisipkan') }}
                         </button>
                         <button type="button" @click="imageUrlMode = false"
                             class="px-4 py-2.5 bg-gray-50 text-gray-600 rounded-xl font-black text-sm hover:bg-gray-100 transition-colors">
-                            Batal
+                            {{ t('common.cancel', 'Batal') }}
                         </button>
                     </div>
                 </div>
@@ -294,7 +294,7 @@
                 class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded-xl z-50">
                 <div class="flex flex-col items-center gap-3">
                     <Icon icon="ph:spinner-bold" class="text-4xl text-primary animate-spin" />
-                    <span class="text-sm font-black text-navy">Mengupload gambar...</span>
+                    <span class="text-sm font-black text-navy">{{ t('editor.uploading_image', 'Mengupload gambar...') }}</span>
                 </div>
             </div>
         </Transition>
@@ -311,9 +311,12 @@ import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
 import Placeholder from '@tiptap/extension-placeholder'
 import { onClickOutside } from '@vueuse/core'
+import { useI18n } from 'vue-i18n'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useApi } from '~/composables/useApi'
 import { Icon } from '@iconify/vue'
+
+const { t } = useI18n()
 
 // ── Inline toolbar button component ──────────────────────────────────────────
 const TBtn = defineComponent({
@@ -340,7 +343,7 @@ const TBtn = defineComponent({
 // ── Props & Emits ─────────────────────────────────────────────────────────────
 const props = defineProps({
     modelValue: { type: String, default: '' },
-    placeholder: { type: String, default: 'Mulai menulis konten di sini...' },
+    placeholder: { type: String, default: '' },
     minHeight: { type: String, default: '300px' },
 })
 const emit = defineEmits(['update:modelValue'])
@@ -373,20 +376,20 @@ const uploading = ref(false)
 const showMediaLibrary = ref(false)
 
 // ── Heading options ────────────────────────────────────────────────────────────
-const headingOptions = [
-    { value: 0, label: 'Normal', size: '0.875rem' },
-    { value: 1, label: 'Heading 1', size: '1.4rem' },
-    { value: 2, label: 'Heading 2', size: '1.2rem' },
-    { value: 3, label: 'Heading 3', size: '1.1rem' },
-    { value: 4, label: 'Heading 4', size: '1rem' },
-]
+const headingOptions = computed(() => [
+    { value: 0, label: t('editor.normal', 'Normal'), size: '0.875rem' },
+    { value: 1, label: `${t('editor.heading', 'Heading')} 1`, size: '1.4rem' },
+    { value: 2, label: `${t('editor.heading', 'Heading')} 2`, size: '1.2rem' },
+    { value: 3, label: `${t('editor.heading', 'Heading')} 3`, size: '1.1rem' },
+    { value: 4, label: `${t('editor.heading', 'Heading')} 4`, size: '1rem' },
+])
 
 const currentHeading = computed(() => {
-    if (!editor.value) return 'Normal'
+    if (!editor.value) return t('editor.normal', 'Normal')
     for (let i = 1; i <= 4; i++) {
         if (editor.value.isActive('heading', { level: i })) return `H${i}`
     }
-    return 'Normal'
+    return t('editor.normal', 'Normal')
 })
 
 // ── Editor setup ──────────────────────────────────────────────────────────────
@@ -413,7 +416,11 @@ const editor = useEditor({
         }),
         TextAlign.configure({ types: ['heading', 'paragraph'] }),
         Underline,
-        Placeholder.configure({ placeholder: props.placeholder }),
+        Placeholder.configure({
+            placeholder: ({ node }) => {
+                return props.placeholder || t('editor.placeholder', 'Mulai menulis konten di sini...')
+            }
+        }),
     ],
     editorProps: {
         attributes: {

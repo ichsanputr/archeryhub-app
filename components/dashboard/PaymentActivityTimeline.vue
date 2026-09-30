@@ -6,9 +6,9 @@
           <Icon icon="ph:clock-countdown-bold" class="text-xl" />
         </div>
         <div>
-          <h3 class="font-bold text-base sm:text-lg text-navy dark:text-white">
+          <div class="font-bold text-base sm:text-lg text-navy dark:text-white">
             {{ t('org_event_payments.timeline_title') }}
-          </h3>
+          </div>
           <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
             {{ t('org_event_payments.timeline_subtitle') }}
           </div>

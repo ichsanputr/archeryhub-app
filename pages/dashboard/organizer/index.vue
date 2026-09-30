@@ -85,9 +85,9 @@
                             <Icon icon="ph:chart-bar-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h3 class="text-navy font-black text-base leading-tight">
+                            <div class="text-navy font-black text-base leading-tight">
                                 {{ isEn ? 'Registrations & Participation Trend' : 'Tren Pendaftaran & Partisipasi' }}
-                            </h3>
+                            </div>
                             <div class="text-xs text-slate-400 font-medium mt-0.5">{{ isEn ? 'Participant registrations in the last 30 days' : 'Statistik aktivitas pendaftaran peserta dalam 30 hari terakhir' }}</div>
                         </div>
                     </div>
@@ -148,9 +148,9 @@
                             <Icon icon="ph:lightning-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h3 class="text-base font-black text-white leading-tight">
+                            <div class="text-base font-black text-white leading-tight">
                                 {{ t('dashboard.org.quick_actions') }}
-                            </h3>
+                            </div>
                             <div class="text-xs text-slate-300 mt-0.5">{{ t('dashboard.org.quick_actions_desc') }}</div>
                         </div>
                     </div>
@@ -206,9 +206,9 @@
                             <Icon icon="ph:calendar-check-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h3 class="text-navy font-black text-base leading-tight">
+                            <div class="text-navy font-black text-base leading-tight">
                                 {{ t('dashboard.org.event_recap') }}
-                            </h3>
+                            </div>
                             <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.event_recap_desc') }}</div>
                         </div>
                     </div>
@@ -226,12 +226,12 @@
                         @click="router.push(`/dashboard/organizer/tournaments/${event.id}/overview`)">
                         <div class="flex items-center gap-4 flex-1 min-w-0">
                             <div
-                                class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0">
-                                <span class="text-[10px] font-black text-primary">{{ event.dateLabel }}</span>
-                                <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
+                                class="w-12 h-12 rounded-xl bg-white border border-slate-200 flex flex-col items-center justify-center shrink-0 shadow-2xs">
+                                <span class="text-[10px] font-bold text-slate-500">{{ event.dateLabel }}</span>
+                                <span class="text-base font-black text-navy leading-none mt-0.5">{{ event.dayLabel }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <h4 class="font-bold text-navy group-hover:text-primary transition-colors truncate">{{ event.name }}</h4>
+                                <div class="font-bold text-navy transition-colors truncate">{{ event.name }}</div>
                                 <div class="flex items-center gap-4 mt-1">
                                     <div class="text-xs text-slate-500">{{ event.statusLabel }}</div>
                                     <div class="flex items-center gap-3 text-xs text-slate-500">
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                         <Icon icon="ph:arrow-right-bold"
-                            class="text-slate-300 group-hover:text-primary transition-all group-hover:translate-x-1 shrink-0" />
+                            class="text-slate-300 group-hover:text-navy transition-all group-hover:translate-x-1 shrink-0" />
                     </div>
                 </div>
 
@@ -272,9 +272,9 @@
                             <Icon icon="ph:trophy-bold" class="text-xl" />
                         </div>
                         <div>
-                            <h3 class="text-navy font-black text-base leading-tight">
+                            <div class="text-navy font-black text-base leading-tight">
                                 {{ t('dashboard.org.leaderboard') }}
-                            </h3>
+                            </div>
                             <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.leaderboard_desc') }}</div>
                         </div>
                     </div>
@@ -309,7 +309,7 @@
                                             class="w-9 h-9 rounded-full object-cover border border-slate-200 bg-slate-50" />
                                         <div>
                                             <div
-                                                class="text-navy font-bold group-hover:text-primary transition-colors">
+                                                class="text-navy font-bold transition-colors">
                                                 {{ archer.name }}
                                             </div>
                                             <div class="text-slate-400 text-xs">{{ archer.category || '-' }}</div>

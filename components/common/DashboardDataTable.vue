@@ -74,7 +74,7 @@
           <!-- Total Count Badge -->
           <div
             v-if="showCountBadge"
-            class="px-3 py-2 bg-navy/5 text-navy rounded-xl font-black text-xs border border-navy/10 flex items-center gap-1.5 shrink-0 select-none"
+            class="hidden sm:flex px-3 py-2 bg-navy/5 text-navy rounded-xl font-black text-xs border border-navy/10 items-center gap-1.5 shrink-0 select-none"
           >
             <Icon :icon="countIcon || 'ph:rows-bold'" class="text-xs sm:text-sm text-navy/70" />
             <span>{{ computedTotal }} {{ countUnit || (isEn ? 'entries' : 'data') }}</span>

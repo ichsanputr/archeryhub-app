@@ -5,7 +5,7 @@
                 class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-btn-inverse shadow-sm">
                 <Icon icon="ph:scales-bold" class="text-lg" />
             </div>
-            <h2 class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title') }}</h2>
+            <div class="text-lg font-extrabold text-navy">{{ t('subscription.comparison.title') }}</div>
         </div>
 
         <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden overflow-x-auto">
