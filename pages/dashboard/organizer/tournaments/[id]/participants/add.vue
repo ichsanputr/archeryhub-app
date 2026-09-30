@@ -362,8 +362,8 @@
                                 <BaseSelect v-model="newArcherForm.gender" :label="t('dashboard_events_participants_add.gender', 'Jenis Kelamin')"
                                     :items="genderOptions" required />
                                 <BaseInput v-model="newArcherForm.phone" :label="t('dashboard_events_participants_add.phone')" type="tel"
-                                    :placeholder="t('dashboard_events_participants_add.phone_placeholder')" numberOnly
-                                    :rules="[v => !v || String(v).length >= 8 || t('dashboard_events_participants_add.phone_error')]" />
+                                    :placeholder="t('dashboard_events_participants_add.phone_placeholder')"
+                                    :rules="[v => !v || /^[0-9+\s-]{8,20}$/.test(String(v).trim()) || t('dashboard_events_participants_add.phone_error', 'Nomor telepon minimal 8 digit dan hanya angka/+/-')]" />
                                 
                                 <div class="relative">
                                     <BaseInput v-model="newArcherForm.password" :label="t('dashboard_events_participants_add.password')" type="text"
@@ -546,7 +546,7 @@
     <ImportParticipantsModal v-model:show="showImportModal" :event-id="route.params.id" :custom-fields="customFields" @parsed="handleCsvParsed" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'

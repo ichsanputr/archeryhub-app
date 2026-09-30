@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { formatMoney } from '~/composables/useCurrency'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
 
@@ -18,7 +19,7 @@ const isEn = computed(() => locale.value !== 'id')
 const route = useRoute()
 const router = useRouter()
 const { get, put, post } = useApi()
-const { tournamentTitle } = useTournamentContext()
+const { tournamentTitle, currentTournament } = useTournamentContext()
 const toast = useToast()
 
 const eventId = computed(() => route.params.id)
@@ -177,8 +178,12 @@ const checkinTimeFormatted = computed(() => {
     return timeVal ? formatDateTime(timeVal) : null
 })
 
-const formatCurrency = (val) => {
-    return new Intl.NumberFormat('id-ID').format(Number(val) || 0)
+const tournamentCurrency = computed(() => {
+    return participant.value?.tournament_currency || participant.value?.currency || currentTournament.value?.currency || (currentTournament.value?.page_settings as any)?.currency || 'IDR'
+})
+
+const formatCurrency = (val, curr?: string) => {
+    return formatMoney(val, curr || tournamentCurrency.value)
 }
 
 const formatDate = (d) => {
@@ -300,7 +305,7 @@ const getTrxStatusInfo = (status) => {
     }
     if (s === 'expired') {
         return {
-            label: isEn.value ? 'Expired' : 'Kedaluwarsa',
+            label: t('payment_status.badge_expired', isEn.value ? 'Expired' : 'Kedaluwarsa'),
             badgeClass: 'bg-slate-100 text-slate-700 border-slate-200',
             icon: 'ph:clock-countdown-bold'
         }
@@ -341,7 +346,7 @@ const participantStatusInfo = computed(() => {
     }
     if (s === 'expired') {
         return {
-            label: isEn.value ? 'Expired' : 'Kedaluwarsa',
+            label: t('payment_status.badge_expired', isEn.value ? 'Expired' : 'Kedaluwarsa'),
             badgeClass: 'bg-slate-100 text-slate-700 border border-slate-200'
         }
     }
@@ -589,7 +594,7 @@ const needsManualConfirmation = computed(() => {
                                     </div>
                                     <div class="text-right">
                                         <span class="text-sm sm:text-base font-bold text-slate-900">
-                                            Rp {{ formatCurrency(cat.payment_amount) }}
+                                            {{ formatCurrency(cat.payment_amount || cat.amount || cat.fee || 0, cat.currency) }}
                                         </span>
                                     </div>
                                 </div>
@@ -669,7 +674,7 @@ const needsManualConfirmation = computed(() => {
                                         <div class="flex items-center sm:flex-col sm:items-end justify-between gap-2">
                                             <span class="text-base sm:text-lg font-black tracking-tight"
                                                 :class="isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? 'text-purple-700' : 'text-navy'">
-                                                {{ isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? '- ' : '' }}Rp {{ formatCurrency(trx.amount || trx.total_amount || 0) }}
+                                                {{ isRefundStatus(trx.status) || (trx.payment_method || '').toLowerCase() === 'refund' ? '- ' : '' }}{{ formatCurrency(trx.amount || trx.total_amount || 0, trx.currency) }}
                                             </span>
                                             
                                             <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border shadow-2xs"

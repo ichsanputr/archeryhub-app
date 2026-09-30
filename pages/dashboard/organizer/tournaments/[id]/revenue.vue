@@ -17,15 +17,15 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
       <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_revenue.gross_revenue") }}</div>
-        <div class="text-2xl font-black text-navy dark:text-white">Rp {{ grossRevenue.toLocaleString('id-ID') }}</div>
+        <div class="text-2xl font-black text-navy dark:text-white">{{ formattedGrossRevenue }}</div>
       </div>
       <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_revenue.platform_fee") }}</div>
-        <div class="text-2xl font-black text-amber-600">Rp {{ platformFee.toLocaleString('id-ID') }}</div>
+        <div class="text-2xl font-black text-amber-600">{{ formattedPlatformFee }}</div>
       </div>
       <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_revenue.net_revenue") }}</div>
-        <div class="text-2xl font-black text-emerald-600">Rp {{ netRevenue.toLocaleString('id-ID') }}</div>
+        <div class="text-2xl font-black text-emerald-600">{{ formattedNetRevenue }}</div>
       </div>
       <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
         <div class="text-xs font-bold text-slate-500 capitalize tracking-wider mb-1">{{ t("org_revenue.paid_participants") }}</div>
@@ -44,12 +44,12 @@
           <h3 class="font-black text-navy dark:text-white text-lg">{{ t("org_revenue.method_breakdown_title") }}</h3>
         </div>
         <div class="space-y-3">
-          <div v-for="(amount, method) in methodBreakdown" :key="method" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50">
+          <div v-for="(item, idx) in methodBreakdown" :key="idx" class="flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-700/50">
             <div class="flex items-center gap-3">
               <Icon icon="ph:credit-card-bold" class="text-primary text-xl" />
-              <span class="font-bold text-navy dark:text-white text-sm capitalize">{{ method }}</span>
+              <span class="font-bold text-navy dark:text-white text-sm capitalize">{{ item.method }}</span>
             </div>
-            <span class="font-mono font-black text-navy dark:text-white text-sm">Rp {{ amount.toLocaleString('id-ID') }}</span>
+            <span class="font-mono font-black text-navy dark:text-white text-sm">{{ formatMoney(item.amount, item.currency) }}</span>
           </div>
         </div>
       </div>
@@ -77,20 +77,26 @@
 import { useI18n } from 'vue-i18n'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { formatMoney } from '~/composables/useCurrency'
 
 const { t } = useI18n()
 const route = useRoute()
 const { get } = useApi()
-const { tournamentTitle } = useTournamentContext()
+const { tournamentTitle, currentTournament } = useTournamentContext()
 
 const eventId = computed(() => route.params.id as string)
+
+const isLoading = ref(true)
+const participants = ref<any[]>([])
+const invoices = ref<any[]>([])
+
+const tournamentCurrency = computed(() => {
+  return currentTournament.value?.currency || (currentTournament.value?.page_settings as any)?.currency || invoices.value[0]?.currency || 'IDR'
+})
 
 useHead({
   title: computed(() => (t ? t('org_revenue.header_title') : 'Pendapatan Event') + ' - Archeris Dashboard')
 })
-const isLoading = ref(true)
-const participants = ref<any[]>([])
-const invoices = ref<any[]>([])
 
 const paidParticipants = computed(() =>
   participants.value.filter(p => p.payment_status === 'paid' || p.payment_status === 'lunas')
@@ -98,18 +104,43 @@ const paidParticipants = computed(() =>
 
 const paidCount = computed(() => paidParticipants.value.length)
 
-const grossRevenue = computed(() =>
-  paidParticipants.value.reduce((sum, p) => sum + (p.payment_amount || p.amount || 0), 0)
-)
+const revenueByCurrency = computed(() => {
+  const map: Record<string, { gross: number; net: number; fee: number }> = {}
+  for (const p of paidParticipants.value) {
+    const curr = (p.currency || tournamentCurrency.value || 'IDR').toUpperCase()
+    const amt = Number(p.payment_amount || p.amount || 0)
+    if (!map[curr]) {
+      map[curr] = { gross: 0, net: 0, fee: 0 }
+    }
+    map[curr].gross += amt
+    map[curr].fee += amt * 0.05
+    map[curr].net += amt * 0.95
+  }
+  return map
+})
 
-const platformFee = computed(() => grossRevenue.value * 0.05)
-const netRevenue = computed(() => grossRevenue.value * 0.95)
+const formattedGrossRevenue = computed(() => {
+  const entries = Object.entries(revenueByCurrency.value)
+  if (entries.length === 0) return formatMoney(0, tournamentCurrency.value)
+  return entries.map(([curr, val]) => formatMoney(val.gross, curr)).join(' + ')
+})
+
+const formattedPlatformFee = computed(() => {
+  const entries = Object.entries(revenueByCurrency.value)
+  if (entries.length === 0) return formatMoney(0, tournamentCurrency.value)
+  return entries.map(([curr, val]) => formatMoney(val.fee, curr)).join(' + ')
+})
+
+const formattedNetRevenue = computed(() => {
+  const entries = Object.entries(revenueByCurrency.value)
+  if (entries.length === 0) return formatMoney(0, tournamentCurrency.value)
+  return entries.map(([curr, val]) => formatMoney(val.net, curr)).join(' + ')
+})
 
 const methodBreakdown = computed(() => {
-  const map: Record<string, number> = {}
-  
   if (invoices.value && invoices.value.length > 0) {
-    const paidInvoices = invoices.value.filter((inv: any) => inv.status === 'paid' || inv.status === 'lunas' || inv.status === 'settlement')
+    const paidInvoices = invoices.value.filter((inv: any) => ['paid', 'lunas', 'settlement', 'success', 'completed'].includes((inv.status || '').toLowerCase()))
+    const map: Record<string, { method: string; amount: number; currency: string }> = {}
     for (const inv of paidInvoices) {
       const rawMethod = (inv.payment_method || inv.method || 'online').toLowerCase()
       let label = 'Gateway Online (Mayar)'
@@ -117,19 +148,28 @@ const methodBreakdown = computed(() => {
       else if (rawMethod === 'cash') label = 'Tunai (Cash Desk)'
       else if (rawMethod === 'paypal') label = 'PayPal'
       
+      const curr = inv.currency || tournamentCurrency.value || 'IDR'
+      const key = `${label}_${curr}`
       const amt = Number(inv.total_amount || inv.amount || 0)
-      map[label] = (map[label] || 0) + amt
+      if (!map[key]) {
+        map[key] = { method: label, amount: 0, currency: curr }
+      }
+      map[key].amount += amt
     }
+    return Object.values(map)
   }
   
-  if (Object.keys(map).length === 0) {
-    for (const p of paidParticipants.value) {
-      const m = (p.payment_method || 'Online Gateway').toUpperCase()
-      map[m] = (map[m] || 0) + (Number(p.payment_amount || p.amount || 0))
+  const map: Record<string, { method: string; amount: number; currency: string }> = {}
+  for (const p of paidParticipants.value) {
+    const m = (p.payment_method || 'Online Gateway').toUpperCase()
+    const curr = p.currency || tournamentCurrency.value || 'IDR'
+    const key = `${m}_${curr}`
+    if (!map[key]) {
+      map[key] = { method: m, amount: 0, currency: curr }
     }
+    map[key].amount += Number(p.payment_amount || p.amount || 0)
   }
-  
-  return map
+  return Object.values(map)
 })
 
 async function fetchParticipants() {

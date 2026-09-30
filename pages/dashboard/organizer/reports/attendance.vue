@@ -153,7 +153,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'

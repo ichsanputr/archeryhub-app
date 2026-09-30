@@ -362,7 +362,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

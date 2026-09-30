@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, watch } from 'vue'
 import { useApi } from '~/composables/useApi'

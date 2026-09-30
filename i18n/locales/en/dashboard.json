@@ -1675,7 +1675,9 @@
     "not_reached": "Not reached elimination stage yet"
   },
   "dashboard_event_overview": {
-    "publish_failed": "Failed to publish tournament"
+    "publish_failed": "Failed to publish tournament",
+    "payment_expired": "Expired / Cancelled",
+    "payment_expired_desc": "Expired or cancelled transactions"
   },
   "dashboard_events_page": {
     "registration": {

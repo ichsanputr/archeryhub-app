@@ -1797,7 +1797,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
 import { ref, computed, watch, nextTick, onMounted } from 'vue'

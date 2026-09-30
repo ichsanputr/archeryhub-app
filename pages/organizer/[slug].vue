@@ -551,55 +551,94 @@
         </div>
 
         <!-- subscribe organizer dialog -->
-        <Transition name="modal">
-            <div v-if="showSubscribeModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                <div @click="closeSubscribeModal" class="absolute inset-0 bg-navy/80 backdrop-blur-sm"></div>
-                <div class="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 z-10">
-                    <button @click="closeSubscribeModal" class="absolute top-5 right-5 size-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-500 hover:text-navy hover:bg-gray-200 transition-colors cursor-pointer">
-                        <Icon icon="ph:x-bold" class="text-sm" />
-                    </button>
+        <Teleport to="body">
+            <Transition
+                enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="opacity-100"
+                leave-to-class="opacity-0"
+            >
+                <div
+                    v-if="showSubscribeModal"
+                    class="fixed inset-0 z-[200] overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
+                    @click.self="closeSubscribeModal"
+                >
+                    <Transition
+                        enter-active-class="transition duration-200 ease-out"
+                        enter-from-class="opacity-0 scale-95 translate-y-4"
+                        enter-to-class="opacity-100 scale-100 translate-y-0"
+                        leave-active-class="transition duration-150 ease-in"
+                        leave-from-class="opacity-100 scale-100 translate-y-0"
+                        leave-to-class="opacity-0 scale-95 translate-y-4"
+                    >
+                        <div
+                            v-if="showSubscribeModal"
+                            class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-md mx-auto relative flex flex-col overflow-hidden"
+                            @click.stop
+                        >
+                            <button
+                                type="button"
+                                @click="closeSubscribeModal"
+                                class="absolute top-5 right-5 size-8 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-navy transition-colors flex items-center justify-center shrink-0 cursor-pointer z-20"
+                            >
+                                <Icon icon="ph:x-bold" class="text-base" />
+                            </button>
 
-                    <div class="flex flex-col items-center text-center">
-                        <div class="size-14 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
-                            <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
-                        </div>
-
-                        <h3 class="text-xl font-black text-navy mb-2">
-                            {{ t('organizer.public.subscribe_modal_title', 'Langganan Info Turnamen') }}
-                        </h3>
-                        <p class="text-xs sm:text-sm text-gray-500 mb-6 leading-relaxed">
-                            {{ t('organizer.public.subscribe_modal_desc', 'Dapatkan notifikasi email setiap kali') }} <strong class="text-navy">{{ displayName }}</strong> {{ t('organizer.public.subscribe_modal_desc_end', 'merilis atau membuka pendaftaran turnamen baru.') }}
-                        </p>
-
-                        <form @submit.prevent="handleSubscribe" class="w-full space-y-4">
-                            <div class="text-left">
-                                <label class="block text-xs font-black text-gray-400 uppercase tracking-wider mb-1.5">
-                                    {{ t('organizer.public.email_label', 'Alamat Email') }}
-                                </label>
-                                <div class="relative">
-                                    <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                                    <input v-model="subscribeEmail" type="email" required
-                                        :placeholder="t('organizer.public.email_placeholder', 'nama@email.com')"
-                                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all" />
+                            <div class="p-6 sm:p-8 flex flex-col items-center text-center">
+                                <div class="size-12 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
+                                    <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
                                 </div>
-                            </div>
 
-                            <div class="flex gap-3 pt-2">
-                                <button type="button" @click="closeSubscribeModal"
-                                    class="flex-1 py-3 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">
-                                    {{ t('common.cancel', 'Batal') }}
-                                </button>
-                                <button type="submit" :disabled="isSubscribing"
-                                    class="flex-1 py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-black rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-                                    <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-lg" />
-                                    <span>{{ isSubscribing ? t('common.submitting', 'Memproses...') : t('organizer.public.subscribe_action', 'Ya, Berlangganan') }}</span>
-                                </button>
+                                <h3 class="text-lg sm:text-xl font-black text-navy mb-2 tracking-tight">
+                                    Subscribe to Tournament Updates
+                                </h3>
+                                <div class="text-xs sm:text-sm text-gray-500 mb-6 leading-relaxed">
+                                    Get email notifications whenever <strong class="text-navy font-semibold">{{ displayName }}</strong> publishes or opens registration for new tournaments.
+                                </div>
+
+                                <form @submit.prevent="handleSubscribe" class="w-full space-y-4">
+                                    <div class="text-left">
+                                        <label class="block text-xs font-bold text-gray-500 mb-1.5">
+                                            Email address
+                                        </label>
+                                        <div class="relative">
+                                            <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base" />
+                                            <input
+                                                v-model="subscribeEmail"
+                                                type="email"
+                                                required
+                                                placeholder="name@email.com"
+                                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div class="flex gap-3 pt-2">
+                                        <button
+                                            type="button"
+                                            @click="closeSubscribeModal"
+                                            class="flex-1 py-2.5 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+                                        >
+                                            Cancel
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            :disabled="isSubscribing"
+                                            class="flex-1 py-2.5 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-bold rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                                        >
+                                            <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-base" />
+                                            <span>{{ isSubscribing ? 'Subscribing...' : 'Subscribe' }}</span>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </Transition>
                 </div>
-            </div>
-        </Transition>
+            </Transition>
+        </Teleport>
 
         <!-- share dialog -->
         <Transition name="modal">
@@ -650,6 +689,17 @@
 </template>
 
 <style scoped>
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+    opacity: 0;
+    transform: scale(0.97) translateY(-8px);
+}
+
 .modal-enter-active,
 .modal-leave-active {
     transition: opacity 0.3s ease;
@@ -722,7 +772,7 @@ const closeSubscribeModal = () => {
 
 const handleSubscribe = async () => {
     if (!subscribeEmail.value || !subscribeEmail.value.includes('@')) {
-        toast.error(t('organizer.public.invalid_email', 'Format email tidak valid'))
+        toast.error('Please enter a valid email address')
         return
     }
 
@@ -734,9 +784,9 @@ const handleSubscribe = async () => {
         })
         isSubscribed.value = true
         showSubscribeModal.value = false
-        toast.success(res?.message || t('organizer.public.subscribe_success', `Berhasil berlangganan notifikasi turnamen dari ${displayName.value}`))
+        toast.success(res?.message || `Successfully subscribed to tournament updates from ${displayName.value}`)
     } catch (err) {
-        toast.error(err?.data?.error || err?.message || t('organizer.public.subscribe_error', 'Gagal berlangganan info turnamen'))
+        toast.error(err?.data?.error || err?.message || 'Failed to subscribe to tournament updates')
     } finally {
         isSubscribing.value = false
     }

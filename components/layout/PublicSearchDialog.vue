@@ -583,13 +583,14 @@ defineExpose({
 // Global keyboard shortcut: Ctrl+K / Cmd+K
 const handleGlobalKeydown = (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-    // Only open if not inside dashboard
+    // Do not open on homepage or inside dashboard
+    const isHomePage = route.path === '/'
     const isDashboard = route.path.startsWith('/dashboard') ||
                         route.path.startsWith('/organizer/dashboard') ||
                         route.path.startsWith('/archer/dashboard') ||
                         route.path.startsWith('/club/dashboard') ||
                         route.path.startsWith('/admin')
-    if (!isDashboard) {
+    if (!isDashboard && !isHomePage) {
       e.preventDefault()
       if (isOpen.value) {
         close()

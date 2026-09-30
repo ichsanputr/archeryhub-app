@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import QrcodeVue from 'qrcode.vue'
 import { ref, computed, onMounted } from 'vue'

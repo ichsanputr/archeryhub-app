@@ -540,7 +540,7 @@
     "stage": "Babak",
     "match_status": "Status",
     "gold_final": "Grand Final (Emas)",
-    "bronze_match": "Perebutan Juara 3",
+    "bronze_match": "Perebutan Juara 3 (Perunggu)",
     "search_archer_match": "Cari pemanah / match...",
     "match_label": "Match {no}",
     "unplotted": "Belum Diplot",
@@ -598,14 +598,12 @@
     "generate_bracket": "Buat Bagan Pertandingan",
     "reset_bracket": "Reset Bagan",
     "print_bracket": "Cetak Bagan Pertandingan (PDF)",
-    "bronze_match": "Perebutan Juara 3 (Perunggu)",
     "round_of_n": "Babak {n} Besar",
     "bye": "BYE",
     "tbd": "TBD",
     "match_detail": "Detail Pertandingan",
     "elimination_round": "Babak Eliminasi",
     "winner_badge": "Pemenang",
-    "status_finished": "Selesai",
     "status_live": "Berlangsung",
     "score_breakdown": "Rincian Skor Per Seri",
     "score_breakdown_short": "Skor Seri",
@@ -1659,7 +1657,9 @@
       "publish_success": "Turnamen berhasil dipublikasikan!",
       "cancel": "Batal"
     },
-    "no_category_data_desc": "Statistik pendaftaran kategori akan otomatis muncul setelah peserta mendaftar."
+    "no_category_data_desc": "Statistik pendaftaran kategori akan otomatis muncul setelah peserta mendaftar.",
+    "payment_expired": "Kedaluwarsa / Batal",
+    "payment_expired_desc": "Transaksi kedaluwarsa atau dibatalkan"
   },
   "dashboard_events_participants_add": {
     "title": "Tambah Peserta Event",

@@ -3124,6 +3124,8 @@
     },
     "prizes": {
       "title": "Prizes & Guidebook",
+      "title_prizes": "Tournament Prizes",
+      "subtitle_prizes": "Set tournament prize pool and detailed prizes for winners.",
       "total_prize_label": "Tournament Total Prize",
       "guidebook_label": "Technical Guidebook (PDF)",
       "no_file": "No file yet",
@@ -3132,8 +3134,10 @@
       "first_place": "1st Place",
       "second_place": "2nd Place",
       "third_place": "3rd Place",
-      "placeholder_prize": "1000",
-      "placeholder_caption": "e.g. Gold medal and certificate"
+      "first_caption_placeholder": "e.g. Gold medal & certificate",
+      "second_caption_placeholder": "e.g. Silver medal & certificate",
+      "third_caption_placeholder": "e.g. Bronze medal & certificate",
+      "placeholder_caption": "e.g. Medal and certificate"
     },
     "media": {
       "title": "Banner & Logo",
@@ -4705,7 +4709,9 @@
     "completed": "Completed",
     "archery_event": "Archery Tournament",
     "active": "Active",
-    "draft": "Draft"
+    "draft": "Draft",
+    "payment_expired": "Expired / Cancelled",
+    "payment_expired_desc": "Expired or cancelled transactions"
   },
   "auth": {
     "errors": {

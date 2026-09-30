@@ -74,8 +74,9 @@
                 @scroll.passive="onHourScroll">
                 <div class="h-[calc(50%-18px)]" />
                 <button v-for="h in hourList" :key="h" type="button"
-                  @click.stop="selectHour(h)"
-                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer"
+                  :disabled="isHourDisabled(h)"
+                  @click.stop="!isHourDisabled(h) && selectHour(h)"
+                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed disabled:pointer-events-none"
                   :class="h === selectedHour ? 'text-navy font-black scale-110' : 'text-gray-400 hover:text-navy'">
                   {{ pad(h) }}
                 </button>
@@ -93,8 +94,9 @@
                 @scroll.passive="onMinScroll">
                 <div class="h-[calc(50%-18px)]" />
                 <button v-for="m in minuteList" :key="m" type="button"
-                  @click.stop="selectMinute(m)"
-                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer"
+                  :disabled="isMinuteDisabled(m)"
+                  @click.stop="!isMinuteDisabled(m) && selectMinute(m)"
+                  class="w-full h-9 flex items-center justify-center text-sm font-bold snap-center transition-all cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed disabled:pointer-events-none"
                   :class="m === selectedMinute ? 'text-navy font-black scale-110' : 'text-gray-400 hover:text-navy'">
                   {{ pad(m) }}
                 </button>
@@ -164,6 +166,8 @@ const props = defineProps({
   hint: String,
   use12h: { type: Boolean, default: false },
   step: { type: Number, default: 1 }, // default minute step
+  minTime: String, // 'HH:MM' (24h)
+  maxTime: String, // 'HH:MM' (24h)
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -180,6 +184,48 @@ const minuteStep = ref(props.step)
 const selectedHour = ref(0)
 const selectedMinute = ref(0)
 const ampm = ref('AM')
+
+const parsedMinTime = computed(() => {
+  if (!props.minTime) return null
+  const parts = props.minTime.split(':')
+  if (parts.length < 2) return null
+  return { h: parseInt(parts[0], 10) || 0, m: parseInt(parts[1], 10) || 0 }
+})
+
+const parsedMaxTime = computed(() => {
+  if (!props.maxTime) return null
+  const parts = props.maxTime.split(':')
+  if (parts.length < 2) return null
+  return { h: parseInt(parts[0], 10) || 0, m: parseInt(parts[1], 10) || 0 }
+})
+
+function isHourDisabled(h) {
+  let hour24 = h
+  if (props.use12h) {
+    if (ampm.value === 'PM' && h !== 12) hour24 += 12
+    if (ampm.value === 'AM' && h === 12) hour24 = 0
+  }
+  if (parsedMinTime.value && hour24 < parsedMinTime.value.h) return true
+  if (parsedMaxTime.value && hour24 > parsedMaxTime.value.h) return true
+  return false
+}
+
+function isMinuteDisabled(m) {
+  let hour24 = selectedHour.value
+  if (props.use12h) {
+    if (ampm.value === 'PM' && hour24 !== 12) hour24 += 12
+    if (ampm.value === 'AM' && hour24 === 12) hour24 = 0
+  }
+  if (parsedMinTime.value) {
+    if (hour24 < parsedMinTime.value.h) return true
+    if (hour24 === parsedMinTime.value.h && m < parsedMinTime.value.m) return true
+  }
+  if (parsedMaxTime.value) {
+    if (hour24 > parsedMaxTime.value.h) return true
+    if (hour24 === parsedMaxTime.value.h && m > parsedMaxTime.value.m) return true
+  }
+  return false
+}
 
 const hourList = computed(() => {
   if (props.use12h) return Array.from({ length: 12 }, (_, i) => i + 1)

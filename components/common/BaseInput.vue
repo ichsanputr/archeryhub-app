@@ -109,6 +109,12 @@ const displayError = computed(() => props.error || internalError.value)
 
 const validateInternal = (value) => {
     internalError.value = ''
+    if (props.numberOnly && value) {
+        if (!/^\d+$/.test(String(value))) {
+            internalError.value = 'Hanya boleh berisi angka'
+            return false
+        }
+    }
     if (!props.rules || props.rules.length === 0) return true
 
     for (const r of props.rules) {
@@ -214,32 +220,9 @@ const handleCurrencyBlur = () => {
 }
 
 const handleInput = (event) => {
-    let value = event.target.value
-    let changed = true
-
-    if (props.numberOnly) {
-        const filtered = value.replace(/\D/g, '')
-        if (filtered !== value) {
-            event.target.value = filtered
-        } else {
-            // If the filtered value is the same as the input value,
-            // but the input was triggered by a non-numeric key,
-            // we don't want to emit or validate.
-        }
-
-        // If the user typed a letter in an empty field, the filtered value is ""
-        // but the modelValue was already "" (or null).
-        // We should only emit/validate if the string of numbers actually changed.
-        if (filtered === String(props.modelValue || '')) {
-            changed = false
-        }
-        value = filtered
-    }
-
-    if (changed) {
-        emit('update:modelValue', value)
-        validateInternal(value)
-    }
+    const value = event.target.value
+    emit('update:modelValue', value)
+    validateInternal(value)
 }
 
 // Re-validate if modelValue changes externally

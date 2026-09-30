@@ -540,7 +540,7 @@
     "stage": "Stage",
     "match_status": "Status",
     "gold_final": "Gold Medal Final",
-    "bronze_match": "Bronze Medal Match",
+    "bronze_match": "Bronze Match",
     "search_archer_match": "Search archer / match...",
     "match_label": "Match {no}",
     "unplotted": "Unassigned",
@@ -598,14 +598,12 @@
     "generate_bracket": "Generate Elimination Brackets",
     "reset_bracket": "Reset Bracket",
     "print_bracket": "Print Match Tree (PDF)",
-    "bronze_match": "Bronze Match",
     "round_of_n": "Round of {n}",
     "bye": "BYE",
     "tbd": "TBD",
     "match_detail": "Match Details",
     "elimination_round": "Elimination Round",
     "winner_badge": "Winner",
-    "status_finished": "Finished",
     "status_live": "Live",
     "score_breakdown": "End-by-End Score Breakdown",
     "score_breakdown_short": "End Scores",
@@ -1659,7 +1657,9 @@
       "publish_success": "Tournament successfully published!",
       "cancel": "Cancel"
     },
-    "no_category_data_desc": "Category registration statistics will appear automatically once archers register."
+    "no_category_data_desc": "Category registration statistics will appear automatically once archers register.",
+    "payment_expired": "Expired / Cancelled",
+    "payment_expired_desc": "Expired or cancelled transactions"
   },
   "dashboard_events_participants_add": {
     "title": "Add Event Participants",

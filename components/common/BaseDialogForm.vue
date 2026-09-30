@@ -18,9 +18,9 @@
                         style="max-height: 90vh;">
                         <!-- Header -->
                         <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 flex-shrink-0 bg-white">
-                            <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight">
+                            <div class="text-lg sm:text-xl font-black text-navy tracking-tight">
                                 <slot name="header">{{ header }}</slot>
-                            </h2>
+                            </div>
                             <button @click="handleClose"
                                 class="size-8 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-navy transition-colors flex items-center justify-center shrink-0">
                                 <Icon icon="ph:x-bold" class="text-base" />

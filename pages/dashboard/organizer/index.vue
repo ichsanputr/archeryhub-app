@@ -65,16 +65,18 @@
                 </template>
             </StatCard>
 
-            <!-- Revenue Status -->
+            <!-- Total Tournaments -->
             <StatCard
-                :title="t('dashboard.org.total_revenue')"
-                :value="'Rp ' + formatPrice(dashboardStats.totalRevenue || 0)"
-                icon="ph:wallet-bold"
-                color="success"
+                :title="t('dashboard.sidebar.my_events', 'Total Turnamen')"
+                :value="orgEvents.length || dashboardStats.totalEvents || 0"
+                icon="ph:trophy-bold"
+                color="primary"
+                :description="t('dashboard.org.events_info', 'Total turnamen yang dikelola')"
+                description-icon="ph:calendar-check-bold"
             />
         </div>
 
-        <!-- Revenue & Registration Analytics -->
+        <!-- Registration Analytics -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 p-6 space-y-6">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -84,9 +86,9 @@
                         </div>
                         <div>
                             <h3 class="text-navy font-black text-base leading-tight">
-                                {{ t('dashboard.org.revenue_trend_title') }}
+                                {{ isEn ? 'Registrations & Participation Trend' : 'Tren Pendaftaran & Partisipasi' }}
                             </h3>
-                            <div class="text-xs text-slate-400 font-medium mt-0.5">{{ t('dashboard.org.revenue_trend_subtitle') }}</div>
+                            <div class="text-xs text-slate-400 font-medium mt-0.5">{{ isEn ? 'Participant registrations in the last 30 days' : 'Statistik aktivitas pendaftaran peserta dalam 30 hari terakhir' }}</div>
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
@@ -98,12 +100,12 @@
                 <div class="w-full bg-slate-50/70 rounded-2xl border border-slate-200/80 p-5 space-y-6">
                     <div class="grid grid-cols-2 gap-4 pb-4 border-b border-slate-200/60">
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_verified_revenue') }}</span>
-                            <span class="text-2xl font-black text-emerald-600 tabular-nums">Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}</span>
+                            <span class="text-xs font-bold text-slate-500 block">{{ isEn ? 'Total Tournaments' : 'Total Turnamen' }}</span>
+                            <span class="text-2xl font-black text-navy tabular-nums">{{ orgEvents.length || dashboardStats.totalEvents || 0 }}</span>
                         </div>
                         <div>
-                            <span class="text-xs font-bold text-slate-500 block">{{ t('dashboard.org.total_archers_registered') }}</span>
-                            <span class="text-2xl font-black text-navy tabular-nums">{{ dashboardStats.totalArchers || 0 }} {{ t('dashboard.org.peserta') }}</span>
+                            <span class="text-xs font-bold text-slate-500 block">{{ isEn ? 'Total Registered Archers' : 'Total Peserta Terdaftar' }}</span>
+                            <span class="text-2xl font-black text-navy tabular-nums">{{ dashboardStats.totalArchers || 0 }} {{ isEn ? 'Archers' : 'Peserta' }}</span>
                         </div>
                     </div>
 
@@ -117,8 +119,8 @@
                             <div v-for="(bar, idx) in trendBars" :key="idx" class="relative group/bar flex-1 flex flex-col items-center gap-2 h-full justify-end">
                                 <!-- Floating Hover Value Tooltip -->
                                 <div class="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover/bar:opacity-100 transition-all duration-200 pointer-events-none z-30 bg-navy text-white text-[10px] font-black px-2.5 py-1 rounded-lg shadow-lg border border-white/10 whitespace-nowrap flex flex-col items-center">
-                                    <span class="text-primary font-mono">Rp {{ formatPrice(bar.revenue || (bar.count * 150000)) }}</span>
-                                    <span class="text-[8px] text-slate-300 font-medium">{{ bar.count || 0 }} {{ t('dashboard.org.archers_unit') }} · {{ bar.label }}</span>
+                                    <span class="text-primary font-bold">{{ bar.count || 0 }} {{ isEn ? 'Archers' : 'Peserta' }}</span>
+                                    <span class="text-[8px] text-slate-300 font-medium">{{ bar.label }}</span>
                                     <div class="w-1.5 h-1.5 bg-navy rotate-45 -mb-1 mt-0.5 border-r border-b border-white/10"></div>
                                 </div>
 

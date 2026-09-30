@@ -253,54 +253,6 @@
                     </div>
                 </div>
             </main>
-
-            <!-- ── NEWSLETTER SUBSCRIPTION SECTION ── -->
-            <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20">
-                <div class="relative rounded-3xl overflow-hidden bg-navy text-white p-8 sm:p-12 border border-slate-800 shadow-xl">
-                    <div class="absolute inset-0 bg-radial from-primary/10 via-transparent to-transparent pointer-events-none"></div>
-                    
-                    <div class="relative z-10 max-w-2xl mx-auto text-center space-y-6">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold bg-white/10 text-primary border border-white/15">
-                            <Icon icon="ph:envelope-simple-open-bold" class="text-sm" />
-                            <span>Archeris Scoring Newsletter</span>
-                        </div>
-
-                        <div class="space-y-2">
-                            <h2 class="text-2xl sm:text-3xl md:text-4xl font-black font-display tracking-tight text-white">
-                                Stay Updated on Archery Insights
-                            </h2>
-                            <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                                Join archers, coaches, and organizers receiving practical archery guides and tournament updates.
-                            </p>
-                        </div>
-
-                        <form @submit.prevent="handleSubscribe" class="flex flex-col sm:flex-row items-center gap-3 max-w-md mx-auto">
-                            <div class="relative w-full">
-                                <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
-                                <input 
-                                    v-model="subscriberEmail"
-                                    type="email" 
-                                    placeholder="Enter your email address..." 
-                                    required
-                                    class="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-primary focus:bg-white/15 transition-all"
-                                />
-                            </div>
-                            <button 
-                                type="submit"
-                                :disabled="subscribing"
-                                class="w-full sm:w-auto px-6 py-3 bg-primary hover:bg-primary-hover text-navy font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl transition-all shadow-md shadow-primary/20 shrink-0 cursor-pointer disabled:opacity-60 flex items-center justify-center gap-2"
-                            >
-                                <Icon v-if="subscribing" icon="ph:spinner" class="animate-spin text-sm" />
-                                <span>{{ subscribing ? 'Subscribing...' : 'Subscribe' }}</span>
-                            </button>
-                        </form>
-
-                        <p v-if="subscribeMessage" :class="subscribeSuccess ? 'text-emerald-400' : 'text-rose-400'" class="text-xs sm:text-sm font-semibold">
-                            {{ subscribeMessage }}
-                        </p>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <LayoutAppFooter />
@@ -336,12 +288,6 @@ const loading = ref(true)
 // Pagination State
 const currentPage = ref(1)
 const itemsPerPage = ref(6)
-
-// Newsletter subscription state
-const subscriberEmail = ref('')
-const subscribing = ref(false)
-const subscribeMessage = ref('')
-const subscribeSuccess = ref(false)
 
 const isCurrentCategory = (slug) => {
     if (!currentCategoryParam.value) return false
@@ -421,32 +367,6 @@ const goToPage = (page) => {
     if (page >= 1 && page <= totalPages.value) {
         currentPage.value = page
         window.scrollTo({ top: 350, behavior: 'smooth' })
-    }
-}
-
-// Handle newsletter subscription
-const handleSubscribe = async () => {
-    if (!subscriberEmail.value || !subscriberEmail.value.includes('@')) {
-        toast.error('Please provide a valid email address')
-        return
-    }
-
-    subscribing.value = true
-    subscribeMessage.value = ''
-    try {
-        const res = await post('/blog/subscribe', {
-            email: subscriberEmail.value.trim()
-        })
-        subscribeSuccess.value = true
-        subscribeMessage.value = res?.message || 'Thank you for subscribing to Archeris Blog updates!'
-        toast.success(subscribeMessage.value)
-        subscriberEmail.value = ''
-    } catch (err) {
-        subscribeSuccess.value = false
-        subscribeMessage.value = err?.data?.error || err?.message || 'Subscription failed. Please try again later.'
-        toast.error(subscribeMessage.value)
-    } finally {
-        subscribing.value = false
     }
 }
 

@@ -551,7 +551,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import FormSection from '~/components/common/FormSection.vue'

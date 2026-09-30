@@ -546,61 +546,63 @@ useSeoMeta({
 </script>
 
 <style>
+/* ================= TYPOGRAPHY & HEADINGS ================= */
 .doc-content h2 {
-    font-size: 1.35rem;
+    font-size: 1.45rem;
     font-weight: 900;
     color: #0f172a;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2.25rem;
+    margin-bottom: 0.85rem;
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #f1f5f9;
+    letter-spacing: -0.02em;
     scroll-margin-top: 7rem;
 }
 
 .doc-content h3 {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: #0f172a;
-    margin-top: 1.5rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.65rem;
+    letter-spacing: -0.015em;
+    scroll-margin-top: 7rem;
+    position: relative;
+}
+
+.doc-content h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: 1.35rem;
     margin-bottom: 0.5rem;
     scroll-margin-top: 7rem;
 }
 
-.doc-content h4 {
-    font-size: 1rem;
+.doc-content h5 {
+    font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
-    margin-top: 1.25rem;
-    margin-bottom: 0.5rem;
-}
-
-.doc-content p {
-    color: #4b5563;
-    line-height: 1.8;
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-}
-
-.doc-content ul,
-.doc-content ol {
-    margin: 0.75rem 0 1.25rem 1.25rem;
-    color: #4b5563;
-    font-size: 0.95rem;
-    line-height: 1.8;
-}
-
-.doc-content ul {
-    list-style-type: disc;
-    padding-left: 1rem;
-}
-
-.doc-content ol {
-    list-style-type: decimal;
-    padding-left: 1rem;
-}
-
-.doc-content li {
+    color: #334155;
+    margin-top: 1.15rem;
     margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.doc-content h6 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-top: 1rem;
+    margin-bottom: 0.35rem;
+}
+
+/* ================= PARAGRAPHS & TEXT ================= */
+.doc-content p {
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 1.15rem;
+    font-size: 0.95rem;
 }
 
 .doc-content strong {
@@ -608,17 +610,162 @@ useSeoMeta({
     font-weight: 700;
 }
 
+.doc-content em {
+    font-style: italic;
+    color: #334155;
+}
+
 .doc-content a {
     color: #0284c7;
     font-weight: 600;
     text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: all 0.15s ease;
 }
 
 .doc-content a:hover {
-    opacity: 0.8;
+    color: #0369a1;
+    opacity: 0.9;
 }
 
-/* Responsive Table Wrapper */
+/* ================= LISTS ================= */
+.doc-content ul {
+    list-style-type: disc;
+    margin: 0.85rem 0 1.25rem 0;
+    padding-left: 1.5rem;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.doc-content ol {
+    list-style-type: decimal;
+    margin: 0.85rem 0 1.25rem 0;
+    padding-left: 1.5rem;
+    color: #475569;
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.doc-content li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.25rem;
+}
+
+.doc-content li::marker {
+    color: #0284c7;
+    font-weight: 700;
+}
+
+.doc-content ul ul,
+.doc-content ol ol,
+.doc-content ul ol,
+.doc-content ol ul {
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
+    padding-left: 1.25rem;
+}
+
+.doc-content ul ul {
+    list-style-type: circle;
+}
+
+.doc-content ul ul ul {
+    list-style-type: square;
+}
+
+/* ================= BLOCKQUOTE ================= */
+.doc-content blockquote {
+    position: relative;
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem 1rem 1.25rem;
+    border-left: 4px solid #0284c7;
+    background: linear-gradient(to right, rgba(2, 132, 199, 0.06), rgba(2, 132, 199, 0.01));
+    border-radius: 0 1rem 1rem 0;
+    color: #334155;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.doc-content blockquote p {
+    margin-bottom: 0.5rem;
+    color: inherit;
+}
+
+.doc-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.doc-content blockquote strong {
+    color: #0f172a;
+    font-style: normal;
+}
+
+/* ================= HORIZONTAL RULE / DIVIDER ================= */
+.doc-content hr {
+    margin: 2.25rem 0;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent);
+}
+
+/* ================= INLINE CODE & CODE BLOCKS ================= */
+.doc-content code {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.375rem;
+    font-size: 0.85em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    border: 1px solid #e2e8f0;
+}
+
+.doc-content pre {
+    background-color: #0f172a;
+    color: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    border: 1px solid #1e293b;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.doc-content pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+}
+
+/* ================= KBD & HIGHLIGHT ================= */
+.doc-content kbd {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.75rem;
+    font-family: monospace;
+    font-weight: 700;
+    line-height: 1;
+    color: #334155;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.375rem;
+    box-shadow: 0 1px 0 1px #cbd5e1;
+    margin: 0 0.2rem;
+}
+
+.doc-content mark {
+    background-color: rgba(217, 255, 0, 0.35);
+    color: #0f172a;
+    padding: 0.1rem 0.3rem;
+    border-radius: 0.25rem;
+}
+
+/* ================= TABLES ================= */
 .doc-content .table-responsive,
 .doc-content .tableWrapper {
     width: 100%;
@@ -711,48 +858,57 @@ useSeoMeta({
     height: auto;
 }
 
-.doc-content code {
-    background-color: #f1f5f9;
-    color: #0f172a;
-    padding: 0.15rem 0.4rem;
-    border-radius: 0.375rem;
-    font-size: 0.85em;
-    font-family: monospace;
-}
-
-.doc-content pre {
-    background-color: #0f172a;
-    color: #f8fafc;
-    padding: 1rem;
-    border-radius: 0.75rem;
-    overflow-x: auto;
-    margin: 1rem 0;
-}
-
-.doc-content pre code {
-    background-color: transparent;
-    color: inherit;
-    padding: 0;
-}
-
 /* ================= DARK THEME STYLES FOR DOC CONTENT ================= */
 .dark .doc-content h2 {
     color: #f8fafc;
     border-bottom: 2px solid #1e293b;
 }
 
-.dark .doc-content h3,
-.dark .doc-content h4 {
+.dark .doc-content h3 {
     color: #f1f5f9;
+}
+
+.dark .doc-content h4 {
+    color: #e2e8f0;
+}
+
+.dark .doc-content h5 {
+    color: #cbd5e1;
+}
+
+.dark .doc-content h6 {
+    color: #94a3b8;
 }
 
 .dark .doc-content p {
     color: #cbd5e1;
 }
 
+.dark .doc-content em {
+    color: #94a3b8;
+}
+
 .dark .doc-content ul,
 .dark .doc-content ol {
     color: #cbd5e1;
+}
+
+.dark .doc-content li::marker {
+    color: #38bdf8;
+}
+
+.dark .doc-content blockquote {
+    border-left-color: #38bdf8;
+    background: linear-gradient(to right, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.02));
+    color: #cbd5e1;
+}
+
+.dark .doc-content blockquote strong {
+    color: #f8fafc;
+}
+
+.dark .doc-content hr {
+    background: linear-gradient(to right, transparent, #334155 20%, #334155 80%, transparent);
 }
 
 .dark .doc-content strong {
@@ -761,6 +917,33 @@ useSeoMeta({
 
 .dark .doc-content a {
     color: #38bdf8;
+}
+
+.dark .doc-content a:hover {
+    color: #7dd3fc;
+}
+
+.dark .doc-content code {
+    background-color: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+}
+
+.dark .doc-content pre {
+    background-color: #020617;
+    border-color: #1e293b;
+}
+
+.dark .doc-content kbd {
+    background-color: #1e293b;
+    color: #e2e8f0;
+    border-color: #475569;
+    box-shadow: 0 1px 0 1px #334155;
+}
+
+.dark .doc-content mark {
+    background-color: rgba(217, 255, 0, 0.25);
+    color: #f8fafc;
 }
 
 .dark .doc-content .table-responsive,
@@ -817,12 +1000,6 @@ useSeoMeta({
 
 .dark .doc-content img {
     border-color: #334155;
-}
-
-.dark .doc-content code {
-    background-color: #1e293b;
-    color: #f1f5f9;
-    border: 1px solid #334155;
 }
 
 /* Dark mode overrides for custom HTML callout boxes in doc articles */

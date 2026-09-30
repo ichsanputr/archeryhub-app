@@ -576,7 +576,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import { useApi, getApiErrorMessage } from '~/composables/useApi'

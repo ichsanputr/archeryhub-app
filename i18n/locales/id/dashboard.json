@@ -1639,7 +1639,9 @@
     "not_reached": "Belum mencapai eliminasi"
   },
   "dashboard_event_overview": {
-    "publish_failed": "Gagal mempublikasikan turnamen"
+    "publish_failed": "Gagal mempublikasikan turnamen",
+    "payment_expired": "Kedaluwarsa / Batal",
+    "payment_expired_desc": "Transaksi kedaluwarsa atau dibatalkan"
   },
   "dashboard_events_page": {
     "registration": {

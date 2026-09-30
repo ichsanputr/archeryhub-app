@@ -1,3 +1,76 @@
+<script setup lang="ts">
+import { Icon } from '@iconify/vue'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+import { formatMoney } from '~/composables/useCurrency'
+import { useImageOrDefault } from '~/composables/useImageHelper'
+
+definePageMeta({
+    layout: 'dashboard'
+})
+
+const { t } = useI18n()
+const { get } = useApi()
+const { tournamentTitle, currentTournament } = useTournamentContext()
+const route = useRoute()
+const eventId = computed(() => route.params.id || route.params.slug)
+
+useHead({ title: computed(() => t('registration.my_registration') + ' - Archeris Dashboard') })
+
+const isLoading = ref(true)
+const participant = ref<any>(null)
+const showImageDialog = ref(false)
+const selectedImage = ref('')
+
+const tournamentCurrency = computed(() => {
+    return participant.value?.tournament_currency || participant.value?.currency || currentTournament.value?.currency || (currentTournament.value?.page_settings as any)?.currency || 'IDR'
+})
+
+const paymentProofs = computed(() => {
+    if (!participant.value?.payment_proof_urls) return []
+    const urls = participant.value.payment_proof_urls
+    return Array.isArray(urls) ? urls : urls.split(',').map((u: string) => u.trim()).filter(Boolean)
+})
+
+const getStatusClass = (status: string) => {
+    const s = (status || '').toLowerCase()
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'bg-green-500/10 text-green-500 border-green-500/20'
+    return 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+}
+
+const getDisplayStatus = (status: string) => {
+    const s = (status || '').toLowerCase()
+    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'REGISTERED'
+    return 'PENDING'
+}
+
+const formatCurrency = (val: number, curr?: string) => {
+    return formatMoney(val, curr || tournamentCurrency.value)
+}
+
+const openImage = (url: string) => {
+    selectedImage.value = url
+    showImageDialog.value = true
+}
+
+const fetchInitialData = async () => {
+    isLoading.value = true
+    try {
+        const detailed = await get(`/tournaments/${eventId.value}/participants/me`)
+        participant.value = detailed
+    } catch (e) {
+        console.error('Failed to fetch registration data:', e)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(() => {
+    fetchInitialData()
+})
+</script>
+
 <template>
     <div class="flex flex-col gap-8 pb-16">
         <!-- Breadcrumbs -->
@@ -8,7 +81,7 @@
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <NuxtLink to="/dashboard/organizer/tournaments" class="hover:text-primary transition-colors">{{ t('dashboard.sidebar.my_events', 'My Tournaments') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <NuxtLink :to="`/dashboard/organizer/tournaments/${eventId}/overview`" class="hover:text-primary transition-colors">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
+                    <NuxtLink :to="'/dashboard/organizer/tournaments/' + eventId + '/overview'" class="hover:text-primary transition-colors">{{ tournamentTitle || t('dashboard_event_overview.summary_title', 'Overview') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <span class="text-slate-600 dark:text-slate-300">Registrasi Saya</span>
                 </nav>
@@ -144,8 +217,8 @@
                                 </div>
                                 <div class="flex justify-between items-center text-sm font-bold">
                                     <span class="text-slate-400">{{ t("org_my_reg.billing_amount") }}</span>
-                                    <span class="text-navy dark:text-white">Rp {{
-                                        formatCurrency(participant.payment_amount || 0) }}</span>
+                                    <span class="text-navy dark:text-white">{{
+                                        formatCurrency(participant.payment_amount || 0, participant.currency) }}</span>
                                 </div>
                             </div>
 
@@ -194,68 +267,3 @@
         </AppDialog>
     </div>
 </template>
-
-<script setup>
-const { t } = useI18n()
-import { Icon } from '@iconify/vue'
-import { useI18n } from 'vue-i18n'
-const { get } = useApi()
-const { tournamentTitle } = useTournamentContext()
-const route = useRoute()
-const eventId = route.params.id
-
-definePageMeta({
-    layout: 'dashboard'
-})
-
-useHead({ title: computed(() => t('registration.my_registration') + ' - Archeris Dashboard') })
-
-
-const isLoading = ref(true)
-const participant = ref(null)
-const showImageDialog = ref(false)
-const selectedImage = ref('')
-
-const paymentProofs = computed(() => {
-    if (!participant.value?.payment_proof_urls) return []
-    const urls = participant.value.payment_proof_urls
-    return Array.isArray(urls) ? urls : urls.split(',').map(u => u.trim()).filter(Boolean)
-})
-
-const getStatusClass = (status) => {
-    const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'bg-green-500/10 text-green-500 border-green-500/20'
-    return 'bg-amber-500/10 text-amber-500 border-amber-500/20'
-}
-
-const getDisplayStatus = (status) => {
-    const s = (status || '').toLowerCase()
-    if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return 'REGISTERED'
-    return 'PENDING'
-}
-
-const formatCurrency = (val) => {
-    return new Intl.NumberFormat('id-ID').format(val)
-}
-
-const openImage = (url) => {
-    selectedImage.value = url
-    showImageDialog.value = true
-}
-
-const fetchInitialData = async () => {
-    isLoading.value = true
-    try {
-        const detailed = await get(`/tournaments/${eventId}/participants/me`)
-        participant.value = detailed
-    } catch (e) {
-        console.error('Failed to fetch registration data:', e)
-    } finally {
-        isLoading.value = false
-    }
-}
-
-onMounted(() => {
-    fetchInitialData()
-})
-</script>

@@ -127,9 +127,11 @@
           <div class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
               <BaseInput v-model="securityForm.new_password" :label="t('settings.new_password')" type="password"
-                placeholder="••••••••" required />
+                placeholder="••••••••" required :error="securityErrors.new_password"
+                @update:modelValue="securityErrors.new_password = ''" />
               <BaseInput v-model="securityForm.confirm_password" :label="t('settings.confirm_password')" type="password"
-                placeholder="••••••••" required />
+                placeholder="••••••••" required :error="securityErrors.confirm_password"
+                @update:modelValue="securityErrors.confirm_password = ''" />
             </div>
 
             <div class="pt-4 border-t border-slate-100">
@@ -228,7 +230,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
@@ -404,14 +406,36 @@ const saveSettings = async () => {
   }
 }
 
+const securityErrors = reactive({
+  new_password: '',
+  confirm_password: ''
+})
+
 const changePassword = async () => {
-  if (securityForm.value.new_password !== securityForm.value.confirm_password) {
-    toast.error(t('organization_settings_page.password_mismatch'))
+  securityErrors.new_password = ''
+  securityErrors.confirm_password = ''
+
+  if (!securityForm.value.new_password) {
+    securityErrors.new_password = t('organization_settings_page.password_required', 'Password baru wajib diisi')
+    toast.error(securityErrors.new_password)
     return
   }
 
   if (securityForm.value.new_password.length < 6) {
-    toast.error(t('organization_settings_page.password_length_error'))
+    securityErrors.new_password = t('organization_settings_page.password_length_error', 'Password minimal 6 karakter')
+    toast.error(securityErrors.new_password)
+    return
+  }
+
+  if (!securityForm.value.confirm_password) {
+    securityErrors.confirm_password = t('organization_settings_page.confirm_password_required', 'Konfirmasi password wajib diisi')
+    toast.error(securityErrors.confirm_password)
+    return
+  }
+
+  if (securityForm.value.new_password !== securityForm.value.confirm_password) {
+    securityErrors.confirm_password = t('organization_settings_page.password_mismatch', 'Konfirmasi password tidak cocok')
+    toast.error(securityErrors.confirm_password)
     return
   }
 
@@ -444,12 +468,22 @@ const changePassword = async () => {
 }
 
 const requestOTP = async () => {
-  if (!emailForm.value.new_email) return
+  const email = (emailForm.value.new_email || '').trim()
+  if (!email) {
+    toast.error(t('settings.email_required', 'Alamat email baru wajib diisi'))
+    return
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) {
+    toast.error(t('settings.email_invalid', 'Format alamat email tidak valid'))
+    return
+  }
+
   isRequestingOTP.value = true
   try {
     const { post } = useApi()
     await post('/user/request-email-change', {
-      new_email: emailForm.value.new_email
+      new_email: email
     })
     otpSent.value = true
     toast.success(t('organization_settings_page.otp_send_success'))

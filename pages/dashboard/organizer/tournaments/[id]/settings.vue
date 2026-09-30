@@ -4,7 +4,7 @@
         
         <!-- Header -->
         <DashboardHeader
-            :title="form?.name ? `${form.name} - ${t('dashboard_events_page.title', 'Pengaturan Turnamen')}` : t('dashboard_events_page.title', 'Pengaturan Turnamen')"
+            :title="t('dashboard_events_page.title', 'Pengaturan Turnamen')"
             :subtitle="t('dashboard_events_page.subtitle', 'Atur konten, jadwal, lokasi, galeri, dan tampilan publik halaman turnamen Anda.')"
             icon="ph:gear-six-bold"
             :breadcrumbs="[
@@ -127,15 +127,15 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.start_date_label', 'Tanggal Mulai') }}</label>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'start_date')" :max-date="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'start_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'start_date')" :max-time="getSchedDate(form, 'start_date') === getSchedDate(form, 'end_date') ? getSchedTime(form, 'end_date') : undefined" @update:model-value="val => setSchedTime(form, 'start_date', val)" placeholder="08:00" />
                                 </div>
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">{{ t('dashboard_events_page.information.end_date_label', 'Tanggal Selesai') }}</label>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'end_date')" :min-date="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'end_date', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'end_date')" :min-time="getSchedDate(form, 'start_date') === getSchedDate(form, 'end_date') ? getSchedTime(form, 'start_date') : undefined" @update:model-value="val => setSchedTime(form, 'end_date', val)" placeholder="17:00" />
                                 </div>
                             </div>
                         </div>
@@ -172,8 +172,8 @@
                                     {{ t('dashboard_events_page.registration.start_label', 'Tanggal & Waktu Mulai Pendaftaran') }}
                                 </label>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
+                                    <BaseDatePicker :model-value="getSchedDate(form.page_settings, 'registration_start')" :max-date="getSchedDate(form, 'registration_deadline') || getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form.page_settings, 'registration_start', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form.page_settings, 'registration_start')" :max-time="getSchedDate(form.page_settings, 'registration_start') === getSchedDate(form, 'registration_deadline') ? getSchedTime(form, 'registration_deadline') : undefined" @update:model-value="val => setSchedTime(form.page_settings, 'registration_start', val)" placeholder="08:00" />
                                 </div>
                             </div>
                             <div class="space-y-2">
@@ -182,8 +182,8 @@
                                     {{ t('dashboard_events_page.registration.end_label', 'Tanggal & Waktu Batas Pendaftaran') }}
                                 </label>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
-                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
+                                    <BaseDatePicker :model-value="getSchedDate(form, 'registration_deadline')" :min-date="getSchedDate(form.page_settings, 'registration_start')" :max-date="getSchedDate(form, 'start_date')" @update:model-value="val => setSchedDate(form, 'registration_deadline', val)" />
+                                    <BaseTimePicker :model-value="getSchedTime(form, 'registration_deadline')" :min-time="getSchedDate(form.page_settings, 'registration_start') === getSchedDate(form, 'registration_deadline') ? getSchedTime(form.page_settings, 'registration_start') : undefined" @update:model-value="val => setSchedTime(form, 'registration_deadline', val)" placeholder="23:59" />
                                 </div>
                             </div>
                         </div>
@@ -212,6 +212,7 @@
                                     v-model="form.country_code"
                                     :items="countryOptions"
                                     :label="t('dashboard_events_page.currency_config.country_label', 'Negara Lokasi Turnamen')"
+                                    :disabled="hasTransactions"
                                     @update:model-value="onCountryChange"
                                 />
                             </div>
@@ -221,7 +222,21 @@
                                     v-model="form.currency"
                                     :items="currencyOptions"
                                     :label="t('dashboard_events_page.currency_config.currency_label', 'Mata Uang Biaya (Currency)')"
+                                    :disabled="hasTransactions"
                                 />
+                            </div>
+                        </div>
+
+                        <!-- Locked Warning Badge if transactions exist -->
+                        <div v-if="hasTransactions" class="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/80 flex items-start gap-3 text-amber-900">
+                            <div class="size-7 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                                <Icon icon="ph:lock-key-bold" class="text-base" />
+                            </div>
+                            <div class="space-y-0.5 text-xs sm:text-sm">
+                                <div class="font-black text-navy">{{ t('dashboard_events_page.currency_config.locked_title', 'Mata Uang & Negara Terkunci') }}</div>
+                                <div class="text-amber-800 leading-relaxed">
+                                    {{ t('dashboard_events_page.currency_config.locked_desc', 'Pengaturan mata uang dan negara terkunci karena turnamen ini sudah memiliki transaksi atau peserta terdaftar. Hal ini untuk menjaga integritas invoice dan pembukuan pendapatan.') }}
+                                </div>
                             </div>
                         </div>
 
@@ -236,12 +251,12 @@
                             </div>
                             <div class="text-sm leading-relaxed">
                                 <div class="font-black flex items-center gap-1.5 text-navy">
-                                    <span>{{ form.currency === 'IDR' ? 'Metode Pembayaran: Mayar (Otomatis IDR)' : 'Payment Gateway: PayPal (International / Cards)' }}</span>
+                                    <span>{{ form.currency === 'IDR' ? t('dashboard_events_page.currency_config.gateway_idr_title', 'Metode Pembayaran: Mayar (Otomatis IDR)') : t('dashboard_events_page.currency_config.gateway_usd_title', 'Payment Gateway: PayPal (International / Cards)') }}</span>
                                 </div>
                                 <div class="text-gray-600 mt-1">
                                     {{ form.currency === 'IDR'
-                                        ? 'Peserta membayar menggunakan QRIS, Virtual Account Bank (BCA, Mandiri, BRI, BNI), dan E-Wallet.'
-                                        : 'Peserta internasional membayar langsung menggunakan PayPal, Kartu Kredit/Debit (Visa, Mastercard), Apple Pay, atau Google Pay tanpa repot konversi kurs.' }}
+                                        ? t('dashboard_events_page.currency_config.gateway_idr_desc', 'Peserta membayar menggunakan QRIS, Virtual Account Bank (BCA, Mandiri, BRI, BNI), dan E-Wallet.')
+                                        : t('dashboard_events_page.currency_config.gateway_usd_desc', 'Peserta internasional membayar langsung menggunakan PayPal, Kartu Kredit/Debit (Visa, Mastercard), Apple Pay, atau Google Pay tanpa repot konversi kurs.') }}
                                 </div>
                             </div>
                         </div>
@@ -501,7 +516,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 5: Hadiah & Guidebook -->
+                    <!-- Section 5: Hadiah Turnamen -->
                     <div class="p-4 sm:p-6 space-y-5">
                         <div class="flex items-center gap-3">
                             <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
@@ -509,45 +524,28 @@
                             </div>
                             <div>
                                 <h2 class="text-base sm:text-lg font-bold text-navy">
-                                    {{ t('dashboard_events_page.prizes.title', 'Hadiah & Guidebook') }}
+                                    {{ t('dashboard_events_page.prizes.title_prizes', 'Hadiah Turnamen') }}
                                 </h2>
                                 <div class="text-xs sm:text-sm text-gray-500">
-                                    {{ t('dashboard_events_page.prizes.subtitle', 'Atur total hadiah turnamen dan lampiran buku petunjuk teknis.') }}
+                                    {{ t('dashboard_events_page.prizes.subtitle_prizes', 'Atur total hadiah turnamen dan rincian hadiah untuk para juara.') }}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-navy text-base" />
-                                    {{ t('dashboard_events_page.prizes.total_prize_label', 'Total Hadiah Turnamen') }}
-                                </label>
-                                <BaseCurrencyInput
-                                    v-model="form.total_prize"
-                                    :currency="form.currency || 'IDR'"
-                                    placeholder="0"
-                                    prefix-class="text-sm font-bold"
-                                    prefix-padding-class="pl-10"
-                                    input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
-                                />
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
-                                    <Icon icon="ph:book-bookmark-bold" class="text-navy text-base" />
-                                    {{ t('dashboard_events_page.prizes.guidebook_label', 'Buku Panduan Teknis (PDF)') }}
-                                </label>
-                                <div class="flex items-center gap-2">
-                                    <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
-                                        readonly
-                                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
-                                        :placeholder="t('dashboard_events_page.prizes.no_file', 'Belum ada file')" />
-                                    <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
-                                        @change="handleGuidebookUpload" />
-                                    <BaseButton variant="outline" size="sm" icon="ph:upload-simple-bold" @click="$refs.guidebookInput.click()"
-                                        :loading="uploadingGuidebook" class="text-sm font-bold">{{ t('dashboard_events_page.prizes.upload', 'Upload') }}</BaseButton>
-                                </div>
-                            </div>
+                        <div class="space-y-2 pt-2">
+                            <label class="text-sm font-bold text-gray-700 flex items-center gap-1.5">
+                                <Icon icon="ph:currency-circle-dollar-bold" class="text-navy text-base" />
+                                {{ t('dashboard_events_page.prizes.total_prize_label', 'Total Hadiah Turnamen') }}
+                            </label>
+                            <BaseCurrencyInput
+                                v-model="form.total_prize"
+                                :currency="form.currency || 'IDR'"
+                                :placeholder="prizePlaceholders.total"
+                                prefix-class="text-sm font-bold"
+                                prefix-padding-class="pl-10"
+                                wrapper-class="max-w-md"
+                                input-class="pr-4 py-3 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
+                            />
                         </div>
 
                         <div class="pt-4 border-t border-gray-100">
@@ -558,13 +556,13 @@
                                     <BaseCurrencyInput
                                         v-model="form.prizes.first"
                                         :currency="form.currency || 'IDR'"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '15000000')"
+                                        :placeholder="prizePlaceholders.first"
                                         prefix-class="text-sm font-bold"
                                         prefix-padding-class="pl-9"
                                         input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
                                     />
                                     <textarea v-model="form.prizes.first_caption" rows="2"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali emas dan sertifikat')"
+                                        :placeholder="t('dashboard_events_page.prizes.first_caption_placeholder', 'Contoh: Medali emas & piagam penghargaan')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
                                 </div>
                                 <div class="space-y-2">
@@ -572,13 +570,13 @@
                                     <BaseCurrencyInput
                                         v-model="form.prizes.second"
                                         :currency="form.currency || 'IDR'"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '10000000')"
+                                        :placeholder="prizePlaceholders.second"
                                         prefix-class="text-sm font-bold"
                                         prefix-padding-class="pl-9"
                                         input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
                                     />
                                     <textarea v-model="form.prizes.second_caption" rows="2"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali perak dan sertifikat')"
+                                        :placeholder="t('dashboard_events_page.prizes.second_caption_placeholder', 'Contoh: Medali perak & piagam penghargaan')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
                                 </div>
                                 <div class="space-y-2">
@@ -586,15 +584,115 @@
                                     <BaseCurrencyInput
                                         v-model="form.prizes.third"
                                         :currency="form.currency || 'IDR'"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_prize', '7500000')"
+                                        :placeholder="prizePlaceholders.third"
                                         prefix-class="text-sm font-bold"
                                         prefix-padding-class="pl-9"
                                         input-class="pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-bold focus:border-primary focus:ring-2 focus:ring-primary/20"
                                     />
                                     <textarea v-model="form.prizes.third_caption" rows="2"
-                                        :placeholder="t('dashboard_events_page.prizes.placeholder_caption', 'Contoh: Medali perunggu dan sertifikat')"
+                                        :placeholder="t('dashboard_events_page.prizes.third_caption_placeholder', 'Contoh: Medali perunggu & piagam penghargaan')"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm resize-none bg-white"></textarea>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Buku Panduan Teknis (THB / Technical Handbook) -->
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 rounded-xl bg-primary text-btn-text flex items-center justify-center shrink-0 shadow-2xs font-bold">
+                                <Icon icon="ph:file-pdf-bold" class="text-xl" />
+                            </div>
+                            <div>
+                                <h2 class="text-base sm:text-lg font-bold text-navy">
+                                    {{ t('event_create.section_guidebook', 'Buku Panduan Teknis (THB)') }}
+                                </h2>
+                                <div class="text-xs sm:text-sm text-gray-500">
+                                    {{ t('event_create.guidebook_subtitle', 'Unggah dokumen peraturan pertandingan atau petunjuk teknis pelaksanaan turnamen.') }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden multi-file input -->
+                        <input
+                            ref="guidebookInput"
+                            type="file"
+                            multiple
+                            class="hidden"
+                            accept="application/pdf,.pdf"
+                            @change="handleGuidebookUpload"
+                        />
+
+                        <!-- Upload / Select PDF from Media Library button -->
+                        <div class="flex items-center gap-2 pt-2">
+                            <button
+                                type="button"
+                                @click="openMediaLibrary('guidebook')"
+                                class="px-4 py-2.5 rounded-xl bg-navy hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-2 transition-colors shadow-2xs cursor-pointer"
+                            >
+                                <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
+                                <span>{{ t('event_create.guidebook_upload_btn', 'Pilih dari Media Library / Unggah PDF') }}</span>
+                            </button>
+                        </div>
+
+                        <!-- List of Uploaded/Added THB Documents -->
+                        <div v-if="form.guidebooks && form.guidebooks.length > 0" class="space-y-2 pt-2">
+                            <div
+                                v-for="(gb, idx) in form.guidebooks"
+                                :key="idx"
+                                class="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                            >
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="size-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:file-pdf-duotone" class="text-2xl" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold text-navy truncate">
+                                            {{ gb.name || `Dokumen THB ${idx + 1}` }}
+                                        </div>
+                                        <a
+                                            :href="gb.url"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            class="text-xs text-slate-500 hover:text-navy hover:underline inline-flex items-center gap-1 truncate max-w-full font-medium"
+                                        >
+                                            <span class="truncate">{{ gb.url }}</span>
+                                            <Icon icon="ph:arrow-square-out" class="shrink-0 text-xs" />
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                    <a
+                                        :href="gb.url"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 hover:border-slate-300 text-navy font-bold text-xs flex items-center gap-1.5 transition-colors shadow-2xs"
+                                    >
+                                        <Icon icon="ph:download-simple-bold" class="text-xs" />
+                                        <span>{{ t('common.download', 'Unduh') }}</span>
+                                    </a>
+                                    <button
+                                        type="button"
+                                        @click="removeGuidebook(idx)"
+                                        class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                        :title="t('common.delete', 'Hapus')"
+                                    >
+                                        <Icon icon="ph:trash-bold" class="text-sm" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Empty State Design -->
+                        <div v-else class="p-5 rounded-2xl border border-dashed border-slate-200 bg-slate-50/50 flex flex-col items-center justify-center text-center">
+                            <div class="size-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-2">
+                                <Icon icon="ph:file-pdf-duotone" class="text-xl text-slate-400" />
+                            </div>
+                            <div class="text-xs sm:text-sm font-bold text-navy">
+                                {{ t('event_create.guidebook_empty_title', 'Belum Ada Dokumen THB') }}
+                            </div>
+                            <div class="text-xs text-slate-400 max-w-sm mt-0.5 font-medium">
+                                {{ t('event_create.guidebook_empty', 'Unggah file PDF atau masukkan link dokumen eksternal untuk peraturan lomba turnamen ini.') }}
                             </div>
                         </div>
                     </div>
@@ -996,7 +1094,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
@@ -1015,6 +1113,9 @@ const showPremiumModal = ref(false)
 const { t } = useDashboardI18n()
 const { countries, currencies } = useCurrency()
 const { tournamentTitle } = useTournamentContext()
+
+const hasTransactions = ref(false)
+const transactionCount = ref(0)
 
 const form = ref({
     name: '',
@@ -1044,6 +1145,7 @@ const form = ref({
     status: 'draft',
     total_prize: 0,
     technical_guidebook_url: '',
+    guidebooks: [],
     location_accessibility: [],
     prizes: {
         first: '',
@@ -1082,6 +1184,16 @@ const currencyOptions = computed(() => currencies.map(c => ({
     title: `${c.code} (${c.symbol}) – ${c.name}`,
     icon: c.icon
 })))
+
+const prizePlaceholders = computed(() => {
+    const isIdr = form.value.currency === 'IDR'
+    return {
+        total: isIdr ? '50000000' : '500',
+        first: isIdr ? '20000000' : '250',
+        second: isIdr ? '15000000' : '150',
+        third: isIdr ? '10000000' : '100'
+    }
+})
 
 const onCountryChange = (countryCode) => {
     const found = countries.find(c => c.code === countryCode)
@@ -1134,7 +1246,20 @@ const openMediaLibrary = (target) => {
 }
 
 const handleMediaSelect = (media) => {
-    if (mediaTarget.value === 'banner') {
+    if (mediaTarget.value === 'guidebook') {
+        const isPdf = media.url?.toLowerCase().endsWith('.pdf') || media.mime_type === 'application/pdf'
+        if (!isPdf) {
+            const toast = useToast()
+            toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
+            return
+        }
+        if (!form.value.guidebooks) form.value.guidebooks = []
+        form.value.guidebooks.push({
+            url: media.url,
+            name: media.caption || media.filename?.replace(/\.[^/.]+$/, '') || media.url.split('/').pop() || 'Dokumen THB',
+            type: 'pdf'
+        })
+    } else if (mediaTarget.value === 'banner') {
         form.value.banner_url = media.url
     } else if (mediaTarget.value === 'logo') {
         form.value.logo_url = media.url
@@ -1224,34 +1349,52 @@ const uploadingGuidebook = ref(false)
 const guidebookInput = ref(null)
 
 const handleGuidebookUpload = async (event) => {
-    const file = event.target.files[0]
-    if (!file) return
+    const files = Array.from(event.target.files || [])
+    if (!files.length) return
 
-    if (file.type !== 'application/pdf') {
-        const toast = useToast()
-        toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
-        return
-    }
-
+    const toast = useToast()
     uploadingGuidebook.value = true
     try {
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('caption', `Guidebook ${form.value.name}`)
-        formData.append('tournament_id', route.params.id || form.value.uuid || '')
+        for (const file of files) {
+            const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+            if (!isPdf) {
+                toast.error(t('dashboard_events_page.toasts.only_pdf', 'Hanya file PDF yang diperbolehkan'))
+                continue
+            }
+            if (file.size > 20 * 1024 * 1024) {
+                toast.error(`Ukuran file "${file.name}" melebihi batas maksimal 20MB`)
+                continue
+            }
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('caption', `THB - ${file.name.replace(/\.[^/.]+$/, '')}`)
+            formData.append('tournament_id', route.params.id || form.value.uuid || '')
 
-        const response = await post('/media/upload', formData)
-
-        form.value.technical_guidebook_url = response.url
-        const toast = useToast()
-        toast.success(t('dashboard_events_page.toasts.guidebook_success', 'Buku panduan berhasil diupload'))
+            const response = await post('/media/upload', formData)
+            if (response?.url) {
+                if (!form.value.guidebooks) form.value.guidebooks = []
+                form.value.guidebooks.push({
+                    url: response.url,
+                    name: file.name.replace(/\.[^/.]+$/, '').replace(/[_-]/g, ' '),
+                    size: file.size,
+                    type: 'pdf'
+                })
+            }
+        }
+        toast.success(t('dashboard_events_page.toasts.guidebook_success', 'Buku panduan teknis berhasil diunggah'))
     } catch (err) {
         console.error('Upload failed:', err)
-        const toast = useToast()
-        toast.error(t('dashboard_events_page.toasts.guidebook_failed', 'Gagal mengupload buku panduan'))
+        toast.error(t('dashboard_events_page.toasts.guidebook_failed', 'Gagal mengunggah buku panduan'))
     } finally {
         uploadingGuidebook.value = false
+        if (guidebookInput.value) {
+            guidebookInput.value.value = ''
+        }
     }
+}
+
+const removeGuidebook = (index) => {
+    form.value.guidebooks.splice(index, 1)
 }
 
 // Results upload handling
@@ -1475,6 +1618,26 @@ const fetchEventData = async () => {
                 console.error('Failed to fetch schedules:', err)
             }
 
+            try {
+                const payRes = await get(`/tournaments/${eventId}/payments`).catch(() => null)
+                const count = (Array.isArray(payRes) ? payRes.length : (payRes?.invoices?.length || payRes?.payments?.length || payRes?.total)) || (data.participant_count || 0)
+                transactionCount.value = count
+                hasTransactions.value = count > 0 || Boolean(data.participant_count && data.participant_count > 0)
+            } catch {
+                hasTransactions.value = Boolean(data.participant_count && data.participant_count > 0)
+            }
+
+            let normalizedGuidebooks = []
+            if (Array.isArray(parsedPageSettings.technical_guidebooks) && parsedPageSettings.technical_guidebooks.length > 0) {
+                normalizedGuidebooks = parsedPageSettings.technical_guidebooks
+            } else if (data.technical_guidebook_url) {
+                normalizedGuidebooks = [{
+                    url: data.technical_guidebook_url,
+                    name: data.technical_guidebook_url.split('/').pop()?.replace(/\.[^/.]+$/, '') || 'Dokumen THB',
+                    type: 'pdf'
+                }]
+            }
+
             form.value = {
                 name: data.name || data.title || '',
                 description: data.description || '',
@@ -1517,7 +1680,8 @@ const fetchEventData = async () => {
                 fee_per_category: pageSettings.fee_per_category || {},
                 status: data.status || 'draft',
                 total_prize: data.total_prize || 0,
-                technical_guidebook_url: data.technical_guidebook_url || '',
+                technical_guidebook_url: normalizedGuidebooks[0]?.url || data.technical_guidebook_url || '',
+                guidebooks: normalizedGuidebooks,
                 location_accessibility: pageSettings.location_accessibility || [],
                 prizes: normalizedPrizes,
                 page_settings: pageSettings,
@@ -1566,7 +1730,7 @@ const saveEventPage = async () => {
             entry_fee: effectiveEntryFee,
             status: form.value.status,
             total_prize: form.value.total_prize,
-            technical_guidebook_url: form.value.technical_guidebook_url,
+            technical_guidebook_url: form.value.guidebooks?.[0]?.url || form.value.technical_guidebook_url || '',
             faq: form.value.faq,
             fees: form.value.fees,
             schedules: form.value.schedules.map(s => ({
@@ -1580,6 +1744,7 @@ const saveEventPage = async () => {
                 currency: form.value.currency || 'IDR',
                 registration_start: form.value.page_settings.registration_start ? formatFromDatetimeLocal(form.value.page_settings.registration_start) : null,
                 location_accessibility: form.value.location_accessibility || [],
+                technical_guidebooks: form.value.guidebooks || [],
                 fees: form.value.fees || [],
                 payment_methods: form.value.payment_methods || [],
                 prizes: form.value.prizes || {},

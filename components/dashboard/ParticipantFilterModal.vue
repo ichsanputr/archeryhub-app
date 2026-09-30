@@ -112,7 +112,7 @@
                     ]"
                   >
                     <Icon v-if="draftFilters.status === 'expired'" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
-                    <span>{{ isEn ? 'Expired' : 'Kedaluwarsa' }}</span>
+                    <span>{{ t('dashboard.participants_list.filter_modal.status_expired', isEn ? 'Expired' : 'Kedaluwarsa') }}</span>
                   </button>
 
                   <button
@@ -126,7 +126,7 @@
                     ]"
                   >
                     <Icon v-if="draftFilters.status === 'cancelled'" icon="ph:check-bold" class="text-xs text-navy shrink-0" />
-                    <span>{{ isEn ? 'Cancelled' : 'Dibatalkan' }}</span>
+                    <span>{{ t('dashboard.participants_list.filter_modal.status_cancelled', isEn ? 'Cancelled' : 'Dibatalkan') }}</span>
                   </button>
                 </div>
               </div>

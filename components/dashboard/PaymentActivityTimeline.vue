@@ -124,6 +124,7 @@
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import { formatMoney } from '~/composables/useCurrency'
 
 const props = defineProps({
   payment: {
@@ -182,6 +183,6 @@ const stageTitle = computed(() => {
 
 const formatAmount = (val: number) => {
   if (props.formatCurrency) return props.formatCurrency(val)
-  return 'Rp ' + Number(val || 0).toLocaleString('id-ID')
+  return formatMoney(val, props.payment?.currency || 'IDR')
 }
 </script>

@@ -122,9 +122,7 @@
                                 :placeholder="t('event_categories.select_age_group')" required teleport />
                         </div>
                         <div v-if="isCustomAgeGroup" class="md:col-span-2">
-                            <label class="text-sm font-bold text-gray-700 block mb-2">{{ t('event_categories.custom_age_group_label') }}</label>
-                            <input v-model="form.category_name_custom" type="text"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                            <BaseInput v-model="form.category_name_custom" :label="t('event_categories.custom_age_group_label')"
                                 :placeholder="t('event_categories.custom_age_group_placeholder')" required />
                         </div>
                         <div>
@@ -261,7 +259,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import BasePagination from '~/components/common/BasePagination.vue'

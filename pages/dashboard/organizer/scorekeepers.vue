@@ -139,6 +139,8 @@
                 <BaseInput v-model="form.name"
                     :label="t('organizer.scorekeepers.modal.name_label')"
                     :placeholder="t('organizer.scorekeepers.modal.name_placeholder')"
+                    :error="errors.name"
+                    @update:modelValue="errors.name = ''"
                     required />
 
                 <div v-if="modal.isEdit" class="mt-2">
@@ -324,6 +326,10 @@ const form = reactive({
     status: 'active'
 })
 
+const errors = reactive({
+    name: ''
+})
+
 const deleteState = reactive({
     show: false,
     target: null
@@ -347,6 +353,7 @@ const openAddModal = () => {
     modal.currentId = null
     form.name = ''
     form.status = 'active'
+    errors.name = ''
     modal.show = true
 }
 
@@ -355,12 +362,15 @@ const openEditModal = (sk) => {
     modal.currentId = sk.uuid
     form.name = sk.name
     form.status = sk.status || 'active'
+    errors.name = ''
     modal.show = true
 }
 
 const handleSubmit = async () => {
-    if (!form.name) {
-        toast.error(t('common.fill_required_fields'))
+    errors.name = ''
+    if (!form.name || !form.name.trim()) {
+        errors.name = t('organizer.scorekeepers.name_required', 'Nama scorekeeper wajib diisi')
+        toast.error(errors.name)
         return
     }
 

@@ -511,7 +511,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import { ref, computed, watchEffect, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'

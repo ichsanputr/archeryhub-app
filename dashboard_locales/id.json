@@ -3120,6 +3120,8 @@
     },
     "prizes": {
       "title": "Hadiah & Guidebook",
+      "title_prizes": "Hadiah Turnamen",
+      "subtitle_prizes": "Atur total hadiah turnamen dan rincian hadiah untuk para juara.",
       "total_prize_label": "Total Hadiah Turnamen",
       "guidebook_label": "Buku Panduan Teknis (PDF)",
       "no_file": "Belum ada file",
@@ -3128,7 +3130,9 @@
       "first_place": "Juara 1",
       "second_place": "Juara 2",
       "third_place": "Juara 3",
-      "placeholder_prize": "15000000",
+      "first_caption_placeholder": "Contoh: Medali emas & piagam penghargaan",
+      "second_caption_placeholder": "Contoh: Medali perak & piagam penghargaan",
+      "third_caption_placeholder": "Contoh: Medali perunggu & piagam penghargaan",
       "placeholder_caption": "Contoh: Medali emas dan sertifikat"
     },
     "media": {
@@ -4687,7 +4691,9 @@
     "completed": "Selesai",
     "archery_event": "Turnamen Panahan",
     "active": "Aktif",
-    "draft": "Draft"
+    "draft": "Draft",
+    "payment_expired": "Kedaluwarsa / Batal",
+    "payment_expired_desc": "Transaksi kedaluwarsa atau dibatalkan"
   },
   "auth": {
     "errors": {

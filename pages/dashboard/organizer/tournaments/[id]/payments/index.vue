@@ -17,7 +17,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
       <StatCard
         :title="t('org_event_payments.stat_revenue')"
-        :value="'Rp ' + totalRevenue.toLocaleString('id-ID')"
+        :value="totalRevenueFormatted"
         icon="ph:wallet-bold"
         color="primary"
         :description="`${paidCount} ${t('org_event_payments.stat_paid_count')}`"
@@ -135,7 +135,7 @@
       <!-- Nominal Amount Column Slot -->
       <template #item-amount="{ item }">
         <div class="text-xs sm:text-sm font-black text-navy dark:text-white tabular-nums text-right whitespace-nowrap">
-          Rp {{ (item.total_amount || item.amount || 0).toLocaleString('id-ID') }}
+          {{ formatMoney(item.total_amount || item.amount || 0, item.currency || tournamentCurrency) }}
         </div>
       </template>
 
@@ -264,6 +264,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import useDashboardI18n from '~/composables/useDashboardI18n'
+import { formatMoney } from '~/composables/useCurrency'
 import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 import StatCard from '~/components/common/StatCard.vue'
 import PaymentFilterModal from '~/components/dashboard/PaymentFilterModal.vue'
@@ -271,10 +272,14 @@ import PaymentFilterModal from '~/components/dashboard/PaymentFilterModal.vue'
 const { t } = useDashboardI18n()
 const route = useRoute()
 const { get, post } = useApi()
-const { tournamentTitle } = useTournamentContext()
+const { tournamentTitle, currentTournament } = useTournamentContext()
 const toast = useToast()
 
 const eventId = computed(() => route.params.id as string)
+
+const tournamentCurrency = computed(() => {
+  return currentTournament.value?.currency || (currentTournament.value?.page_settings as any)?.currency || invoices.value[0]?.currency || 'IDR'
+})
 
 useHead({
   title: computed(() => t('org_event_payments.head_title'))
@@ -324,6 +329,19 @@ const totalRevenue = computed(() =>
     .filter(inv => ['paid', 'settlement', 'lunas', 'success', 'completed'].includes((inv.status || '').toLowerCase()))
     .reduce((sum, inv) => sum + (inv.total_amount || inv.amount || 0), 0)
 )
+
+const totalRevenueFormatted = computed(() => {
+  const paidInvoices = invoices.value.filter(inv => ['paid', 'settlement', 'lunas', 'success', 'completed'].includes((inv.status || '').toLowerCase()))
+  const map: Record<string, number> = {}
+  for (const inv of paidInvoices) {
+    const curr = (inv.currency || tournamentCurrency.value || 'IDR').toUpperCase()
+    const amt = Number(inv.total_amount || inv.amount || 0)
+    map[curr] = (map[curr] || 0) + amt
+  }
+  const entries = Object.entries(map)
+  if (entries.length === 0) return formatMoney(0, tournamentCurrency.value)
+  return entries.map(([curr, amt]) => formatMoney(amt, curr)).join(' + ')
+})
 
 const paidCount = computed(() =>
   invoices.value.filter(inv => ['paid', 'settlement', 'lunas', 'success', 'completed'].includes((inv.status || '').toLowerCase())).length

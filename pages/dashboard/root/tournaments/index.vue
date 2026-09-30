@@ -245,7 +245,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 

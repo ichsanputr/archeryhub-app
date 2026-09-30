@@ -92,8 +92,8 @@
                                     <div v-if="(tournament.guidebooks && tournament.guidebooks.length > 0) || tournament.technical_guidebook_url"
                                         class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 mt-6 space-y-3">
                                         <div class="flex items-center gap-2.5">
-                                            <div class="size-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
-                                                <Icon icon="ph:file-pdf-duotone" class="text-xl" />
+                                            <div class="size-9 rounded-xl bg-navy/5 text-navy flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:book-bookmark-duotone" class="text-xl text-navy" />
                                             </div>
                                             <div>
                                                 <h4 class="font-black text-navy !mt-0 !mb-0 text-sm sm:text-base leading-tight">{{ t('event_detail.technical_handbook', 'Buku Panduan Teknis (THB)') }}</h4>
@@ -741,70 +741,67 @@
                             </div>
                         </div>
 
-                        <!-- Share Tournament Card (Light Theme) -->
-                        <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-100 text-navy relative overflow-hidden">
-                            <div class="relative z-10 space-y-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="size-10 rounded-2xl bg-primary/10 border border-primary/20 text-navy flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:share-network-bold" class="text-xl text-navy" />
-                                    </div>
-                                    <div>
-                                        <h3 class="text-sm sm:text-base font-black text-navy leading-tight">
-                                            {{ t('event_detail.share_event', 'Share This Tournament') }}
-                                        </h3>
-                                        <p class="text-xs sm:text-sm text-gray-500 font-medium mt-0.5">
-                                            {{ t('event_detail.share_desc', 'Invite archers and clubs to join the competition') }}
-                                        </p>
-                                    </div>
-                                </div>
+                        <!-- Share Tournament Card (Clean & Elegant) -->
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-3.5">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-bold text-navy flex items-center gap-2 mb-0">
+                                    <Icon icon="ph:share-network-bold" class="text-primary text-base" />
+                                    <span>{{ t('event_detail.share_event', 'Share Tournament') }}</span>
+                                </h3>
+                                <span class="text-[11px] font-semibold text-gray-400">{{ t('event_detail.share_subtitle', 'Invite archers & clubs') }}</span>
+                            </div>
 
-                                <!-- Copy Link Bar -->
-                                <div class="flex items-center gap-1.5 p-1.5 rounded-xl bg-gray-50 border border-gray-200">
-                                    <div class="flex-1 px-2.5 text-xs sm:text-sm text-gray-600 font-mono truncate">
-                                        {{ publicEventUrl }}
-                                    </div>
-                                    <button
-                                        type="button"
-                                        @click="copyPublicUrl"
-                                        class="px-3.5 py-2 rounded-lg bg-primary hover:bg-primary-hover text-navy text-xs sm:text-sm font-black transition-all flex items-center gap-1.5 shrink-0 shadow-2xs active:scale-95 cursor-pointer"
-                                    >
-                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" class="text-sm text-navy" />
-                                        <span>{{ copySuccess ? t('event_detail.copied', 'Copied!') : t('event_detail.copy_link', 'Copy Link') }}</span>
-                                    </button>
-                                </div>
+                            <!-- Link Copy Bar -->
+                            <div class="flex items-center gap-2 p-1.5 pl-3 bg-gray-50 border border-gray-200/70 rounded-xl focus-within:border-primary focus-within:bg-white transition-all">
+                                <Icon icon="ph:link-simple-bold" class="text-gray-400 text-sm shrink-0" />
+                                <input
+                                    type="text"
+                                    readonly
+                                    :value="publicEventUrl"
+                                    @click="$event.target.select()"
+                                    class="flex-1 bg-transparent text-xs text-navy font-semibold outline-none truncate select-all cursor-pointer font-mono"
+                                />
+                                <button
+                                    type="button"
+                                    @click="copyPublicUrl"
+                                    class="px-3.5 py-1.5 bg-navy hover:bg-navy-light text-primary rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shrink-0 shadow-2xs active:scale-95 cursor-pointer"
+                                >
+                                    <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" class="text-xs" />
+                                    <span>{{ copySuccess ? t('event_detail.copied', 'Copied!') : t('event_detail.copy', 'Copy') }}</span>
+                                </button>
+                            </div>
 
-                                <!-- Social Quick Share Grid -->
-                                <div class="grid grid-cols-3 gap-2 pt-1">
-                                    <button
-                                        type="button"
-                                        @click="shareTo('whatsapp')"
-                                        class="h-10 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
-                                        title="WhatsApp"
-                                    >
-                                        <Icon icon="ph:whatsapp-logo-fill" class="text-base" />
-                                        <span class="hidden sm:inline">WhatsApp</span>
-                                    </button>
+                            <!-- Social Share Buttons Grid -->
+                            <div class="grid grid-cols-3 gap-2">
+                                <button
+                                    type="button"
+                                    @click="shareTo('whatsapp')"
+                                    class="py-2 px-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-500 text-emerald-700 hover:text-white border border-emerald-200/50 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer group active:scale-95 shadow-2xs"
+                                    title="WhatsApp"
+                                >
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-sm text-emerald-600 group-hover:text-white transition-colors" />
+                                    <span>WhatsApp</span>
+                                </button>
 
-                                    <button
-                                        type="button"
-                                        @click="shareTo('facebook')"
-                                        class="h-10 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
-                                        title="Facebook"
-                                    >
-                                        <Icon icon="ph:facebook-logo-fill" class="text-base" />
-                                        <span class="hidden sm:inline">Facebook</span>
-                                    </button>
+                                <button
+                                    type="button"
+                                    @click="shareTo('facebook')"
+                                    class="py-2 px-2.5 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200/50 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer group active:scale-95 shadow-2xs"
+                                    title="Facebook"
+                                >
+                                    <Icon icon="ph:facebook-logo-fill" class="text-sm text-blue-600 group-hover:text-white transition-colors" />
+                                    <span>Facebook</span>
+                                </button>
 
-                                    <button
-                                        type="button"
-                                        @click="shareTo('twitter')"
-                                        class="h-10 rounded-xl bg-gray-50 hover:bg-navy text-navy hover:text-white border border-gray-200 text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 transition-all shadow-2xs active:scale-95 cursor-pointer"
-                                        title="X / Twitter"
-                                    >
-                                        <Icon icon="ph:twitter-logo-fill" class="text-base" />
-                                        <span class="hidden sm:inline">X / Post</span>
-                                    </button>
-                                </div>
+                                <button
+                                    type="button"
+                                    @click="shareTo('twitter')"
+                                    class="py-2 px-2.5 rounded-xl bg-slate-50 hover:bg-slate-900 text-slate-700 hover:text-white border border-slate-200/60 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer group active:scale-95 shadow-2xs"
+                                    title="X / Post"
+                                >
+                                    <Icon icon="ph:twitter-logo-fill" class="text-sm text-slate-700 group-hover:text-white transition-colors" />
+                                    <span>X / Post</span>
+                                </button>
                             </div>
                         </div>
                     </aside>
@@ -829,62 +826,95 @@
                         </div>
                     </Transition>
                 </Teleport>
+            </ClientOnly>
 
-                <!-- Subscribe Organizer Modal -->
+            <!-- Subscribe Organizer Modal -->
+            <ClientOnly>
                 <Teleport to="body">
-                    <Transition enter-active-class="transition duration-300 ease-out"
-                        enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100"
-                        leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100 scale-100"
-                        leave-to-class="opacity-0 scale-95">
-                        <div v-if="showSubscribeModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-                            <!-- Backdrop -->
-                            <div class="fixed inset-0 bg-navy/60 backdrop-blur-xs transition-opacity" @click="closeSubscribeModal"></div>
+                    <Transition
+                        enter-active-class="transition duration-200 ease-out"
+                        enter-from-class="opacity-0"
+                        enter-to-class="opacity-100"
+                        leave-active-class="transition duration-150 ease-in"
+                        leave-from-class="opacity-100"
+                        leave-to-class="opacity-0"
+                    >
+                        <div
+                            v-if="showSubscribeModal"
+                            class="fixed inset-0 z-[200] overflow-y-auto bg-navy/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4"
+                            @click.self="closeSubscribeModal"
+                        >
+                            <Transition
+                                enter-active-class="transition duration-200 ease-out"
+                                enter-from-class="opacity-0 scale-95 translate-y-4"
+                                enter-to-class="opacity-100 scale-100 translate-y-0"
+                                leave-active-class="transition duration-150 ease-in"
+                                leave-from-class="opacity-100 scale-100 translate-y-0"
+                                leave-to-class="opacity-0 scale-95 translate-y-4"
+                            >
+                                <div
+                                    v-if="showSubscribeModal"
+                                    class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-md mx-auto relative flex flex-col overflow-hidden"
+                                    @click.stop
+                                >
+                                    <button
+                                        type="button"
+                                        @click="closeSubscribeModal"
+                                        class="absolute top-5 right-5 size-8 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-400 hover:text-navy transition-colors flex items-center justify-center shrink-0 cursor-pointer z-20"
+                                    >
+                                        <Icon icon="ph:x-bold" class="text-base" />
+                                    </button>
 
-                            <!-- Modal Box -->
-                            <div class="relative bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-gray-100 z-10">
-                                <button @click="closeSubscribeModal" class="absolute top-5 right-5 text-gray-400 hover:text-navy transition-colors cursor-pointer">
-                                    <Icon icon="ph:x-bold" class="text-xl" />
-                                </button>
+                                    <div class="p-6 sm:p-8 flex flex-col items-center text-center">
+                                        <div class="size-12 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
+                                            <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
+                                        </div>
 
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="size-14 rounded-2xl bg-primary/20 text-navy flex items-center justify-center mb-4 shadow-sm">
-                                        <Icon icon="ph:bell-ringing-bold" class="text-2xl text-navy" />
-                                    </div>
+                                        <h3 class="text-lg sm:text-xl font-black text-navy mb-2 tracking-tight">
+                                            Subscribe to Tournament Updates
+                                        </h3>
+                                        <div class="text-xs sm:text-sm text-gray-500 mb-6 leading-relaxed">
+                                            Get email notifications whenever <strong class="text-navy font-semibold">{{ tournament.organizer }}</strong> publishes or opens registration for new tournaments.
+                                        </div>
 
-                                    <h3 class="text-xl font-black text-navy mb-2 font-display">
-                                        {{ t('event_detail.subscribe_modal_title', 'Langganan Info Turnamen') }}
-                                    </h3>
-                                    <p class="text-sm text-gray-500 mb-6 leading-relaxed">
-                                        {{ t('event_detail.subscribe_modal_desc', 'Dapatkan notifikasi email setiap kali') }} <strong class="text-navy">{{ tournament.organizer }}</strong> {{ t('event_detail.subscribe_modal_desc_end', 'merilis atau membuka pendaftaran turnamen baru.') }}
-                                    </p>
-
-                                    <form @submit.prevent="handleOrganizerSubscribe" class="w-full space-y-4">
-                                        <div class="text-left">
-                                            <label class="block text-xs font-black text-gray-400 uppercase tracking-wider mb-1.5">
-                                                {{ t('event_detail.email_label', 'Alamat Email') }}
-                                            </label>
-                                            <div class="relative">
-                                                <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                                                <input v-model="subscribeEmail" type="email" required
-                                                    :placeholder="t('event_detail.email_placeholder', 'nama@email.com')"
-                                                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all" />
+                                        <form @submit.prevent="handleOrganizerSubscribe" class="w-full space-y-4">
+                                            <div class="text-left">
+                                                <label class="block text-xs font-bold text-gray-500 mb-1.5">
+                                                    Email address
+                                                </label>
+                                                <div class="relative">
+                                                    <Icon icon="ph:envelope-simple" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-base" />
+                                                    <input
+                                                        v-model="subscribeEmail"
+                                                        type="email"
+                                                        required
+                                                        placeholder="name@email.com"
+                                                        class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold text-navy focus:outline-none focus:border-primary focus:bg-white transition-all"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="flex gap-3 pt-2">
-                                            <button type="button" @click="closeSubscribeModal"
-                                                class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer">
-                                                {{ t('common.cancel', 'Batal') }}
-                                            </button>
-                                            <button type="submit" :disabled="isSubscribing"
-                                                class="flex-1 py-3 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-black rounded-xl text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer">
-                                                <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-lg" />
-                                                <span>{{ isSubscribing ? t('common.submitting', 'Memproses...') : t('event_detail.subscribe_action', 'Ya, Berlangganan') }}</span>
-                                            </button>
-                                        </div>
-                                    </form>
+                                            <div class="flex gap-3 pt-2">
+                                                <button
+                                                    type="button"
+                                                    @click="closeSubscribeModal"
+                                                    class="flex-1 py-2.5 border border-gray-200 rounded-xl text-xs sm:text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    :disabled="isSubscribing"
+                                                    class="flex-1 py-2.5 bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy font-bold rounded-xl text-xs sm:text-sm transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+                                                >
+                                                    <Icon v-if="isSubscribing" icon="ph:spinner-gap-bold" class="animate-spin text-base" />
+                                                    <span>{{ isSubscribing ? 'Subscribing...' : 'Subscribe' }}</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
+                            </Transition>
                         </div>
                     </Transition>
                 </Teleport>
@@ -893,7 +923,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
     layout: 'landing',
     headerTransparent: true,
@@ -944,7 +974,7 @@ const closeSubscribeModal = () => {
 
 const handleOrganizerSubscribe = async () => {
     if (!subscribeEmail.value || !subscribeEmail.value.includes('@')) {
-        toast.error(t('event_detail.invalid_email', 'Format email tidak valid'))
+        toast.error('Please enter a valid email address')
         return
     }
 
@@ -955,10 +985,10 @@ const handleOrganizerSubscribe = async () => {
         })
         isOrganizerSubscribed.value = true
         showSubscribeModal.value = false
-        const orgName = tournament.value?.organizer || 'penyelenggara'
-        toast.success(res?.message || t('event_detail.subscribe_success', `Berhasil berlangganan notifikasi turnamen dari ${orgName}`))
+        const orgName = tournament.value?.organizer || 'the organizer'
+        toast.success(res?.message || `Successfully subscribed to tournament updates from ${orgName}`)
     } catch (err) {
-        toast.error(err?.data?.error || err?.message || t('event_detail.subscribe_error', 'Gagal berlangganan info turnamen'))
+        toast.error(err?.data?.error || err?.message || 'Failed to subscribe to tournament updates')
     } finally {
         isSubscribing.value = false
     }
@@ -1813,5 +1843,16 @@ useHead({
     background-image: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.03) 21%, rgba(0, 0, 0, 0.03) 39%, transparent 40%, transparent 59%, rgba(0, 0, 0, 0.03) 60%, rgba(0, 0, 0, 0.03) 79%, transparent 80%);
     background-size: 300px 300px;
     background-position: center;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+    opacity: 0;
+    transform: scale(0.97) translateY(-8px);
 }
 </style>

@@ -54,18 +54,6 @@
                     title="Underline (Ctrl+U)">
                     <Icon icon="ph:text-underline-bold" />
                 </TBtn>
-                <TBtn @click="editor.chain().focus().toggleStrike().run()" :active="editor.isActive('strike')"
-                    title="Strikethrough">
-                    <Icon icon="ph:text-strikethrough-bold" />
-                </TBtn>
-                <TBtn @click="editor.chain().focus().toggleHighlight().run()" :active="editor.isActive('highlight')"
-                    title="Highlight">
-                    <Icon icon="ph:highlighter-circle-bold" />
-                </TBtn>
-                <TBtn @click="editor.chain().focus().toggleCode().run()" :active="editor.isActive('code')"
-                    title="Inline code">
-                    <Icon icon="ph:code-bold" />
-                </TBtn>
             </div>
 
             <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
@@ -102,10 +90,6 @@
                     title="Daftar bernomor">
                     <Icon icon="ph:list-numbers-bold" />
                 </TBtn>
-                <TBtn @click="editor.chain().focus().toggleTaskList().run()" :active="editor.isActive('taskList')"
-                    title="Daftar tugas">
-                    <Icon icon="ph:check-square-bold" />
-                </TBtn>
             </div>
 
             <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
@@ -115,13 +99,6 @@
                 <TBtn @click="editor.chain().focus().toggleBlockquote().run()" :active="editor.isActive('blockquote')"
                     title="Kutipan">
                     <Icon icon="ph:quotes-bold" />
-                </TBtn>
-                <TBtn @click="editor.chain().focus().toggleCodeBlock().run()" :active="editor.isActive('codeBlock')"
-                    title="Blok kode">
-                    <Icon icon="ph:code-block-bold" />
-                </TBtn>
-                <TBtn @click="editor.chain().focus().setHorizontalRule().run()" title="Garis pemisah">
-                    <Icon icon="ph:minus-bold" />
                 </TBtn>
             </div>
 
@@ -152,8 +129,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- YouTube embed disabled -->
 
             <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
 
@@ -221,40 +196,6 @@
                         </button>
                     </template>
                 </div>
-            </div>
-
-            <div class="w-px bg-gray-200 mx-1 self-stretch my-1"></div>
-
-            <!-- Color picker -->
-            <div class="relative" ref="colorMenuRef">
-                <TBtn @click="colorMenuOpen = !colorMenuOpen" title="Warna teks" class="gap-1">
-                    <Icon icon="ph:palette-bold" />
-                    <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"
-                        :style="{ background: currentColor }"></span>
-                </TBtn>
-                <div v-if="colorMenuOpen" class="dropdown-menu p-3 min-w-[200px]">
-                    <div class="text-[10px] font-black text-gray-400 tracking-widest mb-2">WARNA TEKS</div>
-                    <div class="grid grid-cols-8 gap-1">
-                        <button v-for="color in colorPalette" :key="color" type="button" @click="setColor(color)"
-                            class="w-5 h-5 rounded hover:scale-125 transition-transform border border-white/40 shadow-sm"
-                            :style="{ background: color }" :title="color" />
-                    </div>
-                    <div class="mt-2 pt-2 border-t border-gray-100 flex items-center gap-2">
-                        <input type="color" :value="currentColor"
-                            @input="setColor(($event.target as HTMLInputElement).value)"
-                            class="h-7 w-10 rounded cursor-pointer border border-gray-200 p-0.5" />
-                        <button type="button" @click="editor.chain().focus().unsetColor().run(); colorMenuOpen = false"
-                            class="text-xs text-gray-500 hover:text-red-500 font-bold">Reset</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Word count -->
-            <div class="ml-auto flex items-center pl-2">
-                <span class=" text-xs text-gray-400 font-bold hidden sm:block whitespace-nowrap">
-                    {{ editor.storage.characterCount?.characters() ?? 0 }} karakter ·
-                    {{ editor.storage.characterCount?.words() ?? 0 }} kata
-                </span>
             </div>
         </div>
 
@@ -368,13 +309,7 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
-import Highlight from '@tiptap/extension-highlight'
-import { TextStyle } from '@tiptap/extension-text-style'
-import Color from '@tiptap/extension-color'
-import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
-import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
 import { onClickOutside } from '@vueuse/core'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useApi } from '~/composables/useApi'
@@ -418,13 +353,10 @@ const headingMenuOpen = ref(false)
 const headingMenuRef = ref<HTMLElement | null>(null)
 const imageMenuOpen = ref(false)
 const imageMenuRef = ref<HTMLElement | null>(null)
-const colorMenuOpen = ref(false)
-const colorMenuRef = ref<HTMLElement | null>(null)
 
 onClickOutside(tableMenuRef, () => { tableMenuOpen.value = false })
 onClickOutside(headingMenuRef, () => { headingMenuOpen.value = false })
 onClickOutside(imageMenuRef, () => { imageMenuOpen.value = false })
-onClickOutside(colorMenuRef, () => { colorMenuOpen.value = false })
 
 // ── Dialog state ──────────────────────────────────────────────────────────────
 const linkDialogOpen = ref(false)
@@ -438,16 +370,7 @@ const imageUrlError = ref(false)
 const imageFileInput = ref<HTMLInputElement | null>(null)
 const uploading = ref(false)
 
-
 const showMediaLibrary = ref(false)
-
-// ── Colour palette ────────────────────────────────────────────────────────────
-const colorPalette = [
-    '#000000', '#1e293b', '#374151', '#6b7280', '#9ca3af', '#d1d5db', '#f3f4f6', '#ffffff',
-    '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#14b8a6', '#06b6d4',
-    '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#ec4899', '#f43f5e', '#D4AF37', '#0d1b3e',
-]
-const currentColor = computed(() => (editor.value?.getAttributes('textStyle') as any)?.color ?? '#1e293b')
 
 // ── Heading options ────────────────────────────────────────────────────────────
 const headingOptions = [
@@ -471,7 +394,15 @@ const editor = useEditor({
     content: props.modelValue,
     immediatelyRender: false,
     extensions: [
-        StarterKit.configure({ heading: { levels: [1, 2, 3, 4] }, taskList: false, taskItem: false }),
+        StarterKit.configure({
+            heading: { levels: [1, 2, 3, 4] },
+            strike: false,
+            code: false,
+            codeBlock: false,
+            horizontalRule: false,
+            taskList: false,
+            taskItem: false
+        }),
         TableKit.configure({ resizable: true }),
         Image.configure({ inline: false, allowBase64: false, HTMLAttributes: { class: 'editor-image' } }),
         Link.configure({
@@ -482,13 +413,7 @@ const editor = useEditor({
         }),
         TextAlign.configure({ types: ['heading', 'paragraph'] }),
         Underline,
-        Highlight.configure({ multicolor: false }),
-        TextStyle,
-        Color,
-        CharacterCount,
         Placeholder.configure({ placeholder: props.placeholder }),
-        TaskList,
-        TaskItem.configure({ nested: true }),
     ],
     editorProps: {
         attributes: {
@@ -543,11 +468,6 @@ const applyLink = () => {
 const removeLink = () => {
     editor.value?.chain().focus().unsetLink().run()
     linkDialogOpen.value = false
-}
-
-// ── Colour ────────────────────────────────────────────────────────────────────
-const setColor = (color: string) => {
-    editor.value?.chain().focus().setColor(color).run()
 }
 
 // ── Image: file upload ────────────────────────────────────────────────────────
@@ -653,36 +573,6 @@ const insertTable = () => {
     margin: 0.2em 0;
 }
 
-/* Task list */
-.editor-prose ul[data-type="taskList"] {
-    list-style: none;
-    padding-left: 0;
-}
-
-.editor-prose ul[data-type="taskList"] li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5em;
-}
-
-.editor-prose ul[data-type="taskList"] li>label {
-    flex-shrink: 0;
-    margin-top: 0.25em;
-    cursor: pointer;
-}
-
-.editor-prose ul[data-type="taskList"] li>label input[type="checkbox"] {
-    width: 1rem;
-    height: 1rem;
-    cursor: pointer;
-    accent-color: #D4AF37;
-}
-
-.editor-prose ul[data-type="taskList"] li[data-checked="true"]>div {
-    text-decoration: line-through;
-    opacity: 0.5;
-}
-
 /* Blockquote */
 .editor-prose blockquote {
     border-left: 4px solid #D4AF37;
@@ -692,41 +582,6 @@ const insertTable = () => {
     border-radius: 0 0.5rem 0.5rem 0;
     color: #64748b;
     font-style: italic;
-}
-
-/* Inline code */
-.editor-prose code {
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.25rem;
-    padding: 0.15em 0.4em;
-    font-family: 'Fira Code', 'Consolas', monospace;
-    font-size: 0.85em;
-    color: #e11d48;
-}
-
-/* Code block */
-.editor-prose pre {
-    background: #0f172a;
-    color: #e2e8f0;
-    border-radius: 0.75rem;
-    padding: 1em 1.25em;
-    margin: 0.75em 0;
-    overflow-x: auto;
-}
-
-.editor-prose pre code {
-    background: transparent;
-    border: none;
-    color: inherit;
-    font-size: 0.875em;
-    padding: 0;
-}
-
-.editor-prose hr {
-    border: none;
-    border-top: 2px solid #e2e8f0;
-    margin: 1.25em 0;
 }
 
 /* Links */

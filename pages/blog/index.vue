@@ -245,39 +245,6 @@
             </div>
         </section>
 
-        <!-- ── NEWSLETTER SECTION ── -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-            <div class="bg-navy rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xs text-white border border-slate-800">
-                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-7 space-y-3">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-primary text-xs sm:text-sm font-bold border border-white/10">
-                            <Icon icon="ph:envelope-simple-open" class="text-sm" />
-                            <span>Weekly Archery Digest</span>
-                        </div>
-                        <h2 class="text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-white font-display">
-                            Stay Updated with Archery Guides.
-                        </h2>
-                        <p class="text-slate-300 text-xs sm:text-sm font-normal leading-relaxed max-w-xl">
-                            Get practical archery tips, equipment guides, and tournament updates directly in your inbox.
-                        </p>
-                    </div>
-                    <div class="lg:col-span-5">
-                        <form @submit.prevent="handleSubscribe" class="flex flex-col sm:flex-row gap-2.5">
-                            <input v-model="subscribeEmail" type="email" placeholder="Enter your email address..."
-                                class="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-xs sm:text-sm placeholder:text-slate-400 focus:bg-white/15 focus:border-white focus:outline-hidden"
-                                required :disabled="subscribing" />
-                            <button :disabled="subscribing"
-                                class="bg-primary hover:bg-primary-hover disabled:opacity-50 text-navy px-6 py-3 rounded-xl font-bold text-xs sm:text-sm transition-colors shrink-0 cursor-pointer flex items-center justify-center gap-1.5">
-                                <span v-if="subscribing">Subscribing...</span>
-                                <span v-else>Subscribe</span>
-                                <Icon v-if="!subscribing" icon="ph:paper-plane-tilt-bold" />
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <LayoutAppFooter />
     </div>
 </template>
@@ -303,8 +270,6 @@ const router = useRouter()
 
 const searchQuery = ref('')
 const activeCategory = ref('All')
-const subscribeEmail = ref('')
-const subscribing = ref(false)
 const currentPage = ref(1)
 const itemsPerPage = ref(6)
 
@@ -466,28 +431,6 @@ const changePage = (page) => {
 watch(searchQuery, () => {
     currentPage.value = 1
 })
-
-const handleSubscribe = async () => {
-    if (!subscribeEmail.value || !subscribeEmail.value.includes('@')) {
-        toast.error('Please enter a valid email address.')
-        return
-    }
-
-    subscribing.value = true
-    try {
-        const res = await post('/newsletter/subscribe', {
-            email: subscribeEmail.value
-        })
-        toast.success(res?.message || 'Thank you for subscribing to the Archeris newsletter!')
-        subscribeEmail.value = ''
-    } catch (err) {
-        // Optimistic fallback if offline or network error
-        toast.success('Thank you for subscribing to the Archeris newsletter!')
-        subscribeEmail.value = ''
-    } finally {
-        subscribing.value = false
-    }
-}
 
 const structuredData = computed(() => ({
     '@context': 'https://schema.org',

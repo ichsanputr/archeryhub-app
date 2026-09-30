@@ -38,9 +38,6 @@
         >
           <Icon icon="ph:users-three-bold" class="text-sm text-slate-600" />
           <span>{{ isEn ? 'Participants' : 'Peserta' }}</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-navy/5 text-navy">
-            {{ participantsList.length }}
-          </span>
         </button>
 
         <button
@@ -51,9 +48,6 @@
         >
           <Icon icon="ph:coins-bold" class="text-sm text-slate-600" />
           <span>{{ isEn ? 'Revenue' : 'Pendapatan' }}</span>
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-navy/5 text-navy font-mono">
-            Rp {{ formatPrice(totalNetRevenue) }}
-          </span>
         </button>
       </div>
 
@@ -208,7 +202,7 @@
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     ]"
                   >
-                    {{ isEn ? 'Expired' : 'Kedaluwarsa' }}
+                    {{ t('payment_status.badge_expired', isEn ? 'Expired' : 'Kedaluwarsa') }}
                   </button>
                   <button
                     type="button"
@@ -220,7 +214,7 @@
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     ]"
                   >
-                    {{ isEn ? 'Cancelled' : 'Dibatalkan' }}
+                    {{ t('payment_status.badge_cancelled', isEn ? 'Cancelled' : 'Dibatalkan') }}
                   </button>
                 </div>
               </div>
@@ -476,7 +470,7 @@
           <!-- Amount Slot -->
           <template #item-amount="{ item }">
             <div class="py-1 font-mono text-xs font-black text-navy text-right">
-              Rp {{ formatPrice(item.amount || item.total_amount || item.payment_amount || 0) }}
+              {{ formatMoney(item.amount || item.total_amount || item.payment_amount || 0, item.currency || tournamentCurrency) }}
             </div>
           </template>
 
@@ -511,6 +505,7 @@ import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useDashboardI18n } from '~/composables/useDashboardI18n'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { formatMoney } from '~/composables/useCurrency'
 import DashboardHeader from '~/components/dashboard/DashboardHeader.vue'
 import DashboardDataTable from '~/components/common/DashboardDataTable.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
@@ -530,11 +525,6 @@ const isEn = computed(() => locale.value === 'en')
 const eventId = computed(() => (route.params.id as string) || (route.params.slug as string))
 
 const activeTab = ref<'participants' | 'revenue'>('participants')
-
-useHead({
-  title: computed(() => `${activeTab.value === 'revenue' ? (isEn.value ? 'Revenue' : 'Pendapatan') : (isEn.value ? 'Participants' : 'Peserta')} - Archeris Dashboard`)
-})
-
 const isLoading = ref(true)
 const isExporting = ref(false)
 const searchQuery = ref('')
@@ -560,6 +550,14 @@ const tournament = ref<any>(null)
 const participantsList = ref<any[]>([])
 const categoriesList = ref<any[]>([])
 const paymentsList = ref<any[]>([])
+
+useHead({
+  title: computed(() => `${tournament.value?.name || tournamentTitle.value ? `${tournament.value?.name || tournamentTitle.value} - ` : ''}${isEn.value ? 'Reports' : 'Laporan'} - Archeris Dashboard`)
+})
+
+const tournamentCurrency = computed(() => {
+  return tournament.value?.currency || tournament.value?.page_settings?.currency || 'IDR'
+})
 
 const tournamentSubtitle = computed(() => {
   if (!tournament.value?.name) return isEn.value ? 'Tournament reports and participants data' : 'Laporan dan data peserta turnamen panahan'
@@ -786,8 +784,21 @@ const totalNetRevenue = computed(() => {
   return gross * 0.95
 })
 
-const formatPrice = (num: number) => {
-  return Number(num || 0).toLocaleString(isEn.value ? 'en-US' : 'id-ID')
+const formattedTotalNetRevenue = computed(() => {
+  const paidItems = filteredPayments.value.filter((p: any) => ['paid', 'completed', 'success', 'settled', 'lunas'].includes((p.status || p.payment_status || '').toLowerCase()))
+  const map: Record<string, number> = {}
+  for (const p of paidItems) {
+    const curr = (p.currency || tournamentCurrency.value || 'IDR').toUpperCase()
+    const amt = Number(p.amount || p.total_amount || p.payment_amount || 0)
+    map[curr] = (map[curr] || 0) + amt
+  }
+  const entries = Object.entries(map)
+  if (entries.length === 0) return formatMoney(0, tournamentCurrency.value)
+  return entries.map(([curr, gross]) => formatMoney(gross * 0.95, curr)).join(' + ')
+})
+
+const formatPrice = (num: number, curr?: string) => {
+  return formatMoney(num, curr || tournamentCurrency.value)
 }
 
 const formatDate = (dateStr?: string) => {
@@ -829,10 +840,10 @@ const getStatusClass = (status?: string) => {
 
 const getDisplayStatus = (status?: string) => {
   const s = (status || '').toLowerCase()
-  if (['paid', 'completed', 'success', 'settled', 'lunas'].includes(s)) return isEn.value ? 'Paid' : 'Lunas'
-  if (['pending', 'waiting', 'menunggu', 'awaiting_verification'].includes(s)) return isEn.value ? 'Pending' : 'Menunggu'
-  if (['expired'].includes(s)) return isEn.value ? 'Expired' : 'Kedaluwarsa'
-  if (['failed', 'cancelled', 'canceled', 'rejected'].includes(s)) return isEn.value ? 'Cancelled' : 'Dibatalkan'
+  if (['paid', 'completed', 'success', 'settled', 'lunas'].includes(s)) return t('payment_status.badge_paid', isEn.value ? 'Paid' : 'Lunas')
+  if (['pending', 'waiting', 'menunggu', 'awaiting_verification'].includes(s)) return t('payment_status.badge_pending', isEn.value ? 'Pending' : 'Menunggu')
+  if (['expired'].includes(s)) return t('payment_status.badge_expired', isEn.value ? 'Expired' : 'Kedaluwarsa')
+  if (['failed', 'cancelled', 'canceled', 'rejected'].includes(s)) return t('payment_status.badge_cancelled', isEn.value ? 'Cancelled' : 'Dibatalkan')
   return status || '-'
 }
 

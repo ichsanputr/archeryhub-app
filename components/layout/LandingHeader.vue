@@ -176,8 +176,9 @@
 
                 <!-- Desktop Auth & Cart Buttons -->
                 <div class="hidden md:flex items-center gap-3">
-                    <!-- Search Discovery Trigger -->
+                    <!-- Search Discovery Trigger (Hidden on Homepage) -->
                     <button
+                        v-if="!isHomePage"
                         @click="openSearchDialog"
                         class="flex items-center gap-2 px-3 py-1.5 rounded-xl transition-all cursor-pointer border text-xs font-semibold"
                         :class="showSolid ? 'bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-700' : 'bg-white/10 hover:bg-white/20 border-white/20 text-white/80'"
@@ -249,7 +250,9 @@
 
                 <!-- Mobile Menu and Search Toggle -->
                 <div class="flex items-center gap-1 md:gap-2 md:hidden">
-                    <button class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
+                    <button 
+                        v-if="!isHomePage"
+                        class="p-1.5 transition-colors duration-300" :class="mobileToggleClasses"
                         aria-label="Cari turnamen"
                         @click="openSearchDialog">
                         <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
@@ -429,6 +432,7 @@ const props = defineProps({
 const route = useRoute()
 const { isLoggedIn, user, userPersona, logout } = useAuth()
 
+const isHomePage = computed(() => route.path === '/')
 const isBlogRoute = computed(() => route.path.startsWith('/blog'))
 const isSticky = computed(() => route.meta.headerSticky !== false)
 const isExternalTournamentState = useState('isExternalTournamentPage', () => false)

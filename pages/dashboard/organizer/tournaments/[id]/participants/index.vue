@@ -442,9 +442,9 @@ const activeFilterChips = computed(() => {
         if (filters.value.status === 'paid') {
             label = t('dashboard.participants_list.status_options.paid')
         } else if (filters.value.status === 'expired') {
-            label = isEn.value ? 'Expired' : 'Kedaluwarsa'
+            label = t('dashboard.participants_list.status_options.expired', isEn.value ? 'Expired' : 'Kedaluwarsa')
         } else if (filters.value.status === 'cancelled') {
-            label = isEn.value ? 'Cancelled' : 'Dibatalkan'
+            label = t('dashboard.participants_list.status_options.cancelled', isEn.value ? 'Cancelled' : 'Dibatalkan')
         }
         chips.push({ key: 'status', label: `${t('dashboard.participants_list.filter_modal.payment_status')}: ${label}` })
     }
@@ -687,8 +687,8 @@ const getFilteredCategoryLabels = (participant) => {
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
     if (s === 'lunas' || s === 'paid' || s === 'registered' || s === 'terdaftar') return t('dashboard.participants_list.status_options.paid')
-    if (s === 'expired') return isEn.value ? 'Expired' : 'Kedaluwarsa'
-    if (s === 'cancelled' || s === 'canceled' || s === 'rejected' || s === 'ditolak') return isEn.value ? 'Cancelled' : 'Dibatalkan'
+    if (s === 'expired') return t('dashboard.participants_list.status_options.expired', isEn.value ? 'Expired' : 'Kedaluwarsa')
+    if (s === 'cancelled' || s === 'canceled' || s === 'rejected' || s === 'ditolak') return t('dashboard.participants_list.status_options.cancelled', isEn.value ? 'Cancelled' : 'Dibatalkan')
     return t('dashboard.participants_list.status_options.pending')
 }
 
