@@ -396,7 +396,6 @@ const navSections = computed(() => {
   return [
     { label: t('sidebar.overview'), icon: 'ph:squares-four', path: prefix },
     { label: t('sidebar.event'), icon: 'ph:trophy', path: `${prefix}/tournaments` },
-    ...(!isEventManagePage.value ? [{ label: t('sidebar.reports'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
     { label: t('sidebar.profile'), icon: 'ph:users-four', path: `${prefix}/teams` },
     ...(!isEventManagePage.value ? [{ label: t('sidebar.settings'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),
   ]

@@ -173,15 +173,6 @@
                             <Icon icon="ph:caret-right-bold"
                                 class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
                         </NuxtLink>
-                        <NuxtLink to="/dashboard/organizer/reports"
-                            class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
-                            <div class="flex items-center gap-3">
-                                <Icon icon="ph:chart-line-up-bold" class="text-lg text-primary" />
-                                <span class="text-xs font-bold">{{ t('dashboard.org.reports_analytics', 'Laporan & Analisis') }}</span>
-                            </div>
-                            <Icon icon="ph:caret-right-bold"
-                                class="text-xs group-hover:translate-x-1 transition-transform text-white/50" />
-                        </NuxtLink>
                         <NuxtLink to="/dashboard/organizer/scorekeepers"
                             class="flex items-center justify-between p-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                             <div class="flex items-center gap-3">
