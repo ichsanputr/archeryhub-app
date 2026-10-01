@@ -1,6 +1,6 @@
 <template>
     <div v-if="filteredFields.length > 0" class="grid grid-cols-1 md:grid-cols-12 gap-4">
-        <template v-for="field in filteredFields" :key="field.uuid">
+        <template v-for="field in filteredFields" :key="field.uuid || field.id || field.field_key || field.name || field.label_id">
             <!-- ========================================== -->
             <!-- 1. SECTION HEADING BLOCK -->
             <!-- ========================================== -->
@@ -283,17 +283,31 @@ const emit = defineEmits(['update:modelValue'])
 const config = useRuntimeConfig()
 const uploadingFields = ref({})
 
+function parseOptions(options) {
+    if (!options) return []
+    if (Array.isArray(options)) return options
+    if (typeof options === 'string') {
+        try {
+            const parsed = JSON.parse(options)
+            if (Array.isArray(parsed)) return parsed
+        } catch {
+            return options.split(',').map(s => s.trim()).filter(Boolean)
+        }
+    }
+    return []
+}
+
 function formatSelectOptions(options) {
-    if (!options || !Array.isArray(options)) return []
-    return options.map(opt => {
+    const list = parseOptions(options)
+    return list.map(opt => {
         if (typeof opt === 'object' && opt !== null) {
             return {
-                label: opt.label || opt.name || String(opt.value),
-                value: opt.value !== undefined ? opt.value : opt.label
+                title: opt.title || opt.label || opt.name || String(opt.value),
+                value: opt.value !== undefined ? opt.value : (opt.label || opt.title)
             }
         }
         return {
-            label: String(opt),
+            title: String(opt),
             value: String(opt)
         }
     })
@@ -338,19 +352,54 @@ const filteredFields = computed(() => {
         ? props.categoryIds
         : (props.categoryIds ? [props.categoryIds] : [])
 
-    return props.fields.filter(f => {
-        if (!f.is_active) return false
-        // If field has specific applies_to_category_ids, check match
-        if (f.applies_to_category_ids && f.applies_to_category_ids.length > 0) {
-            if (selectedCats.length === 0) return true
-            return f.applies_to_category_ids.some(cid => selectedCats.includes(cid))
-        }
-        return true
-    })
+    return props.fields
+        .map(f => {
+            const opts = parseOptions(f.options || f.options_json)
+            const fieldKey = f.field_key || f.key || f.id || f.name
+            const labelId = f.label_id || f.label || f.name || fieldKey
+            const descId = f.description_id || f.description || ''
+            const placeholderId = f.placeholder_id || f.placeholder || ''
+            const fieldType = f.field_type || f.type || 'text'
+            return {
+                ...f,
+                field_key: fieldKey,
+                label_id: labelId,
+                description_id: descId,
+                placeholder_id: placeholderId,
+                field_type: fieldType,
+                options: opts
+            }
+        })
+        .filter(f => {
+            if (f.is_active === false || f.is_active === 0 || f.is_active === '0') return false
+            // If field has specific applies_to_category_ids, check match
+            let catMatches = f.applies_to_category_ids
+            if (typeof catMatches === 'string') {
+                try {
+                    catMatches = JSON.parse(catMatches)
+                } catch {
+                    catMatches = catMatches.split(',').map(s => s.trim()).filter(Boolean)
+                }
+            }
+            if (Array.isArray(catMatches) && catMatches.length > 0) {
+                if (selectedCats.length === 0) return true
+                return catMatches.some(cid => selectedCats.includes(cid))
+            }
+            return true
+        })
 })
 
 function getValue(key) {
-    return props.modelValue ? props.modelValue[key] : undefined
+    if (!props.modelValue) return undefined
+    if (typeof key === 'string') {
+        if (props.modelValue[key] !== undefined) return props.modelValue[key]
+    } else if (key && typeof key === 'object') {
+        const k = key.field_key || key.id || key.name
+        if (k && props.modelValue[k] !== undefined) return props.modelValue[k]
+        if (key.id && props.modelValue[key.id] !== undefined) return props.modelValue[key.id]
+        if (key.field_key && props.modelValue[key.field_key] !== undefined) return props.modelValue[key.field_key]
+    }
+    return undefined
 }
 
 function updateValue(key, val) {

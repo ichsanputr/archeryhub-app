@@ -65,16 +65,16 @@ router.afterEach(() => {
   }, 1500)
 })
 
-// Force page to remount when route changes (fixes blank page on browser back / touchpad back)
-// We use path instead of fullPath to avoid unnecessary remounts when query parameters change
 const pageKey = computed(() => route.path)
 const isDashboard = computed(() => route.path.startsWith('/dashboard'))
 const isMatchPage = computed(() => route.path.startsWith('/match'))
 const isAuthPage = computed(() => ['/auth/login', '/auth/register'].includes(route.path))
+const isTournamentRegisterPage = computed(() => route.path.includes('/tournaments/') && route.path.endsWith('/register'))
 const showSupportChat = computed(() => 
   !isDashboard.value && 
   !isMatchPage.value && 
   !isAuthPage.value && 
+  !isTournamentRegisterPage.value &&
   !route.path.startsWith('/graphics/')
 )
 

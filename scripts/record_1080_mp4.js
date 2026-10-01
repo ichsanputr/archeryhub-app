@@ -31,7 +31,7 @@ async function record() {
         deviceScaleFactor: 1
     })
 
-    const targetUrl = 'http://localhost:3003/graphics/feature-registration'
+    const targetUrl = 'http://localhost:3003/tools/feature-registration'
     console.log('Navigating to:', targetUrl)
     await page.goto(targetUrl, { waitUntil: 'networkidle0' })
 

@@ -71,18 +71,12 @@
 
       <!-- Empty State -->
       <div v-else-if="targets.length === 0"
-        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-12 text-center shadow-xs">
-        <div class="flex flex-col items-center gap-4 max-w-sm mx-auto">
-          <div class="size-20 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-slate-400">
-            <Icon icon="ph:target-bold" class="text-5xl" />
-          </div>
-          <div class="space-y-1">
-            <div class="text-lg font-black text-navy dark:text-white">{{ t('event_targets.no_targets') }}</div>
-            <div class="text-xs text-slate-500 font-medium leading-relaxed">
-              {{ t('event_targets.no_targets_desc') }}
-            </div>
-          </div>
-        </div>
+        class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+        <BaseEmptyState
+          icon="ph:target-bold"
+          :title="t('event_targets.no_targets')"
+          :description="t('event_targets.no_targets_desc')"
+        />
       </div>
 
       <!-- Grid Data -->
@@ -186,11 +180,11 @@
       </template>
 
       <template #empty>
-        <div class="p-12 text-center">
-          <Icon icon="ph:target-bold" class="text-6xl text-gray-200 mx-auto mb-4" />
-          <div class="text-xl font-bold text-navy dark:text-white mb-1">{{ t('event_targets.no_targets') }}</div>
-          <div class="text-gray-400 text-sm">{{ t('event_targets.no_targets_desc') }}</div>
-        </div>
+        <BaseEmptyState
+          icon="ph:target-bold"
+          :title="t('event_targets.no_targets')"
+          :description="t('event_targets.no_targets_desc')"
+        />
       </template>
     </DashboardDataTable>
 

@@ -16,6 +16,9 @@
                                 {{ isEn ? 'Registration Invoice' : 'Rincian Pendaftaran' }}
                             </h3>
                         </div>
+                        <div class="text-xs text-slate-500 font-medium mt-0.5">
+                            {{ isEn ? 'Review your items, fees, and invoice breakdown before payment.' : 'Tinjau rincian kategori, biaya, dan tagihan sebelum melakukan pembayaran.' }}
+                        </div>
                     </div>
                 </div>
                 <div v-if="$slots.actions" class="shrink-0 self-start sm:self-center">
@@ -44,7 +47,7 @@
                     <button
                         type="button"
                         @click="toggleAllGroups"
-                        class="text-xs sm:text-sm font-bold text-navy hover:underline cursor-pointer flex items-center gap-1">
+                        class="text-xs sm:text-sm font-bold text-navy cursor-pointer flex items-center gap-1">
                         <span>{{ allExpanded ? (isEn ? 'Collapse all' : 'Tutup semua') : (isEn ? 'Expand all' : 'Buka semua') }}</span>
                     </button>
                 </div>
@@ -62,8 +65,12 @@
                             
                             <!-- Col 1: Category Name & Icon -->
                             <div class="col-span-6 flex items-center gap-3 min-w-0 w-full">
-                                <div class="size-8 rounded-xl bg-navy text-primary flex items-center justify-center text-xs sm:text-sm font-black shrink-0 shadow-2xs">
-                                    <Icon icon="ph:target-bold" />
+                                <div class="size-9 rounded-xl p-1 flex items-center justify-center shrink-0 border border-slate-200/80 bg-white shadow-2xs">
+                                    <img
+                                        :src="'/' + (getCategoryIcon(catGroup.category_title) || 'category-icon/men-single-recurve.svg')"
+                                        :alt="catGroup.category_title"
+                                        class="w-full h-full object-contain"
+                                        @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-single-recurve.svg' }" />
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <div class="font-bold text-navy text-xs sm:text-sm truncate">
@@ -116,18 +123,13 @@
                                 :key="ath.id || athIdx"
                                 class="py-2.5 px-2 flex items-center justify-between gap-3 text-xs sm:text-sm hover:bg-slate-50/50 rounded-xl transition-colors">
                                 <div class="flex items-center gap-3 min-w-0">
-                                    <div class="size-6 rounded-full bg-slate-100 text-slate-600 font-mono flex items-center justify-center font-bold text-xs shrink-0">
-                                        {{ athIdx + 1 }}
-                                    </div>
+                                    <img
+                                        :src="useImageOrDefault(ath.avatar_url, ath.person_name || ath.title)"
+                                        :alt="ath.person_name || ath.title"
+                                        class="size-8 rounded-full object-cover border border-slate-200 shrink-0" />
                                     <div class="min-w-0">
-                                        <div class="font-bold text-navy truncate flex items-center gap-2 flex-wrap">
-                                            <span>{{ ath.person_name || ath.title }}</span>
-                                            <span v-if="ath.role_label" class="px-1.5 py-0.5 rounded text-xs font-bold bg-navy/5 text-navy border border-navy/10 shrink-0">
-                                                {{ ath.role_label }}
-                                            </span>
-                                            <span v-if="ath.status_badge" class="px-1.5 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
-                                                {{ ath.status_badge }}
-                                            </span>
+                                        <div class="font-bold text-navy truncate">
+                                            {{ ath.person_name || ath.title }}
                                         </div>
                                         <div class="text-xs text-slate-400 truncate mt-0.5 flex items-center gap-1.5">
                                             <Icon icon="ph:shield-bold" class="text-slate-300 text-xs" />
@@ -152,61 +154,139 @@
 
             <!-- SECTION 2: TEAM CATEGORIES -->
             <div v-if="teamItems.length > 0" class="space-y-3">
-                <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 px-1 pt-1">
-                    <Icon icon="ph:users-three-bold" class="text-sm text-navy" />
-                    <span>{{ isEn ? 'Team / Mixed Team Categories' : 'Kategori Beregu / Campuran' }}</span>
+                <div class="flex items-center justify-between px-1 pt-1">
+                    <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600">
+                        <Icon icon="ph:users-three-bold" class="text-sm text-navy" />
+                        <span>{{ isEn ? 'Team / Mixed Team Categories' : 'Kategori Beregu / Campuran' }}</span>
+                    </div>
+                    <button
+                        type="button"
+                        @click="toggleAllTeamGroups"
+                        class="text-xs sm:text-sm font-bold text-navy cursor-pointer flex items-center gap-1">
+                        <span>{{ allTeamsExpanded ? (isEn ? 'Collapse all' : 'Tutup semua') : (isEn ? 'Expand all' : 'Buka semua') }}</span>
+                    </button>
                 </div>
 
                 <div class="space-y-2.5">
                     <div
                         v-for="(item, idx) in teamItems"
                         :key="item.id || idx"
-                        class="p-4 rounded-2xl border border-slate-200/90 bg-white flex flex-col sm:grid sm:grid-cols-12 gap-3 items-start sm:items-center shadow-2xs">
+                        class="rounded-2xl border border-slate-200/90 overflow-hidden bg-white shadow-2xs transition-all">
                         
-                        <!-- Col 1: Team Info -->
-                        <div class="col-span-6 flex items-center gap-3 min-w-0 w-full">
-                            <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shrink-0 font-bold text-xs sm:text-sm shadow-2xs">
-                                <Icon icon="ph:users-three-bold" class="text-base" />
+                        <!-- Team Summary Header Bar (Clickable Accordion) -->
+                        <div
+                            @click="toggleGroup(item.id || item.category_title || String(idx))"
+                            class="p-3.5 sm:px-4 sm:py-3.5 bg-slate-50/70 hover:bg-slate-50/90 flex flex-col sm:grid sm:grid-cols-12 gap-2 sm:gap-3 items-start sm:items-center cursor-pointer transition-colors select-none">
+                            
+                            <!-- Col 1: Team Info -->
+                            <div class="col-span-6 flex items-center gap-3 min-w-0 w-full">
+                                <div class="size-9 rounded-xl p-1 flex items-center justify-center shrink-0 border border-slate-200/80 bg-white shadow-2xs">
+                                    <img
+                                        :src="'/' + (getCategoryIcon(item.category_title || item.title) || 'category-icon/mix-team.svg')"
+                                        :alt="item.category_title || item.title"
+                                        class="w-full h-full object-contain"
+                                        @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/mix-team.svg' }" />
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <div class="font-bold text-navy text-xs sm:text-sm truncate">
+                                        {{ item.person_name || item.title }}
+                                    </div>
+                                    <div v-if="item.subtitle || item.club_name" class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                        <span v-if="item.subtitle">{{ item.subtitle }}</span>
+                                        <span v-if="item.subtitle && item.club_name" class="text-slate-300">•</span>
+                                        <span v-if="item.club_name">{{ item.club_name }}</span>
+                                    </div>
+                                    <div class="text-xs text-slate-500 font-medium sm:hidden mt-0.5">
+                                        {{ item.qty || 1 }}x <span v-if="Number(item.unit_price || item.amount) > 0">@ {{ formatMoney(item.unit_price || item.amount, currency) }}</span><span v-else class="text-emerald-600 font-bold">{{ isEn ? 'Free' : 'Gratis' }}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="font-bold text-navy text-xs sm:text-sm truncate flex items-center gap-2">
-                                    <span>{{ item.person_name || item.title }}</span>
-                                    <span class="px-1.5 py-0.5 rounded text-xs font-bold bg-navy/5 text-navy border border-navy/10 shrink-0">
-                                        {{ item.status_badge || (isEn ? 'Team Entry' : 'Slot Tim') }}
+
+                            <!-- Col 2: Qty -->
+                            <div class="col-span-2 hidden sm:flex items-center justify-center">
+                                <span class="px-2.5 py-0.5 rounded-md bg-white border border-slate-200 text-xs sm:text-sm font-bold text-slate-700">
+                                    {{ item.qty || 1 }} {{ isEn ? 'slot team' : 'slot tim' }}
+                                </span>
+                            </div>
+
+                            <!-- Col 3: Unit Price -->
+                            <div class="col-span-2 hidden sm:block text-right font-medium text-xs sm:text-sm text-slate-600 tabular-nums">
+                                <template v-if="Number(item.unit_price || item.amount) > 0">
+                                    {{ formatMoney(item.unit_price || item.amount, currency) }}
+                                </template>
+                                <span v-else class="text-slate-400 font-normal">-</span>
+                            </div>
+
+                            <!-- Col 4: Amount + Caret -->
+                            <div class="col-span-2 w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2.5 pt-1 sm:pt-0 border-t border-slate-200/60 sm:border-0">
+                                <span class="text-xs text-slate-400 font-medium sm:hidden">{{ isEn ? 'Subtotal:' : 'Subtotal:' }}</span>
+                                <div class="flex items-center gap-2">
+                                    <div v-if="Number(item.amount) > 0" class="font-black text-xs sm:text-sm text-navy tabular-nums">
+                                        {{ formatMoney(item.amount, currency) }}
+                                    </div>
+                                    <span v-else class="font-bold text-xs sm:text-sm text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
+                                        {{ isEn ? 'Free' : 'Gratis' }}
+                                    </span>
+                                    <div
+                                        class="size-6 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-400 transition-transform duration-200 shrink-0"
+                                        :class="{ 'rotate-180': isGroupExpanded(item.id || item.category_title || String(idx)) }">
+                                        <Icon icon="ph:caret-down-bold" class="text-xs" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Expanded Team Section -->
+                        <div v-if="isGroupExpanded(item.id || item.category_title || String(idx))" class="bg-white px-3 sm:px-4 py-2.5 border-t border-slate-100">
+                            <!-- Team with Members -->
+                            <div v-if="item.members && item.members.length > 0" class="divide-y divide-slate-100">
+                                <div
+                                    v-for="(member, mIdx) in item.members"
+                                    :key="mIdx"
+                                    class="py-2.5 px-2 flex items-center justify-between gap-3 text-xs sm:text-sm hover:bg-slate-50/50 rounded-xl transition-colors">
+                                    <div class="flex items-center gap-3 min-w-0">
+                                        <img
+                                            :src="useImageOrDefault(member.avatar_url, member.full_name)"
+                                            :alt="member.full_name"
+                                            class="size-8 rounded-full object-cover border border-slate-200 shrink-0" />
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-navy truncate">
+                                                {{ member.full_name }}
+                                            </div>
+                                            <div class="text-xs text-slate-400 truncate mt-0.5 flex items-center gap-1.5">
+                                                <Icon icon="ph:shield-bold" class="text-slate-300 text-xs" />
+                                                <span>{{ member.club_name || 'Independent' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right shrink-0">
+                                        <span class="text-xs text-slate-500 font-medium">
+                                            {{ member.role || (mIdx === 0 ? (isEn ? 'Registrant (You)' : 'Pendaftar (Anda)') : (isEn ? `Archer ${mIdx + 1}` : `Atlet ${mIdx + 1}`)) }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Team Quota Slot / Delegation without Members yet -->
+                            <div v-else class="p-3 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2 text-xs sm:text-sm">
+                                <div class="flex items-center justify-between">
+                                    <div class="font-bold text-navy flex items-center gap-1.5">
+                                        <Icon icon="ph:info-bold" class="text-slate-400 text-sm" />
+                                        <span>{{ isEn ? 'Team Slot Reservation Details' : 'Rincian Reservasi Slot Tim' }}</span>
+                                    </div>
+                                    <span class="px-2 py-0.5 rounded-md bg-navy/10 text-navy font-bold text-xs">
+                                        {{ item.qty || 1 }} {{ isEn ? 'Team Slot(s)' : 'Slot Tim' }}
                                     </span>
                                 </div>
-                                <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
-                                    <span>{{ item.category_title || item.subtitle }}</span>
-                                    <span v-if="item.club_name" class="text-slate-300">•</span>
-                                    <span v-if="item.club_name">{{ item.club_name }}</span>
+                                <div class="text-slate-500 leading-relaxed">
+                                    {{ item.note || (isEn ? 'Official team quota. Roster composition is submitted directly at Technical Meeting.' : 'Kuota tim resmi turnamen. Susunan atlet diserahkan saat Technical Meeting.') }}
+                                </div>
+                                <div v-if="item.club_name" class="pt-1.5 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-400">
+                                    <span>{{ isEn ? 'Delegation / Club:' : 'Kontingen / Klub:' }}</span>
+                                    <span class="font-bold text-slate-700">{{ item.club_name }}</span>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Col 2: Qty -->
-                        <div class="col-span-2 hidden sm:flex items-center justify-center">
-                            <span class="px-2.5 py-0.5 rounded-md bg-white border border-slate-200 text-xs sm:text-sm font-bold text-slate-700">
-                                1 {{ isEn ? 'team' : 'tim' }}
-                            </span>
-                        </div>
-
-                        <!-- Col 3: Unit Price -->
-                        <div class="col-span-2 hidden sm:block text-right font-medium text-xs sm:text-sm text-slate-600 tabular-nums">
-                            <template v-if="Number(item.amount) > 0">
-                                {{ formatMoney(item.amount, currency) }}
-                            </template>
-                            <span v-else class="text-slate-400 font-normal">-</span>
-                        </div>
-
-                        <!-- Col 4: Amount -->
-                        <div class="col-span-2 w-full sm:w-auto flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t border-slate-100 sm:border-0">
-                            <span class="text-xs text-slate-400 font-medium sm:hidden">{{ isEn ? 'Subtotal:' : 'Subtotal:' }}</span>
-                            <div v-if="Number(item.amount) > 0" class="font-black text-xs sm:text-sm text-navy tabular-nums">
-                                {{ formatMoney(item.amount, currency) }}
-                            </div>
-                            <span v-else class="font-bold text-xs sm:text-sm text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
-                                {{ isEn ? 'Free' : 'Gratis' }}
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -249,8 +329,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Icon } from '@iconify/vue'
 import { formatMoney } from '~/composables/useCurrency'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const props = defineProps({
     items: {
@@ -266,12 +349,12 @@ const props = defineProps({
 const { locale } = useI18n()
 const isEn = computed(() => locale.value !== 'id')
 
-// Accordion expansion state per category - open by default for rich invoice view
+// Accordion expansion state per category - collapsed by default
 const expandedGroups = ref({})
 
 const isGroupExpanded = (title) => {
     if (expandedGroups.value[title] === undefined) {
-        return true
+        return false
     }
     return Boolean(expandedGroups.value[title])
 }
@@ -290,6 +373,20 @@ const toggleAllGroups = () => {
     const targetState = !allExpanded.value
     for (const g of groupedIndividualCategories.value) {
         expandedGroups.value[g.category_title] = targetState
+    }
+}
+
+const allTeamsExpanded = computed(() => {
+    if (teamItems.value.length === 0) return true
+    return teamItems.value.every((item, idx) => isGroupExpanded(item.id || item.category_title || String(idx)))
+})
+
+const toggleAllTeamGroups = () => {
+    const targetState = !allTeamsExpanded.value
+    for (let idx = 0; idx < teamItems.value.length; idx++) {
+        const item = teamItems.value[idx]
+        const key = item.id || item.category_title || String(idx)
+        expandedGroups.value[key] = targetState
     }
 }
 

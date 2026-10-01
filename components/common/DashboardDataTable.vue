@@ -155,21 +155,15 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="displayItems.length === 0" class="py-16 sm:py-20 text-center space-y-3 px-4">
+      <template v-else-if="displayItems.length === 0">
         <slot name="empty">
-          <div class="size-14 rounded-2xl bg-slate-50 text-slate-400 border border-slate-200 flex items-center justify-center mx-auto shadow-2xs">
-            <Icon :icon="emptyIcon || 'ph:folder-open-bold'" class="text-2xl text-navy" />
-          </div>
-          <div class="space-y-1">
-            <h4 class="text-sm sm:text-base font-black text-navy">
-              {{ emptyTitle || (isEn ? 'No records found' : 'Tidak ada data ditemukan') }}
-            </h4>
-            <div class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
-              {{ emptyDescription || (isEn ? 'Try adjusting your search query or filters to find what you are looking for.' : 'Coba sesuaikan kata kunci pencarian atau filter Anda.') }}
-            </div>
-          </div>
+          <BaseEmptyState
+            :icon="emptyIcon || 'ph:folder-open-bold'"
+            :title="emptyTitle || (isEn ? 'No records found' : 'Tidak ada data ditemukan')"
+            :description="emptyDescription || (isEn ? 'Try adjusting your search query or filters to find what you are looking for.' : 'Coba sesuaikan kata kunci pencarian atau filter Anda.')"
+          />
         </slot>
-      </div>
+      </template>
 
       <!-- Main Table -->
       <div v-else class="overflow-x-auto">

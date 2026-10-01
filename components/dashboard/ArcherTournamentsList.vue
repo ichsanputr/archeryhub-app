@@ -230,26 +230,21 @@
     </div>
 
     <div v-else-if="filteredEvents.length === 0"
-      class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs p-8 sm:p-14 text-center w-full flex flex-col items-center justify-center space-y-4">
-      <div class="size-16 sm:size-20 rounded-2xl bg-primary/15 border border-primary/20 flex items-center justify-center text-navy shadow-xs">
-        <Icon icon="ph:calendar-x-bold" class="text-3xl sm:text-4xl text-navy" />
-      </div>
-      <div class="space-y-2 max-w-lg mx-auto">
-        <div class="text-xl font-black text-navy dark:text-white tracking-tight">
-          {{ t('my_events.no_events') }}
-        </div>
-        <div class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
-          {{ emptyStateMessage }}
-        </div>
-      </div>
-      <div class="pt-2">
-        <BaseButton v-if="searchQuery" variant="outline" size="md" @click="resetFilters" class="min-h-[44px] px-6">
-          {{ t('my_events.clear_filter') }}
-        </BaseButton>
-        <BaseButton v-else to="/tournaments" variant="primary" size="md" icon="ph:magnifying-glass-bold" class="min-h-[44px] px-6">
-          {{ t('my_events.search_event') }}
-        </BaseButton>
-      </div>
+      class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xs">
+      <BaseEmptyState
+        icon="ph:calendar-x-bold"
+        :title="t('my_events.no_events')"
+        :description="emptyStateMessage"
+      >
+        <template #actions>
+          <BaseButton v-if="searchQuery" variant="outline" size="md" @click="resetFilters" class="min-h-[40px] px-5 text-xs sm:text-sm font-bold">
+            {{ t('my_events.clear_filter') }}
+          </BaseButton>
+          <BaseButton v-else to="/tournaments" variant="primary" size="md" icon="ph:magnifying-glass-bold" class="min-h-[40px] px-5 text-xs sm:text-sm font-bold">
+            {{ t('my_events.search_event') }}
+          </BaseButton>
+        </template>
+      </BaseEmptyState>
     </div>
 
     <div v-else class="space-y-8">

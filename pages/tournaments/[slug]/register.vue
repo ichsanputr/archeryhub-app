@@ -87,7 +87,7 @@
 
         <!-- Loading State -->
         <div v-if="pending" class="flex-1 flex flex-col items-center justify-center p-8 text-center min-h-[50vh]">
-            <div class="size-12 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center justify-center mb-3 text-navy">
+            <div class="size-12 rounded-2xl bg-primary/15 border border-primary/30 text-navy shadow-2xs flex items-center justify-center mb-3">
                 <Icon icon="ph:spinner-gap-bold" class="text-2xl animate-spin text-navy" />
             </div>
             <h2 class="text-base font-black text-navy mb-0.5">{{ isEn ? 'Loading Registration' : 'Memuat Form Pendaftaran' }}</h2>
@@ -97,7 +97,7 @@
         <!-- Error State -->
         <div v-else-if="fetchError" class="flex-1 flex items-center justify-center p-6">
             <div class="text-center max-w-md bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                <div class="size-14 bg-red-50 rounded-2xl flex items-center justify-center mb-3 mx-auto text-red-500">
+                <div class="size-14 bg-red-500/15 border border-red-500/30 text-red-600 rounded-2xl flex items-center justify-center mb-3 mx-auto shadow-2xs">
                     <Icon icon="ph:warning-circle-bold" class="text-2xl" />
                 </div>
                 <h2 class="text-lg font-black text-navy mb-1.5">{{ isEn ? 'Failed to Load Tournament' : 'Gagal Memuat Data Turnamen' }}</h2>
@@ -121,7 +121,7 @@
         <!-- Already Registered State -->
         <div v-else-if="isAlreadyRegistered && !allowRegisterAnotherDelegation" class="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12">
             <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-6 text-center">
-                <div class="size-16 sm:size-20 rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200 flex items-center justify-center mx-auto shadow-xs">
+                <div class="size-16 sm:size-20 rounded-2xl bg-emerald-500/15 text-emerald-700 border border-emerald-500/30 flex items-center justify-center mx-auto shadow-2xs">
                     <Icon icon="ph:seal-check-bold" class="text-3xl sm:text-4xl" />
                 </div>
 
@@ -133,12 +133,12 @@
                     <h2 class="text-xl sm:text-2xl font-black text-navy">
                         {{ isEn ? 'You are already registered for this tournament' : 'Anda telah terdaftar pada turnamen ini' }}
                     </h2>
-                    <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                    <div class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
                         {{ isEn 
                             ? 'Your registration data has been recorded. You can view your ticket, target assignment, and payment status anytime.' 
                             : 'Data pendaftaran Anda telah tercatat. Anda dapat memeriksa tiket, jadwal bantalan target, dan status pembayaran kapan saja.' 
                         }}
-                    </p>
+                    </div>
                 </div>
 
                 <!-- Registration Summary Box -->
@@ -190,7 +190,7 @@
                     <button
                         type="button"
                         @click="allowRegisterAnotherDelegation = true; registrationMode = 'club_delegation'"
-                        class="text-navy font-bold underline hover:text-primary-hover ml-1 cursor-pointer">
+                        class="text-navy font-bold hover:text-primary-hover ml-1 cursor-pointer">
                         {{ isEn ? 'Register Club Delegation' : 'Daftarkan Delegasi Klub' }}
                     </button>
                 </div>
@@ -198,308 +198,34 @@
         </div>
 
         <div v-else class="flex-1">
-            <!-- COMPACT TOURNAMENT HERO HEADER STRIP WITH LANGUAGE TOGGLE IN SAME ROW -->
-            <div class="bg-navy text-white border-b border-navy/90 relative overflow-hidden">
-                <div class="absolute inset-0 z-0 opacity-10">
-                    <img :src="useImageOrDefault(event.image, '/hero-event-detail.jpeg')" class="w-full h-full object-cover" />
-                </div>
+            <!-- 1. COMPACT TOURNAMENT HERO HEADER STRIP WITH LANGUAGE TOGGLE & STEPPER -->
+            <RegisterHeader
+                :event="event"
+                :current-step="currentStep"
+                :is-en="isEn"
+                @go-to-step="goToStep"
+                @set-locale-lang="setLocaleLang" />
 
-                <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <span class="text-xs sm:text-sm font-bold text-slate-300 block mb-1">
-                                {{ isEn ? 'Tournament Registration' : 'Pendaftaran Turnamen' }}
-                            </span>
-                            <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">{{ event.name }}</h1>
-                            <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-slate-300 font-medium">
-                                <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-blank" class="text-primary text-base" />
-                                    <span>{{ displayValue(event.date) }}</span>
-                                </span>
-                                <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:map-pin" class="text-primary text-base" />
-                                    <span>{{ displayValue(event.location) }}</span>
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Language Switcher in Hero Title Row with Iconify Flags -->
-                        <div class="flex items-center gap-1 bg-white/10 p-1 rounded-2xl border border-white/15 shrink-0 self-start sm:self-center shadow-xs">
-                            <button
-                                type="button"
-                                @click="setLocaleLang('en')"
-                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer"
-                                :class="isEn ? 'bg-primary text-navy font-black shadow-xs' : 'text-slate-300 hover:text-white hover:bg-white/10'">
-                                <Icon icon="circle-flags:us" class="text-base shrink-0" />
-                                <span>EN</span>
-                            </button>
-                            <button
-                                type="button"
-                                @click="setLocaleLang('id')"
-                                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer"
-                                :class="!isEn ? 'bg-primary text-navy font-black shadow-xs' : 'text-slate-300 hover:text-white hover:bg-white/10'">
-                                <Icon icon="circle-flags:id" class="text-base shrink-0" />
-                                <span>ID</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 3-Step Guided Tabs -->
-                    <div class="mt-6 pt-4 border-t border-white/10 grid grid-cols-3 gap-2 sm:gap-3">
-                        <button
-                            type="button"
-                            @click="currentStep = 1"
-                            class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all cursor-pointer text-left"
-                            :class="currentStep === 1 ? 'bg-white/10 text-white font-bold border border-primary/40 shadow-xs' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'">
-                            <div class="size-7 rounded-lg flex items-center justify-center text-xs sm:text-sm shrink-0 font-black"
-                                :class="currentStep === 1 ? 'bg-primary text-navy shadow-xs' : (currentStep > 1 ? 'bg-emerald-500 text-white' : 'bg-white/10 text-slate-300')">
-                                <Icon v-if="currentStep > 1" icon="ph:check-bold" />
-                                <span v-else>1</span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs sm:text-sm font-bold leading-tight truncate">
-                                    {{ isEn ? 'Registration Type' : 'Tipe Pendaftaran' }}
-                                </div>
-                            </div>
-                        </button>
-
-                        <button
-                            type="button"
-                            @click="goToStep(2)"
-                            class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all cursor-pointer text-left"
-                            :class="currentStep === 2 ? 'bg-white/10 text-white font-bold border border-primary/40 shadow-xs' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'">
-                            <div class="size-7 rounded-lg flex items-center justify-center text-xs sm:text-sm shrink-0 font-black"
-                                :class="currentStep === 2 ? 'bg-primary text-navy shadow-xs' : (currentStep > 2 ? 'bg-emerald-500 text-white' : 'bg-white/10 text-slate-300')">
-                                <Icon v-if="currentStep > 2" icon="ph:check-bold" />
-                                <span v-else>2</span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs sm:text-sm font-bold leading-tight truncate">
-                                    {{ isEn ? 'Select Categories' : 'Pilih Kategori' }}
-                                </div>
-                            </div>
-                        </button>
-
-                        <button
-                            type="button"
-                            @click="goToStep(3)"
-                            class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all cursor-pointer text-left"
-                            :class="currentStep === 3 ? 'bg-white/10 text-white font-bold border border-primary/40 shadow-xs' : 'text-slate-400 hover:text-slate-200 hover:bg-white/5 border border-transparent'">
-                            <div class="size-7 rounded-lg flex items-center justify-center text-xs sm:text-sm shrink-0 font-black"
-                                :class="currentStep === 3 ? 'bg-primary text-navy shadow-xs' : 'bg-white/10 text-slate-300'">
-                                <span>3</span>
-                            </div>
-                            <div class="min-w-0 flex-1">
-                                <div class="text-xs sm:text-sm font-bold leading-tight truncate">
-                                    {{ isEn ? 'Payment' : 'Pembayaran' }}
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MAIN FORM BODY CONTAINER -->
-            <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 pb-12 w-full">
-                <div class="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden divide-y divide-slate-100">
+            <!-- 2. MAIN FORM BODY CONTAINER -->
+            <main class="max-w-5xl mx-auto px-0 sm:px-6 py-0 sm:py-6 pb-12 w-full">
+                <div class="bg-white rounded-none sm:rounded-3xl border-0 sm:border border-slate-200/90 sm:shadow-sm overflow-hidden divide-y divide-slate-100">
                     
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <!-- STEP 1: IDENTITY & MODE SELECTION                       -->
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <div v-if="currentStep === 1" class="p-4 sm:p-8 space-y-6 sm:space-y-8">
+                    <!-- STEP 1: IDENTITY & MODE SELECTION -->
+                    <Step1RegistrationType
+                        v-if="currentStep === 1"
+                        v-model:registration-mode="registrationMode"
+                        :profile-form="profileForm"
+                        :custom-fields="customFields"
+                        v-model:custom-field-answers="customFieldAnswers"
+                        :selected-individual-category-ids="selectedIndividualCategoryIds"
+                        :is-step1-valid="isStep1Valid"
+                        :is-en="isEn"
+                        @go-to-step="goToStep" />
+
+                    <!-- STEP 2: CATEGORIES & SQUAD ROSTER BUILDER -->
+                    <div v-else-if="currentStep === 2" class="p-4 sm:p-8 space-y-6 sm:space-y-8">
                         <div>
-                            <h2 class="text-xl sm:text-2xl font-black text-navy tracking-tight">
-                                {{ isEn ? 'Select Registration Type' : 'Pilih Tipe Pendaftaran' }}
-                            </h2>
-                            <div class="text-xs sm:text-sm text-slate-500 mt-1">
-                                {{ isEn ? 'Choose whether you are registering for yourself / team, or registering on behalf of other archers.' : 'Pilih apakah Anda mendaftar untuk diri sendiri & tim, atau mendaftarkan atlet lain sebagai perwakilan.' }}
-                            </div>
-                        </div>
-
-                        <!-- 2-Way Mode Selector Cards: Horizontal on Mobile, Card Grid on Desktop -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                            <!-- Option 1: Individual / Captain -->
-                            <div
-                                @click="registrationMode = 'captain_team'"
-                                class="p-4 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-row sm:flex-col items-center sm:items-stretch justify-between gap-3.5 sm:gap-0 group select-none"
-                                :class="registrationMode === 'captain_team' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-white'">
-                                <div class="flex items-center sm:block gap-3.5 sm:gap-0 min-w-0 flex-1">
-                                    <div class="flex items-center justify-between gap-2 sm:mb-4 shrink-0 sm:shrink">
-                                        <div class="size-11 sm:size-12 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                                            <Icon icon="ph:user-bold" class="text-xl" />
-                                        </div>
-                                        <span class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
-                                            :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
-                                            {{ isEn ? 'Competing Athlete' : 'Peserta Bertanding' }}
-                                        </span>
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
-                                            <div class="font-black text-navy text-sm sm:text-lg leading-tight">
-                                                {{ isEn ? 'Self & Teammates' : 'Pendaftaran Mandiri & Rekan' }}
-                                            </div>
-                                            <span class="sm:hidden px-1.5 py-0.5 rounded text-[11px] font-bold shrink-0"
-                                                :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
-                                                {{ isEn ? 'Athlete' : 'Atlet' }}
-                                            </span>
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-slate-500 font-medium sm:mt-1 leading-snug sm:leading-relaxed line-clamp-2 sm:line-clamp-none">
-                                            {{ isEn ? 'Choose this mode to register yourself for individual categories and invite or register teammates for team events.' : 'Pilih mode ini untuk mendaftar kategori perorangan serta mengajak atau mendaftarkan rekan untuk kategori beregu.' }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="hidden sm:flex mt-4 pt-3 border-t border-slate-100 items-center justify-between text-xs sm:text-sm">
-                                    <span class="font-bold text-slate-400">{{ isEn ? 'Direct Entry' : 'Pendaftaran Langsung' }}</span>
-                                    <div class="size-6 rounded-full flex items-center justify-center transition-all"
-                                        :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                        <Icon icon="ph:check-bold" class="text-xs sm:text-sm font-black" />
-                                    </div>
-                                </div>
-
-                                <!-- Mobile Right Checkmark -->
-                                <div class="sm:hidden size-6 rounded-full flex items-center justify-center transition-all shrink-0 ml-1"
-                                    :class="registrationMode === 'captain_team' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                    <Icon icon="ph:check-bold" class="text-xs font-black" />
-                                </div>
-                            </div>
-
-                            <!-- Option 2: Club Delegation / Representative -->
-                            <div
-                                @click="registrationMode = 'club_delegation'"
-                                class="p-4 sm:p-6 rounded-2xl border-2 text-left transition-all cursor-pointer relative flex flex-row sm:flex-col items-center sm:items-stretch justify-between gap-3.5 sm:gap-0 group select-none"
-                                :class="registrationMode === 'club_delegation' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-white'">
-                                <div class="flex items-center sm:block gap-3.5 sm:gap-0 min-w-0 flex-1">
-                                    <div class="flex items-center justify-between gap-2 sm:mb-4 shrink-0 sm:shrink">
-                                        <div class="size-11 sm:size-12 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform shrink-0">
-                                            <Icon icon="ph:users-three-bold" class="text-xl" />
-                                        </div>
-                                        <span class="hidden sm:inline-block px-2.5 py-1 rounded-lg text-xs sm:text-sm font-bold"
-                                            :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
-                                            {{ isEn ? 'Collective / Official' : 'Kolektif / Official' }}
-                                        </span>
-                                    </div>
-                                    <div class="min-w-0 flex-1">
-                                        <div class="flex items-center gap-2 mb-0.5 sm:mb-0">
-                                            <div class="font-black text-navy text-sm sm:text-lg leading-tight">
-                                                {{ isEn ? 'Club Delegation' : 'Delegasi Klub / Official' }}
-                                            </div>
-                                            <span class="sm:hidden px-1.5 py-0.5 rounded text-[11px] font-bold shrink-0"
-                                                :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'bg-slate-100 text-slate-600'">
-                                                {{ isEn ? 'Official' : 'Official' }}
-                                            </span>
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-slate-500 font-medium sm:mt-1 leading-snug sm:leading-relaxed line-clamp-2 sm:line-clamp-none">
-                                            {{ isEn ? 'Choose this mode if you represent a club, school, or contingent registering multiple athletes together under one single invoice.' : 'Pilih mode ini jika Anda mewakili klub, sekolah, atau pengurus kontingen yang mendaftarkan banyak atlet sekaligus dalam satu tagihan.' }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="hidden sm:flex mt-4 pt-3 border-t border-slate-100 items-center justify-between text-xs sm:text-sm">
-                                    <span class="font-bold text-slate-400">{{ isEn ? 'Batch Entry & Quotas' : 'Banyak Atlet & Kuota' }}</span>
-                                    <div class="size-6 rounded-full flex items-center justify-center transition-all"
-                                        :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                        <Icon icon="ph:check-bold" class="text-xs sm:text-sm font-black" />
-                                    </div>
-                                </div>
-
-                                <!-- Mobile Right Checkmark -->
-                                <div class="sm:hidden size-6 rounded-full flex items-center justify-center transition-all shrink-0 ml-1"
-                                    :class="registrationMode === 'club_delegation' ? 'bg-navy text-primary' : 'border-2 border-slate-300 text-transparent'">
-                                    <Icon icon="ph:check-bold" class="text-xs font-black" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MODE 1: UNIFIED ARCHER REGISTRATION FORM (Flat on mobile, bordered on desktop) -->
-                        <div v-if="registrationMode === 'captain_team'" class="rounded-2xl border-0 sm:border border-slate-200/90 bg-transparent sm:bg-slate-50/50 p-0 sm:p-6 space-y-5 animate-in fade-in slide-in-from-top-2 duration-200">
-                            <div class="flex items-center justify-between gap-3 pb-3 border-b border-slate-200/70">
-                                <div>
-                                    <h3 class="text-sm sm:text-base font-black text-navy">
-                                        {{ isEn ? 'Archer Registration Form' : 'Formulir Pendaftaran Atlet' }}
-                                    </h3>
-                                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                                        {{ isEn ? 'Fill in the official participant information and tournament requirements.' : 'Lengkapi data identitas pemanah dan persyaratan resmi turnamen.' }}
-                                    </div>
-                                </div>
-                                <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 text-xs sm:text-sm font-bold shrink-0 hidden sm:inline-block">
-                                    {{ isEn ? 'Step 1: Archer Data' : 'Langkah 1: Data Atlet' }}
-                                </span>
-                            </div>
-
-                            <!-- Core System Fields -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <BaseInput
-                                    v-model="profileForm.full_name"
-                                    :label="isEn ? 'Full Name' : 'Nama Lengkap Atlet'"
-                                    :placeholder="isEn ? 'Official archer name' : 'Nama lengkap atlet'"
-                                    icon="ph:user-bold"
-                                    required />
-
-                                <!-- Gender Toggle -->
-                                <div class="space-y-1.5">
-                                    <label class="text-navy text-xs sm:text-sm font-bold block">
-                                        {{ isEn ? 'Gender' : 'Jenis Kelamin' }} <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button
-                                            type="button"
-                                            @click="profileForm.gender = 'male'"
-                                            class="h-11 px-4 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
-                                            :class="profileForm.gender === 'male' ? 'border-navy bg-navy text-primary shadow-xs' : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'">
-                                            <Icon icon="ph:gender-male-bold" class="text-base" />
-                                            <span>{{ isEn ? 'Male' : 'Laki-laki' }}</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            @click="profileForm.gender = 'female'"
-                                            class="h-11 px-4 rounded-xl border text-xs sm:text-sm font-bold flex items-center justify-center gap-2 transition-all cursor-pointer"
-                                            :class="profileForm.gender === 'female' ? 'border-navy bg-navy text-primary shadow-xs' : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'">
-                                            <Icon icon="ph:gender-female-bold" class="text-base" />
-                                            <span>{{ isEn ? 'Female' : 'Perempuan' }}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <ClubSelector
-                                    v-model="profileForm.club_id"
-                                    v-model:newClubName="profileForm.club_name"
-                                    :label="isEn ? 'Club / Contingent / School' : 'Klub / Asal Kontingen / Sekolah'"
-                                    :placeholder="isEn ? 'Select or search club...' : 'Pilih atau cari klub...'" />
-                            </div>
-
-                            <!-- DYNAMIC CUSTOM FIELDS (Flows seamlessly as part of unified form) -->
-                            <div v-if="customFields.length > 0" class="pt-2">
-                                <DynamicCustomFieldsRenderer
-                                    :fields="customFields"
-                                    v-model="customFieldAnswers"
-                                    :category-ids="selectedIndividualCategoryIds"
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Step 1 Footer Action -->
-                        <div class="pt-6 border-t border-slate-100 flex justify-end">
-                            <BaseButton
-                                @click="goToStep(2)"
-                                :disabled="!isStep1Valid"
-                                variant="navy"
-                                size="md"
-                                icon-right="ph:arrow-right-bold"
-                                class="text-sm sm:text-base">
-                                {{ isEn ? 'Continue to Categories' : 'Lanjut ke Kategori' }}
-                            </BaseButton>
-                        </div>
-                    </div>
-
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <!-- STEP 2: CATEGORIES & SQUAD ROSTER BUILDER                -->
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <div v-else-if="currentStep === 2" class="p-6 sm:p-8 space-y-8">
-                        <div>
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-navy/5 text-navy text-xs font-black mb-2">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/15 border border-primary/30 text-navy text-xs font-black mb-2 shadow-2xs">
                                 <Icon icon="ph:target-bold" class="text-xs" />
                                 <span>{{ isEn ? 'Step 2 of 3' : 'Langkah 2 dari 3' }}</span>
                             </div>
@@ -516,668 +242,63 @@
                         </div>
 
                         <!-- MODE 1: INDIVIDUAL / CAPTAIN -->
-                        <div v-if="registrationMode === 'captain_team'" class="space-y-8">
-                            
-                            <!-- Archer Profile Banner -->
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/90">
-                                <div class="flex items-center gap-3.5">
-                                    <img
-                                        :src="useImageOrDefault(archerProfile?.avatar_url || user?.avatar, profileForm.full_name || 'Archer')"
-                                        class="size-11 rounded-full object-cover border border-slate-200 shrink-0" />
-                                    <div class="min-w-0">
-                                        <div class="text-sm sm:text-base font-black text-navy truncate">
-                                            {{ profileForm.full_name || archerProfile?.full_name || user?.full_name || 'Archer' }}
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5">
-                                            {{ profileForm.club_name || archerProfile?.club_name || 'Independent' }} • {{ (profileForm.gender || 'male') === 'female' ? 'Female Archer' : 'Male Archer' }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-navy text-primary text-xs sm:text-sm font-black self-start sm:self-auto shrink-0 shadow-xs">
-                                    <Icon icon="ph:user-bold" class="text-sm" />
-                                    {{ isEn ? 'Registered Archer' : 'Pemanah Terdaftar' }}
-                                </span>
-                            </div>
+                        <Step2Individual
+                            v-if="registrationMode === 'captain_team'"
+                            :categories="categories"
+                            :individual-categories="individualCategories"
+                            :team-categories="teamCategories"
+                            :selected-individual-category-ids="selectedIndividualCategoryIds"
+                            :selected-team-categories="selectedTeamCategories"
+                            :locked-individual-category-ids="lockedIndividualCategoryIds"
+                            :profile-form="profileForm"
+                            :archer-profile="archerProfile"
+                            :user="user"
+                            :team-rosters="teamRosters"
+                            :single-entry-fee="singleEntryFee"
+                            :event-currency="eventCurrency"
+                            :is-en="isEn"
+                            :get-category-icon="getCategoryIcon"
+                            :get-category-type="getCategoryType"
+                            :get-fee-for-category="getFeeForCategory"
+                            :format-price="formatPrice"
+                            :use-image-or-default="useImageOrDefault"
+                            @toggle-individual-category="toggleIndividualCategory"
+                            @toggle-team-category="toggleTeamCategory"
+                            @open-partner-modal="openPartnerModal"
+                            @handle-edit-partner="handleEditPartner"
+                            @remove-partner="removePartner"
+                            @switch-gender="profileForm.gender = (profileForm.gender === 'female' ? 'male' : 'female')" />
 
-                            <!-- Gender mismatch alert if tournament has categories but 0 match selected gender -->
-                            <div v-if="categories.length > 0 && individualCategories.length === 0 && teamCategories.length === 0"
-                                class="p-6 text-center border-2 border-dashed border-amber-200 bg-amber-50/50 rounded-2xl space-y-3">
-                                <div class="size-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
-                                    <Icon icon="ph:gender-intersex-bold" class="text-2xl" />
-                                </div>
-                                <div class="max-w-md mx-auto">
-                                    <div class="text-base font-bold text-navy">
-                                        {{ isEn ? 'No matching categories for selected gender' : 'Tidak ada kategori untuk gender terpilih' }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-500 mt-1">
-                                        {{ isEn 
-                                            ? `The categories in this tournament are set for a different gender division. Current profile gender: ${(profileForm.gender || 'male') === 'female' ? 'Female' : 'Male'}.`
-                                            : `Kategori turnamen ini diperuntukkan bagi divisi gender yang berbeda. Gender profil saat ini: ${(profileForm.gender || 'male') === 'female' ? 'Female' : 'Male'}.` }}
-                                    </div>
-                                </div>
-                                <button type="button" @click="profileForm.gender = (profileForm.gender === 'female' ? 'male' : 'female')"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-navy text-primary rounded-xl text-xs sm:text-sm font-bold shadow-xs hover:bg-navy/90 transition-all cursor-pointer">
-                                    <Icon icon="ph:arrows-clockwise-bold" />
-                                    <span>{{ 'Switch Gender to ' + ((profileForm.gender || 'male') === 'female' ? 'Male' : 'Female') }}</span>
-                                </button>
-                            </div>
-
-                            <!-- Empty categories state if tournament has 0 categories configured -->
-                            <div v-else-if="categories.length === 0" class="p-8 text-center border border-slate-200 rounded-2xl text-sm text-slate-500 bg-slate-50/50">
-                                {{ isEn ? 'No categories configured for this tournament yet.' : 'Belum ada kategori yang dikonfigurasi untuk turnamen ini.' }}
-                            </div>
-
-                            <!-- Section 1: Individual Category (Multi-Selectable) -->
-                            <div v-if="individualCategories.length > 0" class="space-y-3.5">
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-black text-navy">
-                                        {{ isEn ? 'Individual Category' : 'Kategori Individu' }}
-                                    </h3>
-                                    <div class="text-sm text-slate-500 mt-0.5">
-                                        {{ isEn ? 'Select your individual competition division (you can select more than 1).' : 'Pilih kategori individu yang akan Anda ikuti (bisa memilih lebih dari 1).' }}
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                    <div
-                                        v-for="cat in individualCategories"
-                                        :key="cat.id"
-                                        @click="toggleIndividualCategory(cat)"
-                                        class="p-4 rounded-2xl border-2 cursor-pointer transition-all flex items-center justify-between gap-3 group"
-                                        :class="isIndividualCategorySelected(cat.id) ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50'">
-                                        <div class="flex items-center gap-3.5 min-w-0">
-                                            <!-- Category Icon Image from logoArcheryCategory -->
-                                            <div class="size-11 rounded-xl p-1.5 flex items-center justify-center shrink-0 border border-slate-200/80 bg-white group-hover:scale-105 transition-transform shadow-2xs">
-                                                <img :src="'/' + (getCategoryIcon(cat.name || cat.division_name) || 'category-icon/men-single-recurve.svg')" :alt="cat.name" class="w-full h-full object-contain" @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-single-recurve.svg' }" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <div class="text-sm sm:text-base font-black text-navy truncate">{{ cat.name }}</div>
-                                                <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5">
-                                                    {{ cat.division_name || 'Individual' }} • {{ cat.gender_division_name || 'Open' }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-3 shrink-0">
-                                            <span class="text-sm sm:text-base font-black" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-navy'">
-                                                {{ formatPrice(getFeeForCategory(cat.id)) }}
-                                            </span>
-                                            <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
-                                                :class="isIndividualCategorySelected(cat.id) ? 'border-navy bg-navy text-primary font-black' : 'border-slate-300 bg-white'">
-                                                <Icon v-if="isIndividualCategorySelected(cat.id)" icon="ph:check-bold" class="text-xs font-black" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Section 2: Team & Mixed Team Events (Expandable Card Format) -->
-                            <div v-if="teamCategories.length > 0" class="space-y-3.5 pt-2">
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-black text-navy">
-                                        {{ isEn ? 'Team & Mixed Team Events' : 'Kategori Tim / Beregu' }}
-                                    </h3>
-                                    <div class="text-sm text-slate-500 mt-0.5">
-                                        {{ isEn ? 'Select team events to enter and invite or register teammates.' : 'Pilih kategori beregu untuk mendaftar dan susun rekan tim.' }}
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4">
-                                    <!-- Expandable Team Category Card -->
-                                    <div
-                                        v-for="cat in teamCategories"
-                                        :key="cat.id"
-                                        class="rounded-2xl border-2 transition-all overflow-hidden bg-white"
-                                        :class="selectedTeamCategories.some(t => t.id === cat.id) ? 'border-navy shadow-sm ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300'">
-                                        
-                                        <!-- Category Toggle Bar -->
-                                        <div
-                                            @click="toggleTeamCategory(cat)"
-                                            class="p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer select-none transition-colors"
-                                            :class="selectedTeamCategories.some(t => t.id === cat.id) ? 'bg-navy/[0.03]' : 'hover:bg-slate-50/70'">
-                                            
-                                            <div class="flex items-center gap-3.5 min-w-0">
-                                                <!-- Category Icon Image -->
-                                                <div class="size-11 rounded-xl p-1.5 flex items-center justify-center shrink-0 border border-slate-200/80 bg-white shadow-2xs">
-                                                    <img :src="'/' + getCategoryIcon(cat.name || cat.division_name)" :alt="cat.name" class="w-full h-full object-contain" />
-                                                </div>
-                                                <div class="min-w-0">
-                                                    <div class="flex items-center gap-2">
-                                                        <span v-if="cat.division_name" class="px-2 py-0.5 rounded-md bg-slate-100 text-xs font-bold text-slate-600">
-                                                            {{ cat.division_name }}
-                                                        </span>
-                                                        <span class="text-sm sm:text-base font-black text-navy truncate">
-                                                            {{ cat.name || `${cat.division_name || ''} Team`.trim() }}
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5">
-                                                        {{ getCategoryType(cat) === 'mixed_team' ? 'Mixed Team (1 Male + 1 Female)' : 'Team (3 Archers of same division)' }}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex items-center gap-4 shrink-0">
-                                                <span class="text-sm sm:text-base font-black" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-navy'">
-                                                    {{ formatPrice(getFeeForCategory(cat.id)) }}
-                                                </span>
-                                                <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
-                                                    :class="selectedTeamCategories.some(t => t.id === cat.id) ? 'border-navy bg-navy text-primary' : 'border-slate-300 bg-white'">
-                                                    <Icon v-if="selectedTeamCategories.some(t => t.id === cat.id)" icon="ph:check-bold" class="text-xs font-black" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Expanded Roster Builder Section (Directly inside category card) -->
-                                        <div
-                                            v-if="selectedTeamCategories.some(t => t.id === cat.id)"
-                                            class="p-5 sm:p-6 border-t border-slate-100 bg-slate-50/40">
-                                            <TeamSlotBuilder
-                                                :category-id="cat.id"
-                                                :category-name="cat.name || `${cat.division_name || ''} Team`"
-                                                :captain-name="profileForm.full_name || archerProfile?.full_name"
-                                                :captain-avatar="archerProfile?.avatar_url"
-                                                :captain-club="profileForm.club_name"
-                                                :captain-gender="profileForm.gender || 'male'"
-                                                :is-mixed-team="getCategoryType(cat) === 'mixed_team'"
-                                                :partners="teamRosters[cat.id]?.partners || []"
-                                                :default-single-fee="singleEntryFee"
-                                                :currency="eventCurrency"
-                                                @open-search="params => openPartnerModal(cat, params)"
-                                                @remove-partner="partnerIdx => removePartner(cat.id, partnerIdx)" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MODE 2: PERWAKILAN (REPRESENTATIVE) -->
-                        <div v-else class="space-y-6">
-                            <!-- Athlete Roster List -->
-                            <div class="space-y-4">
-                                <!-- Empty State: 2 Action Cards -->
-                                <div v-if="delegationAthletes.length === 0" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <!-- Card 1: Bulk CSV Import -->
-                                    <div
-                                        @click="showBulkImportModal = true"
-                                        class="p-5 sm:p-6 rounded-2xl border-2 border-dashed border-slate-300 bg-white hover:border-navy hover:bg-slate-50/70 transition-all cursor-pointer flex flex-col justify-between space-y-4 group shadow-2xs">
-                                        <div class="space-y-3">
-                                            <div class="size-11 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs">
-                                                <Icon icon="ph:file-csv-bold" class="text-2xl" />
-                                            </div>
-                                            <div>
-                                                <div class="text-base font-bold text-navy leading-snug">
-                                                    {{ isEn ? 'Bulk Import via CSV' : 'Import Massal via CSV' }}
-                                                </div>
-                                                <div class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                                                    {{ isEn ? 'Download tailored CSV template and import dozens of archers at once.' : 'Unduh template CSV resmi turnamen ini dan unggah puluhan atlet sekaligus.' }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="pt-1">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs sm:text-sm font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
-                                                <Icon icon="ph:upload-simple" class="text-sm" />
-                                                <span>{{ isEn ? 'Upload CSV' : 'Unggah File CSV' }}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Card 2: Manual Add -->
-                                    <div
-                                        @click="showAddAthleteModal = true"
-                                        class="p-5 sm:p-6 rounded-2xl border-2 border-dashed border-slate-300 bg-white hover:border-navy hover:bg-slate-50/70 transition-all cursor-pointer flex flex-col justify-between space-y-4 group shadow-2xs">
-                                        <div class="space-y-3">
-                                            <div class="size-11 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center shadow-xs group-hover:bg-navy group-hover:text-primary transition-colors">
-                                                <Icon icon="ph:user-plus-bold" class="text-2xl" />
-                                            </div>
-                                            <div>
-                                                <div class="text-base font-bold text-navy leading-snug">
-                                                    {{ isEn ? 'Add Archer Manually' : 'Tambah Atlet Manual' }}
-                                                </div>
-                                                <div class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                                                    {{ isEn ? 'Search registered database or create new archer accounts one-by-one.' : 'Cari di database atau daftarkan akun atlet baru satu per satu lewat form.' }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="pt-1">
-                                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-navy text-xs sm:text-sm font-bold group-hover:bg-navy group-hover:text-primary transition-colors">
-                                                <Icon icon="ph:plus-bold" class="text-sm" />
-                                                <span>{{ isEn ? 'Add Single' : 'Tambah Manual' }}</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Filled State: Searchable & Paginated Table -->
-                                <div v-else class="space-y-3.5">
-                                    <!-- Table Toolbar -->
-                                    <div class="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-2xs space-y-3">
-                                        <!-- Top Row: Title & Main Actions -->
-                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-                                            <div class="flex items-center gap-2.5">
-                                                <div class="size-8 rounded-xl bg-navy/5 text-navy flex items-center justify-center font-bold text-xs sm:text-sm">
-                                                    <Icon icon="ph:users-three-bold" class="text-base" />
-                                                </div>
-                                                <div class="flex items-center gap-2">
-                                                    <span class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'Delegation Roster' : 'Daftar Kontingen' }}</span>
-                                                    <span class="text-xs sm:text-sm font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                                                        {{ delegationAthletes.length }} {{ isEn ? (delegationAthletes.length === 1 ? 'Archer' : 'Archers') : 'Atlet' }}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="flex items-center gap-2 self-start sm:self-auto">
-                                                <button
-                                                    type="button"
-                                                    @click="showBulkImportModal = true"
-                                                    class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-navy hover:border-slate-400 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-2xs cursor-pointer transition-colors">
-                                                    <Icon icon="ph:file-csv-bold" class="text-sm text-primary-hover" />
-                                                    <span>{{ isEn ? 'Import CSV' : 'Impor CSV' }}</span>
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    @click="showAddAthleteModal = true"
-                                                    class="px-3.5 py-1.5 rounded-xl bg-navy text-primary text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-xs cursor-pointer hover:bg-navy/90 transition-colors">
-                                                    <Icon icon="ph:plus-bold" class="text-xs font-black" />
-                                                    <span>{{ isEn ? 'Add Archer' : 'Tambah Atlet' }}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Bottom Row: Search & Filters -->
-                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                                            <div class="relative flex-1 max-w-sm">
-                                                <input
-                                                    v-model="athleteSearchQuery"
-                                                    type="text"
-                                                    :placeholder="isEn ? 'Search name, email, club...' : 'Cari nama, email, klub...'"
-                                                    class="w-full h-8 sm:h-9 pl-8 pr-7 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-medium text-navy placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-navy focus:bg-white transition-all" />
-                                                <Icon icon="ph:magnifying-glass" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm" />
-                                                <button
-                                                    v-if="athleteSearchQuery"
-                                                    type="button"
-                                                    @click="athleteSearchQuery = ''"
-                                                    class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy cursor-pointer">
-                                                    <Icon icon="ph:x-circle-fill" class="text-xs sm:text-sm" />
-                                                </button>
-                                            </div>
-
-                                            <div class="flex items-center gap-2 flex-wrap">
-                                                <!-- Gender Filter -->
-                                                <div class="flex items-center rounded-xl border border-slate-200 bg-slate-50 overflow-hidden text-xs sm:text-sm font-bold h-8 sm:h-9 divide-x divide-slate-200">
-                                                    <button type="button" @click="athleteGenderFilter = 'all'"
-                                                        class="px-2.5 sm:px-3 h-full transition-colors cursor-pointer"
-                                                        :class="athleteGenderFilter === 'all' ? 'bg-navy text-primary' : 'text-slate-600 hover:bg-slate-100'">
-                                                        {{ isEn ? 'All' : 'Semua' }}
-                                                    </button>
-                                                    <button type="button" @click="athleteGenderFilter = 'male'"
-                                                        class="px-2.5 sm:px-3 h-full transition-colors cursor-pointer"
-                                                        :class="athleteGenderFilter === 'male' ? 'bg-navy text-primary' : 'text-slate-600 hover:bg-slate-100'">
-                                                        Male
-                                                    </button>
-                                                    <button type="button" @click="athleteGenderFilter = 'female'"
-                                                        class="px-2.5 sm:px-3 h-full transition-colors cursor-pointer"
-                                                        :class="athleteGenderFilter === 'female' ? 'bg-rose-500 text-white' : 'text-slate-600 hover:bg-slate-100'">
-                                                        Female
-                                                    </button>
-                                                </div>
-
-                                                <!-- Club Filter -->
-                                                <div v-if="uniqueClubsInRoster.length > 1" class="relative">
-                                                    <button
-                                                        type="button"
-                                                        @click.stop="showClubFilterDropdown = !showClubFilterDropdown"
-                                                        class="h-8 sm:h-9 px-2.5 sm:px-3 rounded-xl border text-xs sm:text-sm font-bold flex items-center gap-1.5 cursor-pointer transition-colors"
-                                                        :class="athleteClubFilter !== 'all' ? 'border-navy bg-navy text-primary' : 'border-slate-200 bg-slate-50 text-slate-600 hover:bg-slate-100'">
-                                                        <Icon icon="ph:buildings-bold" class="text-sm" />
-                                                        <span>{{ athleteClubFilter !== 'all' ? athleteClubFilter : (isEn ? 'All Clubs' : 'Semua Klub') }}</span>
-                                                        <Icon icon="ph:caret-down-bold" class="text-xs" :class="{ 'rotate-180': showClubFilterDropdown }" />
-                                                    </button>
-                                                    <div v-if="showClubFilterDropdown" class="absolute right-0 top-full mt-1.5 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200 w-52 overflow-hidden">
-                                                        <div class="p-1.5 space-y-0.5">
-                                                            <button type="button"
-                                                                @click.stop="athleteClubFilter = 'all'; showClubFilterDropdown = false"
-                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer"
-                                                                :class="athleteClubFilter === 'all' ? 'bg-navy text-primary' : 'text-slate-700 hover:bg-slate-100'">
-                                                                {{ isEn ? 'All Clubs' : 'Semua Klub' }}
-                                                            </button>
-                                                            <button type="button"
-                                                                v-for="club in uniqueClubsInRoster"
-                                                                :key="club"
-                                                                @click.stop="athleteClubFilter = club; showClubFilterDropdown = false"
-                                                                class="w-full text-left px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer truncate"
-                                                                :class="athleteClubFilter === club ? 'bg-navy text-primary' : 'text-slate-700 hover:bg-slate-100'">
-                                                                {{ club }}
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bulk Action Floating Bar -->
-                                    <div v-if="selectedAthleteEmails.length > 0" class="p-3 bg-navy/5 border border-navy/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 animate-fade-in">
-                                        <div class="flex items-center gap-2 text-xs sm:text-sm font-bold text-navy">
-                                            <span class="size-6 rounded-lg bg-navy text-primary flex items-center justify-center text-xs sm:text-sm font-black">{{ selectedAthleteEmails.length }}</span>
-                                            <span>{{ isEn ? `${selectedAthleteEmails.length} archers selected` : `${selectedAthleteEmails.length} atlet dipilih` }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <button
-                                                type="button"
-                                                @click="showBulkCategoryModal = true"
-                                                class="px-3 py-1.5 rounded-xl bg-navy text-primary text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-2xs hover:bg-navy/90 transition-colors cursor-pointer">
-                                                <Icon icon="ph:tag-bold" class="text-xs sm:text-sm" />
-                                                <span>{{ isEn ? 'Assign Category' : 'Tetapkan Kategori' }}</span>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                @click="removeSelectedAthletes"
-                                                class="px-3 py-1.5 rounded-xl bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-colors cursor-pointer">
-                                                <Icon icon="ph:trash-bold" class="text-xs sm:text-sm" />
-                                                <span>{{ isEn ? 'Remove Selected' : 'Hapus Terpilih' }}</span>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                @click="selectedAthleteEmails = []"
-                                                class="text-xs sm:text-sm text-slate-500 hover:text-navy font-bold px-2 py-1 cursor-pointer">
-                                                {{ isEn ? 'Deselect' : 'Batal' }}
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Table View -->
-                                    <div class="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-2xs">
-                                        <div class="overflow-x-auto">
-                                            <table class="w-full text-left border-collapse text-xs sm:text-sm table-fixed min-w-[790px]">
-                                                <thead class="bg-slate-50 border-b border-slate-200 text-slate-700 font-bold">
-                                                    <tr>
-                                                        <th class="py-3 px-3 w-10 text-center">
-                                                            <input
-                                                                type="checkbox"
-                                                                :checked="isAllSelected"
-                                                                @change="toggleSelectAll"
-                                                                class="size-4 rounded border-slate-300 text-navy focus:ring-navy cursor-pointer" />
-                                                        </th>
-                                                        <th class="py-3 px-2 w-10 text-center text-slate-400">#</th>
-                                                        <th class="py-3 px-4 w-[36%]">{{ isEn ? 'Archer Data' : 'Data Atlet' }}</th>
-                                                        <th class="py-3 px-3.5 w-28">{{ isEn ? 'Account' : 'Status Akun' }}</th>
-                                                        <th class="py-3 px-3.5 w-[34%]">{{ isEn ? 'Category' : 'Kategori Lomba' }}</th>
-                                                        <th class="py-3 px-4 w-32 text-right">{{ isEn ? 'Fee' : 'Biaya' }}</th>
-                                                        <th class="py-3 px-3 w-20 text-center text-slate-400">{{ isEn ? 'Action' : 'Aksi' }}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="divide-y divide-slate-100">
-                                                    <tr v-if="paginatedDelegationAthletes.length === 0">
-                                                        <td colspan="7" class="py-8 text-center text-slate-400">
-                                                            <Icon icon="ph:user-slash" class="text-3xl mx-auto mb-1 text-slate-300" />
-                                                            <div class="text-xs sm:text-sm font-bold">{{ isEn ? 'No archers match your search' : 'Tidak ada atlet yang cocok dengan pencarian' }}</div>
-                                                        </td>
-                                                    </tr>
-                                                    <tr v-for="(ath, idx) in paginatedDelegationAthletes" :key="idx" class="hover:bg-slate-50/60 transition-colors" :class="{ 'bg-navy/5': selectedAthleteEmails.includes(ath.email) }">
-                                                        <!-- Checkbox -->
-                                                        <td class="py-3 px-3 text-center">
-                                                            <input
-                                                                type="checkbox"
-                                                                :checked="selectedAthleteEmails.includes(ath.email)"
-                                                                @change="toggleSelectAthlete(ath.email)"
-                                                                class="size-4 rounded border-slate-300 text-navy focus:ring-navy cursor-pointer" />
-                                                        </td>
-
-                                                        <!-- Index -->
-                                                        <td class="py-3 px-2 text-center font-bold text-slate-400 text-xs sm:text-sm">
-                                                            {{ (athleteCurrentPage - 1) * athletePageSize + idx + 1 }}
-                                                        </td>
-
-                                                        <!-- Archer Data -->
-                                                        <td class="py-3 px-4">
-                                                            <div class="flex items-center gap-2 flex-wrap">
-                                                                <span class="font-bold text-navy leading-snug">{{ ath.full_name }}</span>
-                                                                <button
-                                                                    v-if="!areRequiredCustomFieldsFilled(ath.custom_fields, customFields)"
-                                                                    type="button"
-                                                                    @click="editDelegationAthlete(ath)"
-                                                                    class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 text-[11px] font-bold border border-amber-200 hover:bg-amber-100 transition-colors cursor-pointer"
-                                                                    :title="isEn ? 'Required information is incomplete. Click to edit.' : 'Data wajib belum lengkap. Klik untuk melengkapi.'">
-                                                                    <Icon icon="ph:warning-circle-bold" class="text-xs text-amber-600" />
-                                                                    <span>{{ isEn ? 'Incomplete Data' : 'Data Belum Lengkap' }}</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="text-xs sm:text-sm text-slate-500 truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
-                                                                <span>{{ ath.email }}</span>
-                                                                <span v-if="ath.phone" class="text-slate-300">•</span>
-                                                                <span v-if="ath.phone">{{ ath.phone }}</span>
-                                                                <span class="text-slate-300">•</span>
-                                                                <span class="font-semibold" :class="ath.gender === 'female' ? 'text-rose-600' : 'text-slate-700'">
-                                                                    {{ ath.gender === 'female' ? 'Female' : 'Male' }}
-                                                                </span>
-                                                                <span v-if="ath.club_name" class="text-slate-300">•</span>
-                                                                <span v-if="ath.club_name" class="text-slate-600 font-medium">{{ ath.club_name }}</span>
-                                                            </div>
-                                                        </td>
-
-                                                        <!-- Account Status -->
-                                                        <td class="py-3 px-3.5 whitespace-nowrap">
-                                                            <span v-if="ath.is_new_account" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-xs sm:text-sm font-bold border border-emerald-200">
-                                                                <Icon icon="ph:user-plus-bold" />
-                                                                <span>{{ isEn ? 'New' : 'Akun Baru' }}</span>
-                                                            </span>
-                                                            <span v-else class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs sm:text-sm font-bold border border-slate-200">
-                                                                <Icon icon="ph:user-check-bold" />
-                                                                <span>{{ isEn ? 'Existing' : 'Akun Terdaftar' }}</span>
-                                                            </span>
-                                                        </td>
-
-                                                        <!-- Category Selector (Compact Uniform Single-Height Button + Multi-Select Popover) -->
-                                                        <td class="py-3 px-3.5">
-                                                            <div class="relative">
-                                                                <!-- Trigger Button (Keeps table row height perfectly neat & identical) -->
-                                                                <button
-                                                                    type="button"
-                                                                    @click.stop="openCategoryDropdown(ath, $event)"
-                                                                    class="h-9 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-between gap-2 cursor-pointer border w-full max-w-[260px] shadow-2xs group"
-                                                                    :class="getArcherCategoryIds(ath).length === 0 
-                                                                        ? 'border-dashed border-amber-300 bg-amber-50/70 hover:bg-amber-100/70 text-amber-900' 
-                                                                        : getArcherCategoryIds(ath).length === 1 
-                                                                            ? 'border-slate-200 bg-slate-50 hover:bg-slate-100 text-navy' 
-                                                                            : 'border-navy/20 bg-navy/5 hover:bg-navy/10 text-navy'">
-                                                                    
-                                                                    <!-- 0 Selected State -->
-                                                                    <div v-if="getArcherCategoryIds(ath).length === 0" class="flex items-center gap-1.5 truncate">
-                                                                        <Icon icon="ph:plus-circle-bold" class="text-sm text-amber-600 shrink-0" />
-                                                                        <span class="truncate">{{ isEn ? 'Select Category' : 'Pilih Kategori' }}</span>
-                                                                    </div>
-
-                                                                    <!-- 1 Selected State -->
-                                                                    <div v-else-if="getArcherCategoryIds(ath).length === 1" class="flex items-center gap-1.5 truncate min-w-0">
-                                                                        <span class="size-2 rounded-full bg-emerald-500 shrink-0"></span>
-                                                                        <span class="truncate font-bold">{{ getCategoryFullName(categories.find(c => c.id === getArcherCategoryIds(ath)[0])) }}</span>
-                                                                    </div>
-
-                                                                    <!-- Multiple Selected State -->
-                                                                    <div v-else class="flex items-center gap-1.5 truncate min-w-0">
-                                                                        <span class="px-1.5 py-0.5 rounded-md bg-navy text-primary text-xs font-black shrink-0">
-                                                                            {{ getArcherCategoryIds(ath).length }}
-                                                                        </span>
-                                                                        <span class="truncate font-bold">
-                                                                            {{ getCategoryFullName(categories.find(c => c.id === getArcherCategoryIds(ath)[0])) }}
-                                                                        </span>
-                                                                        <span class="text-slate-400 font-normal shrink-0">
-                                                                            +{{ getArcherCategoryIds(ath).length - 1 }}
-                                                                        </span>
-                                                                    </div>
-
-                                                                    <Icon icon="ph:caret-down-bold" class="text-xs sm:text-sm text-slate-400 group-hover:text-navy shrink-0 transition-transform" :class="{ 'rotate-180': activeCategoryDropdownAth === ath }" />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-
-                                                        <!-- Fee -->
-                                                        <td class="py-3 px-3.5 text-right font-black whitespace-nowrap text-xs sm:text-sm" :class="!getArcherTotalFee(ath) ? 'text-emerald-600' : 'text-navy'">
-                                                            {{ formatPrice(getArcherTotalFee(ath)) }}
-                                                        </td>
-
-                                                        <!-- Action -->
-                                                        <td class="py-3 px-3 text-center whitespace-nowrap">
-                                                            <div class="flex items-center justify-center gap-1">
-                                                                <button
-                                                                    type="button"
-                                                                    @click="editDelegationAthlete(ath)"
-                                                                    class="size-7 rounded-lg hover:bg-navy/10 text-slate-400 hover:text-navy inline-flex items-center justify-center transition-colors cursor-pointer"
-                                                                    :title="isEn ? 'Edit athlete data' : 'Edit data atlet'">
-                                                                    <Icon icon="ph:pencil-simple-bold" class="text-sm" />
-                                                                </button>
-                                                                <button
-                                                                    type="button"
-                                                                    @click="removeDelegationAthlete(ath)"
-                                                                    class="size-7 rounded-lg hover:bg-red-50 text-slate-400 hover:text-red-500 inline-flex items-center justify-center transition-colors cursor-pointer"
-                                                                    :title="isEn ? 'Remove athlete' : 'Hapus atlet'">
-                                                                    <Icon icon="ph:trash" class="text-sm" />
-                                                                </button>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                        <!-- Pagination Bar -->
-                                        <div v-if="filteredDelegationAthletes.length > 0" class="px-4 py-3 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
-                                            <div class="text-slate-500 font-medium">
-                                                {{ isEn 
-                                                    ? `Showing ${(athleteCurrentPage - 1) * athletePageSize + 1} - ${Math.min(athleteCurrentPage * athletePageSize, filteredDelegationAthletes.length)} of ${filteredDelegationAthletes.length} archers`
-                                                    : `Menampilkan ${(athleteCurrentPage - 1) * athletePageSize + 1} - ${Math.min(athleteCurrentPage * athletePageSize, filteredDelegationAthletes.length)} dari ${filteredDelegationAthletes.length} atlet` }}
-                                            </div>
-
-                                            <div v-if="athleteTotalPages > 1" class="flex items-center gap-1.5">
-                                                <button
-                                                    type="button"
-                                                    :disabled="athleteCurrentPage <= 1"
-                                                    @click="athleteCurrentPage--"
-                                                    class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors cursor-pointer">
-                                                    <Icon icon="ph:caret-left-bold" class="text-xs sm:text-sm" />
-                                                </button>
-
-                                                <button
-                                                    v-for="page in athleteTotalPages"
-                                                    :key="page"
-                                                    @click="athleteCurrentPage = page"
-                                                    class="size-7 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer"
-                                                    :class="athleteCurrentPage === page ? 'bg-navy text-white font-black' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'">
-                                                    {{ page }}
-                                                </button>
-
-                                                <button
-                                                    type="button"
-                                                    :disabled="athleteCurrentPage >= athleteTotalPages"
-                                                    @click="athleteCurrentPage++"
-                                                    class="px-2.5 py-1 rounded-lg border border-slate-200 bg-white text-slate-700 font-bold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors cursor-pointer">
-                                                    <Icon icon="ph:caret-right-bold" class="text-xs sm:text-sm" />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Team Quotas Booking -->
-                            <div class="space-y-3.5 pt-4 border-t border-slate-100">
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-black text-navy">
-                                        {{ isEn ? 'Reserve Team Quota Slots' : 'Reservasi Kuota Tim' }}
-                                    </h3>
-                                    <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                                        {{ isEn ? 'Lock team quota slots now; name exact archers at Technical Meeting.' : 'Kunci kuota tim sekarang; susunan atlet dapat ditentukan saat Technical Meeting.' }}
-                                    </div>
-                                </div>
-
-                                <div v-if="teamCategories.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                                    <div
-                                        v-for="cat in teamCategories"
-                                        :key="cat.id"
-                                        class="p-4 rounded-2xl border transition-all flex flex-col justify-between gap-3 shadow-2xs"
-                                        :class="getTeamEligibility(cat).isEligible ? 'border-slate-200 bg-white' : 'border-slate-200/80 bg-slate-50/70'">
-                                        
-                                        <!-- Top Info Row -->
-                                        <div class="flex items-start justify-between gap-3">
-                                            <div class="flex items-center gap-3 min-w-0">
-                                                <div class="size-11 rounded-xl p-1.5 flex items-center justify-center shrink-0 border border-slate-200 bg-slate-50 shadow-2xs">
-                                                    <img :src="'/' + (getCategoryIcon(cat.name || cat.division_name) || 'category-icon/men-team.svg')" :alt="cat.name" class="w-full h-full object-contain" @error="(e) => { e.target.onerror = null; e.target.src = '/category-icon/men-team.svg' }" />
-                                                </div>
-                                                <div class="min-w-0">
-                                                    <div class="text-sm sm:text-base font-black text-navy truncate">
-                                                        {{ cat.name || `${cat.division_name || ''} Team`.trim() || 'Team Category' }}
-                                                    </div>
-                                                    <div class="text-xs sm:text-sm font-bold mt-0.5" :class="!getFeeForCategory(cat.id) ? 'text-emerald-600' : 'text-slate-500'">
-                                                        <template v-if="!getFeeForCategory(cat.id) || Number(getFeeForCategory(cat.id)) === 0">
-                                                            {{ isEn ? 'Free' : 'Gratis' }}
-                                                        </template>
-                                                        <template v-else>
-                                                            {{ formatPrice(getFeeForCategory(cat.id)) }} / {{ isEn ? 'team' : 'tim' }}
-                                                        </template>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Controls -->
-                                            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl shrink-0">
-                                                <button
-                                                    type="button"
-                                                    :disabled="!(delegationTeamBookings[cat.id] > 0)"
-                                                    @click="decrementTeamBooking(cat.id)"
-                                                    class="size-8 rounded-lg bg-white flex items-center justify-center text-navy font-bold text-sm cursor-pointer shadow-2xs hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed">
-                                                    <Icon icon="ph:minus-bold" />
-                                                </button>
-                                                <span class="w-7 text-center text-sm font-black text-navy">
-                                                    {{ delegationTeamBookings[cat.id] || 0 }}
-                                                </span>
-                                                <button
-                                                    type="button"
-                                                    :disabled="(delegationTeamBookings[cat.id] || 0) >= getTeamEligibility(cat).maxTeams"
-                                                    @click="incrementTeamBooking(cat.id)"
-                                                    class="size-8 rounded-lg bg-white flex items-center justify-center text-navy font-bold text-sm cursor-pointer shadow-2xs hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed"
-                                                    :title="(delegationTeamBookings[cat.id] || 0) >= getTeamEligibility(cat).maxTeams ? getTeamEligibility(cat).neededMessage : (isEn ? 'Add Team Slot' : 'Tambah Slot Tim')">
-                                                    <Icon icon="ph:plus-bold" />
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Gate Checking Status Footer -->
-                                        <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2 text-xs sm:text-sm">
-                                            <div class="flex items-center gap-1.5 font-bold truncate">
-                                                <span
-                                                    class="px-2 py-0.5 rounded-md text-xs sm:text-sm font-black inline-flex items-center gap-1 shrink-0"
-                                                    :class="getTeamEligibility(cat).isEligible ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'">
-                                                    <Icon :icon="getTeamEligibility(cat).isEligible ? 'ph:check-circle-bold' : 'ph:warning-circle-bold'" class="text-xs sm:text-sm" />
-                                                    <span>{{ getTeamEligibility(cat).isEligible ? (isEn ? `Eligible (Max ${getTeamEligibility(cat).maxTeams} Team)` : `Memenuhi Syarat (Maks. ${getTeamEligibility(cat).maxTeams} Tim)`) : (isEn ? 'Roster Incomplete' : 'Roster Belum Cukup') }}</span>
-                                                </span>
-                                                <span class="text-slate-400 truncate hidden sm:inline">• {{ getTeamEligibility(cat).neededMessage }}</span>
-                                            </div>
-
-                                            <button
-                                                v-if="!getTeamEligibility(cat).isEligible"
-                                                type="button"
-                                                @click="showAddAthleteModal = true"
-                                                class="text-xs sm:text-sm font-black text-navy hover:underline shrink-0 flex items-center gap-0.5 cursor-pointer">
-                                                <Icon icon="ph:user-plus-bold" />
-                                                <span>{{ isEn ? '+ Add Archer' : '+ Tambah Atlet' }}</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div v-else class="p-6 rounded-2xl border border-dashed border-slate-200 bg-slate-50/70 text-center space-y-1.5">
-                                    <div class="size-10 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2">
-                                        <Icon icon="ph:users-three-bold" class="text-xl text-slate-400" />
-                                    </div>
-                                    <div class="text-xs sm:text-sm font-bold text-slate-700">
-                                        {{ isEn ? 'No Team Categories Available' : 'Tidak Ada Kategori Beregu' }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-400 max-w-sm mx-auto">
-                                        {{ isEn ? 'This tournament only offers individual categories. You can proceed with individual roster above.' : 'Turnamen ini hanya menyediakan kategori perorangan/individu. Anda dapat langsung melanjutkan pendaftaran atlet individu di atas.' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- MODE 2: CLUB DELEGATION -->
+                        <Step2Delegation
+                            v-else
+                            :delegation-athletes="delegationAthletes"
+                            :categories="categories"
+                            :team-categories="teamCategories"
+                            :delegation-team-bookings="delegationTeamBookings"
+                            :delegation-club-name="delegationClubName"
+                            :selected-athlete-emails="selectedAthleteEmails"
+                            :is-en="isEn"
+                            :get-category-icon="getCategoryIcon"
+                            :get-category-full-name="getCategoryFullName"
+                            :get-archer-category-ids="getArcherCategoryIds"
+                            :get-archer-total-fee="getArcherTotalFee"
+                            :get-fee-for-category="getFeeForCategory"
+                            :get-team-eligibility="getTeamEligibility"
+                            :format-price="formatPrice"
+                            :use-image-or-default="useImageOrDefault"
+                            @open-bulk-import="showBulkImportModal = true"
+                            @open-add-athlete="showAddAthleteModal = true"
+                            @view-athlete-detail="viewAthleteDetail"
+                            @edit-delegation-athlete="editDelegationAthlete"
+                            @prompt-remove-athlete="promptRemoveAthlete"
+                            @remove-selected-athletes="removeSelectedAthletes"
+                            @open-bulk-category-modal="showBulkCategoryModal = true"
+                            @open-category-dropdown="openCategoryDropdown"
+                            @toggle-select-athlete="toggleSelectAthlete"
+                            @toggle-select-all="toggleSelectAll"
+                            @increment-team-booking="incrementTeamBooking"
+                            @decrement-team-booking="decrementTeamBooking" />
 
                         <!-- Step 2 Footer Actions -->
                         <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -1192,8 +313,8 @@
                             <div class="flex items-center gap-4 self-end sm:self-auto">
                                 <div class="text-right hidden sm:block">
                                     <div class="text-xs sm:text-sm text-slate-400 font-bold">{{ isEn ? 'Estimated Total' : 'Estimasi Biaya' }}</div>
-                                    <div class="text-base sm:text-lg font-black tabular-nums" :class="totalCalculatedFee === 0 ? 'text-emerald-600' : 'text-navy'">
-                                        {{ formatPrice(totalCalculatedFee) }}
+                                    <div class="text-base sm:text-lg font-black tabular-nums" :class="!hasAnyRegistrationSelection ? 'text-slate-400' : (totalCalculatedFee === 0 ? 'text-emerald-600' : 'text-navy')">
+                                        {{ hasAnyRegistrationSelection ? formatPrice(totalCalculatedFee) : '-' }}
                                     </div>
                                 </div>
 
@@ -1210,378 +331,32 @@
                         </div>
                     </div>
 
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <!-- STEP 3: REVIEW & PAYMENT CHECKOUT                        -->
-                    <!-- ───────────────────────────────────────────────────────── -->
-                    <div v-else-if="currentStep === 3" class="p-6 sm:p-8 space-y-6">
-                        <!-- Single Column Linear Flow -->
-                        <div class="space-y-6">
-                            
-                            <!-- 1. Itemized Fee Breakdown -->
-                            <ItemizedFeeBreakdown :items="computedBreakdownItems" :currency="eventCurrency">
-                                <template #actions>
-                                    <button
-                                        type="button"
-                                        @click="currentStep = 2"
-                                        class="px-3.5 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs">
-                                        <Icon icon="ph:arrow-left-bold" class="text-xs" />
-                                        <span>{{ isEn ? 'Change Categories' : 'Ubah Kategori' }}</span>
-                                    </button>
-                                </template>
-                            </ItemizedFeeBreakdown>
-
-                            <!-- 2. Payment Method & Checkout Card -->
-                            <div class="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-6 shadow-xs space-y-5">
-                                
-                                <!-- Paid Payment Method Selector (when totalCalculatedFee > 0) -->
-                                <div v-if="totalCalculatedFee > 0" class="space-y-4">
-                                    <!-- Payment Method Selector -->
-                                    <div>
-                                        <div class="text-xs sm:text-sm font-black text-navy mb-1">
-                                            {{ isEn ? 'Payment Method' : 'Metode Pembayaran' }}
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-slate-500 mb-3">
-                                            {{ isEn ? 'Choose how you would like to pay:' : 'Pilih cara pembayaran yang Anda inginkan:' }}
-                                        </div>
-
-                                    <!-- Payment Radio Cards -->
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                        <div
-                                            @click="paymentType = 'online'; manualMethodId = ''"
-                                            class="p-3.5 sm:p-4 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
-                                            :class="paymentType === 'online' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'">
-                                            <div class="flex items-center justify-between mb-2">
-                                                <Icon icon="ph:lightning-bold" class="text-base" :class="paymentType === 'online' ? 'text-primary' : 'text-slate-400'" />
-                                                <div class="size-4.5 rounded-full flex items-center justify-center"
-                                                    :class="paymentType === 'online' ? 'bg-navy text-primary' : 'border-2 border-slate-300'">
-                                                    <Icon v-if="paymentType === 'online'" icon="ph:check-bold" class="text-[10px] font-black" />
-                                                </div>
-                                            </div>
-                                            <div class="font-bold text-navy text-xs sm:text-sm leading-tight">
-                                                {{ isEn ? 'Instant Online' : 'Instan Online' }}
-                                            </div>
-                                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
-                                                {{ eventCurrency === 'IDR' ? 'QRIS & VA (Mayar)' : 'PayPal & Card' }}
-                                            </div>
-                                        </div>
-
-                                        <div
-                                            @click="paymentType = 'manual'"
-                                            class="p-3.5 sm:p-4 rounded-2xl border-2 text-left cursor-pointer transition-all flex flex-col justify-between select-none"
-                                            :class="paymentType === 'manual' ? 'border-navy bg-navy/[0.03] shadow-xs ring-1 ring-navy/10' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'">
-                                            <div class="flex items-center justify-between mb-2">
-                                                <Icon icon="ph:bank-bold" class="text-base" :class="paymentType === 'manual' ? 'text-primary' : 'text-slate-400'" />
-                                                <div class="size-4.5 rounded-full flex items-center justify-center"
-                                                    :class="paymentType === 'manual' ? 'bg-navy text-primary' : 'border-2 border-slate-300'">
-                                                    <Icon v-if="paymentType === 'manual'" icon="ph:check-bold" class="text-[10px] font-black" />
-                                                </div>
-                                            </div>
-                                            <div class="font-bold text-navy text-xs sm:text-sm leading-tight">
-                                                {{ isEn ? 'Manual Transfer' : 'Transfer Bank' }}
-                                            </div>
-                                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
-                                                {{ isEn ? 'Transfer & receipt' : 'Transfer & struk' }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Payment Details Panel -->
-                                <div class="pt-2 border-t border-slate-100">
-                                    <!-- ONLINE GATEWAY PREVIEW -->
-                                    <div v-if="paymentType === 'online'" class="space-y-3">
-                                        <!-- Mayar (IDR) -->
-                                        <div v-if="eventCurrency === 'IDR'" class="p-3.5 rounded-2xl border border-slate-200/90 bg-slate-50/70 flex items-center gap-3">
-                                            <div class="size-10 rounded-xl bg-white border border-slate-200 p-1 flex items-center justify-center shrink-0 shadow-2xs">
-                                                <img src="/mayar-logo.png" alt="Mayar" class="w-full h-full object-contain" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <div class="text-xs sm:text-sm font-bold text-navy">QRIS & Virtual Account (Mayar)</div>
-                                                <div class="text-xs sm:text-sm text-slate-500 font-medium">BCA, Mandiri, BRI, BNI, Permata, QRIS</div>
-                                            </div>
-                                        </div>
-
-                                        <!-- PayPal (Non-IDR) -->
-                                        <div v-else class="p-3.5 rounded-2xl border border-blue-200 bg-blue-50/50 flex items-center gap-3">
-                                            <div class="size-10 rounded-xl bg-white border border-blue-200 p-1 flex items-center justify-center shrink-0 shadow-2xs">
-                                                <Icon icon="logos:paypal" class="text-xl" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <div class="text-xs sm:text-sm font-bold text-navy">PayPal & Global Cards</div>
-                                                <div class="text-xs sm:text-sm text-blue-600 font-medium">{{ `Processed in ${eventCurrency}` }}</div>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-500 font-medium px-1">
-                                            <Icon icon="ph:check-circle-fill" class="text-emerald-500 text-sm shrink-0" />
-                                            <span>{{ isEn ? 'Instant automatic payment verification.' : 'Verifikasi otomatis tanpa perlu upload struk.' }}</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- MANUAL TRANSFER DETAILS -->
-                                    <div v-else class="space-y-3.5">
-                                        <div v-if="orgManualMethods.length === 0" class="p-5 rounded-2xl border border-amber-200/90 bg-amber-50/70 text-slate-800 space-y-3">
-                                            <div class="flex items-start gap-3">
-                                                <div class="size-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5">
-                                                    <Icon icon="ph:warning-circle-bold" class="text-lg" />
-                                                </div>
-                                                <div class="min-w-0">
-                                                    <div class="text-xs sm:text-sm font-black text-amber-950">
-                                                        {{ isEn ? 'Transfer Account Not Available' : 'Rekening Transfer Belum Tersedia' }}
-                                                    </div>
-                                                    <div class="text-xs sm:text-sm text-amber-900/80 mt-1 leading-relaxed">
-                                                        {{ isEn 
-                                                            ? 'The organizer has not configured manual bank transfer accounts for this event. Please use the instant online gateway or contact the organizer.' 
-                                                            : 'Penyelenggara turnamen belum menambahkan rekening transfer bank manual untuk turnamen ini. Silakan gunakan metode online (otomatis) atau hubungi pihak panitia.' 
-                                                        }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="pt-2 border-t border-amber-200/70 flex items-center justify-between gap-2">
-                                                <button
-                                                    type="button"
-                                                    @click="paymentType = 'online'"
-                                                    class="px-3.5 py-1.5 rounded-xl bg-navy text-primary hover:bg-navy/90 font-bold text-xs sm:text-sm shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer">
-                                                    <Icon icon="ph:lightning-bold" class="text-xs" />
-                                                    <span>{{ isEn ? 'Switch to Online Gateway' : 'Beralih ke Pembayaran Online' }}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div v-else class="space-y-4">
-                                            <!-- Destination Bank Section -->
-                                            <div class="space-y-2.5">
-                                                <div class="flex items-center justify-between">
-                                                    <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
-                                                        <Icon icon="ph:bank-bold" class="text-sm text-slate-500" />
-                                                        <span>{{ isEn ? 'Select Destination Bank:' : 'Pilih Rekening Tujuan Transfer:' }}</span>
-                                                    </div>
-                                                    <span class="text-xs sm:text-sm font-medium text-slate-400">
-                                                        {{ isEn ? 'Tap to choose' : 'Pilih salah satu' }}
-                                                    </span>
-                                                </div>
-
-                                                <div :class="orgManualMethods.length === 1 ? 'grid grid-cols-1' : 'grid grid-cols-1 sm:grid-cols-2 gap-3'">
-                                                    <div
-                                                        v-for="m in orgManualMethods"
-                                                        :key="m.uuid || m.id"
-                                                        @click="manualMethodId = m.uuid || m.id"
-                                                        class="group p-4 sm:p-4.5 rounded-2xl border-2 cursor-pointer transition-all duration-200 relative flex flex-col justify-between select-none"
-                                                        :class="manualMethodId === (m.uuid || m.id)
-                                                            ? 'border-navy bg-gradient-to-br from-navy/[0.04] to-primary/[0.04] shadow-sm ring-2 ring-navy/15'
-                                                            : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/60 shadow-2xs hover:shadow-xs hover:-translate-y-0.5'">
-                                                        
-                                                        <!-- Top Row: Radio + Bank Name + Selected Badge -->
-                                                        <div class="flex items-start justify-between gap-3 mb-3">
-                                                            <div class="flex items-center gap-3 min-w-0">
-                                                                <!-- Custom Radio Indicator -->
-                                                                <div class="size-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all"
-                                                                    :class="manualMethodId === (m.uuid || m.id)
-                                                                        ? 'border-navy bg-navy text-primary ring-2 ring-navy/20'
-                                                                        : 'border-slate-300 bg-white group-hover:border-slate-400'">
-                                                                    <div v-if="manualMethodId === (m.uuid || m.id)" class="size-2 rounded-full bg-primary" />
-                                                                </div>
-
-                                                                <!-- Bank Logo & Name -->
-                                                                <div class="flex items-center gap-2.5 min-w-0">
-                                                                    <div class="size-9 rounded-xl bg-white border border-slate-200/80 flex items-center justify-center shrink-0 shadow-2xs p-1.5 overflow-hidden">
-                                                                        <img
-                                                                            v-if="getPaymentMethodImage(m.payment_method || m.bank_name)"
-                                                                            :src="getPaymentMethodImage(m.payment_method || m.bank_name)"
-                                                                            :alt="m.payment_method || m.bank_name"
-                                                                            class="w-full h-full object-contain" />
-                                                                        <Icon v-else icon="ph:bank-bold" class="text-base text-navy" />
-                                                                    </div>
-                                                                    <div class="min-w-0">
-                                                                        <div class="text-sm font-black text-navy truncate leading-tight">{{ m.payment_method || m.bank_name }}</div>
-                                                                        <div class="text-xs sm:text-sm text-slate-500 font-medium truncate mt-0.5">
-                                                                            <span class="text-slate-400 font-normal">{{ isEn ? 'a/n' : 'a/n' }}</span> {{ m.account_name || m.account_holder }}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Selected Tag -->
-                                                            <span v-if="manualMethodId === (m.uuid || m.id)" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-navy text-primary text-xs font-black shrink-0">
-                                                                <Icon icon="ph:check-bold" class="text-xs" />
-                                                                <span>{{ isEn ? 'Selected' : 'Dipilih' }}</span>
-                                                            </span>
-                                                        </div>
-
-                                                        <!-- Account Number Box with Copy Action -->
-                                                        <div class="rounded-xl p-2.5 flex items-center justify-between gap-2 transition-colors"
-                                                            :class="manualMethodId === (m.uuid || m.id) ? 'bg-white border border-navy/15 shadow-2xs' : 'bg-slate-50 border border-slate-100 group-hover:bg-white group-hover:border-slate-200'">
-                                                            <div class="min-w-0">
-                                                                <div class="text-xs font-bold text-slate-400">{{ isEn ? 'Account Number' : 'Nomor Rekening' }}</div>
-                                                                <div class="text-base sm:text-lg font-black text-slate-900 font-mono tracking-wider truncate leading-tight mt-0.5">
-                                                                    {{ m.account_number }}
-                                                                </div>
-                                                            </div>
-                                                            <button
-                                                                type="button"
-                                                                @click.stop="copyAccountNumber(m.account_number, m.uuid || m.id)"
-                                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-sans font-bold transition-all shrink-0 cursor-pointer"
-                                                                :class="copiedBankId === (m.uuid || m.id)
-                                                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                                                                    : 'bg-slate-100 hover:bg-navy hover:text-primary text-slate-700 border border-slate-200/80 active:scale-95'"
-                                                                :title="isEn ? 'Copy account number' : 'Salin nomor rekening'">
-                                                                <Icon v-if="copiedBankId === (m.uuid || m.id)" icon="ph:check-bold" class="text-xs sm:text-sm text-emerald-600" />
-                                                                <Icon v-else icon="ph:copy-simple-bold" class="text-xs sm:text-sm" />
-                                                                <span>{{ copiedBankId === (m.uuid || m.id) ? (isEn ? 'Copied' : 'Tersalin') : (isEn ? 'Copy' : 'Salin') }}</span>
-                                                            </button>
-                                                        </div>
-
-                                                        <!-- Transfer Instructions (if any) -->
-                                                        <div v-if="m.instructions" class="mt-2.5 pt-2 border-t border-slate-100 text-xs sm:text-sm text-slate-500 leading-relaxed flex items-start gap-1.5">
-                                                            <Icon icon="ph:info-bold" class="text-xs sm:text-sm text-slate-400 shrink-0 mt-0.5" />
-                                                            <span>{{ m.instructions }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Sender Name & Receipt Upload Form -->
-                                            <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80 space-y-3.5">
-                                                <div class="text-xs sm:text-sm font-bold text-navy flex items-center gap-1.5">
-                                                    <Icon icon="ph:receipt-bold" class="text-sm text-slate-500" />
-                                                    <span>{{ isEn ? 'Payment Confirmation Details' : 'Konfirmasi Bukti Transfer' }}</span>
-                                                </div>
-
-                                                <BaseInput
-                                                    v-model="senderName"
-                                                    :label="isEn ? 'Sender Account Name' : 'Nama Pemilik Rekening Pengirim'"
-                                                    :placeholder="isEn ? 'e.g. Budi Santoso (as written on receipt)' : 'cth. Budi Santoso (sesuai nama di rekening/struk)'"
-                                                    required />
-
-                                                <div class="space-y-2">
-                                                    <div class="flex items-center justify-between">
-                                                        <label class="text-xs sm:text-sm font-bold text-navy block">
-                                                            {{ isEn ? 'Upload Transfer Receipt' : 'Unggah Bukti Transfer' }} <span class="text-rose-500">*</span>
-                                                        </label>
-                                                        <span class="text-xs text-slate-400 font-medium">
-                                                            {{ isEn ? 'JPG, PNG, WEBP, PDF (Max 5MB)' : 'JPG, PNG, WEBP, PDF (Maks. 5MB)' }}
-                                                        </span>
-                                                    </div>
-
-                                                    <input ref="proofInput" type="file" accept="image/*,.pdf" class="hidden" @change="handleProofUpload" />
-
-                                                    <!-- State 1: Uploading State -->
-                                                    <div v-if="uploadingProof" class="p-6 rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 flex flex-col items-center justify-center text-center gap-2">
-                                                        <Icon icon="ph:spinner-gap-bold" class="text-2xl text-navy animate-spin" />
-                                                        <div class="text-xs sm:text-sm font-bold text-navy">{{ isEn ? 'Uploading receipt...' : 'Mengunggah bukti transfer...' }}</div>
-                                                        <div class="text-xs sm:text-sm text-slate-400">{{ isEn ? 'Please wait a moment' : 'Mohon tunggu sebentar' }}</div>
-                                                    </div>
-
-                                                    <!-- State 2: Uploaded Card (Modern Structured Card) -->
-                                                    <div v-else-if="proofFileUrl" class="p-4 rounded-2xl border border-emerald-300 bg-emerald-50/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-2xs">
-                                                        <div class="flex items-center gap-3.5 min-w-0 flex-1">
-                                                            <!-- Thumbnail Preview -->
-                                                            <div class="relative size-16 sm:size-20 rounded-xl overflow-hidden border border-emerald-200 bg-white shrink-0 flex items-center justify-center shadow-xs">
-                                                                <img
-                                                                    v-if="!proofFileUrl.toLowerCase().endsWith('.pdf')"
-                                                                    :src="proofFileUrl"
-                                                                    alt="Receipt Preview"
-                                                                    class="w-full h-full object-cover" />
-                                                                <div v-else class="flex flex-col items-center justify-center text-rose-500 p-1">
-                                                                    <Icon icon="ph:file-pdf-bold" class="text-2xl" />
-                                                                    <span class="text-xs font-black mt-0.5">PDF</span>
-                                                                </div>
-                                                            </div>
-
-                                                            <!-- Info & Badge -->
-                                                            <div class="min-w-0 flex-1 space-y-1">
-                                                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-bold">
-                                                                    <Icon icon="ph:check-circle-fill" class="text-xs sm:text-sm text-emerald-600 shrink-0" />
-                                                                    <span>{{ isEn ? 'Receipt Attached' : 'Bukti Transfer Terlampir' }}</span>
-                                                                </div>
-                                                                <div class="text-xs sm:text-sm font-bold text-navy truncate" :title="proofFileName || 'transfer-receipt'">
-                                                                    {{ proofFileName || (isEn ? 'Transfer Receipt' : 'Bukti Transfer') }}
-                                                                </div>
-                                                                <div class="text-xs sm:text-sm text-slate-500 flex items-center gap-2">
-                                                                    <span v-if="proofFileSize">{{ proofFileSize }} • </span>
-                                                                    <span>{{ isEn ? 'Ready for verification' : 'Siap diverifikasi panitia' }}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Action Buttons -->
-                                                        <div class="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-emerald-200/60">
-                                                            <button
-                                                                type="button"
-                                                                @click="triggerFileInput"
-                                                                class="px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:border-navy hover:text-navy text-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-2xs transition-colors cursor-pointer">
-                                                                <Icon icon="ph:arrows-clockwise-bold" class="text-xs sm:text-sm text-slate-400" />
-                                                                <span>{{ isEn ? 'Change File' : 'Ganti Berkas' }}</span>
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                @click="removeProofFile"
-                                                                class="p-2 rounded-xl bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-400 hover:text-rose-600 text-xs sm:text-sm font-bold flex items-center justify-center shadow-2xs transition-colors cursor-pointer"
-                                                                :title="isEn ? 'Remove receipt' : 'Hapus bukti transfer'">
-                                                                <Icon icon="ph:trash-bold" class="text-base" />
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- State 3: Empty Dropzone -->
-                                                    <div
-                                                        v-else
-                                                        @click="triggerFileInput"
-                                                        class="border-2 border-dashed border-slate-300 hover:border-navy rounded-2xl p-5 sm:p-6 text-center cursor-pointer transition-all bg-white hover:bg-slate-50/70 group shadow-2xs">
-                                                        <div class="flex flex-col items-center justify-center gap-2">
-                                                            <div class="size-11 rounded-2xl bg-navy/5 group-hover:bg-navy text-slate-500 group-hover:text-primary flex items-center justify-center transition-colors shadow-2xs">
-                                                                <Icon icon="ph:cloud-arrow-up-bold" class="text-2xl" />
-                                                            </div>
-                                                            <div>
-                                                                <div class="text-xs sm:text-sm font-bold text-navy">
-                                                                    {{ isEn ? 'Click or drag receipt photo / PDF to upload' : 'Klik atau seret foto bukti transfer / PDF ke sini' }}
-                                                                </div>
-                                                                <div class="text-xs sm:text-sm text-slate-400 mt-0.5">
-                                                                    {{ isEn ? 'Supports JPG, PNG, WEBP, or PDF (Max 5MB)' : 'Mendukung format JPG, PNG, WEBP, atau PDF (Maks. 5MB)' }}
-                                                                </div>
-                                                            </div>
-                                                            <div class="mt-1">
-                                                                <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 group-hover:bg-navy group-hover:text-primary text-slate-700 text-xs sm:text-sm font-bold transition-colors">
-                                                                    <Icon icon="ph:file-arrow-up-bold" class="text-sm" />
-                                                                    <span>{{ isEn ? 'Select File' : 'Pilih Berkas' }}</span>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-
-                                <!-- Total Amount & Checkout Button -->
-                                <div class="pt-4 border-t border-slate-100 space-y-3">
-                                    <div class="flex items-center justify-between text-sm sm:text-base">
-                                        <span class="text-slate-500 font-bold">{{ isEn ? 'Total Payment' : 'Total Pembayaran' }}</span>
-                                        <span class="text-xl sm:text-2xl font-black tabular-nums" :class="totalCalculatedFee === 0 ? 'text-emerald-600' : 'text-navy'">
-                                            {{ formatPrice(totalCalculatedFee) }}
-                                        </span>
-                                    </div>
-
-                                    <BaseButton
-                                        @click="handleSubmit"
-                                        :disabled="loading || (totalCalculatedFee > 0 && paymentType === 'manual' && (!manualMethodId || !proofFileUrl || !senderName))"
-                                        :loading="loading"
-                                        variant="primary"
-                                        size="lg"
-                                        icon-right="ph:arrow-right-bold"
-                                        class="w-full justify-center shadow-md text-sm sm:text-base">
-                                        {{ checkoutButtonText }}
-                                    </BaseButton>
-
-                                    <div v-if="submitError" class="text-xs sm:text-sm font-bold text-red-500 text-center bg-red-50 p-2 rounded-xl border border-red-200">
-                                        {{ submitError }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- STEP 3: REVIEW & PAYMENT CHECKOUT -->
+                    <Step3Payment
+                        v-else-if="currentStep === 3"
+                        :computed-breakdown-items="computedBreakdownItems"
+                        :event-currency="eventCurrency"
+                        :total-calculated-fee="totalCalculatedFee"
+                        v-model:payment-type="paymentType"
+                        v-model:manual-method-id="manualMethodId"
+                        :org-manual-methods="orgManualMethods"
+                        v-model:sender-name="senderName"
+                        :proof-file-url="proofFileUrl"
+                        :proof-file-name="proofFileName"
+                        :proof-file-size="proofFileSize"
+                        :uploading-proof="uploadingProof"
+                        :copied-bank-id="copiedBankId"
+                        :loading="loading"
+                        :submit-error="submitError"
+                        :checkout-button-text="checkoutButtonText"
+                        :is-en="isEn"
+                        :get-payment-method-image="getPaymentMethodImage"
+                        :format-price="formatPrice"
+                        @go-to-step="goToStep"
+                        @copy-account-number="copyAccountNumber"
+                        @handle-proof-upload="handleProofUpload"
+                        @remove-proof-file="removeProofFile"
+                        @submit="handleSubmit" />
                 </div>
             </main>
         </div>
@@ -1589,7 +364,7 @@
         <!-- Add/Edit Athlete Modal for Representative Mode -->
         <AddAthleteModal
             :show="showAddAthleteModal"
-            :tournament-id="event.id || slug"
+            :tournament-id="event?.id || slug"
             :individual-categories="individualCategories"
             :custom-fields="customFields"
             :default-club-id="delegationClubId"
@@ -1604,147 +379,77 @@
         <!-- Bulk Import CSV/Excel Modal for Representative Mode -->
         <BulkImportModal
             :show="showBulkImportModal"
-            :tournament-id="event.id || slug"
-            :tournament-name="event.name || slug"
+            :tournament-id="event?.id || slug"
+            :tournament-name="event?.name || slug"
             :categories="categories"
             :existing-emails="delegationAthletes.map(a => a.email?.toLowerCase()).filter(Boolean)"
             :custom-fields="customFields"
             @close="showBulkImportModal = false"
             @imported="handleBulkImported" />
 
+        <!-- Athlete Detail Preview Modal -->
+        <AthleteDetailModal
+            :athlete="viewingAthleteDetail"
+            :custom-fields="customFields"
+            :categories="categories"
+            :delegation-club-name="delegationClubName"
+            :is-en="isEn"
+            :get-archer-total-fee="getArcherTotalFee"
+            :get-archer-category-ids="getArcherCategoryIds"
+            :get-category-full-name="getCategoryFullName"
+            :format-price="formatPrice"
+            :use-image-or-default="useImageOrDefault"
+            @close="closeAthleteDetail"
+            @edit="ath => { closeAthleteDetail(); editDelegationAthlete(ath); }" />
+
+        <!-- Athlete Delete Confirmation Modal -->
+        <AthleteDeleteConfirmModal
+            :athlete="athleteToDelete"
+            :delegation-club-name="delegationClubName"
+            :is-en="isEn"
+            :use-image-or-default="useImageOrDefault"
+            @cancel="cancelRemoveAthlete"
+            @confirm="confirmRemoveAthlete" />
+
         <!-- Bulk Category Assignment Modal -->
-        <Teleport to="body">
-            <div v-if="showBulkCategoryModal"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm animate-fade-in"
-                @click.self="showBulkCategoryModal = false">
-                <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 flex flex-col max-h-[85vh]">
-                    <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                        <div class="flex items-center gap-2.5">
-                            <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center">
-                                <Icon icon="ph:tag-bold" class="text-lg" />
-                            </div>
-                            <div>
-                                <h4 class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'Bulk Assign Category' : 'Tetapkan Kategori Massal' }}</h4>
-                                <div class="text-xs sm:text-sm text-slate-500">{{ isEn ? `Apply category to ${selectedAthleteEmails.length} selected archers` : `Terapkan ke ${selectedAthleteEmails.length} atlet terpilih` }}</div>
-                            </div>
-                        </div>
-                        <button type="button" @click="showBulkCategoryModal = false" class="size-8 rounded-lg text-slate-400 hover:text-navy flex items-center justify-center cursor-pointer">
-                            <Icon icon="ph:x-bold" class="text-sm" />
-                        </button>
-                    </div>
+        <BulkCategoryModal
+            :show="showBulkCategoryModal"
+            :selected-athletes="selectedAthletesForBulk"
+            :categories="categories"
+            :is-en="isEn"
+            :get-category-type="getCategoryType"
+            :get-category-full-name="getCategoryFullName"
+            :get-fee-for-category="getFeeForCategory"
+            :format-price="formatPrice"
+            @close="showBulkCategoryModal = false"
+            @apply="applyBulkCategory" />
 
-                    <!-- Selected Archers Summary Bar with Gender Badges -->
-                    <div class="p-3 bg-slate-50/90 border-b border-slate-100 space-y-1.5">
-                        <div class="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-500">
-                            <span class="flex items-center gap-1">
-                                <Icon icon="ph:users-three-bold" class="text-xs sm:text-sm text-navy" />
-                                <span>{{ isEn ? 'Selected Archers & Gender' : 'Atlet Terpilih & Gender' }}</span>
-                            </span>
-                            <span class="text-slate-400">{{ selectedAthletesForBulk.length }} {{ isEn ? 'archers' : 'atlet' }}</span>
-                        </div>
-                        <div class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto custom-scrollbar">
-                            <div
-                                v-for="ath in selectedAthletesForBulk"
-                                :key="ath.email"
-                                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-bold text-navy shadow-2xs">
-                                <span class="truncate max-w-[130px]">{{ ath.full_name }}</span>
-                                <span
-                                    class="px-1.5 py-0.5 rounded text-xs font-black inline-flex items-center gap-0.5"
-                                    :class="ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f'
-                                        ? 'bg-rose-50 text-rose-700'
-                                        : 'bg-sky-50 text-sky-700'">
-                                    <Icon
-                                        :icon="ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f'
-                                            ? 'ph:gender-female-bold'
-                                            : 'ph:gender-male-bold'"
-                                        class="text-xs" />
-                                    {{ ath.gender?.toLowerCase() === 'female' || ath.gender?.toLowerCase() === 'women' || ath.gender?.toLowerCase() === 'f' ? (isEn ? 'Female' : 'Putri') : (isEn ? 'Male' : 'Putra') }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-3 space-y-2 overflow-y-auto flex-1 max-h-[380px]">
-                        <div
-                            v-for="cat in categories.filter(c => getCategoryType(c) === 'individual')"
-                            :key="cat.id"
-                            @click="!getBulkCategoryMatchStats(cat).noneMatched && applyBulkCategory(cat.id)"
-                            :class="[
-                                'flex items-center justify-between p-3.5 rounded-2xl border transition-all select-none',
-                                getBulkCategoryMatchStats(cat).noneMatched
-                                    ? 'border-slate-200/80 bg-slate-50/70 opacity-50 cursor-not-allowed'
-                                    : 'border-slate-200 bg-white hover:border-navy hover:bg-slate-50 shadow-2xs cursor-pointer group'
-                            ]">
-                            <div class="min-w-0 pr-3 space-y-1">
-                                <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-xs sm:text-sm font-black text-navy group-hover:underline truncate">{{ getCategoryFullName(cat) }}</span>
-                                    <!-- Gender Chip -->
-                                    <span
-                                        :class="[
-                                            'px-2 py-0.5 rounded-md text-xs font-black border inline-flex items-center gap-1',
-                                            cat.gender_division_name?.toLowerCase().includes('putri') || cat.gender_division_name?.toLowerCase().includes('women') || cat.gender_division_name?.toLowerCase().includes('female')
-                                                ? 'bg-rose-50 text-rose-700 border-rose-200'
-                                                : cat.gender_division_name?.toLowerCase().includes('putra') || cat.gender_division_name?.toLowerCase().includes('men') || cat.gender_division_name?.toLowerCase().includes('male')
-                                                    ? 'bg-sky-50 text-sky-700 border-sky-200'
-                                                    : 'bg-slate-100 text-slate-700 border-slate-200'
-                                        ]">
-                                        <Icon
-                                            :icon="
-                                                cat.gender_division_name?.toLowerCase().includes('putri') || cat.gender_division_name?.toLowerCase().includes('women') || cat.gender_division_name?.toLowerCase().includes('female')
-                                                    ? 'ph:gender-female-bold'
-                                                    : cat.gender_division_name?.toLowerCase().includes('putra') || cat.gender_division_name?.toLowerCase().includes('men') || cat.gender_division_name?.toLowerCase().includes('male')
-                                                        ? 'ph:gender-male-bold'
-                                                        : 'ph:users-bold'
-                                            "
-                                            class="text-xs" />
-                                        <span>{{ cat.gender_division_name || 'Open' }}</span>
-                                    </span>
-                                </div>
-                                
-                                <!-- Compatibility Status -->
-                                <div class="flex items-center gap-1.5 text-xs sm:text-sm font-medium">
-                                    <span v-if="getBulkCategoryMatchStats(cat).allMatched" class="text-emerald-600 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:check-circle-bold" class="text-xs sm:text-sm" />
-                                        <span>{{ isEn ? `Compatible with all ${selectedAthletesForBulk.length} selected archers` : `Kompatibel untuk semua ${selectedAthletesForBulk.length} atlet terpilih` }}</span>
-                                    </span>
-                                    <span v-else-if="getBulkCategoryMatchStats(cat).partial" class="text-amber-600 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:warning-circle-bold" class="text-xs sm:text-sm" />
-                                        <span>{{ isEn ? `Compatible with ${getBulkCategoryMatchStats(cat).matched} of ${selectedAthletesForBulk.length} archers (Partial)` : `Hanya kompatibel untuk ${getBulkCategoryMatchStats(cat).matched} dari ${selectedAthletesForBulk.length} atlet` }}</span>
-                                    </span>
-                                    <span v-else class="text-rose-500 font-bold flex items-center gap-1">
-                                        <Icon icon="ph:prohibit-bold" class="text-xs sm:text-sm" />
-                                        <span>{{ isEn ? 'Gender incompatible with selected archer(s)' : 'Gender tidak cocok dengan atlet terpilih' }}</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <span class="text-xs sm:text-sm font-black text-navy whitespace-nowrap block">{{ formatPrice(getFeeForCategory(cat.id)) }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Teleport>
 
         <!-- Partner Selector Modal Teleported -->
         <PartnerSelectorModal
             :show="showPartnerModal"
-            :title="partnerModalCategory ? `${isEn ? 'Add Teammate' : 'Tambah Anggota'}: ${partnerModalCategory.name}` : (isEn ? 'Select Teammate' : 'Pilih Rekan Tim')"
+            :title="partnerModalCategory ? `${isEn ? (partnerModalEditPartner ? 'Edit Teammate' : 'Add Teammate') : (partnerModalEditPartner ? 'Edit Anggota' : 'Tambah Anggota')}: ${partnerModalCategory.name}` : (isEn ? 'Select Teammate' : 'Pilih Rekan Tim')"
             :category-name="partnerModalCategory?.name || ''"
-            :tournament-id="event.id || slug"
+            :tournament-id="event?.id || slug"
             :category-id="partnerModalCategory?.id || ''"
             :required-gender="partnerModalGender"
             :existing-partners="partnerModalCategory ? (teamRosters[partnerModalCategory.id]?.partners || []) : []"
-            :default-single-fee="singleEntryFee"
-            @close="showPartnerModal = false"
+            :default-single-fee="partnerModalDefaultFee"
+            :custom-fields="customFields"
+            :edit-partner="partnerModalEditPartner"
+            @close="handleClosePartnerModal"
             @select-partner="handlePartnerSelected" />
 
         <!-- Category Multi-Select Popover (Teleported to body to escape overflow clipping) -->
         <Teleport to="body">
             <div
                 v-if="activeCategoryDropdownAth"
+                class="fixed inset-0 z-[60]"
+                @click="activeCategoryDropdownAth = null" />
+            <div
+                v-if="activeCategoryDropdownAth"
                 @click.stop
-                class="fixed z-[999] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-72"
+                class="fixed z-[70] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col max-h-72"
                 :style="`top: ${categoryDropdownPos.top}px; left: ${categoryDropdownPos.left}px; width: ${categoryDropdownPos.width}px;`">
 
                 <!-- Popover Header -->
@@ -1809,6 +514,14 @@ import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import BaseButton from '~/components/common/BaseButton.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
 import ClubSelector from '~/components/common/ClubSelector.vue'
+import RegisterHeader from '~/components/tournament/register/RegisterHeader.vue'
+import Step1RegistrationType from '~/components/tournament/register/Step1RegistrationType.vue'
+import Step2Individual from '~/components/tournament/register/Step2Individual.vue'
+import Step2Delegation from '~/components/tournament/register/Step2Delegation.vue'
+import Step3Payment from '~/components/tournament/register/Step3Payment.vue'
+import AthleteDetailModal from '~/components/tournament/register/AthleteDetailModal.vue'
+import AthleteDeleteConfirmModal from '~/components/tournament/register/AthleteDeleteConfirmModal.vue'
+import BulkCategoryModal from '~/components/tournament/register/BulkCategoryModal.vue'
 import TeamSlotBuilder from '~/components/tournament/register/TeamSlotBuilder.vue'
 import PartnerSelectorModal from '~/components/tournament/register/PartnerSelectorModal.vue'
 import AddAthleteModal from '~/components/tournament/register/AddAthleteModal.vue'
@@ -1982,9 +695,25 @@ const showPartnerModal = ref(false)
 const partnerModalCategory = ref(null)
 const partnerModalSlotIndex = ref(0)
 const partnerModalGender = ref('')
+const partnerModalEditPartner = ref(null)
+
+const partnerModalDefaultFee = computed(() => {
+    if (!partnerModalCategory.value) return singleEntryFee.value
+    const partnerGender = (partnerModalGender.value || '').toLowerCase()
+    const matchingIndCat = categories.value.find(c => {
+        if (getCategoryType(c) !== 'individual') return false
+        const sameDiv = !partnerModalCategory.value.division_id || !c.division_id || partnerModalCategory.value.division_id === c.division_id
+        const divNameMatch = (partnerModalCategory.value.division_name || '').toLowerCase() === (c.division_name || '').toLowerCase()
+        const genderMatch = !partnerGender || isCategoryMatchingGender(c, partnerGender)
+        return (sameDiv || divNameMatch) && genderMatch
+    })
+    return matchingIndCat ? getFeeForCategory(matchingIndCat.id) : singleEntryFee.value
+})
 
 // Mode 2 State: Representative
 const showAddAthleteModal = ref(false)
+const viewingAthleteDetail = ref(null)
+const athleteToDelete = ref(null)
 const editingAthlete = ref(null)
 const showBulkImportModal = ref(false)
 const delegationClubId = ref('')
@@ -2037,16 +766,6 @@ const paginatedDelegationAthletes = computed(() => {
     const start = (athleteCurrentPage.value - 1) * athletePageSize.value
     return filteredDelegationAthletes.value.slice(start, start + athletePageSize.value)
 })
-
-const removeDelegationAthlete = (ath) => {
-    const idx = delegationAthletes.value.findIndex(a => a === ath || (a.email === ath.email && a.full_name === ath.full_name))
-    if (idx !== -1) {
-        delegationAthletes.value.splice(idx, 1)
-        if (athleteCurrentPage.value > athleteTotalPages.value) {
-            athleteCurrentPage.value = Math.max(1, athleteTotalPages.value)
-        }
-    }
-}
 
 // ─── BULK SELECTION & ASSIGNMENT ─────────────────────────────────────────────
 const selectedAthleteEmails = ref([])
@@ -2160,6 +879,10 @@ const applyBulkCategory = (catId) => {
 
 // ─── DELEGATION ATHLETE CATEGORY SELECTION HELPERS ────────────────────────────
 const activeCategoryDropdownAth = ref(null)
+
+watch([showAddAthleteModal, showBulkImportModal, showBulkCategoryModal, showPartnerModal, viewingAthleteDetail, athleteToDelete, currentStep], () => {
+    activeCategoryDropdownAth.value = null
+})
 const categoryDropdownPos = ref({ top: 0, left: 0, width: 320 })
 
 // Keep backward compat alias for template
@@ -2180,27 +903,29 @@ const isArcherCategorySelected = (ath, catId) => {
 }
 
 const toggleArcherCategory = (ath, catId) => {
-    if (!Array.isArray(ath.category_ids)) {
-        ath.category_ids = ath.category_id ? [ath.category_id] : []
-    }
-    const idx = ath.category_ids.indexOf(catId)
+    if (!ath) return
+    const current = Array.isArray(ath.category_ids) ? [...ath.category_ids] : (ath.category_id ? [ath.category_id] : [])
+    const idx = current.indexOf(catId)
     if (idx === -1) {
-        ath.category_ids.push(catId)
+        current.push(catId)
     } else {
-        ath.category_ids.splice(idx, 1)
+        current.splice(idx, 1)
     }
-    ath.category_id = ath.category_ids[0] || ''
+    ath.category_ids = current
+    ath.category_id = current[0] || ''
+    delegationAthletes.value = [...delegationAthletes.value]
 }
 
 const removeArcherCategory = (ath, catId) => {
-    if (!Array.isArray(ath.category_ids)) {
-        ath.category_ids = ath.category_id ? [ath.category_id] : []
-    }
-    const idx = ath.category_ids.indexOf(catId)
+    if (!ath) return
+    const current = Array.isArray(ath.category_ids) ? [...ath.category_ids] : (ath.category_id ? [ath.category_id] : [])
+    const idx = current.indexOf(catId)
     if (idx !== -1) {
-        ath.category_ids.splice(idx, 1)
+        current.splice(idx, 1)
     }
-    ath.category_id = ath.category_ids[0] || ''
+    ath.category_ids = current
+    ath.category_id = current[0] || ''
+    delegationAthletes.value = [...delegationAthletes.value]
 }
 
 const getArcherTotalFee = (ath) => {
@@ -2448,9 +1173,50 @@ const getFeeForCategory = (catId) => {
     return ev.fee_per_type?.[type] ?? ev.registration_fee ?? 0
 }
 
-// ─── INDIVIDUAL CATEGORY MULTI-SELECTION ──────────────────────────────────────
-// ─── INDIVIDUAL CATEGORY MULTI-SELECTION ──────────────────────────────────────
+// ─── INDIVIDUAL CATEGORY MULTI-SELECTION & TEAM LOCKING ──────────────────────
+const getMatchingIndividualCategoryForTeam = (teamCat) => {
+    if (!teamCat) return null
+    return individualCategories.value.find(c => {
+        if (teamCat.division_id && c.division_id && teamCat.division_id === c.division_id) return true
+        if (teamCat.division_name && c.division_name && teamCat.division_name.toLowerCase().trim() === c.division_name.toLowerCase().trim()) return true
+        const teamDiv = (teamCat.division_name || teamCat.name || '').toLowerCase()
+        const indDiv = (c.division_name || c.name || '').toLowerCase()
+        if (teamDiv.includes('compound') && indDiv.includes('compound')) return true
+        if (teamDiv.includes('recurve') && indDiv.includes('recurve')) return true
+        if (teamDiv.includes('barebow') && indDiv.includes('barebow')) return true
+        if (teamDiv.includes('standard') && indDiv.includes('standard')) return true
+        if (teamDiv.includes('tradisional') && indDiv.includes('tradisional')) return true
+        if (teamDiv.includes('traditional') && indDiv.includes('traditional')) return true
+        return false
+    }) || individualCategories.value[0] || null
+}
+
+const lockedIndividualCategoryIds = computed(() => {
+    const locked = new Set()
+    for (const teamCat of selectedTeamCategories.value) {
+        const indCat = getMatchingIndividualCategoryForTeam(teamCat)
+        if (indCat) {
+            locked.add(indCat.id)
+        }
+    }
+    return Array.from(locked)
+})
+
+watch(lockedIndividualCategoryIds, (lockedIds) => {
+    for (const id of lockedIds) {
+        if (!selectedIndividualCategoryIds.value.includes(id)) {
+            selectedIndividualCategoryIds.value.push(id)
+        }
+    }
+}, { immediate: true, deep: true })
+
 const toggleIndividualCategory = (cat) => {
+    if (lockedIndividualCategoryIds.value.includes(cat.id)) {
+        toast.info(isEn.value 
+            ? 'This individual category is required because you selected a team event.' 
+            : 'Kategori individu ini wajib diikuti karena Anda memilih kategori beregu/tim.')
+        return
+    }
     const idx = selectedIndividualCategoryIds.value.indexOf(cat.id)
     if (idx === -1) {
         selectedIndividualCategoryIds.value.push(cat.id)
@@ -2465,217 +1231,305 @@ const isIndividualCategorySelected = (catId) => {
 
 const getCategoryFullName = (cat) => {
     if (!cat) return isEn.value ? 'Competition Category' : 'Kategori Pertandingan'
-    const parts = [
-        cat.division_name,
-        cat.category_name_custom || cat.category_name || (cat.name !== cat.division_name ? cat.name : ''),
-        cat.gender_division_name,
-        cat.event_type_name
-    ].filter(s => s && String(s).trim() && s !== '-')
-    return parts.length > 0 ? parts.join(' – ') : (cat.name || (isEn.value ? 'Category' : 'Kategori'))
+    let text = ''
+    if (cat.name && typeof cat.name === 'string' && cat.name.trim()) {
+        text = cat.name.trim()
+    } else {
+        const parts = [
+            cat.division_name,
+            cat.category_name_custom || cat.category_name,
+            cat.gender_division_name,
+            cat.event_type_name
+        ].filter(s => s && String(s).trim() && s !== '-')
+        text = parts.length > 0 ? parts.join(' – ') : (isEn.value ? 'Category' : 'Kategori')
+    }
+    return text.replace(/\b(\w+)\s+\1\b/gi, '$1').replace(/\s+/g, ' ').trim()
 }
 
-// ─── BREAKDOWN COMPUTATION ────────────────────────────────────────────────────
-const computedBreakdownItems = computed(() => {
+// ─── BREAKDOWN COMPUTATION (MODULAR COMPUTED PROPERTIES) ─────────────────────
+const captainIndividualBreakdownItems = computed(() => {
+    if (registrationMode.value !== 'captain_team') return []
+    const registrantName = profileForm.value.full_name || archerProfile.value?.full_name || user.value?.full_name || user.value?.name || (isEn.value ? 'Registrant' : 'Pendaftar')
+    const registrantClub = profileForm.value.club_name || archerProfile.value?.club_name || (isEn.value ? 'Independent' : 'Independen')
+    const registrantAvatar = archerProfile.value?.avatar_url || ''
+
+    return selectedIndividualCategoryIds.value.map(catId => {
+        const cat = categories.value.find(c => c.id === catId)
+        const fee = getFeeForCategory(catId)
+        const catTitle = getCategoryFullName(cat)
+        return {
+            id: `ind-${catId}`,
+            type: 'captain_individual',
+            group: 'individual',
+            person_name: registrantName,
+            role_label: null,
+            role_type: 'captain',
+            avatar_url: registrantAvatar,
+            club_name: registrantClub,
+            category_title: catTitle,
+            division_name: cat?.division_name || '',
+            gender: profileForm.value.gender || '',
+            title: `${registrantName} (${catTitle})`,
+            subtitle: registrantClub,
+            amount: fee,
+            status_badge: null,
+            status_type: 'payable',
+            note: isEn.value ? 'Individual Category' : 'Kategori Individu'
+        }
+    })
+})
+
+const captainTeamBreakdownItems = computed(() => {
+    if (registrationMode.value !== 'captain_team') return []
+    const registrantName = profileForm.value.full_name || archerProfile.value?.full_name || user.value?.full_name || user.value?.name || (isEn.value ? 'Registrant' : 'Pendaftar')
+    const registrantClub = profileForm.value.club_name || archerProfile.value?.club_name || (isEn.value ? 'Independent' : 'Independen')
+    const registrantAvatar = archerProfile.value?.avatar_url || ''
+
     const items = []
+    for (const teamCat of selectedTeamCategories.value) {
+        const teamFee = getFeeForCategory(teamCat.id)
+        if (teamFee <= 0) continue
 
-    if (registrationMode.value === 'captain_team') {
-        const registrantName = profileForm.value.full_name || archerProfile.value?.full_name || user.value?.full_name || user.value?.name || (isEn.value ? 'Registrant' : 'Pendaftar')
-        const registrantClub = profileForm.value.club_name || archerProfile.value?.club_name || (isEn.value ? 'Independent' : 'Independen')
-        const registrantAvatar = archerProfile.value?.avatar_url || ''
+        const teamCatTitle = getCategoryFullName(teamCat)
+        const customTeamName = teamRosters.value[teamCat.id]?.team_name?.trim()
+        const partners = teamRosters.value[teamCat.id]?.partners || []
 
-        // 1. Registrant Individual Categories
-        for (const catId of selectedIndividualCategoryIds.value) {
-            const cat = categories.value.find(c => c.id === catId)
-            const fee = getFeeForCategory(catId)
-            const catTitle = getCategoryFullName(cat)
-            items.push({
-                id: `ind-${catId}`,
-                type: 'captain_individual',
-                group: 'individual',
-                person_name: registrantName,
-                role_label: null,
-                role_type: 'captain',
-                avatar_url: registrantAvatar,
+        const rosterMembers = [
+            {
+                full_name: registrantName,
+                role: isEn.value ? 'Registrant (You)' : 'Pendaftar (Anda)',
                 club_name: registrantClub,
-                category_title: catTitle,
-                division_name: cat?.division_name || '',
-                gender: profileForm.value.gender || '',
-                title: `${registrantName} (${catTitle})`,
-                subtitle: registrantClub,
-                amount: fee,
-                status_badge: null,
-                status_type: 'payable',
-                note: isEn.value ? 'Individual Category' : 'Kategori Individu'
+                avatar_url: registrantAvatar,
+                gender: profileForm.value.gender || 'male'
+            },
+            ...partners.map((p, pIdx) => ({
+                full_name: p.full_name,
+                role: isEn.value ? `Archer ${pIdx + 2}` : `Atlet ${pIdx + 2}`,
+                club_name: p.club_name || (isEn.value ? 'Independent' : 'Independen'),
+                avatar_url: p.avatar_url || '',
+                gender: p.gender || 'male'
+            }))
+        ]
+
+        items.push({
+            id: `team-fee-${teamCat.id}`,
+            type: 'team_fee',
+            group: 'team',
+            person_name: customTeamName || teamCatTitle,
+            role_label: isEn.value ? 'Team Entry Fee' : 'Biaya Pendaftaran Tim',
+            role_type: 'team_slot',
+            avatar_url: '',
+            club_name: '',
+            category_title: teamCatTitle,
+            division_name: teamCat?.division_name || '',
+            title: customTeamName || teamCatTitle,
+            subtitle: customTeamName ? teamCatTitle : '',
+            amount: teamFee,
+            members: rosterMembers,
+            status_badge: null,
+            status_type: 'payable',
+            note: isEn.value ? 'Official Team Quota' : 'Kuota Tim Resmi'
+        })
+    }
+    return items
+})
+
+const captainTeammateBreakdownItems = computed(() => {
+    if (registrationMode.value !== 'captain_team') return []
+    const registrantClub = profileForm.value.club_name || archerProfile.value?.club_name || (isEn.value ? 'Independent' : 'Independen')
+
+    const items = []
+    for (const teamCat of selectedTeamCategories.value) {
+        const partners = teamRosters.value[teamCat.id]?.partners || []
+        for (const partner of partners) {
+            const partnerName = partner.full_name || (isEn.value ? 'Teammate' : 'Rekan Tim')
+            const partnerClub = partner.club_name || registrantClub || (isEn.value ? 'Independent' : 'Independen')
+            const partnerAvatar = partner.avatar_url || ''
+            const partnerGender = (partner.gender || '').toLowerCase()
+
+            const partnerIndCat = categories.value.find(c => {
+                if (getCategoryType(c) !== 'individual') return false
+                const sameDiv = !teamCat.division_id || !c.division_id || teamCat.division_id === c.division_id
+                const divNameMatch = (teamCat.division_name || '').toLowerCase() === (c.division_name || '').toLowerCase()
+                const genderMatch = !partnerGender || isCategoryMatchingGender(c, partnerGender)
+                return (sameDiv || divNameMatch) && genderMatch
             })
-        }
 
-        // 2. Team Categories & Roster
-        for (const teamCat of selectedTeamCategories.value) {
-            const teamFee = getFeeForCategory(teamCat.id)
-            const teamCatTitle = getCategoryFullName(teamCat)
-            const teamName = `${profileForm.value.club_name || registrantClub || 'Tim'} – ${teamCat.division_name || ''} Team`
+            let indCatTitle = ''
+            if (partnerIndCat) {
+                indCatTitle = getCategoryFullName(partnerIndCat)
+            } else {
+                const divName = teamCat.division_name || 'Category'
+                const genderLabel = partnerGender === 'female' ? (isEn.value ? 'Women' : 'Putri') : (partnerGender === 'male' ? (isEn.value ? 'Men' : 'Putra') : '')
+                indCatTitle = `${divName} ${genderLabel} ${isEn.value ? 'Individual' : 'Individu'}`.replace(/\s+/g, ' ').trim()
+            }
 
-            if (teamFee > 0) {
+            if (partner.is_already_registered_individual) {
                 items.push({
-                    id: `team-fee-${teamCat.id}`,
-                    type: 'team_fee',
-                    group: 'team',
-                    person_name: teamName,
-                    role_label: isEn.value ? 'Team Entry Fee' : 'Biaya Pendaftaran Tim',
-                    role_type: 'team_slot',
-                    avatar_url: '',
-                    club_name: registrantClub,
-                    category_title: teamCatTitle,
+                    id: `team-partner-${partner.archer_id || partnerName}-${teamCat.id}`,
+                    type: 'teammate_free',
+                    group: 'individual',
+                    person_name: partnerName,
+                    role_label: isEn.value ? 'Teammate' : 'Rekan Tim',
+                    role_type: 'member',
+                    avatar_url: partnerAvatar,
+                    club_name: partnerClub,
+                    category_title: indCatTitle,
                     division_name: teamCat?.division_name || '',
-                    title: `Team Entry: ${teamCatTitle}`,
-                    subtitle: teamName,
-                    amount: teamFee,
-                    status_badge: isEn.value ? 'Team Fee' : 'Biaya Tim',
-                    status_type: 'payable',
-                    note: isEn.value ? 'Official Team Quota' : 'Kuota Tim Resmi'
+                    title: `${partnerName} (${indCatTitle})`,
+                    subtitle: `${partnerClub} • ${isEn.value ? 'Already registered individual' : 'Sudah terdaftar individu'}`,
+                    amount: 0,
+                    status_badge: isEn.value ? 'Individual Paid' : 'Individu Lunas',
+                    status_type: 'free',
+                    note: isEn.value ? 'Already registered individual (No extra fee)' : 'Sudah terdaftar individu (Bebas biaya tambahan)'
                 })
-            }
-
-            const partners = teamRosters.value[teamCat.id]?.partners || []
-            for (const partner of partners) {
-                const partnerName = partner.full_name || (isEn.value ? 'Teammate' : 'Rekan Tim')
-                const partnerClub = partner.club_name || registrantClub || (isEn.value ? 'Independent' : 'Independen')
-                const partnerAvatar = partner.avatar_url || ''
-
-                const indCatTitle = teamCatTitle.replace(/ - Team$/i, ' - Individual').replace(/ Team$/i, ' Individual').replace(/ - Beregu$/i, ' - Individu').replace(/ Beregu$/i, ' Individu')
-
-                if (partner.is_already_registered_individual) {
-                    items.push({
-                        id: `team-partner-${partner.archer_id || partnerName}-${teamCat.id}`,
-                        type: 'teammate_free',
-                        group: 'individual',
-                        person_name: partnerName,
-                        role_label: isEn.value ? 'Teammate' : 'Rekan Tim',
-                        role_type: 'member',
-                        avatar_url: partnerAvatar,
-                        club_name: partnerClub,
-                        category_title: indCatTitle,
-                        division_name: teamCat?.division_name || '',
-                        title: `${partnerName} (${indCatTitle})`,
-                        subtitle: `${partnerClub} • ${isEn.value ? 'Already registered individual' : 'Sudah terdaftar individu'}`,
-                        amount: 0,
-                        status_badge: isEn.value ? 'Individual Paid' : 'Individu Lunas',
-                        status_type: 'free',
-                        note: isEn.value ? 'Already registered individual (No extra fee)' : 'Sudah terdaftar individu (Bebas biaya tambahan)'
-                    })
-                } else {
-                    const singleFee = partner.individual_fee || singleEntryFee.value
-                    items.push({
-                        id: `team-partner-${partner.archer_id || partnerName}-${teamCat.id}`,
-                        type: 'teammate_covered',
-                        group: 'individual',
-                        person_name: partnerName,
-                        role_label: isEn.value ? 'Teammate' : 'Rekan Tim',
-                        role_type: 'member',
-                        avatar_url: partnerAvatar,
-                        club_name: partnerClub,
-                        category_title: indCatTitle,
-                        division_name: teamCat?.division_name || '',
-                        title: `${partnerName} (${indCatTitle})`,
-                        subtitle: `${partnerClub} • ${isEn.value ? 'Individual Fee (Included in Invoice)' : 'Biaya Individu (Ditanggung Pendaftar)'}`,
-                        amount: singleFee,
-                        status_badge: isEn.value ? 'Included in Invoice' : 'Ditanggung Pendaftar',
-                        status_type: 'covered',
-                        note: isEn.value ? 'Individual entry fee included in this invoice' : 'Biaya pendaftaran individu ditanggung pada tagihan ini'
-                    })
-                }
-            }
-        }
-    } else {
-        // Mode 2: Club Delegation
-        const delegationClub = delegationClubName.value || delegationOfficialName.value || (isEn.value ? 'Club Delegation' : 'Kontingen Klub')
-
-        for (const ath of delegationAthletes.value) {
-            if (ath.full_name) {
-                const catIds = getArcherCategoryIds(ath)
-                const athClub = ath.club_name || delegationClub
-
-                if (catIds.length === 0) {
-                    items.push({
-                        id: `del-ath-${ath.archer_id || ath.full_name}-nocat`,
-                        type: 'delegation_athlete',
-                        group: 'delegation',
-                        person_name: ath.full_name,
-                        role_label: null,
-                        role_type: 'athlete',
-                        avatar_url: ath.avatar_url || '',
-                        club_name: athClub,
-                        category_title: isEn.value ? 'No category selected' : 'Kategori belum dipilih',
-                        division_name: '',
-                        title: `${ath.full_name} (${isEn.value ? 'No Category' : 'Belum Ada Kategori'})`,
-                        subtitle: athClub,
-                        amount: 0,
-                        status_badge: ath.is_new_account ? (isEn.value ? 'New Account' : 'Akun Baru') : null,
-                        status_type: 'payable',
-                        note: isEn.value ? 'Please assign a category in roster' : 'Pilih kategori lomba pada daftar atlet'
-                    })
-                } else {
-                    for (const catId of catIds) {
-                        const cat = categories.value.find(c => c.id === catId)
-                        const fee = getFeeForCategory(catId)
-                        const catTitle = getCategoryFullName(cat)
-
-                        items.push({
-                            id: `del-ath-${ath.archer_id || ath.full_name}-${catId}`,
-                            type: 'delegation_athlete',
-                            group: 'delegation',
-                            person_name: ath.full_name,
-                            role_label: null,
-                            role_type: 'athlete',
-                            avatar_url: ath.avatar_url || '',
-                            club_name: athClub,
-                            category_title: catTitle,
-                            division_name: cat?.division_name || '',
-                            title: `${ath.full_name} (${catTitle})`,
-                            subtitle: athClub,
-                            amount: fee,
-                            status_badge: ath.is_new_account ? (isEn.value ? 'New Account' : 'Akun Baru') : null,
-                            status_type: 'payable',
-                            note: ath.is_new_account ? (isEn.value ? 'New account created automatically' : 'Akun baru dibuat otomatis') : (isEn.value ? 'Official Delegation Archer' : 'Pemanah Delegasi Klub')
-                        })
-                    }
-                }
-            }
-        }
-
-        for (const [catId, count] of Object.entries(delegationTeamBookings.value)) {
-            if (count > 0) {
-                const cat = categories.value.find(c => c.id === catId)
-                const fee = getFeeForCategory(catId) * count
-                const catTitle = getCategoryFullName(cat)
-
+            } else {
+                const singleFee = partnerIndCat ? getFeeForCategory(partnerIndCat.id) : (partner.individual_fee || singleEntryFee.value)
                 items.push({
-                    id: `del-team-${catId}`,
-                    type: 'delegation_team',
-                    group: 'delegation',
-                    person_name: `${catTitle} (${count} Slot${count > 1 ? 's' : ''})`,
-                    role_label: isEn.value ? 'Team Quota' : 'Kuota Tim',
-                    role_type: 'team_slot',
-                    avatar_url: '',
-                    club_name: delegationClub,
-                    category_title: catTitle,
-                    division_name: cat?.division_name || '',
-                    title: `${catTitle} (${count} Slot${count > 1 ? 's' : ''})`,
-                    subtitle: `${delegationClub} • ${isEn.value ? 'Reserved Team Quota' : 'Reservasi Kuota Tim'}`,
-                    amount: fee,
-                    status_badge: isEn.value ? 'Reserved Quota' : 'Reservasi Kuota',
-                    status_type: 'reserved',
-                    note: isEn.value ? 'Roster composition submitted at Technical Meeting' : 'Susunan atlet diserahkan saat Technical Meeting'
+                    id: `team-partner-${partner.archer_id || partnerName}-${teamCat.id}`,
+                    type: 'teammate_covered',
+                    group: 'individual',
+                    person_name: partnerName,
+                    role_label: isEn.value ? 'Teammate' : 'Rekan Tim',
+                    role_type: 'member',
+                    avatar_url: partnerAvatar,
+                    club_name: partnerClub,
+                    category_title: indCatTitle,
+                    division_name: teamCat?.division_name || '',
+                    title: `${partnerName} (${indCatTitle})`,
+                    subtitle: `${partnerClub} • ${isEn.value ? 'Individual Fee (Included in Invoice)' : 'Biaya Individu (Ditanggung Pendaftar)'}`,
+                    amount: singleFee,
+                    status_badge: isEn.value ? 'Included in Invoice' : 'Ditanggung Pendaftar',
+                    status_type: 'covered',
+                    note: isEn.value ? 'Individual entry fee included in this invoice' : 'Biaya pendaftaran individu ditanggung pada tagihan ini'
                 })
             }
         }
     }
-
     return items
+})
+
+const delegationAthleteBreakdownItems = computed(() => {
+    if (registrationMode.value !== 'club_delegation') return []
+    const delegationClub = delegationClubName.value || delegationOfficialName.value || (isEn.value ? 'Club Delegation' : 'Kontingen Klub')
+
+    const items = []
+    for (const ath of delegationAthletes.value) {
+        if (!ath.full_name) continue
+        const catIds = getArcherCategoryIds(ath)
+        const athClub = ath.club_name || delegationClub
+
+        if (catIds.length === 0) {
+            items.push({
+                id: `del-ath-${ath.archer_id || ath.full_name}-nocat`,
+                type: 'delegation_athlete',
+                group: 'delegation',
+                person_name: ath.full_name,
+                role_label: null,
+                role_type: 'athlete',
+                avatar_url: ath.avatar_url || '',
+                club_name: athClub,
+                category_title: isEn.value ? 'No category selected' : 'Kategori belum dipilih',
+                division_name: '',
+                title: `${ath.full_name} (${isEn.value ? 'No Category' : 'Belum Ada Kategori'})`,
+                subtitle: athClub,
+                amount: 0,
+                status_badge: ath.is_new_account ? (isEn.value ? 'New Account' : 'Akun Baru') : null,
+                status_type: 'payable',
+                note: isEn.value ? 'Please assign a category in roster' : 'Pilih kategori lomba pada daftar atlet'
+            })
+        } else {
+            for (const catId of catIds) {
+                const cat = categories.value.find(c => c.id === catId)
+                const fee = getFeeForCategory(catId)
+                const catTitle = getCategoryFullName(cat)
+
+                items.push({
+                    id: `del-ath-${ath.archer_id || ath.full_name}-${catId}`,
+                    type: 'delegation_athlete',
+                    group: 'delegation',
+                    person_name: ath.full_name,
+                    role_label: null,
+                    role_type: 'athlete',
+                    avatar_url: ath.avatar_url || '',
+                    club_name: athClub,
+                    category_title: catTitle,
+                    division_name: cat?.division_name || '',
+                    title: `${ath.full_name} (${catTitle})`,
+                    subtitle: athClub,
+                    amount: fee,
+                    status_badge: ath.is_new_account ? (isEn.value ? 'New Account' : 'Akun Baru') : null,
+                    status_type: 'payable',
+                    note: ath.is_new_account ? (isEn.value ? 'New account created automatically' : 'Akun baru dibuat otomatis') : (isEn.value ? 'Official Delegation Archer' : 'Pemanah Delegasi Klub')
+                })
+            }
+        }
+    }
+    return items
+})
+
+const delegationTeamBreakdownItems = computed(() => {
+    if (registrationMode.value !== 'club_delegation') return []
+    const delegationClub = delegationClubName.value || delegationOfficialName.value || (isEn.value ? 'Club Delegation' : 'Kontingen Klub')
+
+    const items = []
+    for (const [catId, count] of Object.entries(delegationTeamBookings.value)) {
+        if (count > 0) {
+            const cat = categories.value.find(c => c.id === catId)
+            const unitFee = getFeeForCategory(catId)
+            const fee = unitFee * count
+            const catTitle = getCategoryFullName(cat)
+
+            items.push({
+                id: `del-team-${catId}`,
+                type: 'delegation_team',
+                group: 'delegation',
+                person_name: catTitle,
+                qty: count,
+                unit_price: unitFee,
+                role_label: isEn.value ? 'Team Quota' : 'Kuota Tim',
+                role_type: 'team_slot',
+                avatar_url: '',
+                club_name: delegationClub,
+                category_title: catTitle,
+                division_name: cat?.division_name || '',
+                title: catTitle,
+                subtitle: `${delegationClub} • ${isEn.value ? 'Reserved Team Quota' : 'Reservasi Kuota Tim'}`,
+                amount: fee,
+                status_badge: null,
+                status_type: 'reserved',
+                note: isEn.value ? 'Roster composition submitted at Technical Meeting' : 'Susunan atlet diserahkan saat Technical Meeting'
+            })
+        }
+    }
+    return items
+})
+
+const computedBreakdownItems = computed(() => {
+    if (registrationMode.value === 'captain_team') {
+        return [
+            ...captainIndividualBreakdownItems.value,
+            ...captainTeamBreakdownItems.value,
+            ...captainTeammateBreakdownItems.value
+        ]
+    }
+    return [
+        ...delegationAthleteBreakdownItems.value,
+        ...delegationTeamBreakdownItems.value
+    ]
 })
 
 const totalCalculatedFee = computed(() => {
     return computedBreakdownItems.value.reduce((sum, i) => sum + (Number(i.amount) || 0), 0)
+})
+
+const hasAnyRegistrationSelection = computed(() => {
+    if (registrationMode.value === 'captain_team') {
+        return selectedIndividualCategoryIds.value.length > 0 || selectedTeamCategories.value.length > 0
+    }
+    const hasAssignedAthletes = delegationAthletes.value.some(a => getArcherCategoryIds(a).length > 0)
+    const hasTeams = Object.values(delegationTeamBookings.value).some(c => c > 0)
+    return hasAssignedAthletes || hasTeams
 })
 
 // ─── STEP VALIDATION ──────────────────────────────────────────────────────────
@@ -2700,10 +1554,13 @@ const isStep2Valid = computed(() => {
         return selectedIndividualCategoryIds.value.length > 0 || selectedTeamCategories.value.length > 0
     } else {
         const hasAthletes = delegationAthletes.value.length > 0
-        const allAthletesHaveCategory = delegationAthletes.value.length > 0 && delegationAthletes.value.every(a => getArcherCategoryIds(a).length > 0)
+        const allAthletesHaveCategory = hasAthletes && delegationAthletes.value.every(a => getArcherCategoryIds(a).length > 0)
         const allAthletesHaveRequiredCustom = delegationAthletes.value.every(a => areRequiredCustomFieldsFilled(a.custom_fields, customFields.value))
         const hasTeams = Object.values(delegationTeamBookings.value).some(c => c > 0)
-        return (hasAthletes && allAthletesHaveCategory && allAthletesHaveRequiredCustom) || hasTeams
+        if (hasAthletes) {
+            return allAthletesHaveCategory && allAthletesHaveRequiredCustom
+        }
+        return hasTeams
     }
 })
 
@@ -2711,10 +1568,7 @@ const isFormValid = computed(() => isStep1Valid.value && isStep2Valid.value)
 
 const checkoutButtonText = computed(() => {
     if (totalCalculatedFee.value === 0) return isEn.value ? 'Complete Free Registration' : 'Selesaikan Pendaftaran Gratis'
-    if (paymentType.value === 'online') {
-        return onlineGateway.value === 'paypal' ? (isEn.value ? 'Pay Now with PayPal' : 'Bayar Sekarang via PayPal') : (isEn.value ? 'Pay Now via Online Gateway' : 'Bayar Sekarang via Gateway Online')
-    }
-    return isEn.value ? 'Confirm Manual Registration' : 'Konfirmasi Pendaftaran Manual'
+    return isEn.value ? 'Pay Now' : 'Bayar Sekarang'
 })
 
 const goToStep = async (step) => {
@@ -2796,21 +1650,6 @@ const toggleTeamCategory = (cat) => {
         if (!teamRosters.value[cat.id]) {
             teamRosters.value[cat.id] = { partners: [] }
         }
-
-        // If individual categories exist, auto-select matching individual category
-        if (individualCategories.value.length > 0) {
-            const matchingIndCat = individualCategories.value.find(c => 
-                (c.division_name && cat.division_name && c.division_name.toLowerCase() === cat.division_name.toLowerCase()) ||
-                (c.division_id && cat.division_id && c.division_id === cat.division_id)
-            ) || individualCategories.value[0]
-
-            if (matchingIndCat && !selectedIndividualCategoryIds.value.includes(matchingIndCat.id)) {
-                selectedIndividualCategoryIds.value.push(matchingIndCat.id)
-                toast.info(isEn.value 
-                    ? `Individual category (${matchingIndCat.name}) is selected for team participant.` 
-                    : `Kategori individu (${matchingIndCat.name}) dipilih otomatis untuk peserta tim.`)
-            }
-        }
     } else {
         selectedTeamCategories.value.splice(idx, 1)
     }
@@ -2820,7 +1659,21 @@ const openPartnerModal = (cat, params) => {
     partnerModalCategory.value = cat
     partnerModalSlotIndex.value = params.index
     partnerModalGender.value = params.requiredGender || ''
+    partnerModalEditPartner.value = null
     showPartnerModal.value = true
+}
+
+const handleEditPartner = (cat, params) => {
+    partnerModalCategory.value = cat
+    partnerModalSlotIndex.value = params.index
+    partnerModalGender.value = params.requiredGender || ''
+    partnerModalEditPartner.value = params.partner
+    showPartnerModal.value = true
+}
+
+const handleClosePartnerModal = () => {
+    showPartnerModal.value = false
+    partnerModalEditPartner.value = null
 }
 
 const handlePartnerSelected = (partner) => {
@@ -2829,7 +1682,13 @@ const handlePartnerSelected = (partner) => {
     if (!teamRosters.value[catId]) {
         teamRosters.value[catId] = { partners: [] }
     }
-    teamRosters.value[catId].partners.push(partner)
+    const idx = partnerModalSlotIndex.value
+    if (idx !== null && idx !== undefined && teamRosters.value[catId].partners[idx]) {
+        teamRosters.value[catId].partners[idx] = partner
+    } else {
+        teamRosters.value[catId].partners.push(partner)
+    }
+    partnerModalEditPartner.value = null
 }
 
 const removePartner = (catId, partnerIdx) => {
@@ -2840,6 +1699,7 @@ const removePartner = (catId, partnerIdx) => {
 
 // ─── REPRESENTATIVE ATHLETE ACTIONS ───────────────────────────────────────────
 const editDelegationAthlete = (ath) => {
+    activeCategoryDropdownAth.value = null
     editingAthlete.value = JSON.parse(JSON.stringify(ath))
     showAddAthleteModal.value = true
 }
@@ -2939,6 +1799,47 @@ const handleBulkImported = (importedList) => {
 
 const removeDelegationAthleteRow = (idx) => {
     delegationAthletes.value.splice(idx, 1)
+}
+
+
+const viewAthleteDetail = (ath) => {
+    if (!ath) return
+    activeCategoryDropdownAth.value = null
+    viewingAthleteDetail.value = JSON.parse(JSON.stringify(ath))
+}
+const closeAthleteDetail = () => {
+    viewingAthleteDetail.value = null
+}
+
+
+const promptRemoveAthlete = (ath) => {
+    activeCategoryDropdownAth.value = null
+    athleteToDelete.value = ath
+}
+const cancelRemoveAthlete = () => {
+    athleteToDelete.value = null
+}
+const confirmRemoveAthlete = () => {
+    if (!athleteToDelete.value) return
+    const ath = athleteToDelete.value
+    const idx = delegationAthletes.value.findIndex(a => 
+        (ath.email && a.email?.toLowerCase()?.trim() === ath.email?.toLowerCase()?.trim()) ||
+        (ath.archer_id && a.archer_id && a.archer_id === ath.archer_id) ||
+        (a.full_name === ath.full_name && a.gender === ath.gender)
+    )
+    if (idx !== -1) {
+        delegationAthletes.value.splice(idx, 1)
+        selectedAthleteEmails.value = selectedAthleteEmails.value.filter(e => e !== ath.email)
+        if (athleteCurrentPage.value > athleteTotalPages.value) {
+            athleteCurrentPage.value = Math.max(1, athleteTotalPages.value)
+        }
+        toast.success(isEn.value ? 'Athlete removed from roster' : 'Atlet berhasil dihapus dari daftar')
+    }
+    athleteToDelete.value = null
+}
+
+const removeDelegationAthlete = (ath) => {
+    promptRemoveAthlete(ath)
 }
 
 // ─── TEAM ELIGIBILITY & GATE CHECKING FOR DELEGATIONS ────────────────────────
@@ -3084,7 +1985,7 @@ const incrementTeamBooking = (catId) => {
             toast.warning(
                 isEn.value
                     ? `Cannot reserve team: ${eligibility.neededMessage}. Please add eligible archers to the roster first.`
-                    : `Tidak dapat memesan kuota tim: ${eligibility.neededMessage}. Silakan lengkapi atlet di daftar pendaftaran terlebih dahulu.`
+                    : `Tidak dapat memesan kuota tim: ${eligibility.neededMessage}. Silakan tambahkan atlet yang sesuai di daftar kontingen terlebih dahulu.`
             )
         } else {
             toast.warning(
@@ -3424,12 +2325,6 @@ watch(() => [archerProfile.value, user.value], ([profile, u]) => {
     }
 }, { immediate: true, deep: true })
 
-watch(individualCategories, (cats) => {
-    if (cats.length > 0 && selectedIndividualCategoryIds.value.length === 0) {
-        selectedIndividualCategoryIds.value = [cats[0].id]
-    }
-}, { immediate: true })
-
 watch(() => profileForm.value.gender, (newGender) => {
     if (!newGender) return
     // Prune individual categories that no longer match the new gender
@@ -3442,10 +2337,6 @@ watch(() => profileForm.value.gender, (newGender) => {
         if (getCategoryType(cat) === 'mixed_team') return true
         return isCategoryMatchingGender(cat, newGender)
     })
-    // If no individual category remains selected, select first available matching category
-    if (selectedIndividualCategoryIds.value.length === 0 && individualCategories.value.length > 0) {
-        selectedIndividualCategoryIds.value = [individualCategories.value[0].id]
-    }
 })
 
 useSeoMeta({

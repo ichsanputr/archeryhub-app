@@ -184,15 +184,13 @@
                         </div>
 
                         <!-- Empty State -->
-                        <div v-else class="py-14 flex flex-col items-center justify-center text-center space-y-3">
-                            <div class="size-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
-                                <Icon icon="ph:chart-bar-bold" class="text-3xl text-slate-400" />
-                            </div>
-                            <div class="max-w-xs space-y-1">
-                                <div class="text-xs font-bold text-navy">{{ $t('dashboard_event_overview.empty_pie_title') }}</div>
-                                <div class="text-[11px] text-slate-400 font-medium">{{ $t('dashboard_event_overview.no_category_data_desc') }}</div>
-                            </div>
-                        </div>
+                        <BaseEmptyState
+                            v-else
+                            icon="ph:chart-bar-bold"
+                            size="sm"
+                            :title="$t('dashboard_event_overview.empty_pie_title')"
+                            :description="$t('dashboard_event_overview.no_category_data_desc')"
+                        />
                     </div>
 
                     <!-- Column 2: Payment Status Breakdown -->
@@ -380,15 +378,13 @@
                         </div>
 
                         <!-- Empty Pie Chart State -->
-                        <div v-else class="py-14 flex flex-col items-center justify-center text-center space-y-3">
-                            <div class="size-16 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center">
-                                <Icon icon="ph:chart-pie-bold" class="text-3xl text-slate-400" />
-                            </div>
-                            <div class="max-w-xs space-y-1">
-                                <div class="text-xs font-bold text-navy">{{ $t('dashboard_event_overview.empty_pie_title') }}</div>
-                                <div class="text-[11px] text-slate-400 font-medium">{{ $t('dashboard_event_overview.empty_pie_desc') }}</div>
-                            </div>
-                        </div>
+                        <BaseEmptyState
+                            v-else
+                            icon="ph:chart-pie-bold"
+                            size="sm"
+                            :title="$t('dashboard_event_overview.empty_pie_title')"
+                            :description="$t('dashboard_event_overview.empty_pie_desc')"
+                        />
                     </div>
                 </div>
 

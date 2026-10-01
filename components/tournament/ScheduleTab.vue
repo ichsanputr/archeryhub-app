@@ -10,15 +10,12 @@
             </div>
 
             <!-- Empty State (No Schedules at all) -->
-            <div v-else-if="!displaySchedules.length" class="py-20 flex flex-col items-center justify-center text-center">
-                <div class="w-20 h-20 rounded-3xl bg-gray-50 flex items-center justify-center mx-auto mb-5 text-gray-300">
-                    <Icon icon="ph:calendar-blank-bold" class="text-4xl" />
-                </div>
-                <h3 class="text-lg font-bold text-navy mb-1.5">{{ t('event_schedule.empty_title', 'Jadwal Belum Tersedia') }}</h3>
-                <p class="text-gray-400 font-medium text-sm max-w-sm mx-auto leading-relaxed">
-                    {{ t('event_schedule.empty_desc', 'Penyelenggara belum mempublikasikan jadwal pertandingan untuk event ini.') }}
-                </p>
-            </div>
+            <BaseEmptyState
+                v-else-if="!displaySchedules.length"
+                icon="ph:calendar-blank-bold"
+                :title="t('event_schedule.empty_title', 'Jadwal Belum Tersedia')"
+                :description="t('event_schedule.empty_desc', 'Penyelenggara belum mempublikasikan jadwal pertandingan untuk event ini.')"
+            />
 
             <!-- Main Schedule Content -->
             <div v-else class="space-y-6">
@@ -73,20 +70,23 @@
                 </div>
 
                 <!-- 3. Filter Zero State -->
-                <div v-if="filteredSessions.length === 0" class="py-16 text-center">
-                    <div class="w-16 h-16 rounded-2xl bg-gray-50 flex items-center justify-center mx-auto mb-3 text-gray-300">
-                        <Icon icon="ph:magnifying-glass-bold" class="text-3xl" />
-                    </div>
-                    <p class="text-sm font-bold text-navy mb-1">{{ t('event_schedule.no_sessions_found', 'Tidak ada sesi yang cocok dengan filter pencarian.') }}</p>
-                    <button
-                        type="button"
-                        @click="selectedType = 'all'"
-                        class="text-xs font-bold text-navy hover:underline mt-2 inline-flex items-center gap-1"
-                    >
-                        <span>{{ t('common.reset', 'Reset') }} Filter</span>
-                        <Icon icon="ph:arrow-clockwise-bold" class="text-xs" />
-                    </button>
-                </div>
+                <BaseEmptyState
+                    v-if="filteredSessions.length === 0"
+                    icon="ph:magnifying-glass-bold"
+                    size="sm"
+                    :title="t('event_schedule.no_sessions_found', 'Tidak ada sesi yang cocok dengan filter pencarian.')"
+                >
+                    <template #actions>
+                        <button
+                            type="button"
+                            @click="selectedType = 'all'"
+                            class="text-xs font-bold text-navy hover:underline inline-flex items-center gap-1"
+                        >
+                            <span>{{ t('common.reset', 'Reset') }} Filter</span>
+                            <Icon icon="ph:arrow-clockwise-bold" class="text-xs" />
+                        </button>
+                    </template>
+                </BaseEmptyState>
 
                 <!-- 4. Session Cards List (Redesigned with Contrast & Structure) -->
                 <div v-else class="space-y-4">

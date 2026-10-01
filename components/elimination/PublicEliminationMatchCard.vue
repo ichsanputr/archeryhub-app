@@ -74,8 +74,6 @@ const handleCardClick = () => {
         const slug = route.params.slug || props.match?.event_slug || props.match?.tournament_slug
         if (slug) {
             router.push(`/tournaments/${slug}/match/${targetId}`)
-        } else {
-            router.push(`/match/${targetId}`)
         }
     }
 }

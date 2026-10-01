@@ -382,6 +382,12 @@ definePageMeta({
   layout: false
 })
 
+useHead({
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
+})
+
 const route = useRoute()
 const { get } = useApi()
 

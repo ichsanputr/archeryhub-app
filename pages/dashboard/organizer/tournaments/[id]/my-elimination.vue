@@ -76,11 +76,11 @@
                     {{ t('elimination.bracket_path') }}
                 </h4>
 
-                <div v-if="elimMatches.length === 0"
-                    class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[32px]">
-                    <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <div class="text-sm font-black tracking-widest text-slate-300">{{ t('elimination.not_reached') }}</div>
-                </div>
+                <BaseEmptyState
+                    v-if="elimMatches.length === 0"
+                    icon="ph:sword"
+                    :title="t('elimination.not_reached')"
+                />
 
                 <div v-else class="relative overflow-x-auto pb-8 scrollbar-hide">
                     <div class="flex min-w-[1000px] items-center px-4 gap-4">

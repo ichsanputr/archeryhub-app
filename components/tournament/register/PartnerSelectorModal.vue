@@ -1,23 +1,23 @@
 <template>
     <Teleport to="body">
         <div v-if="show"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-navy/60 backdrop-blur-sm animate-fade-in"
+            class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-navy/60 backdrop-blur-sm animate-fade-in"
             @click.self="close">
             
             <div class="bg-white rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden border border-slate-200/90 flex flex-col max-h-[90vh]">
                 
-                <!-- Modal Header (Clean, No Chips) -->
-                <div class="px-6 py-5 border-b border-slate-100 flex items-start justify-between bg-slate-50/70">
-                    <div class="flex items-start gap-3.5">
-                        <div class="size-11 rounded-2xl bg-navy text-primary flex items-center justify-center shadow-xs shrink-0 mt-0.5">
-                            <Icon icon="ph:user-plus-bold" class="text-xl" />
+                <!-- Modal Header -->
+                <div class="px-5 py-3.5 sm:px-6 sm:py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/70">
+                    <div class="flex items-center gap-3">
+                        <div class="size-9 rounded-xl bg-primary/15 border border-primary/30 text-navy flex items-center justify-center shadow-2xs shrink-0">
+                            <Icon icon="ph:user-plus-bold" class="text-base text-navy" />
                         </div>
                         <div>
-                            <h3 class="text-base sm:text-lg font-black text-navy leading-snug">
-                                {{ isEn ? 'Add Team Member' : 'Tambah Anggota Tim' }}
+                            <h3 class="text-sm sm:text-base font-black text-navy leading-snug">
+                                {{ isEn ? 'Add / Change Team Member' : 'Pilih / Tambah Anggota Tim' }}
                             </h3>
-                            <div class="text-xs sm:text-sm text-slate-500 mt-0.5">
-                                {{ isEn ? 'Select or add an archer for your team roster.' : 'Pilih atau tambahkan atlet untuk anggota tim Anda.' }}
+                            <div class="text-xs text-slate-500">
+                                {{ isEn ? 'Select or add an archer for your team roster.' : 'Pilih atau daftarkan atlet untuk anggota tim Anda.' }}
                             </div>
                         </div>
                     </div>
@@ -25,169 +25,199 @@
                     <button
                         type="button"
                         @click="close"
-                        class="size-9 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 hover:text-navy hover:bg-slate-200 transition-colors cursor-pointer shrink-0">
-                        <Icon icon="ph:x-bold" class="text-base" />
+                        class="size-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 hover:text-navy hover:bg-slate-200 transition-colors cursor-pointer shrink-0">
+                        <Icon icon="ph:x-bold" class="text-sm" />
                     </button>
                 </div>
 
-                <!-- Modern Segmented Tabs Navigation -->
-                <div class="p-3.5 bg-slate-50 border-b border-slate-100">
-                    <div class="grid grid-cols-3 gap-1.5 bg-slate-200/70 p-1 rounded-2xl">
-                        <button
-                            type="button"
-                            @click="activeTab = 'registered'"
-                            class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-                            :class="activeTab === 'registered' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-600 hover:text-navy'">
-                            <span class="size-2 rounded-full bg-emerald-500 shrink-0"></span>
-                            <span class="truncate">{{ isEn ? 'Registered (Free)' : 'Sudah Terdaftar (Gratis)' }}</span>
-                        </button>
+                <!-- Modern 2-Segment Tabs Navigation -->
+                <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-100">
+                    <div class="grid grid-cols-2 gap-1.5 bg-slate-200/70 p-1 rounded-xl">
                         <button
                             type="button"
                             @click="activeTab = 'search'"
-                            class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                            class="py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
                             :class="activeTab === 'search' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-600 hover:text-navy'">
                             <Icon icon="ph:magnifying-glass-bold" class="text-sm shrink-0" />
-                            <span class="truncate">{{ isEn ? 'Search Archer' : 'Cari Atlet' }}</span>
+                            <span>{{ isEn ? 'Search Archer' : 'Cari Atlet' }}</span>
                         </button>
                         <button
                             type="button"
                             @click="activeTab = 'quick_add'"
-                            class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                            class="py-2 px-3 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 cursor-pointer"
                             :class="activeTab === 'quick_add' ? 'bg-white text-navy font-black shadow-xs' : 'text-slate-600 hover:text-navy'">
                             <Icon icon="ph:user-plus-bold" class="text-sm shrink-0" />
-                            <span class="truncate">{{ isEn ? 'New Archer' : 'Archer Baru' }}</span>
+                            <span>{{ isNewArcherEdit ? (isEn ? 'Edit New Archer' : 'Edit Atlet Baru') : (isEn ? 'New Archer' : 'Atlet Baru') }}</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- TAB 1: REGISTERED IN EVENT (FREE) -->
-                <div v-if="activeTab === 'registered'" class="flex-1 overflow-y-auto p-5 space-y-3 max-h-[420px]">
-                    <div v-if="loading" class="py-14 text-center text-slate-400">
-                        <Icon icon="ph:spinner-gap-bold" class="text-3xl animate-spin mx-auto mb-2 text-navy" />
-                        <div class="text-sm font-bold">{{ isEn ? 'Loading eligible archers...' : 'Memuat atlet yang memenuhi syarat...' }}</div>
-                    </div>
-                    
-                    <div v-else-if="registeredPartners.length === 0" class="py-12 text-center text-slate-400 space-y-2">
-                        <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
-                            <Icon icon="ph:users-three-bold" class="text-3xl" />
-                        </div>
-                        <div class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'No other individual archers registered yet' : 'Belum ada atlet individu terdaftar lainnya' }}</div>
-                        <div class="text-xs sm:text-sm text-slate-500 max-w-sm mx-auto leading-relaxed">
-                            {{ isEn ? 'Archers registered in this division will appear here with no extra fee (Free). You can also search the database or add a new archer.' : 'Atlet yang mendaftar kategori individu pada divisi ini akan otomatis muncul di sini tanpa biaya tambahan (Gratis). Anda juga dapat mencari di database atau membuat profil atlet baru.' }}
-                        </div>
-                    </div>
-
-                    <div v-else class="space-y-2.5">
-                        <div
-                            v-for="archer in registeredPartners"
-                            :key="archer.archer_id || archer.participant_id"
-                            @click="selectPartner(archer)"
-                            class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 hover:border-navy hover:bg-slate-50 transition-all cursor-pointer group"
-                            :class="isAlreadySelected(archer) ? 'opacity-40 pointer-events-none' : ''">
-                            
-                            <div class="flex items-center gap-3.5 min-w-0">
-                                <img
-                                    :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
-                                    class="size-11 rounded-full object-cover shrink-0 border border-slate-200" />
-                                <div class="min-w-0">
-                                    <div class="text-sm sm:text-base font-black text-navy truncate group-hover:underline">
-                                        {{ archer.full_name }}
-                                    </div>
-                                    <div class="text-xs sm:text-sm text-slate-600 font-bold truncate mt-0.5 flex items-center gap-1.5">
-                                        <Icon icon="ph:shield-bold" class="text-xs text-primary-hover shrink-0" />
-                                        <span>{{ archer.club_name || 'Independent' }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-3 shrink-0">
-                                <span class="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-emerald-100 text-emerald-800 text-xs sm:text-sm font-black border border-emerald-300">
-                                    <Icon icon="ph:check-bold" />
-                                    {{ isEn ? 'Free (Registered)' : 'Gratis (Sudah Terdaftar)' }}
-                                </span>
-                                <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                                    <Icon icon="ph:plus-bold" class="text-sm" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: SEARCH ARCHERIS DATABASE -->
-                <div v-else-if="activeTab === 'search'" class="flex-1 flex flex-col overflow-hidden">
-                    <div class="p-4 border-b border-slate-100 bg-slate-50/50">
+                <!-- TAB 1: UNIFIED SMART SEARCH & SELECTION -->
+                <div v-if="activeTab === 'search'" class="flex-1 flex flex-col overflow-hidden">
+                    <!-- Search Input Bar (Compact, tight padding) -->
+                    <div class="px-4 py-2.5 border-b border-slate-100 bg-slate-50/40">
                         <div class="relative">
                             <input
                                 v-model="searchQuery"
                                 type="text"
                                 :placeholder="isEn ? 'Search by archer name, club, or ID...' : 'Cari nama atlet, klub, atau ID...'"
-                                class="w-full h-12 px-4 pl-11 bg-white border border-slate-200 rounded-xl text-sm sm:text-base font-bold text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-all"
+                                class="w-full h-10 px-3.5 pl-10 pr-9 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm font-bold text-navy focus:outline-none focus:ring-2 focus:ring-navy/20 focus:border-navy transition-all"
                                 autofocus />
-                            <Icon icon="ph:magnifying-glass" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
-                            <Icon v-if="searchLoading" icon="ph:spinner-gap-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-navy animate-spin text-lg" />
+                            <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-base" />
+                            <button
+                                v-if="searchQuery"
+                                type="button"
+                                @click="searchQuery = ''"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-navy p-0.5">
+                                <Icon icon="ph:x-circle-fill" class="text-base" />
+                            </button>
+                            <Icon v-else-if="searchLoading" icon="ph:spinner-gap-bold" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-navy animate-spin text-base" />
                         </div>
                     </div>
 
-                    <div class="flex-1 overflow-y-auto p-5 space-y-2.5 max-h-[360px]">
-                        <div v-if="searchQuery.length < 2" class="py-12 text-center text-slate-400 space-y-2">
-                            <div class="size-12 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
-                                <Icon icon="ph:magnifying-glass-bold" class="text-2xl" />
+                    <!-- Search Results or Default Recommendations (10 archers) -->
+                    <div class="flex-1 overflow-y-auto p-3.5 sm:p-4 space-y-2.5 max-h-[380px]">
+                        
+                        <!-- State 1: Search Query Active (Live Database Search) -->
+                        <template v-if="searchQuery.trim().length > 0">
+                            <div v-if="searchQuery.trim().length < 2" class="py-10">
+                                <BaseEmptyState
+                                    icon="ph:magnifying-glass-bold"
+                                    size="sm"
+                                    :title="isEn ? 'Type at least 2 characters' : 'Ketik minimal 2 karakter'"
+                                    :description="isEn ? 'Enter the archer name or club to search the database.' : 'Masukkan nama atlet atau klub untuk mencari di database.'"
+                                />
                             </div>
-                            <div class="text-sm font-bold">{{ isEn ? 'Type at least 2 characters to search' : 'Ketik minimal 2 karakter untuk mencari' }}</div>
-                        </div>
-                        <div v-else-if="searchResults.length === 0 && !searchLoading" class="py-10 text-center space-y-3">
-                            <div class="size-14 rounded-2xl bg-slate-100 border border-slate-200 shadow-2xs flex items-center justify-center mx-auto text-navy">
-                                <Icon icon="ph:user-slash-bold" class="text-2xl text-navy" />
-                            </div>
-                            <div>
-                                <div class="text-sm sm:text-base font-black text-navy">{{ isEn ? 'No archers found' : 'Atlet tidak ditemukan' }}</div>
-                                <div class="text-xs sm:text-sm text-slate-500 mt-0.5">{{ isEn ? 'Try another keyword or switch to New Archer tab.' : 'Coba kata kunci lain atau pilih tab Archer Baru.' }}</div>
-                            </div>
-                        </div>
-                        <div v-else class="space-y-2.5">
-                            <div
-                                v-for="archer in searchResults"
-                                :key="archer.archer_id || archer.id"
-                                @click="selectPartner(archer)"
-                                class="flex items-center justify-between p-4 rounded-2xl border border-slate-200 hover:border-navy hover:bg-slate-50 transition-all cursor-pointer group"
-                                :class="isAlreadySelected(archer) ? 'opacity-40 pointer-events-none' : ''">
-                                
-                                <div class="flex items-center gap-3.5 min-w-0">
-                                    <img
-                                        :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
-                                        class="size-11 rounded-full object-cover shrink-0 border border-slate-200" />
-                                    <div class="min-w-0">
-                                        <div class="text-sm sm:text-base font-black text-navy truncate group-hover:underline">
-                                            {{ archer.full_name }}
-                                        </div>
-                                        <div class="text-xs sm:text-sm text-slate-600 font-bold truncate mt-0.5 flex items-center gap-1.5">
-                                            <Icon icon="ph:shield-bold" class="text-xs text-primary-hover shrink-0" />
-                                            <span>{{ archer.club_name || 'Independent' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="flex items-center gap-3 shrink-0">
-                                    <span
-                                        class="inline-flex items-center gap-1 px-3 py-1 rounded-xl text-xs sm:text-sm font-black border"
-                                        :class="archer.is_already_registered_individual ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'">
-                                        {{ archer.is_already_registered_individual ? (isEn ? 'Free' : 'Gratis') : (isEn ? '+ Individual Fee' : '+ Biaya Individu') }}
-                                    </span>
-                                    <div class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                                        <Icon icon="ph:plus-bold" class="text-sm" />
+                            <div v-else-if="searchLoading" class="py-14 text-center text-slate-400">
+                                <Icon icon="ph:spinner-gap-bold" class="text-3xl animate-spin mx-auto mb-2 text-navy" />
+                                <div class="text-xs sm:text-sm font-bold text-navy">{{ isEn ? 'Searching archers database...' : 'Mencari atlet di database...' }}</div>
+                            </div>
+
+                            <div v-else-if="searchResults.length === 0" class="py-8">
+                                <BaseEmptyState
+                                    icon="ph:user-slash-bold"
+                                    size="sm"
+                                    :title="isEn ? 'No archers found' : 'Atlet tidak ditemukan'"
+                                    :description="isEn ? 'No archers matched your search. You can register a new archer.' : 'Tidak ditemukan atlet yang cocok di database. Anda dapat mendaftarkan atlet baru.'"
+                                >
+                                    <template #actions>
+                                        <BaseButton
+                                            type="button"
+                                            variant="navy"
+                                            size="sm"
+                                            icon="ph:user-plus-bold"
+                                            @click="activeTab = 'quick_add'"
+                                            class="font-bold text-xs">
+                                            <span>{{ isEn ? 'Register New Archer' : 'Daftarkan Atlet Baru' }}</span>
+                                        </BaseButton>
+                                    </template>
+                                </BaseEmptyState>
+                            </div>
+
+                            <div v-else class="space-y-2.5">
+                                <div
+                                    v-for="archer in searchResults"
+                                    :key="archer.archer_id || archer.id"
+                                    @click="selectPartner(archer)"
+                                    class="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-slate-200 hover:border-navy hover:bg-slate-50 transition-all cursor-pointer group"
+                                    :class="isAlreadySelected(archer) ? 'opacity-40 pointer-events-none' : ''">
+                                    
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <img
+                                            :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
+                                            class="size-11 rounded-full object-cover shrink-0 border border-slate-200" />
+                                        <div class="min-w-0">
+                                            <div class="text-sm sm:text-base font-black text-navy truncate">
+                                                {{ archer.full_name }}
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-slate-600 font-bold truncate mt-0.5 flex items-center gap-1.5">
+                                                <Icon icon="ph:shield-bold" class="text-xs text-primary-hover shrink-0" />
+                                                <span>{{ archer.club_name || 'Independent' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2.5 shrink-0">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-black border"
+                                            :class="archer.is_already_registered_individual ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'">
+                                            <Icon :icon="archer.is_already_registered_individual ? 'ph:check-bold' : 'ph:tag-bold'" class="text-xs" />
+                                            <span>{{ archer.is_already_registered_individual ? (isEn ? 'Free (Registered)' : 'Gratis (Sudah Terdaftar)') : (isEn ? '+ Individual Fee' : '+ Biaya Individu') }}</span>
+                                        </span>
+                                        <div class="size-8 sm:size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                                            <Icon icon="ph:plus-bold" class="text-sm" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </template>
+
+                        <!-- State 2: Default View (Shows 10 Eligible & Available Archers) -->
+                        <template v-else>
+                            <div v-if="loading" class="py-14 text-center text-slate-400">
+                                <Icon icon="ph:spinner-gap-bold" class="text-3xl animate-spin mx-auto mb-2 text-navy" />
+                                <div class="text-xs sm:text-sm font-bold text-navy">{{ isEn ? 'Loading available archers...' : 'Memuat daftar atlet...' }}</div>
+                            </div>
+
+                            <div v-else-if="registeredPartners.length === 0" class="py-8">
+                                <BaseEmptyState
+                                    icon="ph:magnifying-glass-bold"
+                                    size="sm"
+                                    :title="isEn ? 'Search Archer in Database' : 'Cari Atlet di Database'"
+                                    :description="isEn ? 'Type the archer name above to search the database, or switch to New Archer to add someone new.' : 'Ketik nama atlet di kolom pencarian di atas, atau pilih tab Atlet Baru jika belum memiliki akun.'"
+                                />
+                            </div>
+
+                            <div v-else class="space-y-2.5">
+                                <div
+                                    v-for="archer in registeredPartners"
+                                    :key="archer.archer_id || archer.participant_id"
+                                    @click="selectPartner(archer)"
+                                    class="flex items-center justify-between p-3.5 sm:p-4 rounded-2xl border border-slate-200 hover:border-navy hover:bg-slate-50 transition-all cursor-pointer group"
+                                    :class="isAlreadySelected(archer) ? 'opacity-40 pointer-events-none' : ''">
+                                    
+                                    <div class="flex items-center gap-3.5 min-w-0">
+                                        <img
+                                            :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
+                                            class="size-11 rounded-full object-cover shrink-0 border border-slate-200" />
+                                        <div class="min-w-0">
+                                            <div class="text-sm sm:text-base font-black text-navy truncate">
+                                                {{ archer.full_name }}
+                                            </div>
+                                            <div class="text-xs sm:text-sm text-slate-600 font-bold truncate mt-0.5 flex items-center gap-1.5">
+                                                <Icon icon="ph:shield-bold" class="text-xs text-primary-hover shrink-0" />
+                                                <span>{{ archer.club_name || 'Independent' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2.5 shrink-0">
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-black border"
+                                            :class="archer.is_already_registered_individual ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'">
+                                            <Icon :icon="archer.is_already_registered_individual ? 'ph:check-bold' : 'ph:tag-bold'" class="text-xs" />
+                                            <span>{{ archer.is_already_registered_individual ? (isEn ? 'Free (Registered)' : 'Gratis (Sudah Terdaftar)') : (isEn ? '+ Individual Fee' : '+ Biaya Individu') }}</span>
+                                        </span>
+                                        <div class="size-8 sm:size-9 rounded-xl bg-navy text-primary flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                                            <Icon icon="ph:plus-bold" class="text-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+
                     </div>
                 </div>
 
-                <!-- TAB 3: NEW ARCHER PROFILE (REQUIRED FIELDS ONLY) -->
-                <div v-else-if="activeTab === 'quick_add'" class="p-6 overflow-y-auto max-h-[440px] space-y-4">
-                    <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
-                        <Icon icon="ph:info-bold" class="text-amber-600 text-xl shrink-0 mt-0.5" />
+                <!-- TAB 2: NEW ARCHER PROFILE / EDIT ARCHER (WITH DYNAMIC CUSTOM FIELDS) -->
+                <div v-else-if="activeTab === 'quick_add'" class="p-5 sm:p-6 overflow-y-auto max-h-[440px] space-y-4">
+                    <div class="p-3.5 sm:p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
+                        <Icon icon="ph:info-bold" class="text-amber-600 text-lg shrink-0 mt-0.5" />
                         <div class="text-xs sm:text-sm text-amber-900 leading-relaxed font-medium">
-                            {{ isEn ? 'Enter your teammate details. The individual entry fee for this archer will be added to your payment invoice.' : 'Masukkan data atlet rekan tim Anda. Biaya pendaftaran kategori individu atlet akan otomatis ditambahkan ke tagihan pembayaran Anda.' }}
+                            {{ isNewArcherEdit 
+                                ? (isEn ? 'Update your teammate details below. Changes will be updated on your roster.' : 'Perbarui data atlet rekan tim Anda di bawah ini. Perubahan akan langsung disinkronkan ke tim.') 
+                                : (isEn ? 'Enter your teammate details. The individual entry fee for this archer will be added to your payment invoice.' : 'Masukkan data atlet rekan tim Anda. Biaya pendaftaran kategori individu atlet akan otomatis ditambahkan ke tagihan pembayaran Anda.') }}
                         </div>
                     </div>
 
@@ -227,7 +257,7 @@
                                 v-model="quickForm.password"
                                 :label="isEn ? 'Account Password' : 'Kata Sandi Akun'"
                                 type="text"
-                                :placeholder="isEn ? 'Default: 123456' : 'Default: 123456'"
+                                :placeholder="isEn ? 'Default: Archeris123!' : 'Default: Archeris123!'"
                                 :error="errors.password"
                                 @blur="validateField('password')"
                                 required
@@ -249,6 +279,14 @@
                                 :placeholder="isEn ? 'Select or search club...' : 'Pilih atau cari klub...'" />
                         </div>
 
+                        <!-- Dynamic Tournament Custom Fields -->
+                        <div v-if="customFields && customFields.length > 0" class="pt-1">
+                            <DynamicCustomFieldsRenderer
+                                :fields="customFields"
+                                v-model="quickForm.custom_fields"
+                            />
+                        </div>
+
                         <div class="pt-2">
                             <BaseButton
                                 type="button"
@@ -258,22 +296,12 @@
                                 size="md"
                                 class="w-full justify-center text-sm sm:text-base">
                                 <template #icon-left>
-                                    <Icon icon="ph:user-plus-bold" />
+                                    <Icon :icon="isNewArcherEdit ? 'ph:check-bold' : 'ph:user-plus-bold'" />
                                 </template>
-                                {{ isEn ? 'Add Archer to Squad' : 'Tambahkan Atlet ke Tim' }}
+                                {{ isNewArcherEdit ? (isEn ? 'Save Archer Details' : 'Simpan Data Atlet') : (isEn ? 'Add Archer to Squad' : 'Tambahkan Atlet ke Tim') }}
                             </BaseButton>
                         </div>
                     </div>
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex justify-end">
-                    <button
-                        type="button"
-                        @click="close"
-                        class="px-5 py-2.5 rounded-xl border border-slate-200 text-navy font-bold text-sm hover:bg-slate-100 transition-colors cursor-pointer">
-                        {{ isEn ? 'Close' : 'Tutup' }}
-                    </button>
                 </div>
             </div>
         </div>
@@ -288,6 +316,8 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 import BaseInput from '~/components/common/BaseInput.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseButton from '~/components/common/BaseButton.vue'
+import BaseEmptyState from '~/components/common/BaseEmptyState.vue'
+import DynamicCustomFieldsRenderer from '~/components/tournaments/DynamicCustomFieldsRenderer.vue'
 import ClubSelector from '~/components/common/ClubSelector.vue'
 
 const { locale } = useI18n()
@@ -325,12 +355,20 @@ const props = defineProps({
     defaultSingleFee: {
         type: Number,
         default: 150000
+    },
+    customFields: {
+        type: Array,
+        default: () => []
+    },
+    editPartner: {
+        type: Object,
+        default: null
     }
 })
 
 const emit = defineEmits(['close', 'select-partner'])
 
-const activeTab = ref('registered')
+const activeTab = ref('search')
 const loading = ref(false)
 const registeredPartners = ref([])
 const searchQuery = ref('')
@@ -348,7 +386,8 @@ const quickForm = ref({
     email: '',
     password: 'Archeris123!',
     club_id: '',
-    club_name: ''
+    club_name: '',
+    custom_fields: {}
 })
 
 const errors = ref({
@@ -356,6 +395,52 @@ const errors = ref({
     email: '',
     password: ''
 })
+
+const isNewArcherEdit = computed(() => {
+    if (!props.editPartner) return false
+    return Boolean(
+        props.editPartner.is_new_account ||
+        !props.editPartner.archer_id ||
+        (props.editPartner.email && props.editPartner.needs_individual_registration && !props.editPartner.is_already_registered_individual)
+    )
+})
+
+watch(
+    [() => props.show, () => props.editPartner],
+    ([show, editData]) => {
+        if (show) {
+            searchQuery.value = ''
+            searchResults.value = []
+            errors.value = { full_name: '', email: '', password: '' }
+
+            if (editData && isNewArcherEdit.value) {
+                activeTab.value = 'quick_add'
+                quickForm.value = {
+                    full_name: editData.full_name || '',
+                    gender: editData.gender || props.requiredGender || 'male',
+                    email: editData.email || '',
+                    password: editData.password || 'Archeris123!',
+                    club_id: editData.club_id || '',
+                    club_name: editData.club_name || '',
+                    custom_fields: editData.custom_fields ? JSON.parse(JSON.stringify(editData.custom_fields)) : {}
+                }
+            } else {
+                activeTab.value = 'search'
+                quickForm.value = {
+                    full_name: '',
+                    gender: props.requiredGender || 'male',
+                    email: '',
+                    password: 'Archeris123!',
+                    club_id: '',
+                    club_name: '',
+                    custom_fields: {}
+                }
+                fetchEligiblePartners()
+            }
+        }
+    },
+    { immediate: true, deep: true }
+)
 
 const validateField = (field) => {
     if (field === 'full_name') {
@@ -393,14 +478,30 @@ const validateField = (field) => {
     }
 }
 
+const areRequiredCustomFieldsFilled = (answers, fields) => {
+    if (!fields || fields.length === 0) return true
+    for (const f of fields) {
+        if (f.is_required) {
+            const val = answers?.[f.id] || answers?.[f.field_key] || answers?.[f.name]
+            if (val === undefined || val === null || String(val).trim() === '') {
+                return false
+            }
+        }
+    }
+    return true
+}
+
 const isQuickFormValid = computed(() => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return !!quickForm.value.full_name &&
+    const basicValid = !!quickForm.value.full_name &&
         quickForm.value.full_name.trim().length >= 3 &&
         !!quickForm.value.email &&
         emailRegex.test(quickForm.value.email.trim()) &&
         !!quickForm.value.password &&
         quickForm.value.password.length >= 6
+
+    if (!basicValid) return false
+    return areRequiredCustomFieldsFilled(quickForm.value.custom_fields, props.customFields)
 })
 
 const generateEasyPassword = () => {
@@ -426,11 +527,14 @@ const selectPartner = (archer) => {
         participant_id: archer.participant_id || null,
         full_name: archer.full_name,
         gender: archer.gender || (props.requiredGender || 'male'),
+        email: archer.email || '',
         club_name: archer.club_name || '',
         avatar_url: archer.avatar_url || '',
         is_already_registered_individual: !!archer.is_already_registered_individual,
         individual_fee: archer.is_already_registered_individual ? 0 : (archer.individual_fee || props.defaultSingleFee),
-        needs_individual_registration: !archer.is_already_registered_individual
+        needs_individual_registration: !archer.is_already_registered_individual,
+        is_new_account: false,
+        custom_fields: archer.custom_fields || {}
     })
     close()
 }
@@ -440,36 +544,25 @@ const submitQuickAdd = () => {
     if (!isQuickFormValid.value) return
 
     emit('select-partner', {
-        archer_id: '',
-        participant_id: null,
+        archer_id: isNewArcherEdit.value ? (props.editPartner?.archer_id || '') : '',
+        participant_id: isNewArcherEdit.value ? (props.editPartner?.participant_id || null) : null,
         full_name: quickForm.value.full_name.trim(),
         gender: props.requiredGender || quickForm.value.gender || 'male',
         email: quickForm.value.email.trim(),
-        password: quickForm.value.password || '123456',
+        password: quickForm.value.password || 'Archeris123!',
         club_id: quickForm.value.club_id || '',
         club_name: quickForm.value.club_name || 'Independent',
-        avatar_url: '',
+        avatar_url: isNewArcherEdit.value ? (props.editPartner?.avatar_url || '') : '',
         is_already_registered_individual: false,
         individual_fee: props.defaultSingleFee,
-        needs_individual_registration: true
+        needs_individual_registration: true,
+        is_new_account: true,
+        custom_fields: quickForm.value.custom_fields || {}
     })
-    quickForm.value = {
-        full_name: '',
-        gender: props.requiredGender || 'male',
-        email: '',
-        password: '123456',
-        club_id: '',
-        club_name: ''
-    }
-    errors.value = {
-        full_name: '',
-        email: '',
-        password: ''
-    }
     close()
 }
 
-// Fetch eligible registered partners
+// Fetch eligible registered partners or recommendations
 const fetchEligiblePartners = async () => {
     if (!props.tournamentId || !props.categoryId) return
     loading.value = true
@@ -510,15 +603,5 @@ const doSearch = async () => {
 watch(searchQuery, () => {
     clearTimeout(searchTimer)
     searchTimer = setTimeout(doSearch, 300)
-})
-
-watch(() => props.show, (val) => {
-    if (val) {
-        activeTab.value = 'registered'
-        if (props.requiredGender) {
-            quickForm.value.gender = props.requiredGender
-        }
-        fetchEligiblePartners()
-    }
 })
 </script>

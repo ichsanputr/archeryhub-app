@@ -22,7 +22,6 @@ async function generateSitemap() {
     const staticPages = [
         '',
         '/archers',
-
         '/tournaments',
         '/organizer',
         '/contact',
@@ -30,7 +29,6 @@ async function generateSitemap() {
         '/privacy',
         '/terms',
         '/disclaimer',
-        '/subscription',
     ];
 
     try {

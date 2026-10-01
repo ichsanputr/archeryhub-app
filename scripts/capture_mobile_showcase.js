@@ -23,7 +23,7 @@ async function run() {
         deviceScaleFactor: 2
     })
 
-    const url = 'http://localhost:3003/graphics/mobile-showcase'
+    const url = 'http://localhost:3003/tools/mobile-showcase'
     console.log('Navigating to:', url)
     await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 })
 

@@ -57,19 +57,21 @@
             </div>
         </div>
 
-        <div v-if="Object.keys(rounds).length === 0" class="text-center py-20 bg-white/80 backdrop-blur-sm">
-            <div
-                class="size-20 rounded-3xl bg-slate-100/80 shadow-inner flex items-center justify-center mx-auto mb-5 border border-slate-200">
-                <Icon icon="ph:brackets-curly-bold" class="text-3xl text-slate-400" />
-            </div>
-            <h2 class="text-lg font-black text-slate-900 tracking-tight mb-2">{{ t('event_elimination.bracket_not_generated') }}</h2>
-            <div class="text-xs text-slate-400 max-w-sm mx-auto mb-6">{{ t('event_elimination.generate_bracket_desc') }}</div>
-            <button @click="$emit('generate-bracket')"
-                class="px-6 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 active:scale-95 transition-all flex items-center gap-2.5 mx-auto">
-                <Icon icon="ph:magic-wand-bold" class="text-base" />
-                {{ t('event_elimination.generate_bracket_now') }}
-            </button>
-        </div>
+        <BaseEmptyState
+            v-if="Object.keys(rounds).length === 0"
+            icon="ph:brackets-curly-bold"
+            :title="t('event_elimination.bracket_not_generated')"
+            :description="t('event_elimination.generate_bracket_desc')"
+            class="bg-white/80 backdrop-blur-sm"
+        >
+            <template #actions>
+                <button @click="$emit('generate-bracket')"
+                    class="px-6 py-2.5 rounded-xl bg-navy text-primary text-xs font-black tracking-widest hover:brightness-110 shadow-lg shadow-navy/20 active:scale-95 transition-all flex items-center gap-2.5 mx-auto cursor-pointer">
+                    <Icon icon="ph:magic-wand-bold" class="text-base" />
+                    {{ t('event_elimination.generate_bracket_now') }}
+                </button>
+            </template>
+        </BaseEmptyState>
     </div>
 </template>
 

@@ -123,6 +123,7 @@ export default defineNuxtConfig({
       host: 'localhost',
     },
     routeRules: {
+      '/tools/**': { headers: { 'X-Robots-Tag': 'noindex, nofollow, noarchive' } },
       '/feed.xml': { redirect: { to: '/rss.xml', statusCode: 301 } },
       '/events': { redirect: { to: '/tournaments', statusCode: 301 } },
       '/events/**': { redirect: { to: '/tournaments/**', statusCode: 301 } },

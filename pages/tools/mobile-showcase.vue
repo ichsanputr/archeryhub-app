@@ -65,4 +65,10 @@
 definePageMeta({
     layout: false
 })
+
+useHead({
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' }
+    ]
+})
 </script>

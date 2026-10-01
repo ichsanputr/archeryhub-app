@@ -129,6 +129,12 @@ definePageMeta({
     layout: 'empty'
 })
 
+useHead({
+    meta: [
+        { name: 'robots', content: 'noindex, nofollow' }
+    ]
+})
+
 const presets = [
     {
         id: 'eo-registration',

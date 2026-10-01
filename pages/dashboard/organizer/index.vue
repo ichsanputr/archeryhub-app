@@ -253,15 +253,14 @@
                 </div>
 
                 <!-- Symmetrical Empty State for Recap -->
-                <div v-else class="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-3">
-                    <div class="size-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shadow-2xs">
-                        <Icon icon="ph:chart-pie-slice-bold" class="text-2xl text-slate-400" />
-                    </div>
-                    <div class="max-w-xs space-y-1">
-                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_event_recap') }}</div>
-                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.recap_empty_desc') }}</div>
-                    </div>
-                </div>
+                <BaseEmptyState
+                    v-else
+                    icon="ph:chart-pie-slice-bold"
+                    size="sm"
+                    :title="t('dashboard.org.no_event_recap')"
+                    :description="t('dashboard.org.recap_empty_desc')"
+                    class="flex-1"
+                />
             </div>
 
             <!-- Leaderboard Card -->
@@ -324,15 +323,14 @@
                 </div>
 
                 <!-- Symmetrical Empty State for Leaderboard -->
-                <div v-else class="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-3">
-                    <div class="size-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 shadow-2xs">
-                        <Icon icon="ph:trophy-bold" class="text-2xl text-slate-400" />
-                    </div>
-                    <div class="max-w-xs space-y-1">
-                        <div class="text-xs font-bold text-navy">{{ t('dashboard.org.no_leaderboard') }}</div>
-                        <div class="text-[11px] text-slate-400 font-medium leading-relaxed">{{ t('dashboard.org.leaderboard_empty_desc') }}</div>
-                    </div>
-                </div>
+                <BaseEmptyState
+                    v-else
+                    icon="ph:trophy-bold"
+                    size="sm"
+                    :title="t('dashboard.org.no_leaderboard')"
+                    :description="t('dashboard.org.leaderboard_empty_desc')"
+                    class="flex-1"
+                />
             </div>
         </div>
     </div>

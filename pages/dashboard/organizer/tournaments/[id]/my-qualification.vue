@@ -138,10 +138,12 @@
                                     </tr>
                                 </template>
                                 <tr v-else>
-                                    <td colspan="4" class="py-20 text-center">
-                                        <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
-                                        <div class="text-xs font-black tracking-widest text-slate-300">Data
-                                            tidak tersedia</div>
+                                    <td colspan="4">
+                                        <BaseEmptyState
+                                            icon="ph:target-bold"
+                                            title="Data tidak tersedia"
+                                            size="sm"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

@@ -23,7 +23,7 @@ async function run() {
     const page1 = await browser.newPage()
     await page1.setViewport({ width: 1080, height: 1080, deviceScaleFactor: 2 })
     console.log('Navigating to graphics page...')
-    await page1.goto('http://localhost:3003/graphics/mobile-showcase', { waitUntil: 'networkidle0', timeout: 30000 })
+    await page1.goto('http://localhost:3003/tools/mobile-showcase', { waitUntil: 'networkidle0', timeout: 30000 })
     await new Promise(r => setTimeout(r, 2000))
 
     await page1.screenshot({ path: outPath1, type: 'png' })

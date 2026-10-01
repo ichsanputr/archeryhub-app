@@ -145,17 +145,12 @@
                 </div>
 
                 <!-- Empty State -->
-                <div v-if="filteredFiles.length === 0" class="text-center py-16 px-4">
-                    <div class="size-16 rounded-2xl bg-slate-50 text-slate-300 flex items-center justify-center mx-auto mb-4 border border-slate-100">
-                        <Icon icon="ph:images-square" class="text-3xl" />
-                    </div>
-                    <div class="text-base font-bold text-navy mb-1">
-                        {{ t('tournament_media.empty_title') }}
-                    </div>
-                    <div class="text-xs text-slate-400 max-w-sm mx-auto">
-                        {{ t('tournament_media.empty_desc') }}
-                    </div>
-                </div>
+                <BaseEmptyState
+                    v-if="filteredFiles.length === 0"
+                    icon="ph:images-square"
+                    :title="t('tournament_media.empty_title')"
+                    :description="t('tournament_media.empty_desc')"
+                />
 
                 <!-- Files Grid -->
                 <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">

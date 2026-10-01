@@ -103,8 +103,12 @@
                                 </td>
                             </tr>
                             <tr v-else-if="!recap.finance?.recent_transactions || recap.finance?.recent_transactions.length === 0">
-                                <td colspan="6" class="px-4 py-12 text-center text-xs text-slate-400">
-                                    {{ t('root.overview.no_transactions') }}
+                                <td colspan="6">
+                                    <BaseEmptyState
+                                        icon="ph:receipt-bold"
+                                        :title="t('root.overview.no_transactions')"
+                                        size="sm"
+                                    />
                                 </td>
                             </tr>
                             <tr v-else v-for="tx in recap.finance?.recent_transactions" :key="tx.reference" class="hover:bg-slate-50/60 transition-colors">
@@ -245,9 +249,12 @@
                     <span class="text-xs font-bold text-slate-400">{{ recap.tournaments?.total || 0 }} {{ t('root.overview.tournaments_unit') }}</span>
                 </div>
 
-                <div v-if="!recap.tournaments?.top_events || recap.tournaments?.top_events.length === 0" class="py-8 text-center text-xs text-slate-400">
-                    {{ t('root.overview.no_tournaments') }}
-                </div>
+                <BaseEmptyState
+                    v-if="!recap.tournaments?.top_events || recap.tournaments?.top_events.length === 0"
+                    icon="ph:medal-bold"
+                    :title="t('root.overview.no_tournaments')"
+                    size="sm"
+                />
                 <div v-else class="space-y-3">
                     <div v-for="event in recap.tournaments?.top_events" :key="event.id"
                         class="p-4 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center justify-between hover:bg-slate-100/70 transition-all">
@@ -279,9 +286,12 @@
                     </NuxtLink>
                 </div>
 
-                <div v-if="!recap.content?.top_articles || recap.content?.top_articles.length === 0" class="py-8 text-center text-xs text-slate-400">
-                    {{ t('root.overview.no_articles') }}
-                </div>
+                <BaseEmptyState
+                    v-if="!recap.content?.top_articles || recap.content?.top_articles.length === 0"
+                    icon="ph:newspaper-clipping-bold"
+                    :title="t('root.overview.no_articles')"
+                    size="sm"
+                />
                 <div v-else class="space-y-3">
                     <div v-for="art in recap.content?.top_articles" :key="art.id"
                         class="p-3 rounded-xl bg-slate-50/70 border border-slate-100 flex items-center gap-3.5 hover:bg-slate-100/70 transition-all">

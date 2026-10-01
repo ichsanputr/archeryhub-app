@@ -82,15 +82,12 @@
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="!currentDay || !currentDay.items || currentDay.items.length === 0" class="py-16 text-center">
-        <div class="size-20 rounded-3xl bg-gray-50 flex items-center justify-center mx-auto mb-4 text-gray-300">
-          <Icon icon="ph:calendar-x-bold" class="text-4xl" />
-        </div>
-        <h3 class="text-base sm:text-lg font-bold text-navy mb-1">{{ t('event_schedule.empty_day_title') }}</h3>
-        <div class="text-xs sm:text-sm text-gray-500 max-w-md mx-auto">
-          {{ t('event_schedule.empty_day_desc') }}
-        </div>
-      </div>
+      <BaseEmptyState
+        v-else-if="!currentDay || !currentDay.items || currentDay.items.length === 0"
+        icon="ph:calendar-blank-bold"
+        :title="t('event_schedule.empty_day_title')"
+        :description="t('event_schedule.empty_day_desc')"
+      />
 
       <!-- Clean & Perfectly Aligned Table -->
       <div v-else class="overflow-x-auto">

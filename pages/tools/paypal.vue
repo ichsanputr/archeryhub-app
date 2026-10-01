@@ -376,7 +376,12 @@ definePageMeta({
   layout: 'blank'
 })
 
-useHead({ title: 'PayPal Sandbox Testing Console - Archeris' })
+useHead({
+  title: 'PayPal Sandbox Testing Console - Archeris',
+  meta: [
+    { name: 'robots', content: 'noindex, nofollow' }
+  ]
+})
 
 const route = useRoute()
 const apiBaseUrl = useApiBaseUrl()

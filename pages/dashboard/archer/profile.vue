@@ -381,34 +381,28 @@
           </div>
 
           <!-- Redesigned Empty State -->
-          <div
+          <BaseEmptyState
             v-else
-            class="py-10 px-6 text-center border-2 border-dashed border-slate-200 bg-slate-50/50 rounded-3xl space-y-4">
-            <div class="size-14 rounded-2xl bg-primary/10 border border-primary/20 shadow-2xs flex items-center justify-center mx-auto text-navy">
-              <Icon icon="ph:share-network-bold" class="text-2xl text-navy" />
-            </div>
-            <div class="space-y-1">
-              <div class="text-base font-black text-navy">
-                {{ isEn ? 'No social media accounts connected' : 'Belum Ada Akun Media Sosial' }}
-              </div>
-              <div class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-                {{ isEn ? 'Add your social media links so fellow archers and tournament organizers can connect with you.' : 'Tambahkan tautan media sosial agar pemanah lain dan panitia turnamen dapat terhubung dengan Anda.' }}
-              </div>
-            </div>
-            
+            icon="ph:share-network-bold"
+            :title="isEn ? 'No social media accounts connected' : 'Belum Ada Akun Media Sosial'"
+            :description="isEn ? 'Add your social media links so fellow archers and tournament organizers can connect with you.' : 'Tambahkan tautan media sosial agar pemanah lain dan panitia turnamen dapat terhubung dengan Anda.'"
+            border
+          >
             <!-- Quick Add Chips -->
-            <div class="flex flex-wrap items-center justify-center gap-2 pt-2">
-              <button
-                v-for="plat in popularPlatforms"
-                :key="plat.value"
-                type="button"
-                @click="addSocial(plat.value)"
-                class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-navy text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer">
-                <Icon :icon="plat.icon" class="text-sm" :class="plat.iconColor" />
-                <span>+ {{ plat.title }}</span>
-              </button>
-            </div>
-          </div>
+            <template #actions>
+              <div class="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  v-for="plat in popularPlatforms"
+                  :key="plat.value"
+                  type="button"
+                  @click="addSocial(plat.value)"
+                  class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-navy text-xs font-bold transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer">
+                  <Icon :icon="plat.icon" class="text-sm" :class="plat.iconColor" />
+                  <span>+ {{ plat.title }}</span>
+                </button>
+              </div>
+            </template>
+          </BaseEmptyState>
         </div>
       </div>
 
@@ -502,28 +496,23 @@
             </div>
 
             <!-- Empty State for Achievements -->
-            <div
+            <BaseEmptyState
               v-if="achievementsList.length === 0"
-              class="py-10 px-6 text-center border-2 border-dashed border-slate-200 bg-slate-50/50 rounded-3xl space-y-4">
-              <div class="size-14 rounded-2xl bg-primary/10 border border-primary/20 shadow-2xs flex items-center justify-center mx-auto text-navy">
-                <Icon icon="ph:trophy-bold" class="text-2xl text-navy" />
-              </div>
-              <div class="space-y-1">
-                <div class="text-base font-black text-navy">
-                  {{ isEn ? 'No achievements added yet' : 'Belum Ada Prestasi yang Ditambahkan' }}
-                </div>
-                <div class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
-                  {{ isEn ? 'Add medals, podium finishes, or official titles to build your archer portfolio.' : 'Tambahkan perolehan medali, juara turnamen, atau penghargaan resmi untuk melengkapi portofolio Anda.' }}
-                </div>
-              </div>
-              <button
-                type="button"
-                @click="achievementsList.push({ text: '', is_highlighted: false })"
-                class="px-4 py-2.5 rounded-xl bg-navy text-white hover:bg-navy/90 text-sm font-bold transition-all inline-flex items-center gap-2 shadow-xs cursor-pointer">
-                <Icon icon="ph:plus-bold" />
-                <span>{{ isEn ? 'Add Your First Achievement' : 'Tambahkan Prestasi Pertama' }}</span>
-              </button>
-            </div>
+              icon="ph:trophy-bold"
+              :title="isEn ? 'No achievements added yet' : 'Belum Ada Prestasi yang Ditambahkan'"
+              :description="isEn ? 'Add medals, podium finishes, or official titles to build your archer portfolio.' : 'Tambahkan perolehan medali, juara turnamen, atau penghargaan resmi untuk melengkapi portofolio Anda.'"
+              border
+            >
+              <template #actions>
+                <button
+                  type="button"
+                  @click="achievementsList.push({ text: '', is_highlighted: false })"
+                  class="px-4 py-2.5 rounded-xl bg-navy text-white hover:bg-navy/90 text-sm font-bold transition-all inline-flex items-center gap-2 shadow-xs cursor-pointer">
+                  <Icon icon="ph:plus-bold" />
+                  <span>{{ isEn ? 'Add Your First Achievement' : 'Tambahkan Prestasi Pertama' }}</span>
+                </button>
+              </template>
+            </BaseEmptyState>
           </div>
         </div>
 
